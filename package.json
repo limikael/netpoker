@@ -1,0 +1,11 @@
+{
+  "name": "netpoker",
+  "version": "0.0.1",
+  "dependencies": {
+    "websocket": "^1.0.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/limikael/netpoker.git"
+  }
+}
