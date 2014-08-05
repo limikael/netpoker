@@ -32,7 +32,8 @@ MessageServerConnection.prototype.onWebSocketMessage = function(event) {
 			message: message
 		});
 	} catch (err) {
-		console.log("MessageServerConnection received non JSON data");
+		console.log(err.stack);
+		console.log("MessageServerConnection received non JSON data: "+event.data);
 	}
 }
 

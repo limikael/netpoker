@@ -45,6 +45,9 @@ EventDispatcher.prototype.removeEventListener = function(eventType, listener, sc
 			i--;
 		}
 	}
+
+	if (!listeners.length)
+		delete this.listenerMap[eventType];
 }
 
 /**
