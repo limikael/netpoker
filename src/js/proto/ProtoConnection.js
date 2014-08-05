@@ -16,6 +16,8 @@ function ProtoConnection(connection) {
 
 FunctionUtil.extend(ProtoConnection, EventDispatcher);
 
+ProtoConnection.CLOSE = "close";
+
 ProtoConnection.MESSAGE_TYPES = {};
 ProtoConnection.MESSAGE_TYPES[InitMessage.TYPE] = InitMessage;
 
@@ -65,6 +67,14 @@ ProtoConnection.prototype.send = function(message) {
 		throw new Error("Unknown message type");
 
 	this.connection.send(serialized);
+}
+
+/**
+ * Close the connection.
+ * @method close
+ */
+ProtoConnection.prototype.close = function() {
+	this.connection.close();
 }
 
 module.exports = ProtoConnection;

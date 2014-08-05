@@ -24,7 +24,6 @@ describe("ProtoConnection", function() {
 
 	it("can receive a message", function(done) {
 		var mockConnection = new EventDispatcher();
-
 		var protoConnection = new ProtoConnection(mockConnection);
 
 		protoConnection.addMessageHandler(InitMessage.TYPE, function(m) {
@@ -39,5 +38,14 @@ describe("ProtoConnection", function() {
 				"token": "hello"
 			}
 		});
+	});
+
+	it("can be closed", function() {
+		var mockConnection = new EventDispatcher();
+		mockConnection.close = jasmine.createSpy();
+		var protoConnection = new ProtoConnection(mockConnection);
+
+		protoConnection.close();
+		expect(mockConnection.close).toHaveBeenCalled();
 	});
 });
