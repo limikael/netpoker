@@ -1,6 +1,8 @@
 var EventDispatcher = require("../utils/EventDispatcher");
 var FunctionUtil = require("../utils/FunctionUtil");
+
 var InitMessage = require("./messages/InitMessage");
+var StateCompleteMessage = require("./messages/StateCompleteMessage");
 
 /**
  * @class ProtoConnection
@@ -12,6 +14,7 @@ function ProtoConnection(connection) {
 	this.messageDispatcher = new EventDispatcher();
 	this.connection = connection;
 	this.connection.addEventListener("message", this.onConnectionMessage, this);
+	this.connection.addEventListener("close", this.onConnectionClose, this);
 }
 
 FunctionUtil.extend(ProtoConnection, EventDispatcher);
@@ -20,6 +23,7 @@ ProtoConnection.CLOSE = "close";
 
 ProtoConnection.MESSAGE_TYPES = {};
 ProtoConnection.MESSAGE_TYPES[InitMessage.TYPE] = InitMessage;
+ProtoConnection.MESSAGE_TYPES[StateCompleteMessage.TYPE] = StateCompleteMessage;
 
 /**
  * Add message handler.
@@ -50,6 +54,18 @@ ProtoConnection.prototype.onConnectionMessage = function(ev) {
 	o.type = message.type;
 
 	this.messageDispatcher.trigger(o);
+}
+
+/**
+ * Connection close.
+ * @method onConnectionClose
+ */
+ProtoConnection.prototype.onConnectionClose = function(ev) {
+	this.connection.off("message", this.onConnectionMessage, this);
+	this.connection.off("close", this.onConnectionClose, this);
+	this.connection=null;
+
+	this.trigger(ProtoConnection.CLOSE);
 }
 
 /**

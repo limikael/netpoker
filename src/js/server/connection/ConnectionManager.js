@@ -15,6 +15,10 @@ function ConnectionManager() {
 
 FunctionUtil.extend(ConnectionManager, EventDispatcher);
 
+/**
+ * Dispatched on new connections.
+ * @event ConnectionManager.CONNECTION
+ */
 ConnectionManager.CONNECTION = "connection";
 
 /**
@@ -31,6 +35,8 @@ ConnectionManager.prototype.onMessageServerConnection = function(e) {
 
 /**
  * User connection initialized.
+ * @method onUserConnectionInitialized
+ * @private
  */
 ConnectionManager.prototype.onUserConnectionInitialized = function(e) {
 	var userConnection = e.target;
@@ -46,6 +52,8 @@ ConnectionManager.prototype.onUserConnectionInitialized = function(e) {
 
 /**
  * User connection close.
+ * @method onUserConnectionClose
+ * @private
  */
 ConnectionManager.prototype.onUserConnectionClose = function(e) {
 	var userConnection = e.target;
@@ -56,7 +64,7 @@ ConnectionManager.prototype.onUserConnectionClose = function(e) {
 
 /**
  * Start listening for connections.
- * @function listen
+ * @method listen
  */
 ConnectionManager.prototype.listen = function(port) {
 	this.messageServer = new MessageServer();

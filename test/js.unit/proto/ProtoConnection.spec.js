@@ -48,4 +48,15 @@ describe("ProtoConnection", function() {
 		protoConnection.close();
 		expect(mockConnection.close).toHaveBeenCalled();
 	});
+
+	it("detects close", function(done) {
+		var mockConnection = new EventDispatcher();
+
+		var protoConnection = new ProtoConnection(mockConnection);
+		protoConnection.on(ProtoConnection.CLOSE,function() {
+			done();
+		});
+
+		mockConnection.trigger(ProtoConnection.CLOSE);
+	});
 });
