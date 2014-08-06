@@ -2,6 +2,7 @@ var MessageServer = require("../../utils/MessageServer");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var UserConnection = require("../../server/connection/UserConnection");
+var ConnectionManagerConnectionEvent = require("./ConnectionManagerConnectionEvent");
 
 /**
  * Connection manager.
@@ -46,10 +47,15 @@ ConnectionManager.prototype.onUserConnectionInitialized = function(e) {
 	userConnection.off(UserConnection.CLOSE, this.onUserConnectionClose, this);
 	userConnection.off(UserConnection.INITIALIZED, this.onUserConnectionInitialized, this);
 
-	this.trigger({
-		type: ConnectionManager.CONNECTION,
-		connection: userConnection
-	});
+	var e = new ConnectionManagerConnectionEvent(
+		userConnection, 
+		userConnection.getUser(), 
+		userConnection.getInitMessage()
+	);
+
+	e.type=ConnectionManager.CONNECTION;
+
+	this.trigger(e);
 }
 
 /**

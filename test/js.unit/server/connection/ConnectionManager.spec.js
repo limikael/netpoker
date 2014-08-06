@@ -32,7 +32,7 @@ describe("ConnectionManager", function() {
 		}
 	});
 
-	iit("can accept connections", function(done) {
+	it("can accept connections", function(done) {
 		backendCallData={
 			id: 123,
 			name: "hello"
@@ -42,7 +42,7 @@ describe("ConnectionManager", function() {
 		connectionManager.listen(2002);
 
 		connectionManager.on(ConnectionManager.CONNECTION, function(e) {
-			expect(e.connection.getUser().getName()).toEqual("hello");
+			expect(e.getUser().getName()).toEqual("hello");
 			done();
 		});
 

@@ -26,6 +26,8 @@ UserConnection.CLOSE = ProtoConnection.CLOSE;
  * @method onInitMessage
  */
 UserConnection.prototype.onInitMessage = function(initMessage) {
+	this.initMessage = initMessage;
+
 	var params = {
 		token: initMessage.getToken()
 	};
@@ -75,6 +77,14 @@ UserConnection.prototype.onFetchUserCallError = function() {
  */
 UserConnection.prototype.getUser = function() {
 	return this.user;
+}
+
+/**
+ * Get the init message.
+ * @method getInitMessage
+ */
+UserConnection.prototype.getInitMessage = function() {
+	return this.initMessage;
 }
 
 module.exports = UserConnection;

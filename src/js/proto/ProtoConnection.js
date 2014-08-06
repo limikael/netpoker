@@ -20,6 +20,7 @@ function ProtoConnection(connection) {
 FunctionUtil.extend(ProtoConnection, EventDispatcher);
 
 ProtoConnection.CLOSE = "close";
+ProtoConnection.MESSAGE = "message";
 
 ProtoConnection.MESSAGE_TYPES = {};
 ProtoConnection.MESSAGE_TYPES[InitMessage.TYPE] = InitMessage;
@@ -54,6 +55,11 @@ ProtoConnection.prototype.onConnectionMessage = function(ev) {
 	o.type = message.type;
 
 	this.messageDispatcher.trigger(o);
+
+	this.trigger({
+		type: ProtoConnection.MESSAGE,
+		message: o
+	});
 }
 
 /**
@@ -63,7 +69,7 @@ ProtoConnection.prototype.onConnectionMessage = function(ev) {
 ProtoConnection.prototype.onConnectionClose = function(ev) {
 	this.connection.off("message", this.onConnectionMessage, this);
 	this.connection.off("close", this.onConnectionClose, this);
-	this.connection=null;
+	this.connection = null;
 
 	this.trigger(ProtoConnection.CLOSE);
 }

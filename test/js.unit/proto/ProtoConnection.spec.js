@@ -18,7 +18,8 @@ describe("ProtoConnection", function() {
 
 		expect(mockConnection.send).toHaveBeenCalledWith({
 			"token": "initToken",
-			"type": "init"
+			"type": "init",
+			"tableId": null
 		});
 	});
 

@@ -15,6 +15,8 @@ function Table(config) {
 	if (!config.numseats)
 		throw new Error("Table config doesn't have number of seats");
 
+	this.id = config.id;
+
 	this.setupSeats(config.numseats);
 
 	BaseTable.call(this);
@@ -68,6 +70,14 @@ Table.prototype.onTableSpectatorDone = function(e) {
  */
 Table.prototype.sendState = function(protoConnection) {
 	protoConnection.send(new StateCompleteMessage());
+}
+
+/**
+ * Get id.
+ * @method getId
+ */
+Table.prototype.getId = function() {
+	return this.id;
 }
 
 module.exports = Table;

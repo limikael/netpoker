@@ -3,9 +3,10 @@
  */
 function InitMessage(token) {
 	this.token = token;
+	this.tableId = null;
 }
 
-InitMessage.TYPE="init";
+InitMessage.TYPE = "init";
 
 /**
  * get token.
@@ -16,11 +17,28 @@ InitMessage.prototype.getToken = function() {
 }
 
 /**
+ * Set table id.
+ * @method setTableId
+ */
+InitMessage.prototype.setTableId = function(id) {
+	this.tableId = id;
+}
+
+/**
+ * Get table id.
+ * @method getTableId
+ */
+InitMessage.prototype.getTableId = function() {
+	return this.tableId;
+}
+
+/**
  * Un-serialize.
  * @method unserialize.
  */
 InitMessage.prototype.unserialize = function(data) {
 	this.token = data.token;
+	this.tableId = data.tableId;
 }
 
 /**
@@ -29,7 +47,8 @@ InitMessage.prototype.unserialize = function(data) {
  */
 InitMessage.prototype.serialize = function() {
 	return {
-		token: this.token
+		token: this.token,
+		tableId: this.tableId
 	};
 }
 

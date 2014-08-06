@@ -7,6 +7,7 @@ function Backend() {
 }
 
 Backend.GET_USER_INFO_BY_TOKEN="user/getInfoByToken";
+Backend.GET_TABLE_LIST="table/getList";
 
 /**
  * Call a backend method.

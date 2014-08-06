@@ -9,18 +9,21 @@ var ProtoConnection = require("../../proto/ProtoConnection");
 function TableSpectator(table, connection, user) {
 	EventDispatcher.call(this);
 
+	this.table = table;
 	this.connection = connection;
+	this.user = user;
+
 	this.connection.on(ProtoConnection.CLOSE, this.onConnectionClose, this);
 }
 
 FunctionUtil.extend(TableSpectator, EventDispatcher);
 
-TableSpectator.DONE="done";
+TableSpectator.DONE = "done";
 
 /**
  * Connection close.
  */
-TableSpectator.prototype.onConnectionClose=function() {
+TableSpectator.prototype.onConnectionClose = function() {
 	console.log("table spectator connection close");
 	this.trigger(TableSpectator.DONE);
 }
