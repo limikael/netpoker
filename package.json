@@ -2,10 +2,11 @@
   "name": "netpoker",
   "version": "0.0.1",
   "dependencies": {
+    "browserify": "^5.9.1",
     "gulp": "^3.8.7",
-    "gulp-jasmine": "^0.3.0",
     "gulp-run": "^1.6.3",
     "jasmine-node": "^1.14.5",
+    "pixi": "^0.2.1",
     "websocket": "^1.0.8"
   },
   "repository": {
