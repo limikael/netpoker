@@ -8,8 +8,10 @@ var User = require("../user/User");
  * Represents a connected user.
  * @class UserConnection
  */
-function UserConnection(connection) {
+function UserConnection(services, connection) {
 	ProtoConnection.call(this, connection);
+
+	this.services = services;
 
 	this.addMessageHandler(InitMessage.TYPE, this.onInitMessage, this);
 }
@@ -28,7 +30,7 @@ UserConnection.prototype.onInitMessage = function(initMessage) {
 		token: initMessage.getToken()
 	};
 
-	this.fetchUserCall = Backend.call(Backend.GET_USER_INFO_BY_TOKEN, params);
+	this.fetchUserCall = this.services.getBackend().call(Backend.GET_USER_INFO_BY_TOKEN, params);
 	this.fetchUserCall.then(
 		this.onFetchUserCallSuccess.bind(this),
 		this.onFetchUserCallError.bind(this)

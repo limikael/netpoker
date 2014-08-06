@@ -12,5 +12,4 @@ function TableManager() {
  * @method initialize
  */
 TableManager.prototype.initialize=function() {
-
 }

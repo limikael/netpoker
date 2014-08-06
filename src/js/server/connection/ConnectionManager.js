@@ -7,7 +7,9 @@ var UserConnection = require("../../server/connection/UserConnection");
  * Connection manager.
  * @class ConnectionManager
  */
-function ConnectionManager() {
+function ConnectionManager(services) {
+	this.services = services;
+
 	EventDispatcher.call(this);
 
 	this.messageServer = null;
@@ -27,7 +29,7 @@ ConnectionManager.CONNECTION = "connection";
  * @private
  */
 ConnectionManager.prototype.onMessageServerConnection = function(e) {
-	var userConnection = new UserConnection(e.connection);
+	var userConnection = new UserConnection(this.services, e.connection);
 
 	userConnection.on(UserConnection.CLOSE, this.onUserConnectionClose, this);
 	userConnection.on(UserConnection.INITIALIZED, this.onUserConnectionInitialized, this);

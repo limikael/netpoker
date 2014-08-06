@@ -7,19 +7,38 @@ var Backend = require("../../../../src/js/server/backend/Backend");
 var Thenable = require("../../../../src/js/utils/Thenable");
 
 describe("ConnectionManager", function() {
-	it("can accept connections", function(done) {
-		var backendCall = new Thenable();
+	var mockBackend, mockServices;
+	var backendCallData;
 
-		Backend.call = function() {
-			backendCall.notifySuccess({
-				id: 123,
-				name: "hello"
-			});
+	beforeEach(function() {
+		backendCallData=null;
 
-			return backendCall;
+		mockBackend = {};
+		mockBackend.call = function() {
+			var thenable = new Thenable();
+
+			if (backendCallData)
+				thenable.notifySuccess(backendCallData);
+
+			else
+				thenable.notifyError();
+
+			return thenable;
+		};
+
+		mockServices = {};
+		mockServices.getBackend = function() {
+			return mockBackend;
 		}
+	});
 
-		var connectionManager = new ConnectionManager();
+	iit("can accept connections", function(done) {
+		backendCallData={
+			id: 123,
+			name: "hello"
+		};
+
+		var connectionManager = new ConnectionManager(mockServices);
 		connectionManager.listen(2002);
 
 		connectionManager.on(ConnectionManager.CONNECTION, function(e) {
@@ -40,15 +59,9 @@ describe("ConnectionManager", function() {
 	});
 
 	it("ignores failing connections", function(done) {
-		var backendCall = new Thenable();
+		backendCallData=null;
 
-		Backend.call = function() {
-			backendCall.notifyError();
-
-			return backendCall;
-		}
-
-		var connectionManager = new ConnectionManager();
+		var connectionManager = new ConnectionManager(mockServices);
 		connectionManager.listen(2003);
 
 		var originalFunction = connectionManager.onUserConnectionClose;
@@ -70,5 +83,4 @@ describe("ConnectionManager", function() {
 			}
 		);
 	})
-
 });
