@@ -23,10 +23,16 @@ function onServerConnection(e) {
 	for (var i=0; i<lines.length; i++) {
 		var line=lines[i];
 
-		connection.send(JSON.parse(line));
+		if (line.length) {
+			connection.send(JSON.parse(line));
+		}
 	}
 }
 
+var port=2000;
 var server = new MessageServer();
+
 server.on(MessageServer.CONNECTION, onServerConnection);
-server.listen(2000);
+server.listen(port);
+
+console.log("View test server listening on port "+port);

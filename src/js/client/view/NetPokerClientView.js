@@ -29,4 +29,12 @@ function NetPokerClientView() {
 
 FunctionUtil.extend(NetPokerClientView, PIXI.DisplayObjectContainer);
 
+/**
+ * Get seat view by index.
+ * @method getSeatViewByIndex
+ */
+NetPokerClientView.prototype.getSeatViewByIndex=function(index) {
+	return this.seatViews[index];
+}
+
 module.exports = NetPokerClientView;

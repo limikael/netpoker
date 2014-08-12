@@ -3,6 +3,7 @@ var FunctionUtil = require("../utils/FunctionUtil");
 
 var InitMessage = require("./messages/InitMessage");
 var StateCompleteMessage = require("./messages/StateCompleteMessage");
+var SeatInfoMessage = require("./messages/SeatInfoMessage");
 
 /**
  * @class ProtoConnection
@@ -25,6 +26,7 @@ ProtoConnection.MESSAGE = "message";
 ProtoConnection.MESSAGE_TYPES = {};
 ProtoConnection.MESSAGE_TYPES[InitMessage.TYPE] = InitMessage;
 ProtoConnection.MESSAGE_TYPES[StateCompleteMessage.TYPE] = StateCompleteMessage;
+ProtoConnection.MESSAGE_TYPES[SeatInfoMessage.TYPE] = SeatInfoMessage;
 
 /**
  * Add message handler.
@@ -38,6 +40,8 @@ ProtoConnection.prototype.addMessageHandler = function(messageType, handler, sco
  * @method onConnectionMessage
  */
 ProtoConnection.prototype.onConnectionMessage = function(ev) {
+	//console.log("incoming connection message");
+
 	var message = ev.message;
 	var constructor;
 
@@ -47,7 +51,8 @@ ProtoConnection.prototype.onConnectionMessage = function(ev) {
 	}
 
 	if (!constructor) {
-		console.warn("unknown message...");
+		console.warn("unknown message: " + message.type);
+		return;
 	}
 
 	var o = new constructor();
