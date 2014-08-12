@@ -19,6 +19,11 @@ function Resources() {
 	];
 
 	this.seatPlate = this.getComponentsPart(40, 116, 160, 70);
+
+	this.communityCardsPosition = Point(255, 190);
+
+	this.cardFrame = this.getComponentsPart(498, 256, 87, 122);
+	this.cardBack = this.getComponentsPart(402, 256, 87, 122);
 }
 
 /**

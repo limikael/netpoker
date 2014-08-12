@@ -20,7 +20,7 @@ describe("MessageSequencer", function() {
 		expect(spy.calls.length).toBe(2);
 	});
 
-	iit("can be told to wait until processing next message", function() {
+	it("can be told to wait until processing next message", function() {
 		var e = new EventDispatcher();
 		var s = new MessageSequencer();
 

@@ -38,7 +38,7 @@ NetPokerClientController.prototype.setProtoConnection = function(protoConnection
  * @private
  */
 NetPokerClientController.prototype.onProtoConnectionMessage = function(e) {
-	console.log("proto connection message...");
+	//console.log("proto connection message...");
 	this.messageSequencer.enqueue(e.message);
 }
 
