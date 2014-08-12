@@ -3,6 +3,8 @@ var http = require("http");
 var FunctionUtil = require("./FunctionUtil");
 var EventDispatcher = require("./EventDispatcher");
 var MessageServerConnection = require("./MessageServerConnection");
+var url = require("url");
+var querystring = require("querystring");
 
 /**
  * Server that manages connections where each message is a JSON document.
@@ -29,8 +31,13 @@ MessageServer.prototype.onServerUpgrade = function(request, socket, body) {
 	if (!WebSocket.isWebSocket(request))
 		return;
 
+	var urlObject = url.parse(request.url);
+	var parameters = querystring.parse(urlObject.query);
+
+	//console.log(parameters);
+
 	var ws = new WebSocket(request, socket, body);
-	var connection = new MessageServerConnection(ws);
+	var connection = new MessageServerConnection(ws, parameters);
 	this.trigger({
 		type: MessageServer.CONNECTION,
 		connection: connection
@@ -51,4 +58,4 @@ MessageServer.prototype.listen = function(port) {
 	this.server.listen(port);
 }
 
-module.exports=MessageServer;
+module.exports = MessageServer;
