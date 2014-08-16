@@ -8,6 +8,8 @@ var Point = require("../../utils/Point");
  * @class Resources.
  */
 function Resources() {
+	var i;
+
 	this.componentsTexture = new PIXI.Texture.fromImage("components.png");
 	this.tableBackground = PIXI.Sprite.fromImage("table.png");
 
@@ -24,6 +26,10 @@ function Resources() {
 
 	this.cardFrame = this.getComponentsPart(498, 256, 87, 122);
 	this.cardBack = this.getComponentsPart(402, 256, 87, 122);
+
+	this.suitSymbols = [];
+	for (i = 0; i < 4; i++)
+		this.suitSymbols.push(this.getComponentsPart(246 + i * 23, 67, 18, 19));
 }
 
 /**

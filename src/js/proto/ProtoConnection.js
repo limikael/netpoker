@@ -5,6 +5,7 @@ var InitMessage = require("./messages/InitMessage");
 var StateCompleteMessage = require("./messages/StateCompleteMessage");
 var SeatInfoMessage = require("./messages/SeatInfoMessage");
 var CommunityCardsMessage = require("./messages/CommunityCardsMessage");
+var PocketCardsMessage = require("./messages/PocketCardsMessage");
 
 /**
  * @class ProtoConnection
@@ -29,6 +30,7 @@ ProtoConnection.MESSAGE_TYPES[InitMessage.TYPE] = InitMessage;
 ProtoConnection.MESSAGE_TYPES[StateCompleteMessage.TYPE] = StateCompleteMessage;
 ProtoConnection.MESSAGE_TYPES[SeatInfoMessage.TYPE] = SeatInfoMessage;
 ProtoConnection.MESSAGE_TYPES[CommunityCardsMessage.TYPE] = CommunityCardsMessage;
+ProtoConnection.MESSAGE_TYPES[PocketCardsMessage.TYPE] = PocketCardsMessage;
 
 /**
  * Add message handler.

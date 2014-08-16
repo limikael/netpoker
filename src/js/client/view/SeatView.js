@@ -9,6 +9,7 @@ var Resources = require("../resources/Resources");
 function SeatView(seatIndex) {
 	PIXI.DisplayObjectContainer.call(this);
 
+	this.pocketCards = [];
 	this.seatIndex = seatIndex;
 
 	var seatTexture = Resources.getInstance().seatPlate;
@@ -73,17 +74,31 @@ SeatView.prototype.setChips = function(chips) {
  */
 SeatView.prototype.setSitout = function(sitout) {
 	if (sitout)
-		this.alpha=.5;
+		this.alpha = .5;
 
 	else
-		this.alpha=1;
+		this.alpha = 1;
 }
 
 /**
  * Set sitout.
  */
 SeatView.prototype.setActive = function(active) {
-	this.visible=active;
+	this.visible = active;
+}
+
+/**
+ * Add pocket card.
+ */
+SeatView.prototype.addPocketCard = function(cardView) {
+	this.pocketCards.push(cardView);
+}
+
+/**
+ * Get pocket cards.
+ */
+SeatView.prototype.getPocketCards = function() {
+	return this.pocketCards;
 }
 
 module.exports = SeatView;

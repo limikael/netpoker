@@ -29,10 +29,22 @@ FunctionUtil.extend(NetPokerClientView, PIXI.DisplayObjectContainer);
  * Setup seats.
  */
 NetPokerClientView.prototype.setupSeats = function() {
+	var i, j;
+	var pocketCards;
+
 	this.seatViews = [];
 
 	for (i = 0; i < Resources.getInstance().seatPositions.length; i++) {
 		var seatView = new SeatView(i);
+		var p = seatView.position;
+
+		for (j = 0; j < 2; j++) {
+			var c = new CardView();
+			c.hide();
+			c.setTargetPosition(Point(p.x + j * 30 - 60, p.y - 100));
+			this.tableContainer.addChild(c);
+			seatView.addPocketCard(c);
+		}
 
 		this.tableContainer.addChild(seatView);
 		this.seatViews.push(seatView);

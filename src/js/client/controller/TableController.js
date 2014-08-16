@@ -1,5 +1,6 @@
 var SeatInfoMessage = require("../../proto/messages/SeatInfoMessage");
 var CommunityCardsMessage = require("../../proto/messages/CommunityCardsMessage");
+var PocketCardsMessage = require("../../proto/messages/PocketCardsMessage");
 
 /**
  * Control the table
@@ -11,6 +12,7 @@ function TableController(messageSequencer, view) {
 
 	this.messageSequencer.addMessageHandler(SeatInfoMessage.TYPE, this.onSeatInfoMessage, this);
 	this.messageSequencer.addMessageHandler(CommunityCardsMessage.TYPE, this.onCommunityCardsMessage, this);
+	this.messageSequencer.addMessageHandler(PocketCardsMessage.TYPE, this.onPocketCardsMessage, this);
 }
 
 /**
@@ -36,6 +38,22 @@ TableController.prototype.onCommunityCardsMessage = function(m) {
 		var cardView = this.view.getCommunityCards()[m.getFirstIndex() + i];
 
 		cardView.setCardData(cardData);
+	}
+}
+
+/**
+ * Pocket cards message.
+ */
+TableController.prototype.onPocketCardsMessage = function(m) {
+	var seatView = this.view.getSeatViewByIndex(m.getSeatIndex());
+	var i;
+
+	for (i = 0; i < m.getCards().length; i++) {
+		var cardData = m.getCards()[i];
+		var cardView = seatView.getPocketCards()[m.getFirstIndex() + i];
+
+		cardView.setCardData(cardData);
+		cardView.show();
 	}
 }
 
