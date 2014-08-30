@@ -8,6 +8,7 @@ var Thenable = require("./Thenable");
  */
 function MessageWebSocketConnection() {
 	EventDispatcher.call(this);
+	this.test=1;
 }
 
 FunctionUtil.extend(MessageWebSocketConnection, EventDispatcher);
@@ -22,6 +23,7 @@ MessageWebSocketConnection.CLOSE = "close";
  */
 MessageWebSocketConnection.prototype.connect = function(url) {
 	this.webSocket = new WebSocket(url);
+
 	this.webSocket.onopen = this.onWebSocketOpen.bind(this);
 	this.webSocket.onmessage = this.onWebSocketMessage.bind(this);
 	this.webSocket.onclose = this.onWebSocketClose.bind(this);
@@ -54,9 +56,9 @@ MessageWebSocketConnection.prototype.onWebSocketMessage = function(e) {
  * @private
  */
 MessageWebSocketConnection.prototype.onWebSocketClose = function() {
-	console.log("web socket close...");
+	console.log("web socket close, ws="+this.webSocket+" this="+this.test);
 	this.webSocket.close();
-	this.webSocket = null;
+	this.clearWebSocket();
 
 	this.trigger(MessageWebSocketConnection.CLOSE);
 }
@@ -66,10 +68,24 @@ MessageWebSocketConnection.prototype.onWebSocketClose = function() {
  * @private
  */
 MessageWebSocketConnection.prototype.onWebSocketError = function() {
+	console.log("web socket error, ws="+this.webSocket+" this="+this.test);
+
 	this.webSocket.close();
-	this.webSocket = null;
+	this.clearWebSocket();
 
 	this.trigger(MessageWebSocketConnection.CLOSE);
+}
+
+/**
+ * Clear the current web socket.
+ */
+MessageWebSocketConnection.prototype.clearWebSocket=function() {
+	this.webSocket.onopen = null;
+	this.webSocket.onmessage = null;
+	this.webSocket.onclose = null;
+	this.webSocket.onerror = null;
+
+	this.webSocket = null;
 }
 
 module.exports = MessageWebSocketConnection;
