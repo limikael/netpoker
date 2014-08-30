@@ -9,6 +9,9 @@ gulp.task("js-unit-test", function() {
 });
 
 gulp.task("browserify", function() {
+	run("./node_modules/.bin/browserify -d -o test/view/gradient/test.bundle.js test/view/gradient/test.js")
+		.exec().pipe(gulp.dest("output"));
+
 	run("./node_modules/.bin/browserify -d -o test/view/netpokerclient.bundle.js src/js/client/netpokerclient.js")
 		.exec().pipe(gulp.dest("output"));
 

@@ -1,6 +1,6 @@
 "use strict";
 
-var PIXI = require("pixi");
+var PIXI = require("pixi.js");
 var Point = require("../../utils/Point");
 
 /**
@@ -26,6 +26,8 @@ function Resources() {
 
 	this.cardFrame = this.getComponentsPart(498, 256, 87, 122);
 	this.cardBack = this.getComponentsPart(402, 256, 87, 122);
+
+	this.dividerLine = this.getComponentsPart(568, 77, 2, 170);
 
 	this.suitSymbols = [];
 	for (i = 0; i < 4; i++)

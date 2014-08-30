@@ -1,6 +1,6 @@
 "use strict";
 
-var PIXI=require("pixi");
+var PIXI=require("pixi.js");
 var FunctionUtil=require("./FunctionUtil");
 var ContentScaler=require("./ContentScaler");
 var FrameTimer=require("./FrameTimer");

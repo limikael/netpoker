@@ -1,4 +1,4 @@
-var PIXI = require("pixi");
+var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var PixiApp = require("../../utils/PixiApp");
 var NetPokerClientView = require("../view/NetPokerClientView");

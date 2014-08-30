@@ -6,7 +6,7 @@
     "gulp": "^3.8.7",
     "gulp-run": "^1.6.3",
     "jasmine-node": "^1.14.5",
-    "pixi": "^0.2.1",
+    "pixi.js": "git://github.com/GoodBoyDigital/pixi.js",
     "websocket": "^1.0.8"
   },
   "repository": {

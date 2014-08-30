@@ -1,9 +1,10 @@
-var PIXI = require("pixi");
+var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("../resources/Resources");
 var SeatView = require("./SeatView");
 var CardView = require("./CardView");
 var Point = require("../../utils/Point");
+var Gradient = require("../../utils/Gradient");
 
 /**
  * Net poker client view.
@@ -13,6 +14,8 @@ function NetPokerClientView() {
 	var i;
 
 	PIXI.DisplayObjectContainer.call(this);
+
+	this.setupBackground();
 
 	this.tableContainer = new PIXI.DisplayObjectContainer();
 	this.addChild(this.tableContainer);
@@ -24,6 +27,32 @@ function NetPokerClientView() {
 }
 
 FunctionUtil.extend(NetPokerClientView, PIXI.DisplayObjectContainer);
+
+/**
+ * Setup background.
+ */
+NetPokerClientView.prototype.setupBackground = function() {
+	var gradient = new Gradient();
+	gradient.setSize(100, 100);
+	gradient.addColorStop(0, "#606060");
+	gradient.addColorStop(.5, "#a0a0a0");
+	gradient.addColorStop(1, "#909090");
+
+	var s = gradient.createSprite();
+	s.width = 960;
+	s.height = 720;
+	this.addChild(s);
+
+	var s = new PIXI.Sprite(Resources.getInstance().dividerLine);
+	s.x = 345;
+	s.y = 540;
+	this.addChild(s);
+
+	var s = new PIXI.Sprite(Resources.getInstance().dividerLine);
+	s.x = 693;
+	s.y = 540;
+	this.addChild(s);
+}
 
 /**
  * Setup seats.

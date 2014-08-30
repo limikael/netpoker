@@ -1,4 +1,4 @@
-var PIXI=require("pixi");
+var PIXI=require("pixi.js");
 var FunctionUtil=require("../utils/FunctionUtil");
 
 function ContentScaler(content) {
