@@ -32,6 +32,8 @@ function Resources() {
 	this.suitSymbols = [];
 	for (i = 0; i < 4; i++)
 		this.suitSymbols.push(this.getComponentsPart(246 + i * 23, 67, 18, 19));
+
+	this.framePlate=this.getComponentsPart(301,262,74,76);
 }
 
 /**

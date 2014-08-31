@@ -3,6 +3,7 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("../resources/Resources");
 var SeatView = require("./SeatView");
 var CardView = require("./CardView");
+var ChatView = require("./ChatView");
 var Point = require("../../utils/Point");
 var Gradient = require("../../utils/Gradient");
 
@@ -24,6 +25,9 @@ function NetPokerClientView() {
 
 	this.setupSeats();
 	this.setupCommunityCards();
+
+	this.chatView = new ChatView();
+	this.addChild(this.chatView);
 }
 
 FunctionUtil.extend(NetPokerClientView, PIXI.DisplayObjectContainer);
