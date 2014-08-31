@@ -11,6 +11,9 @@ function EventDispatcher() {
  * Add event listener.
  */
 EventDispatcher.prototype.addEventListener = function(eventType, listener, scope) {
+	if (!this.listenerMap)
+		this.listenerMap = {};
+
 	if (!eventType)
 		throw new Error("Event type required for event dispatcher");
 
@@ -32,6 +35,9 @@ EventDispatcher.prototype.addEventListener = function(eventType, listener, scope
  * Remove event listener.
  */
 EventDispatcher.prototype.removeEventListener = function(eventType, listener, scope) {
+	if (!this.listenerMap)
+		this.listenerMap = {};
+
 	if (!this.listenerMap.hasOwnProperty(eventType))
 		return;
 
@@ -54,6 +60,9 @@ EventDispatcher.prototype.removeEventListener = function(eventType, listener, sc
  * Dispatch event.
  */
 EventDispatcher.prototype.dispatchEvent = function(event, data) {
+	if (!this.listenerMap)
+		this.listenerMap = {};
+
 	if (typeof event == "string") {
 		event = {
 			type: event
@@ -81,5 +90,17 @@ EventDispatcher.prototype.dispatchEvent = function(event, data) {
 EventDispatcher.prototype.on = EventDispatcher.prototype.addEventListener;
 EventDispatcher.prototype.off = EventDispatcher.prototype.removeEventListener;
 EventDispatcher.prototype.trigger = EventDispatcher.prototype.dispatchEvent;
+
+/**
+ * Make something an event dispatcher.
+ */
+EventDispatcher.init = function(cls) {
+	cls.prototype.addEventListener = EventDispatcher.prototype.addEventListener;
+	cls.prototype.removeEventListener = EventDispatcher.prototype.removeEventListener;
+	cls.prototype.dispatchEvent = EventDispatcher.prototype.dispatchEvent;
+	cls.prototype.on = EventDispatcher.prototype.on;
+	cls.prototype.off = EventDispatcher.prototype.off;
+	cls.prototype.trigger = EventDispatcher.prototype.trigger;
+}
 
 module.exports = EventDispatcher;
