@@ -3,14 +3,19 @@
   "version": "0.0.1",
   "dependencies": {
     "browserify": "^5.9.1",
+    "faye-websocket": "^0.7.2",
     "gulp": "^3.8.7",
     "gulp-run": "^1.6.3",
     "jasmine-node": "^1.14.5",
     "pixi.js": "git://github.com/GoodBoyDigital/pixi.js",
-    "websocket": "^1.0.8"
+    "q": "^1.0.1"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/limikael/netpoker.git"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "qsub": "0.0.1"
   }
 }
