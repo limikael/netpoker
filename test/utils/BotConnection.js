@@ -48,4 +48,8 @@ BotConnection.prototype.onProtoConnectionMessage = function(e) {
 	}
 }
 
+BotConnection.prototype.send = function(message) {
+	this.protoConnection.send(message);
+}
+
 module.exports = BotConnection;

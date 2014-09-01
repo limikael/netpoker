@@ -58,4 +58,12 @@ MessageServer.prototype.listen = function(port) {
 	this.server.listen(port);
 }
 
+/**
+ * Close.
+ * @method close
+ */
+MessageServer.prototype.close = function() {
+	this.server.close();
+}
+
 module.exports = MessageServer;

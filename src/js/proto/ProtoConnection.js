@@ -6,6 +6,7 @@ var StateCompleteMessage = require("./messages/StateCompleteMessage");
 var SeatInfoMessage = require("./messages/SeatInfoMessage");
 var CommunityCardsMessage = require("./messages/CommunityCardsMessage");
 var PocketCardsMessage = require("./messages/PocketCardsMessage");
+var SeatClickMessage = require("./messages/SeatClickMessage");
 
 /**
  * @class ProtoConnection
@@ -31,12 +32,26 @@ ProtoConnection.MESSAGE_TYPES[StateCompleteMessage.TYPE] = StateCompleteMessage;
 ProtoConnection.MESSAGE_TYPES[SeatInfoMessage.TYPE] = SeatInfoMessage;
 ProtoConnection.MESSAGE_TYPES[CommunityCardsMessage.TYPE] = CommunityCardsMessage;
 ProtoConnection.MESSAGE_TYPES[PocketCardsMessage.TYPE] = PocketCardsMessage;
+ProtoConnection.MESSAGE_TYPES[SeatClickMessage.TYPE] = SeatClickMessage;
 
 /**
  * Add message handler.
  */
 ProtoConnection.prototype.addMessageHandler = function(messageType, handler, scope) {
+	if (messageType.hasOwnProperty("TYPE"))
+		messageType = messageType.TYPE;
+
 	this.messageDispatcher.on(messageType, handler, scope);
+}
+
+/**
+ * Remove message handler.
+ */
+ProtoConnection.prototype.removeMessageHandler = function(messageType, handler, scope) {
+	if (messageType.hasOwnProperty("TYPE"))
+		messageType = messageType.TYPE;
+
+	this.messageDispatcher.off(messageType, handler, scope);
 }
 
 /**
@@ -44,10 +59,10 @@ ProtoConnection.prototype.addMessageHandler = function(messageType, handler, sco
  * @method onConnectionMessage
  */
 ProtoConnection.prototype.onConnectionMessage = function(ev) {
-	//console.log("incoming connection message");
-
 	var message = ev.message;
 	var constructor;
+
+	console.log("incoming connection message: " + message.type);
 
 	for (type in ProtoConnection.MESSAGE_TYPES) {
 		if (message.type == type)

@@ -1,6 +1,7 @@
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var ProtoConnection = require("../../proto/ProtoConnection");
+var SeatClickMessage = require("../../proto/messages/SeatClickMessage");
 
 /**
  * Someone watching a table.
@@ -14,6 +15,7 @@ function TableSpectator(table, connection, user) {
 	this.user = user;
 
 	this.connection.on(ProtoConnection.CLOSE, this.onConnectionClose, this);
+	this.connection.addMessageHandler(SeatClickMessage, this.onSeatClick, this);
 }
 
 FunctionUtil.extend(TableSpectator, EventDispatcher);
@@ -25,6 +27,28 @@ TableSpectator.DONE = "done";
  */
 TableSpectator.prototype.onConnectionClose = function() {
 	console.log("table spectator connection close");
+	this.trigger(TableSpectator.DONE);
+}
+
+/**
+ * Seat click.
+ */
+TableSpectator.prototype.onSeatClick = function(m) {
+	var tableSeat = this.table.getTableSeatBySeatIndex(m.getSeatIndex());
+
+	if (!tableSeat || !tableSeat.isAvailable())
+		return;
+
+	if (this.table.isUserSeated(this.user))
+		return;
+
+	tableSeat.reserve(this.user, this.connection);
+
+	console.log("seat click!!!");
+
+	this.connection.off(ProtoConnection.CLOSE, this.onConnectionClose, this);
+	this.connection.removeMessageHandler(SeatClickMessage, this.onSeatClick, this);
+
 	this.trigger(TableSpectator.DONE);
 }
 

@@ -17,8 +17,15 @@ FunctionUtil.extend(BaseTable, EventDispatcher);
 /**
  * Get table seats.
  */
-BaseTable.prototype.getTableSeats=function() {
+BaseTable.prototype.getTableSeats = function() {
 	return this.tableSeats;
+}
+
+/**
+ * Get table seat by seat index.
+ */
+BaseTable.prototype.getTableSeatBySeatIndex = function(seatIndex) {
+	return this.tableSeats[seatIndex];
 }
 
 module.exports = BaseTable;

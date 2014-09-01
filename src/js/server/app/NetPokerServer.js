@@ -2,6 +2,7 @@ var ConnectionManager = require("../connection/ConnectionManager");
 var TableManager = require("../table/TableManager");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
+var Thenable = require("../../utils/Thenable");
 
 /**
  * Main app class.
@@ -77,6 +78,7 @@ NetPokerServer.prototype.onTableManagerInitialized = function() {
 	this.connectionManager.listen(this.listenPort);
 
 	this.trigger(NetPokerServer.STARTED);
+	this.runThenable.notifySuccess();
 }
 
 /**
@@ -90,9 +92,20 @@ NetPokerServer.prototype.run = function() {
 	if (!this.listenPort)
 		throw new Error("No port to listen to.");
 
+	this.runThenable=new Thenable();
+
 	this.tableManager = new TableManager(this);
 	this.tableManager.on(TableManager.INITIALIZED, this.onTableManagerInitialized, this);
 	this.tableManager.initialize();
+
+	return this.runThenable;
+}
+
+/**
+ * Close.
+ */
+NetPokerServer.prototype.close = function() {
+	this.connectionManager.close();
 }
 
 module.exports = NetPokerServer;

@@ -80,4 +80,12 @@ ConnectionManager.prototype.listen = function(port) {
 	this.messageServer.listen(port);
 }
 
+/**
+ * Close
+ * @method close
+ */
+ConnectionManager.prototype.close=function() {
+	this.messageServer.close();
+}
+
 module.exports = ConnectionManager;

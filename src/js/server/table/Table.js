@@ -80,4 +80,19 @@ Table.prototype.getId = function() {
 	return this.id;
 }
 
+/**
+ * Is user seated?
+ * @method isUserSeated
+ */
+Table.prototype.isUserSeated = function(user) {
+	for (i=0; i<this.tableSeats.length; i++) {
+		var tableSeat=this.tableSeats[i];
+		if (tableSeat.getUser() && tableSeat.getUser().getId()==user.getId())
+			return true;
+	}
+
+	return false;
+}
+
+
 module.exports = Table;
