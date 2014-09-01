@@ -47,8 +47,47 @@ TableSeat.prototype.reserve = function(user, protoConnection) {
 	if (this.tableSeatUser)
 		throw "Someone is sitting here";
 
-	this.protoConnection = protoConnection;
+	this.setProtoConnection(protoConnection);
 	this.tableSeatUser = new TableSeatUser(this, user);
+	this.tableSeatUser.on(TableSeatUser.DONE, this.onTableSeatUserDone, this);
+	this.tableSeatUser.sitIn();
+}
+
+/**
+ * The table seat user is done.
+ */
+TableSeat.prototype.onTableSeatUserDone = function() {
+	var protoConnection = this.getProtoConnection();
+	var user = this.tableSeatUser.getUser();
+
+	this.tableSeatUser.off(TableSeatUser.DONE, this.onTableSeatUserDone, this);
+	this.tableSeatUser = null;
+
+	this.setProtoConnection(null);
+
+	if (protoConnection) {
+		this.table.notifyNewConnection(protoConnection, user);
+	}
+}
+
+/**
+ * Is this table seat in the game.
+ */
+TableSeat.prototype.isInGame = function() {
+	if (!this.tableSeatUser)
+		return false;
+
+	return this.tableSeatUser.isInGame();
+}
+
+/**
+ * Get chips.
+ */
+TableSeat.prototype.getChips = function() {
+	if (!this.tableSeatUser)
+		return 0;
+
+	return this.tableSeatUser.getChips();
 }
 
 module.exports = TableSeat;

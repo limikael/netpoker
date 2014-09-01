@@ -4,19 +4,28 @@ var EventDispatcher = require("../../../../src/js/utils/EventDispatcher");
 var ProtoConnection = require("../../../../src/js/proto/ProtoConnection");
 
 describe("Table", function() {
-	it("can be created", function() {
-		var config = {
-			numseats: 10
+	var mockServices;
+	var config;
+
+	beforeEach(function() {
+		mockServices = {};
+
+		config = {
+			id: 123,
+			numseats: 4,
+			currency: "PLY",
+			name: "Test Table",
+			minSitInAmount: 10,
+			maxSitInAmount: 100
 		};
-		var t = new Table(config);
+	});
+
+	it("can be created", function() {
+		var t = new Table(mockServices, config);
 	});
 
 	it("has some seats", function() {
-		var config = {
-			numseats: 4
-		};
-
-		var t = new Table(config);
+		var t = new Table(mockServices, config);
 
 		expect(t.getTableSeats().length).toEqual(10);
 
@@ -30,11 +39,7 @@ describe("Table", function() {
 	});
 
 	it("creates and removes spectators for new connections", function() {
-		var config = {
-			numseats: 4
-		};
-
-		var t = new Table(config);
+		var t = new Table(mockServices, config);
 
 		var mockConnection = new EventDispatcher();
 		mockConnection.send = jasmine.createSpy();
@@ -49,7 +54,7 @@ describe("Table", function() {
 		expect(mockConnection.send).toHaveBeenCalled();
 		expect(t.tableSpectators.length).toBe(1);
 
-		var tableSpectator=t.tableSpectators[0];
+		var tableSpectator = t.tableSpectators[0];
 		expect(tableSpectator.listenerMap).not.toEqual({});
 
 		mockConnection.trigger(ProtoConnection.CLOSE);

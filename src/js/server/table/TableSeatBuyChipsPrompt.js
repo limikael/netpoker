@@ -108,6 +108,8 @@ TableSeatBuyChipsPrompt.prototype.onConnectionClose = function() {
  */
 TableSeatBuyChipsPrompt.prototype.onButtonClick = function(e) {
 	if (e.getButton() == ButtonData.SIT_IN) {
+		this.chips=e.getValue();
+
 		this.tableSeat.off(ProtoConnection.CLOSE, this.onConnectionClose, this);
 		this.tableSeat.off(ButtonClickMessage.TYPE, this.onButtonClick, this);
 
@@ -150,6 +152,13 @@ TableSeatBuyChipsPrompt.prototype.onSitInCallError = function(e) {
 
 	this.tableSeat.send(d);
 	this.trigger(TableSeatBuyChipsPrompt.CANCEL);
+}
+
+/**
+ * Get chips.
+ */
+TableSeatBuyChipsPrompt.prototype.getChips = function() {
+	return this.chips;
 }
 
 module.exports = TableSeatBuyChipsPrompt;

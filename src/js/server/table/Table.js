@@ -11,17 +11,25 @@ var ArrayUtil = require("../../utils/ArrayUtil");
  * Cash game table.
  * @class Table
  */
-function Table(config) {
-	if (!config.numseats)
-		throw new Error("Table config doesn't have number of seats");
+function Table(services, config) {
+	if (!config.numseats ||
+		!config.id ||
+		!config.currency ||
+		!config.name ||
+		!config.minSitInAmount ||
+		!config.maxSitInAmount)
+		throw new Error("Bad table config");
 
+	this.name = config.name;
 	this.id = config.id;
+	this.currency = config.currency;
 
 	this.setupSeats(config.numseats);
 
 	BaseTable.call(this);
 
 	this.tableSpectators = [];
+	this.services = services;
 }
 
 FunctionUtil.extend(Table, BaseTable);
@@ -85,14 +93,48 @@ Table.prototype.getId = function() {
  * @method isUserSeated
  */
 Table.prototype.isUserSeated = function(user) {
-	for (i=0; i<this.tableSeats.length; i++) {
-		var tableSeat=this.tableSeats[i];
-		if (tableSeat.getUser() && tableSeat.getUser().getId()==user.getId())
+	for (i = 0; i < this.tableSeats.length; i++) {
+		var tableSeat = this.tableSeats[i];
+		if (tableSeat.getUser() && tableSeat.getUser().getId() == user.getId())
 			return true;
 	}
 
 	return false;
 }
 
+/**
+ * Get currency.
+ */
+Table.prototype.getCurrency = function() {
+	return this.currency;
+}
+
+/**
+ * Get services.
+ */
+Table.prototype.getServices = function() {
+	return this.services;
+}
+
+/**
+ * Get table name.
+ */
+Table.prototype.getName = function() {
+	return this.name;
+}
+
+/**
+ * Get table name.
+ */
+Table.prototype.getMinSitInAmount = function() {
+	return this.minSitInAmount;
+}
+
+/**
+ * Get table name.
+ */
+Table.prototype.getMaxSitInAmount = function() {
+	return this.maxSitInAmount;
+}
 
 module.exports = Table;

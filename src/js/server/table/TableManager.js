@@ -40,7 +40,7 @@ TableManager.prototype.onInitializeTableListSuccess = function(result) {
 
 	for (i = 0; i < result.tables.length; i++) {
 		var tableData = result.tables[i];
-		var table = new Table(tableData);
+		var table = new Table(this.services, tableData);
 		this.tables.push(table);
 	}
 

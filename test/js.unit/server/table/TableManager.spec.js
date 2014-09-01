@@ -41,9 +41,19 @@ describe("TableManager", function() {
 
 		backendCallData = {
 			"tables": [{
-				"numseats": 10
+				id: 123,
+				numseats: 10,
+				currency: "PLY",
+				name: "Test Table",
+				minSitInAmount: 10,
+				maxSitInAmount: 100
 			}, {
-				"numseats": 4
+				id: 124,
+				numseats: 4,
+				currency: "PLY",
+				name: "Test Table",
+				minSitInAmount: 10,
+				maxSitInAmount: 100
 			}]
 		};
 
@@ -56,7 +66,7 @@ describe("TableManager", function() {
 		var tableManager = new TableManager(mockServices);
 
 		tableManager.on(TableManager.INITIALIZED, function() {
-			var table=tableManager.getTableById("table_123");
+			var table = tableManager.getTableById("table_123");
 
 			expect(table).not.toEqual(null);
 			expect(table.getId()).toEqual("table_123");
@@ -67,7 +77,11 @@ describe("TableManager", function() {
 		backendCallData = {
 			"tables": [{
 				"id": "table_123",
-				"numseats": 4
+				numseats: 10,
+				currency: "PLY",
+				name: "Test Table",
+				minSitInAmount: 10,
+				maxSitInAmount: 100
 			}]
 		};
 

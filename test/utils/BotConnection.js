@@ -38,6 +38,7 @@ BotConnection.prototype.waitForMessage = function(messageClass) {
 }
 
 BotConnection.prototype.onProtoConnectionMessage = function(e) {
+	console.log("** BOT message: "+e.message.type);
 	if (this.waitingForType && e.message.type == this.waitingForType) {
 		var thenable = this.waitThenable;
 
