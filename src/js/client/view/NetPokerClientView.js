@@ -6,14 +6,13 @@ var CardView = require("./CardView");
 var ChatView = require("./ChatView");
 var Point = require("../../utils/Point");
 var Gradient = require("../../utils/Gradient");
+var ButtonsView = require("./ButtonsView");
 
 /**
  * Net poker client view.
  * @class NetPokerClientView
  */
 function NetPokerClientView() {
-	var i;
-
 	PIXI.DisplayObjectContainer.call(this);
 
 	this.setupBackground();
@@ -28,6 +27,9 @@ function NetPokerClientView() {
 
 	this.chatView = new ChatView();
 	this.addChild(this.chatView);
+
+	this.buttonsView = new ButtonsView();
+	this.addChild(this.buttonsView);
 }
 
 FunctionUtil.extend(NetPokerClientView, PIXI.DisplayObjectContainer);

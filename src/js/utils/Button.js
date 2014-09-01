@@ -8,7 +8,8 @@ var EventDispatcher = require("./EventDispatcher");
 function Button(content) {
 	PIXI.DisplayObjectContainer.call(this);
 
-	this.addChild(content);
+	if (content)
+		this.addChild(content);
 
 	this.interactive = true;
 	this.buttonMode = true;
