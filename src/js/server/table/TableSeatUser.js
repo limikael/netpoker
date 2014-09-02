@@ -1,6 +1,7 @@
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var TableSeatBuyChipsPrompt = require("./TableSeatBuyChipsPrompt");
+var Backend = require("../backend/Backend");
 
 /**
  * A user seated at a table.
@@ -10,6 +11,7 @@ function TableSeatUser(tableSeat, user) {
 	this.tableSeat = tableSeat;
 	this.user = user;
 	this.sitInCompleted = false;
+	this.leaving = false;
 	this.chips = 0;
 }
 
@@ -52,8 +54,10 @@ TableSeatUser.prototype.onBuyChipsPromptComplete = function() {
 	this.sitInCompleted = true;
 	this.chips = this.buyChipsPrompt.getChips();
 	this.buyChipsPrompt = null;
-}
 
+	if (this.leaving)
+		this.leave();
+}
 
 /**
  * Buy chips prompt complete.
@@ -83,6 +87,45 @@ TableSeatUser.prototype.getChips = function() {
  * Leave.
  */
 TableSeatUser.prototype.leave = function() {
+	this.leaving = true;
+
+	if (this.buyChipsPrompt)
+		return;
+
+	if (!this.sitInCompleted) {
+		this.trigger(TableSeatUser.DONE);
+		return;
+	}
+
+	var params = {
+		userId: this.user.getId(),
+		tableId: this.tableSeat.getTable().getId(),
+		amount: this.chips
+	};
+
+	var backend = this.tableSeat.getTable().getServices().getBackend();
+	backend.call(Backend.SIT_OUT).then(
+		this.onSitoutCallComplete.bind(this),
+		this.onSitoutCallError.bind(this)
+	);
+}
+
+/**
+ * Sitout call complete.
+ * @method onSitoutCallComplete
+ * @private
+ */
+TableSeatUser.prototype.onSitoutCallComplete = function() {
+	this.trigger(TableSeatUser.DONE);
+}
+
+/**
+ * Sitout call error.
+ * @method onSitoutCallError
+ * @private
+ */
+TableSeatUser.prototype.onSitoutCallError = function() {
+	console.log("sitout call failed!!!");
 	this.trigger(TableSeatUser.DONE);
 }
 

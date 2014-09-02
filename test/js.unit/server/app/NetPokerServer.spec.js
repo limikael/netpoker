@@ -11,11 +11,14 @@ var ButtonData = require("../../../../src/js/proto/data/ButtonData");
 
 describe("NetPokerServer", function() {
 	var mockBackend;
+	var mockBackendCalls;
 
 	beforeEach(function() {
 		mockBackend = {};
+		mockBackendCalls = [];
 
-		mockBackend.call = function(method) {
+		mockBackend.call = function(method, params) {
+			mockBackendCalls.push(method);
 			console.log("backend call: " + method);
 			var thenable = new Thenable();
 
@@ -78,7 +81,7 @@ describe("NetPokerServer", function() {
 		netPokerServer.run();
 	});
 
-	it("lets a user join and leave a table", function(done) {
+	it("lets a user join a table and removes on disconnect", function(done) {
 		var netPokerServer = new NetPokerServer();
 		netPokerServer.setBackend(mockBackend);
 		netPokerServer.setListenPort(2004);
@@ -121,10 +124,13 @@ describe("NetPokerServer", function() {
 				expect(table.getTableSeatBySeatIndex(3).getChips()).toBe(100);
 
 				bot.close();
-				setTimeout(next,10);
+				setTimeout(next, 10);
 			},
 
 			function(next) {
+				expect(mockBackendCalls.indexOf(Backend.SIT_IN)).not.toBe(-1);
+				expect(mockBackendCalls.indexOf(Backend.SIT_OUT)).not.toBe(-1);
+
 				// FIX ME!
 				expect(table.getTableSeatBySeatIndex(3).getUser()).toBe(null);
 				expect(table.getTableSeatBySeatIndex(3).isAvailable()).toBe(true);
