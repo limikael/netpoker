@@ -14,7 +14,7 @@ describe("MessageClientConnection", function() {
 		var serverConnection, serverThenable;
 		var serverReceivedMessage, clientReceivedMessage;
 
-		server.listen(2000);
+		server.listen(2004);
 		server.on(MessageServer.CONNECTION, function(ev) {
 			serverConnection = ev.connection;
 			serverThenable.notifySuccess();
@@ -36,7 +36,7 @@ describe("MessageClientConnection", function() {
 			clientReceivedMessage = ev.message;
 		});
 
-		var clientThenable = client.connect("http://localhost:2000");
+		var clientThenable = client.connect("http://localhost:2004");
 
 		ThenableBarrier.wait(clientThenable, serverThenable).then(
 			function() {
@@ -61,6 +61,7 @@ describe("MessageClientConnection", function() {
 
 						serverConnectionClosed.then(
 							function() {
+								server.close();
 								done();
 							}
 						);

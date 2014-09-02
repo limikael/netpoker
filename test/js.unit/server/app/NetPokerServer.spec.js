@@ -126,7 +126,7 @@ describe("NetPokerServer", function() {
 		).then(done);
 	});
 
-	iit("doesn't let the user join with too little balance", function(done) {
+	it("doesn't let the user join with too little balance", function(done) {
 		var netPokerServer = new NetPokerServer();
 		netPokerServer.setBackend(mockBackend);
 		netPokerServer.setListenPort(2004);
@@ -174,6 +174,7 @@ describe("NetPokerServer", function() {
 				expect(table.getTableSeatBySeatIndex(3).getUser()).toEqual(null);
 				expect(table.tableSpectators.length).toBe(1);
 
+				netPokerServer.close();
 				next();
 			}
 		).then(done);
