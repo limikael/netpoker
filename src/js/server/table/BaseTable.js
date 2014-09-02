@@ -28,4 +28,17 @@ BaseTable.prototype.getTableSeatBySeatIndex = function(seatIndex) {
 	return this.tableSeats[seatIndex];
 }
 
+/**
+ * Get number of seats that is in game.
+ */
+BaseTable.prototype.getNumInGame = function() {
+	var cnt = 0;
+
+	for (var i = 0; i < this.tableSeats.length; i++)
+		if (this.tableSeats[i].isInGame())
+			cnt++;
+
+	return cnt;
+}
+
 module.exports = BaseTable;

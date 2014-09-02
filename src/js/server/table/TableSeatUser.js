@@ -18,6 +18,7 @@ function TableSeatUser(tableSeat, user) {
 FunctionUtil.extend(TableSeatUser, EventDispatcher);
 
 TableSeatUser.DONE = "done";
+TableSeatUser.READY = "ready";
 
 /**
  * Get seated user.
@@ -55,8 +56,15 @@ TableSeatUser.prototype.onBuyChipsPromptComplete = function() {
 	this.chips = this.buyChipsPrompt.getChips();
 	this.buyChipsPrompt = null;
 
-	if (this.leaving)
+	if (this.leaving) {
 		this.leave();
+	} else {
+		//this.tableSeat.table.send(this.tableSeat.getSeatInfoMessage());
+
+		this.trigger(TableSeatUser.READY);
+	}
+
+	//this.tableSeat.send(getTableInfoMessage());
 }
 
 /**

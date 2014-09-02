@@ -7,6 +7,7 @@ var TableSpectator = require("./TableSpectator");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var ArrayUtil = require("../../utils/ArrayUtil");
+var Game = require("../game/Game");
 
 /**
  * Cash game table.
@@ -50,6 +51,7 @@ Table.prototype.setupSeats = function(numseats) {
 		var ts = new TableSeat(this, i, activeSeatIndices.indexOf(i) >= 0);
 
 		ts.on(ProtoConnection.CLOSE, this.onTableSeatClose, this);
+		ts.on(TableSeat.READY, this.onTableSeatReady, this);
 
 		this.tableSeats.push(ts);
 	}
@@ -58,11 +60,19 @@ Table.prototype.setupSeats = function(numseats) {
 /**
  * Table seat close.
  */
-Table.prototype.onTableSeatClose=function(e) {
+Table.prototype.onTableSeatClose = function(e) {
 	if (this.currentGame)
 		return;
 
 	e.target.leaveTable();
+}
+
+/**
+ * Table seat ready.
+ */
+Table.prototype.onTableSeatReady = function() {
+	if (!this.currentGame && this.getNumInGame() >= 2)
+		this.startGame();
 }
 
 /**
@@ -153,4 +163,20 @@ Table.prototype.getMaxSitInAmount = function() {
 	return this.maxSitInAmount;
 }
 
+/**
+ * Start the game.
+ */
+Table.prototype.startGame = function() {
+	if (this.currentGame)
+		throw "There is already a game started";
+
+	this.currentGame = new Game(this);
+}
+
+/**
+ * Get current game for this table.
+ */
+Table.prototype.getCurrentGame = function() {
+	return this.currentGame;
+}
 module.exports = Table;

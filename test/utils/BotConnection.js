@@ -6,6 +6,7 @@ var Thenable = require("../../src/js/utils/Thenable");
 function BotConnection(url, token) {
 	this.url = url;
 	this.token = token;
+	this.replies = {};
 }
 
 BotConnection.prototype.connectToTable = function(tableId) {
@@ -38,7 +39,11 @@ BotConnection.prototype.waitForMessage = function(messageClass) {
 }
 
 BotConnection.prototype.onProtoConnectionMessage = function(e) {
-	console.log("** BOT message: "+e.message.type);
+	console.log("** BOT message: " + e.message.type + " replying: " + this.replies[e.message.type]);
+
+	if (this.replies[e.message.type])
+		this.send(this.replies[e.message.type]);
+
 	if (this.waitingForType && e.message.type == this.waitingForType) {
 		var thenable = this.waitThenable;
 
@@ -53,10 +58,14 @@ BotConnection.prototype.send = function(message) {
 	this.protoConnection.send(message);
 }
 
-BotConnection.prototype.close=function() {
+BotConnection.prototype.close = function() {
 	this.connection.close();
-	this.connection=null;
-	this.protoConnection=null;
+	this.connection = null;
+	this.protoConnection = null;
+}
+
+BotConnection.prototype.reply = function(messageClass, message) {
+	this.replies[messageClass.TYPE] = message;
 }
 
 module.exports = BotConnection;

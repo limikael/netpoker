@@ -15,6 +15,8 @@ function TableSeat(table, seatIndex, active) {
 
 FunctionUtil.extend(TableSeat, BaseTableSeat);
 
+TableSeat.READY = "ready";
+
 /**
  * Is thie seat available?
  * @method isAvailable
@@ -49,6 +51,7 @@ TableSeat.prototype.reserve = function(user, protoConnection) {
 
 	this.setProtoConnection(protoConnection);
 	this.tableSeatUser = new TableSeatUser(this, user);
+	this.tableSeatUser.on(TableSeatUser.READY, this.onTableSeatUserReady, this);
 	this.tableSeatUser.on(TableSeatUser.DONE, this.onTableSeatUserDone, this);
 	this.tableSeatUser.sitIn();
 }
@@ -60,6 +63,7 @@ TableSeat.prototype.onTableSeatUserDone = function() {
 	var protoConnection = this.getProtoConnection();
 	var user = this.tableSeatUser.getUser();
 
+	this.tableSeatUser.off(TableSeatUser.READY, this.onTableSeatUserReady, this);
 	this.tableSeatUser.off(TableSeatUser.DONE, this.onTableSeatUserDone, this);
 	this.tableSeatUser = null;
 
@@ -68,6 +72,13 @@ TableSeat.prototype.onTableSeatUserDone = function() {
 	if (protoConnection) {
 		this.table.notifyNewConnection(protoConnection, user);
 	}
+}
+
+/**
+ * Table seat ready.
+ */
+TableSeat.prototype.onTableSeatUserReady = function() {
+	this.trigger(TableSeat.READY);
 }
 
 /**
