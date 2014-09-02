@@ -9,7 +9,7 @@ var ShowDialogMessage = require("../../../../src/js/proto/messages/ShowDialogMes
 var ButtonClickMessage = require("../../../../src/js/proto/messages/ButtonClickMessage");
 var ButtonData = require("../../../../src/js/proto/data/ButtonData");
 
-describe("NetPokerServer", function() {
+describe("NetPokerServer - connection", function() {
 	var mockBackend;
 	var mockBackendCalls;
 
