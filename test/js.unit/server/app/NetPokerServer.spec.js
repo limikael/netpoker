@@ -126,8 +126,8 @@ describe("NetPokerServer", function() {
 
 			function(next) {
 				// FIX ME!
-				/*expect(table.getTableSeatBySeatIndex(3).getUser()).toBe(null);
-				expect(table.getTableSeatBySeatIndex(3).isAvailable()).toBe(true);*/
+				expect(table.getTableSeatBySeatIndex(3).getUser()).toBe(null);
+				expect(table.getTableSeatBySeatIndex(3).isAvailable()).toBe(true);
 
 				netPokerServer.close();
 				next();

@@ -90,4 +90,14 @@ TableSeat.prototype.getChips = function() {
 	return this.tableSeatUser.getChips();
 }
 
+/**
+ * Make the user leave the table when possible.
+ */
+TableSeat.prototype.leaveTable = function() {
+	if (!this.tableSeatUser)
+		return;
+
+	this.tableSeatUser.leave();
+}
+
 module.exports = TableSeat;

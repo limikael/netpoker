@@ -5,6 +5,7 @@ var TableUtil = require("./TableUtil");
 var TableSeat = require("./TableSeat");
 var TableSpectator = require("./TableSpectator");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
+var ProtoConnection = require("../../proto/ProtoConnection");
 var ArrayUtil = require("../../utils/ArrayUtil");
 
 /**
@@ -30,6 +31,8 @@ function Table(services, config) {
 
 	this.tableSpectators = [];
 	this.services = services;
+
+	this.currentGame = null;
 }
 
 FunctionUtil.extend(Table, BaseTable);
@@ -45,8 +48,21 @@ Table.prototype.setupSeats = function(numseats) {
 
 	for (var i = 0; i < 10; i++) {
 		var ts = new TableSeat(this, i, activeSeatIndices.indexOf(i) >= 0);
+
+		ts.on(ProtoConnection.CLOSE, this.onTableSeatClose, this);
+
 		this.tableSeats.push(ts);
 	}
+}
+
+/**
+ * Table seat close.
+ */
+Table.prototype.onTableSeatClose=function(e) {
+	if (this.currentGame)
+		return;
+
+	e.target.leaveTable();
 }
 
 /**

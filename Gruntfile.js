@@ -13,7 +13,8 @@ module.exports = function(grunt) {
 
 		que = que.then(function() {
 			var job = qsub("./node_modules/.bin/jasmine-node")
-				.arg("--captureExceptions", "--forceexit", "--verbose")
+				.arg("--captureExceptions", "--forceexit")
+				.arg("--verbose")
 				.arg("test/js.unit")
 				.expect(0)
 				.show();
