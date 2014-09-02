@@ -119,4 +119,12 @@ NetPokerClientView.prototype.getCommunityCards = function() {
 	return this.communityCards;
 }
 
+/**
+ * Get buttons view.
+ * @method getSeatViewByIndex
+ */
+NetPokerClientView.prototype.getButtonsView = function() {
+	return this.buttonsView;
+}
+
 module.exports = NetPokerClientView;

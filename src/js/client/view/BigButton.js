@@ -9,9 +9,56 @@ var Resources = require("../resources/Resources");
 function BigButton() {
 	Button.call(this);
 
-	this.addChild(new PIXI.Sprite(Resources.getInstance().bigButton));
+	this.bigButtonTexture = Resources.getInstance().bigButton
+
+	this.addChild(new PIXI.Sprite(this.bigButtonTexture));
+
+	var style = {
+		font: "bold 18px Arial",
+		//fill: "#000000"
+	};
+
+	this.labelField = new PIXI.Text("[button]", style);
+	this.labelField.position.y = 30;
+	this.addChild(this.labelField);
+
+	var style = {
+		font: "bold 14px Arial"
+		//fill: "#000000"
+	};
+
+	this.valueField = new PIXI.Text("[value]", style);
+	this.valueField.position.y = 50;
+	this.addChild(this.valueField);
+
+	this.setLabel("TEST");
+	this.setValue(123);
 }
 
 FunctionUtil.extend(BigButton, Button);
+
+/**
+ * Set label.
+ */
+BigButton.prototype.setLabel = function(label) {
+	this.labelField.setText(label);
+	this.labelField.updateTransform();
+	this.labelField.x = this.bigButtonTexture.width / 2 - this.labelField.width / 2;
+}
+
+/**
+ * Set value.
+ */
+BigButton.prototype.setValue = function(value) {
+	if (!value)
+		this.valueField.visible=false;
+
+	else
+		this.valueField.visible=true;
+
+	this.valueField.setText(value);
+	this.valueField.updateTransform();
+	this.valueField.x = this.bigButtonTexture.width / 2 - this.valueField.width / 2;
+}
 
 module.exports = BigButton;

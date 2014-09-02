@@ -9,6 +9,7 @@ var PocketCardsMessage = require("./messages/PocketCardsMessage");
 var SeatClickMessage = require("./messages/SeatClickMessage");
 var ShowDialogMessage = require("./messages/ShowDialogMessage");
 var ButtonClickMessage = require("./messages/ButtonClickMessage");
+var ButtonsMessage = require("./messages/ButtonsMessage");
 
 /**
  * @class ProtoConnection
@@ -37,6 +38,7 @@ ProtoConnection.MESSAGE_TYPES[PocketCardsMessage.TYPE] = PocketCardsMessage;
 ProtoConnection.MESSAGE_TYPES[SeatClickMessage.TYPE] = SeatClickMessage;
 ProtoConnection.MESSAGE_TYPES[ShowDialogMessage.TYPE] = ShowDialogMessage;
 ProtoConnection.MESSAGE_TYPES[ButtonClickMessage.TYPE] = ButtonClickMessage;
+ProtoConnection.MESSAGE_TYPES[ButtonsMessage.TYPE] = ButtonsMessage;
 
 /**
  * Add message handler.
@@ -115,6 +117,8 @@ ProtoConnection.prototype.send = function(message) {
 
 	if (!serialized.type)
 		throw new Error("Unknown message type for send, message="+message.constructor.name);
+
+//	console.log("sending: "+serialized);
 
 	this.connection.send(serialized);
 }

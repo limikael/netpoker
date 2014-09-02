@@ -2,6 +2,8 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var MessageSequencer = require("./MessageSequencer");
 var TableController = require("./TableController");
 var ProtoConnection = require("../../proto/ProtoConnection");
+var ButtonsView = require("../view/ButtonsView");
+var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 
 /**
  * Main controller
@@ -13,6 +15,8 @@ function NetPokerClientController(view) {
 	this.messageSequencer = new MessageSequencer();
 
 	this.tableController = new TableController(this.messageSequencer, this.netPokerClientView);
+
+	this.netPokerClientView.getButtonsView().on(ButtonsView.BUTTON_CLICK, this.onButtonClick, this);
 }
 
 /**
@@ -27,7 +31,6 @@ NetPokerClientController.prototype.setProtoConnection = function(protoConnection
 	this.protoConnection = protoConnection;
 
 	if (this.protoConnection) {
-		//console.log("waiting for message: "+ProtoConnection.MESSAGE);
 		this.protoConnection.on(ProtoConnection.MESSAGE, this.onProtoConnectionMessage, this);
 	}
 }
@@ -38,8 +41,19 @@ NetPokerClientController.prototype.setProtoConnection = function(protoConnection
  * @private
  */
 NetPokerClientController.prototype.onProtoConnectionMessage = function(e) {
-	//console.log("proto connection message...");
 	this.messageSequencer.enqueue(e.message);
+}
+
+/**
+ * Button click.
+ * @private
+ */
+NetPokerClientController.prototype.onButtonClick = function(e) {
+	if (!this.protoConnection)
+		return;
+
+	var m = new ButtonClickMessage(e.button, e.value);
+	this.protoConnection.send(m);
 }
 
 module.exports = NetPokerClientController;

@@ -5,8 +5,8 @@
 function ButtonData(button, value) {
 	this.button = button;
 	this.value = value;
-	this.min = -1;
-	this.max = -1;
+/*	this.min = -1;
+	this.max = -1;*/
 }
 
 ButtonData.RAISE = "raise";
@@ -49,15 +49,15 @@ ButtonData.prototype.getValue = function() {
 /**
  * Get min.
  */
-ButtonData.prototype.getMin = function() {
+/*ButtonData.prototype.getMin = function() {
 	return this.min;
-}
+}*/
 
 /**
  * Get max.
  */
-ButtonData.prototype.getMax = function() {
+/*ButtonData.prototype.getMax = function() {
 	return this.max;
-}
+}*/
 
 module.exports = ButtonData;
