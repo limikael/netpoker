@@ -1,4 +1,4 @@
-var NetPokerServer = require("../../../../src/js/server/app/NetPokerServer");
+var PipeNetPokerServer = require("../../../utils/PipeNetPokerServer");
 var Backend = require("../../../../src/js/server/backend/Backend");
 var Thenable = require("../../../../src/js/utils/Thenable");
 var BotConnection = require("../../../utils/BotConnection");
@@ -8,6 +8,7 @@ var SeatClickMessage = require("../../../../src/js/proto/messages/SeatClickMessa
 var ShowDialogMessage = require("../../../../src/js/proto/messages/ShowDialogMessage");
 var ButtonClickMessage = require("../../../../src/js/proto/messages/ButtonClickMessage");
 var ButtonData = require("../../../../src/js/proto/data/ButtonData");
+var TickLoopRunner = require("../../../utils/TickLoopRunner");
 
 describe("NetPokerServer - game", function() {
 	var mockBackend;
@@ -75,12 +76,11 @@ describe("NetPokerServer - game", function() {
 	});
 
 	it("starts a game when two users connect", function(done) {
-		var netPokerServer = new NetPokerServer();
+		var netPokerServer = new PipeNetPokerServer();
 		netPokerServer.setBackend(mockBackend);
-		netPokerServer.setListenPort(2004);
 
-		var bot1 = new BotConnection("http://localhost:2004", "user1");
-		var bot2 = new BotConnection("http://localhost:2004", "user2");
+		var bot1 = new BotConnection(netPokerServer, "user1");
+		var bot2 = new BotConnection(netPokerServer, "user2");
 
 		var table;
 
@@ -100,8 +100,7 @@ describe("NetPokerServer - game", function() {
 				bot1.connectToTable(123);
 				bot2.connectToTable(123);
 
-				//bot2.waitForMessage(ShowDialogMessage).then(next);
-				setTimeout(next, 100);
+				TickLoopRunner.runTicks().then(next);
 			},
 
 			function(next) {

@@ -2,9 +2,10 @@ var InitMessage = require("../../src/js/proto/messages/InitMessage");
 var MessageClientConnection = require("../../src/js/utils/MessageClientConnection");
 var ProtoConnection = require("../../src/js/proto/ProtoConnection");
 var Thenable = require("../../src/js/utils/Thenable");
+var PipeNetPokerServer = require("./PipeNetPokerServer")
 
-function BotConnection(url, token) {
-	this.url = url;
+function BotConnection(connectionTarget, token) {
+	this.connectionTarget = connectionTarget;
 	this.token = token;
 	this.replies = {};
 }
@@ -13,15 +14,22 @@ BotConnection.prototype.connectToTable = function(tableId) {
 	this.initMessage = new InitMessage(this.token);
 	this.initMessage.setTableId(tableId);
 
-	this.connection = new MessageClientConnection();
-	this.protoConnection = new ProtoConnection(this.connection);
-	this.protoConnection.on(ProtoConnection.MESSAGE, this.onProtoConnectionMessage, this);
-	this.connection.connect(this.url).then(
-		this.onConnectionConnect.bind(this),
-		function() {
-			throw "Bot connection failed";
-		}
-	);
+	if (this.connectionTarget instanceof PipeNetPokerServer) {
+		this.connection = this.connectionTarget.createMessagePipeConnection();
+		this.protoConnection = new ProtoConnection(this.connection);
+		this.protoConnection.on(ProtoConnection.MESSAGE, this.onProtoConnectionMessage, this);
+		this.onConnectionConnect();
+	} else {
+		this.connection = new MessageClientConnection();
+		this.protoConnection = new ProtoConnection(this.connection);
+		this.protoConnection.on(ProtoConnection.MESSAGE, this.onProtoConnectionMessage, this);
+		this.connection.connect(this.connectionTarget).then(
+			this.onConnectionConnect.bind(this),
+			function() {
+				throw "Bot connection failed";
+			}
+		);
+	}
 }
 
 BotConnection.prototype.onConnectionConnect = function() {

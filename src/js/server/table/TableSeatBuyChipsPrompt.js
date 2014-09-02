@@ -74,10 +74,10 @@ TableSeatBuyChipsPrompt.prototype.onGetBalanceCallComplete = function(result) {
 	d.addButton(ButtonData.CANCEL);
 	d.addButton(ButtonData.SIT_IN);
 
-	this.tableSeat.send(d);
-
 	this.tableSeat.on(ProtoConnection.CLOSE, this.onConnectionClose, this);
 	this.tableSeat.on(ButtonClickMessage.TYPE, this.onButtonClick, this);
+
+	this.tableSeat.send(d);
 }
 
 /**

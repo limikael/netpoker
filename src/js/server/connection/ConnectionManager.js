@@ -30,7 +30,15 @@ ConnectionManager.CONNECTION = "connection";
  * @private
  */
 ConnectionManager.prototype.onMessageServerConnection = function(e) {
-	var userConnection = new UserConnection(this.services, e.connection);
+	this.handleNewConnection(e.connection);
+}
+
+/**
+ * Handle a new connection
+ * @private
+ */
+ConnectionManager.prototype.handleNewConnection = function(connection) {
+	var userConnection = new UserConnection(this.services, connection);
 
 	userConnection.on(UserConnection.CLOSE, this.onUserConnectionClose, this);
 	userConnection.on(UserConnection.INITIALIZED, this.onUserConnectionInitialized, this);
@@ -48,12 +56,12 @@ ConnectionManager.prototype.onUserConnectionInitialized = function(e) {
 	userConnection.off(UserConnection.INITIALIZED, this.onUserConnectionInitialized, this);
 
 	var e = new ConnectionManagerConnectionEvent(
-		userConnection, 
-		userConnection.getUser(), 
+		userConnection,
+		userConnection.getUser(),
 		userConnection.getInitMessage()
 	);
 
-	e.type=ConnectionManager.CONNECTION;
+	e.type = ConnectionManager.CONNECTION;
 
 	this.trigger(e);
 }
@@ -84,8 +92,11 @@ ConnectionManager.prototype.listen = function(port) {
  * Close
  * @method close
  */
-ConnectionManager.prototype.close=function() {
-	this.messageServer.close();
+ConnectionManager.prototype.close = function() {
+	if (this.messageServer) {
+		this.messageServer.close();
+		this.messageServer = null;
+	}
 }
 
 module.exports = ConnectionManager;

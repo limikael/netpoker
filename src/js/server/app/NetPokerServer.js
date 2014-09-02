@@ -12,9 +12,11 @@ function NetPokerServer() {
 	EventDispatcher.call(this);
 
 	this.listenPort = null;
-	this.connectionManager = null;
+	this.connectionManager = new ConnectionManager(this);
 	this.tableManager = null;
 	this.backend = null;
+
+	this.mockNetwork = false;
 }
 
 FunctionUtil.extend(NetPokerServer, EventDispatcher);
@@ -28,7 +30,6 @@ NetPokerServer.STARTED = "started";
 NetPokerServer.prototype.setListenPort = function(port) {
 	this.listenPort = port;
 }
-
 
 /**
  * New connection.
@@ -73,9 +74,10 @@ NetPokerServer.prototype.getBackend = function() {
  * @method onTableManagerInitialized
  */
 NetPokerServer.prototype.onTableManagerInitialized = function() {
-	this.connectionManager = new ConnectionManager(this);
 	this.connectionManager.on(ConnectionManager.CONNECTION, this.onConnectionManagerConnection, this);
-	this.connectionManager.listen(this.listenPort);
+
+	if (this.listenPort)
+		this.connectionManager.listen(this.listenPort);
 
 	this.trigger(NetPokerServer.STARTED);
 	this.runThenable.notifySuccess();
@@ -89,10 +91,10 @@ NetPokerServer.prototype.run = function() {
 	if (!this.backend)
 		throw "No backend";
 
-	if (!this.listenPort)
+	if (!this.listenPort && !this.mockNetwork)
 		throw new Error("No port to listen to.");
 
-	this.runThenable=new Thenable();
+	this.runThenable = new Thenable();
 
 	this.tableManager = new TableManager(this);
 	this.tableManager.on(TableManager.INITIALIZED, this.onTableManagerInitialized, this);
