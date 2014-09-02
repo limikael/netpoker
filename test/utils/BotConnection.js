@@ -53,4 +53,10 @@ BotConnection.prototype.send = function(message) {
 	this.protoConnection.send(message);
 }
 
+BotConnection.prototype.close=function() {
+	this.connection.close();
+	this.connection=null;
+	this.protoConnection=null;
+}
+
 module.exports = BotConnection;
