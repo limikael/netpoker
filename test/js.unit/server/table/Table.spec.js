@@ -71,20 +71,20 @@ describe("Table", function() {
 		expect(tableSpectator.listenerMap).toEqual({});
 	});
 
-	it("can get next seated user in sequence",function() {
-		var t=new Table(mockServices,config);
+	it("can get next seated user in sequence", function() {
+		var t = new Table(mockServices, config);
 
-		var mockTableSeatUser={};
-		mockTableSeatUser.isInGame=function() {
+		var mockTableSeatUser = {};
+		mockTableSeatUser.isInGame = function() {
 			return true;
 		}
 
 		expect(t.getNumInGame()).toBe(0);
 		expect(t.getNextSeatIndexInGame(3)).toBe(-1);
 
-		t.getTableSeatBySeatIndex(3).tableSeatUser=mockTableSeatUser;
-		t.getTableSeatBySeatIndex(5).tableSeatUser=mockTableSeatUser;
-		t.getTableSeatBySeatIndex(9).tableSeatUser=mockTableSeatUser;
+		t.getTableSeatBySeatIndex(3).tableSeatUser = mockTableSeatUser;
+		t.getTableSeatBySeatIndex(5).tableSeatUser = mockTableSeatUser;
+		t.getTableSeatBySeatIndex(9).tableSeatUser = mockTableSeatUser;
 
 		expect(t.getNumInGame()).toBe(3);
 

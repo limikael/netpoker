@@ -92,7 +92,7 @@ BaseTable.prototype.advanceDealer = function() {
 /**
  * Get dealer button index.
  */
-BaseTable.prototype.getDealerButtonIndex=function() {
+BaseTable.prototype.getDealerButtonIndex = function() {
 	return this.dealerButtonIndex;
 }
 

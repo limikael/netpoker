@@ -27,6 +27,10 @@ describe("Game", function() {
 		mockTable.getServices = function() {
 			return mockServices;
 		};
+
+		mockTable.advanceDealer = function() {};
+		mockTable.getDealerButtonIndex = function() {};
+		mockTable.getNextSeatIndexInGame = function() {};
 	});
 
 	afterEach(function() {
@@ -51,7 +55,7 @@ describe("Game", function() {
 		expect(mockBackend.call).toHaveBeenCalledWith("hello", jasmine.any(Object));
 
 		expect(finishSpy).not.toHaveBeenCalled();
-		jasmine.clock().tick(Game.ERROR_WAIT+1);
+		jasmine.clock().tick(Game.ERROR_WAIT + 1);
 		expect(finishSpy).toHaveBeenCalled();
 	});
 
@@ -77,8 +81,8 @@ describe("Game", function() {
 			expect(g.getDeck().length).toBe(52);
 			expect(g.getId()).toBe(789);
 
-			for (var i=0; i<10; i++) {
-				var card=g.getNextCard();
+			for (var i = 0; i < 10; i++) {
+				var card = g.getNextCard();
 				//console.log("card: "+card);
 			}
 

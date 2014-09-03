@@ -17,7 +17,8 @@ FunctionUtil.extend(AskBlindState, GameState);
  * @method run
  */
 AskBlindState.prototype.run=function() {
-	
+	var table=this.game.getTable();
+	this.askTableSeatIndex=table.getNextSeatIndexInGame(table.getDealerButtonIndex());
 }
 
 module.exports = AskBlindState;

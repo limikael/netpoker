@@ -44,7 +44,7 @@ Game.prototype.start = function() {
 Game.prototype.onStartCallComplete = function(result) {
 	this.id = result.gameId;
 
-	//this.table.advanceDealer();
+	this.table.advanceDealer();
 	this.deck = [];
 	for (var i = 0; i < 52; i++)
 		this.deck.push(new CardData(i));
@@ -105,4 +105,10 @@ Game.prototype.getGameState = function() {
 	return this.gameState;
 }
 
+/**
+ * Get reference to table.
+ */
+Game.prototype.getTable = function() {
+	return this.table;
+}
 module.exports = Game;
