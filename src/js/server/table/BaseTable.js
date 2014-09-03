@@ -41,4 +41,18 @@ BaseTable.prototype.getNumInGame = function() {
 	return cnt;
 }
 
+/**
+ * Get parent id.
+ */
+BaseTable.prototype.getStartGameParentId=function() {
+	throw "abstract";
+}
+
+/**
+ * Get start function.
+ */
+BaseTable.prototype.getStartGameFunctionName=function() {
+	throw "abstract";
+}
+
 module.exports = BaseTable;

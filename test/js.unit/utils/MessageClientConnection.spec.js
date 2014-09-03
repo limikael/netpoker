@@ -90,6 +90,7 @@ describe("MessageClientConnection", function() {
 
 		ThenableBarrier.wait(clientThenable, serverThenable).then(
 			function() {
+				server.close();
 				serverConnection.close();
 			}
 		);

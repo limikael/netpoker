@@ -24,6 +24,14 @@ describe("Table", function() {
 		var t = new Table(mockServices, config);
 	});
 
+	it("has a parent id that is the same as the id", function() {
+		var t = new Table(mockServices, config);
+		expect(t.getStartGameParentId()).toBe(123);
+		expect(t.getStartGameFunctionName()).toBe("game/startForTable");
+
+		expect(t.getServices()).not.toBe(null);
+	});
+
 	it("has some seats", function() {
 		var t = new Table(mockServices, config);
 

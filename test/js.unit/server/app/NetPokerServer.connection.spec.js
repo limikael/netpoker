@@ -74,6 +74,7 @@ describe("NetPokerServer - connection", function() {
 					expect(netPokerServer.tableManager.getTableById(123).tableSpectators.length).toBe(1);
 					expect(netPokerServer.tableManager.getTableById(123).tableSpectators[0].user.getName()).toBe("testson");
 					netPokerServer.close();
+					bot.close();
 					done();
 				}
 			);
@@ -189,6 +190,7 @@ describe("NetPokerServer - connection", function() {
 				expect(table.getTableSeatBySeatIndex(3).getUser()).toEqual(null);
 				expect(table.tableSpectators.length).toBe(1);
 
+				bot.close();
 				netPokerServer.close();
 				next();
 			}

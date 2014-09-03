@@ -12,4 +12,45 @@ function Game(table) {
 
 FunctionUtil.extend(Game, EventDispatcher);
 
+Game.FINISHED = "finished";
+
+/**
+ * Start the game.
+ */
+Game.prototype.start = function() {
+	var params = {
+		parentId: this.table.getStartGameParentId()
+	};
+
+	var startFunction = this.table.getStartGameFunctionName();
+	var backend = this.table.getServices().getBackend();
+
+	backend.call(startFunction, params).then(
+		this.onStartCallComplete.bind(this),
+		this.onStartCallError.bind(this)
+	);
+}
+
+/**
+ *
+ */
+Game.prototype.onStartCallComplete = function() {
+
+}
+
+/**
+ * Start call error.
+ */
+Game.prototype.onStartCallError = function() {
+	console.log("error starting game");
+	setTimeout(this.onErrorWaitTimer.bind(this), 10000);
+}
+
+/**
+ * Error wait timer.
+ */
+Game.prototype.onErrorWaitTimer = function() {
+	this.trigger(Game.FINISHED);
+}
+
 module.exports = Game;

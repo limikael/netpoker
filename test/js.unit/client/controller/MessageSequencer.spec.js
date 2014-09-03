@@ -17,7 +17,7 @@ describe("MessageSequencer", function() {
 		expect(spy).toHaveBeenCalled();
 
 		s.enqueue(message);
-		expect(spy.calls.length).toBe(2);
+		expect(spy.calls.count()).toBe(2);
 	});
 
 	it("can be told to wait until processing next message", function() {

@@ -11,6 +11,7 @@ Backend.GET_TABLE_LIST = "table/getList";
 Backend.GET_USER_BALANCE = "user/getBalance";
 Backend.SIT_IN = "table/sitIn";
 Backend.SIT_OUT = "table/sitOut";
+Backend.START_CASH_GAME = "game/startForTable";
 
 /**
  * Call a backend method.

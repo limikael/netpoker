@@ -8,6 +8,7 @@ var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var ArrayUtil = require("../../utils/ArrayUtil");
 var Game = require("../game/Game");
+var Backend = require("../backend/Backend");
 
 /**
  * Cash game table.
@@ -179,4 +180,19 @@ Table.prototype.startGame = function() {
 Table.prototype.getCurrentGame = function() {
 	return this.currentGame;
 }
+
+/**
+ * Get parent id.
+ */
+Table.prototype.getStartGameParentId=function() {
+	return this.id;
+}
+
+/**
+ * Get function to call on game start.
+ */
+Table.prototype.getStartGameFunctionName=function() {
+	return Backend.START_CASH_GAME;
+}
+
 module.exports = Table;

@@ -21,7 +21,7 @@
  			hello: "world"
  		});
 
- 		var closeSpy = createSpy();
+ 		var closeSpy = jasmine.createSpy();
  		c2.on(MessagePipeConnection.CLOSE, closeSpy);
 
  		c1.close();

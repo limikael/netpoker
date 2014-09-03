@@ -22,7 +22,7 @@ describe("TableManager", function() {
 			return thenable;
 		};
 
-		spyOn(mockBackend, "call").andCallThrough();
+		spyOn(mockBackend, "call").and.callThrough();
 
 		mockServices = {};
 		mockServices.getBackend = function() {

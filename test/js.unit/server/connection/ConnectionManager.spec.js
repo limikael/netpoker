@@ -41,12 +41,15 @@ describe("ConnectionManager", function() {
 		var connectionManager = new ConnectionManager(mockServices);
 		connectionManager.listen(2002);
 
+		var clientConnection = new MessageClientConnection();
+
 		connectionManager.on(ConnectionManager.CONNECTION, function(e) {
 			expect(e.getUser().getName()).toEqual("hello");
+			connectionManager.close();
+			clientConnection.close();
 			done();
 		});
 
-		var clientConnection = new MessageClientConnection();
 		clientConnection.connect("http://localhost:2002").then(
 			function() {
 				console.log("sending some..");
@@ -65,14 +68,18 @@ describe("ConnectionManager", function() {
 		connectionManager.listen(2003);
 
 		var originalFunction = connectionManager.onUserConnectionClose;
+
+		var clientConnection = new MessageClientConnection();
+
 		connectionManager.onUserConnectionClose = function(e) {
 			originalFunction.call(this, e);
 
 			expect(e.target.listenerMap).toEqual({});
+			connectionManager.close();
+			clientConnection.close();
 			done();
 		}
 
-		var clientConnection = new MessageClientConnection();
 		clientConnection.connect("http://localhost:2003").then(
 			function() {
 				console.log("sending some..");
@@ -82,5 +89,5 @@ describe("ConnectionManager", function() {
 				});
 			}
 		);
-	})
+	});
 });

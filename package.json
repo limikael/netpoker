@@ -6,7 +6,6 @@
     "faye-websocket": "^0.7.2",
     "gulp": "^3.8.7",
     "gulp-run": "^1.6.3",
-    "jasmine-node": "^1.14.5",
     "pixi.js": "git://github.com/GoodBoyDigital/pixi.js",
     "q": "^1.0.1"
   },
@@ -16,6 +15,7 @@
   },
   "devDependencies": {
     "grunt": "^0.4.5",
+    "jasmine-node": "^2.0.0-beta4",
     "qsub": "0.0.2"
   }
 }

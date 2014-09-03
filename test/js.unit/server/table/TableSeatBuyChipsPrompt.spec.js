@@ -92,7 +92,7 @@ describe("TableSeatBuyChipsPrompt", function() {
 
 			function(next) {
 				expect(mockTableSeat.send).toHaveBeenCalled();
-				var dialogMessage = mockTableSeat.send.calls[0].args[0];
+				var dialogMessage = mockTableSeat.send.calls.argsFor(0)[0];
 				expect(dialogMessage.buttons.length).toBe(2);
 
 				var b = new ButtonClickMessage(ButtonData.CANCEL);
@@ -124,7 +124,7 @@ describe("TableSeatBuyChipsPrompt", function() {
 
 			function(next) {
 				expect(mockTableSeat.send).toHaveBeenCalled();
-				var dialogMessage = mockTableSeat.send.calls[0].args[0];
+				var dialogMessage = mockTableSeat.send.calls.argsFor(0)[0];
 				expect(dialogMessage.buttons.length).toBe(2);
 
 				var b = new ButtonClickMessage(ButtonData.CANCEL);
@@ -142,7 +142,7 @@ describe("TableSeatBuyChipsPrompt", function() {
 	});
 
 	it("can be completed", function(done) {
-		spyOn(mockBackend, "call").andCallThrough();
+		spyOn(mockBackend, "call").and.callThrough();
 
 		var completeSpy = jasmine.createSpy();
 		var cancelSpy = jasmine.createSpy();
@@ -158,10 +158,10 @@ describe("TableSeatBuyChipsPrompt", function() {
 			},
 
 			function(next) {
-				expect(mockBackend.call.calls.length).toBe(1);
+				expect(mockBackend.call.calls.count()).toBe(1);
 
 				expect(mockTableSeat.send).toHaveBeenCalled();
-				var dialogMessage = mockTableSeat.send.calls[0].args[0];
+				var dialogMessage = mockTableSeat.send.calls.argsFor(0)[0];
 				expect(dialogMessage.buttons.length).toBe(2);
 
 				var b = new ButtonClickMessage(ButtonData.SIT_IN);
@@ -171,7 +171,7 @@ describe("TableSeatBuyChipsPrompt", function() {
 			},
 
 			function(next) {
-				expect(mockBackend.call.calls.length).toBe(2);
+				expect(mockBackend.call.calls.count()).toBe(2);
 
 				expect(mockTableSeat.listenerMap).toEqual({});
 				expect(cancelSpy).not.toHaveBeenCalled();
@@ -182,7 +182,7 @@ describe("TableSeatBuyChipsPrompt", function() {
 	});
 
 	it("cancels itself if sit in call fails", function(done) {
-		spyOn(mockBackend, "call").andCallThrough();
+		spyOn(mockBackend, "call").and.callThrough();
 
 		var completeSpy = jasmine.createSpy();
 		var cancelSpy = jasmine.createSpy();
@@ -198,7 +198,7 @@ describe("TableSeatBuyChipsPrompt", function() {
 			},
 
 			function(next) {
-				expect(mockBackend.call.calls.length).toBe(1);
+				expect(mockBackend.call.calls.count()).toBe(1);
 
 				mockBackend.call = function(method) {
 					var thenable = new Thenable();
@@ -208,10 +208,10 @@ describe("TableSeatBuyChipsPrompt", function() {
 					return thenable;
 				};
 
-				spyOn(mockBackend, "call").andCallThrough();
+				spyOn(mockBackend, "call").and.callThrough();
 
 				expect(mockTableSeat.send).toHaveBeenCalled();
-				var dialogMessage = mockTableSeat.send.calls[0].args[0];
+				var dialogMessage = mockTableSeat.send.calls.argsFor(0)[0];
 				expect(dialogMessage.buttons.length).toBe(2);
 
 				var b = new ButtonClickMessage(ButtonData.SIT_IN);
@@ -221,7 +221,7 @@ describe("TableSeatBuyChipsPrompt", function() {
 			},
 
 			function(next) {
-				expect(mockBackend.call.calls.length).toBe(1);
+				expect(mockBackend.call.calls.count()).toBe(1);
 
 				expect(mockTableSeat.listenerMap).toEqual({});
 				expect(cancelSpy).toHaveBeenCalled();
