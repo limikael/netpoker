@@ -1,5 +1,6 @@
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
+var CardData = require("../../proto/data/CardData");
 
 /**
  * Game.
@@ -8,6 +9,7 @@ function Game(table) {
 	EventDispatcher.call(this);
 
 	this.table = table;
+	this.id = null;
 }
 
 FunctionUtil.extend(Game, EventDispatcher);
@@ -34,9 +36,16 @@ Game.prototype.start = function() {
 }
 
 /**
- *
+ * Start game call complete.
  */
-Game.prototype.onStartCallComplete = function() {
+Game.prototype.onStartCallComplete = function(result) {
+	this.id = result.gameId;
+
+	//this.table.advanceDealer();
+	this.deck = [];
+	for (var i = 0; i < 52; i++)
+		this.deck.push(new CardData(i));
+
 
 }
 
@@ -53,6 +62,20 @@ Game.prototype.onStartCallError = function() {
  */
 Game.prototype.onErrorWaitTimer = function() {
 	this.trigger(Game.FINISHED);
+}
+
+/**
+ * Get deck.
+ */
+Game.prototype.getDeck = function() {
+	return this.deck;
+}
+
+/**
+ * Get id.
+ */
+Game.prototype.getId = function() {
+	return this.id;
 }
 
 module.exports = Game;
