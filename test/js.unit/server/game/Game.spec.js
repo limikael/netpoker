@@ -83,6 +83,8 @@ describe("Game", function() {
 			}
 
 			expect(g.getDeck().length).toBe(42);
+
+			expect(g.getGameState()).not.toBe(null);
 			done();
 		});
 

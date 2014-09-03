@@ -10,6 +10,8 @@ function BaseTable() {
 
 	if (!this.tableSeats)
 		throw new Error("table seats needs to be set up for BaseTable");
+
+	this.dealerButtonIndex = -1;
 }
 
 FunctionUtil.extend(BaseTable, EventDispatcher);
@@ -44,15 +46,54 @@ BaseTable.prototype.getNumInGame = function() {
 /**
  * Get parent id.
  */
-BaseTable.prototype.getStartGameParentId=function() {
+BaseTable.prototype.getStartGameParentId = function() {
 	throw "abstract";
 }
 
 /**
  * Get start function.
  */
-BaseTable.prototype.getStartGameFunctionName=function() {
+BaseTable.prototype.getStartGameFunctionName = function() {
 	throw "abstract";
+}
+
+/**
+ * Get next seated index.
+ */
+BaseTable.prototype.getNextSeatIndexInGame = function(from) {
+	var cand = from + 1;
+	var i = 0;
+
+	if (cand >= 10)
+		cand = 0;
+
+	while (!this.tableSeats[cand].isInGame()) {
+		cand++;
+		if (cand >= 10)
+			cand = 0;
+
+		i++;
+		if (i > 10)
+			return -1;
+	}
+
+	return cand;
+}
+
+/**
+ * Advance dealer.
+ */
+BaseTable.prototype.advanceDealer = function() {
+	this.dealerButtonIndex = this.getNextSeatIndexInGame(this.dealerButtonIndex);
+
+	// send
+}
+
+/**
+ * Get dealer button index.
+ */
+BaseTable.prototype.getDealerButtonIndex=function() {
+	return this.dealerButtonIndex;
 }
 
 module.exports = BaseTable;

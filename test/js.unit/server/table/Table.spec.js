@@ -70,4 +70,37 @@ describe("Table", function() {
 		expect(mockConnection.listenerMap).toEqual({});
 		expect(tableSpectator.listenerMap).toEqual({});
 	});
+
+	it("can get next seated user in sequence",function() {
+		var t=new Table(mockServices,config);
+
+		var mockTableSeatUser={};
+		mockTableSeatUser.isInGame=function() {
+			return true;
+		}
+
+		expect(t.getNumInGame()).toBe(0);
+		expect(t.getNextSeatIndexInGame(3)).toBe(-1);
+
+		t.getTableSeatBySeatIndex(3).tableSeatUser=mockTableSeatUser;
+		t.getTableSeatBySeatIndex(5).tableSeatUser=mockTableSeatUser;
+		t.getTableSeatBySeatIndex(9).tableSeatUser=mockTableSeatUser;
+
+		expect(t.getNumInGame()).toBe(3);
+
+		expect(t.getNextSeatIndexInGame(3)).toBe(5);
+		expect(t.getNextSeatIndexInGame(4)).toBe(5);
+		expect(t.getNextSeatIndexInGame(5)).toBe(9);
+		expect(t.getNextSeatIndexInGame(9)).toBe(3);
+
+		expect(t.getDealerButtonIndex()).toBe(-1);
+		t.advanceDealer();
+		expect(t.getDealerButtonIndex()).toBe(3);
+		t.advanceDealer();
+		expect(t.getDealerButtonIndex()).toBe(5);
+		t.advanceDealer();
+		expect(t.getDealerButtonIndex()).toBe(9);
+		t.advanceDealer();
+		expect(t.getDealerButtonIndex()).toBe(3);
+	});
 })

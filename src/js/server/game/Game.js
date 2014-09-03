@@ -2,6 +2,7 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var CardData = require("../../proto/data/CardData");
 var ArrayUtil = require("../../utils/ArrayUtil");
+var AskBlindState = require("./AskBlindState");
 
 /**
  * Game.
@@ -11,6 +12,7 @@ function Game(table) {
 
 	this.table = table;
 	this.id = null;
+	this.gameState = null;
 }
 
 FunctionUtil.extend(Game, EventDispatcher);
@@ -48,6 +50,7 @@ Game.prototype.onStartCallComplete = function(result) {
 		this.deck.push(new CardData(i));
 
 	ArrayUtil.shuffle(this.deck);
+	this.setGameState(new AskBlindState());
 }
 
 /**
@@ -82,8 +85,24 @@ Game.prototype.getId = function() {
 /**
  * Get next card.
  */
-Game.prototype.getNextCard=function() {
+Game.prototype.getNextCard = function() {
 	return this.deck.shift();
+}
+
+/**
+ * Set and run game state.
+ */
+Game.prototype.setGameState = function(gameState) {
+	this.gameState = gameState;
+	this.gameState.setGame(this);
+	this.gameState.run();
+}
+
+/**
+ * Get game state.
+ */
+Game.prototype.getGameState = function() {
+	return this.gameState;
 }
 
 module.exports = Game;
