@@ -9,6 +9,9 @@ function CardData(value) {
 CardData.CARD_VALUE_STRINGS =
 	["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
 
+CardData.SUIT_STRINGS =
+	["D", "C", "H", "S"];
+
 /**
  * Shown?
  */
@@ -31,6 +34,13 @@ CardData.prototype.getSuitIndex = function() {
 }
 
 /**
+ * Get suit string.
+ */
+CardData.prototype.getSuitString = function() {
+	return CardData.SUIT_STRINGS[this.getSuitIndex()];
+}
+
+/**
  * Get color.
  */
 CardData.prototype.getColor = function() {
@@ -39,6 +49,13 @@ CardData.prototype.getColor = function() {
 
 	else
 		return "#ff0000";
+}
+
+/**
+ * To string.
+ */
+CardData.prototype.toString = function() {
+	return this.getCardValueString() + this.getSuitString();
 }
 
 module.exports = CardData;

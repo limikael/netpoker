@@ -1,6 +1,7 @@
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var CardData = require("../../proto/data/CardData");
+var ArrayUtil = require("../../utils/ArrayUtil");
 
 /**
  * Game.
@@ -46,7 +47,7 @@ Game.prototype.onStartCallComplete = function(result) {
 	for (var i = 0; i < 52; i++)
 		this.deck.push(new CardData(i));
 
-
+	ArrayUtil.shuffle(this.deck);
 }
 
 /**
@@ -76,6 +77,13 @@ Game.prototype.getDeck = function() {
  */
 Game.prototype.getId = function() {
 	return this.id;
+}
+
+/**
+ * Get next card.
+ */
+Game.prototype.getNextCard=function() {
+	return this.deck.shift();
 }
 
 module.exports = Game;

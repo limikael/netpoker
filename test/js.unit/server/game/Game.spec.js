@@ -56,8 +56,6 @@ describe("Game", function() {
 	});
 
 	it("can start", function(done) {
-		jasmine.clock().uninstall();
-
 		mockBackend.call = function(functionName, params) {
 			var t = new Thenable();
 			t.notifySuccess({
@@ -78,7 +76,16 @@ describe("Game", function() {
 		TickLoopRunner.runTicks().then(function() {
 			expect(g.getDeck().length).toBe(52);
 			expect(g.getId()).toBe(789);
+
+			for (var i=0; i<10; i++) {
+				var card=g.getNextCard();
+				//console.log("card: "+card);
+			}
+
+			expect(g.getDeck().length).toBe(42);
 			done();
 		});
+
+		jasmine.clock().tick(10);
 	});
 });
