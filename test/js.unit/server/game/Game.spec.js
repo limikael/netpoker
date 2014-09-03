@@ -5,7 +5,7 @@ describe("Game", function() {
 	var mockTable;
 
 	beforeEach(function() {
-		//jasmine.clock().install();
+		jasmine.clock().install();
 		mockBackend = {};
 
 		mockServices = {};
@@ -28,19 +28,29 @@ describe("Game", function() {
 		};
 	});
 
-/*	it("can be started", function() {
+	afterEach(function() {
+		jasmine.clock().uninstall();
+	});
+
+	it("can be started", function() {
 		mockBackend.call = function(functionName, params) {
-			var t=new Thenable();
+			var t = new Thenable();
 			t.notifyError();
-			return;
+			return t;
 		}
 
-		spyOn(mockBackend,"call").andCallThrough();
+		spyOn(mockBackend, "call").and.callThrough();
 
+		var finishSpy = jasmine.createSpy();
 		var g = new Game(mockTable);
+		g.on(Game.FINISHED, finishSpy);
 
 		g.start();
 
-		expect(mockBackend.call).toHaveBeenCalledWith("hello",jasmine.any(Object));
-	});*/
+		expect(mockBackend.call).toHaveBeenCalledWith("hello", jasmine.any(Object));
+
+		jasmine.clock().tick(11000);
+
+		expect(finishSpy).toHaveBeenCalled();
+	});
 });
