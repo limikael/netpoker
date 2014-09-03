@@ -49,8 +49,8 @@ describe("Game", function() {
 
 		expect(mockBackend.call).toHaveBeenCalledWith("hello", jasmine.any(Object));
 
-		jasmine.clock().tick(11000);
-
+		expect(finishSpy).not.toHaveBeenCalled();
+		jasmine.clock().tick(Game.ERROR_WAIT+1);
 		expect(finishSpy).toHaveBeenCalled();
 	});
 });

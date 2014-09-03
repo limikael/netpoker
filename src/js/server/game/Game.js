@@ -14,6 +14,8 @@ FunctionUtil.extend(Game, EventDispatcher);
 
 Game.FINISHED = "finished";
 
+Game.ERROR_WAIT = 10000;
+
 /**
  * Start the game.
  */
@@ -43,7 +45,7 @@ Game.prototype.onStartCallComplete = function() {
  */
 Game.prototype.onStartCallError = function() {
 	console.log("error starting game");
-	setTimeout(this.onErrorWaitTimer.bind(this), 10000);
+	setTimeout(this.onErrorWaitTimer.bind(this), Game.ERROR_WAIT);
 }
 
 /**
