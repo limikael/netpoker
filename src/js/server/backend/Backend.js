@@ -1,9 +1,11 @@
+var BackendCall = require("./BackendCall");
+
 /**
  * Connection to backend.
  * @class Backend
  */
-function Backend() {
-
+function Backend(baseUrl) {
+	this.baseUrl = baseUrl;
 }
 
 Backend.GET_USER_INFO_BY_TOKEN = "user/getInfoByToken";
@@ -14,11 +16,20 @@ Backend.SIT_OUT = "table/sitOut";
 Backend.START_CASH_GAME = "game/startForTable";
 
 /**
+ * Set base url.
+ */
+Backend.prototype.setBaseUrl = function(baseUrl) {
+	this.baseUrl = baseUrl;
+}
+
+/**
  * Call a backend method.
  * @method call
  */
 Backend.prototype.call = function(method, params) {
-	throw new Error("not implemented");
+	var backendCall = new BackendCall(this.baseUrl + "/" + method, params);
+
+	return backendCall.perform();
 }
 
 module.exports = Backend;

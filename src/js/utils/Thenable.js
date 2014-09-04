@@ -105,4 +105,20 @@ Thenable.prototype.callHandlers = function(handlers) {
 	}
 }
 
+/**
+ * Resolve promise.
+ * @method resolve
+ */
+Thenable.prototype.resolve = function(result) {
+	this.notifySuccess(result);
+}
+
+/**
+ * Reject promise.
+ * @method reject
+ */
+Thenable.prototype.reject = function(reason) {
+	this.notifyError(reason);
+}
+
 module.exports = Thenable;

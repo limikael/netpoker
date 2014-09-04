@@ -89,7 +89,7 @@ NetPokerServer.prototype.onTableManagerInitialized = function() {
  */
 NetPokerServer.prototype.run = function() {
 	if (!this.backend)
-		throw "No backend";
+		throw new Error("No backend");
 
 	if (!this.listenPort && !this.mockNetwork)
 		throw new Error("No port to listen to.");

@@ -16,8 +16,11 @@ module.exports = function(grunt) {
 				.arg("--captureExceptions")
 				.arg("--verbose")
 				.arg("test/js.unit")
-				.expect(0)
-				.show();
+
+			if (grunt.option("match"))
+				job.arg("--match", grunt.option("match"));
+
+			job.expect(0).show();
 
 			return job.run();
 		});
