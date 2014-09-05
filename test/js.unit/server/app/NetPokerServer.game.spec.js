@@ -8,6 +8,7 @@ var SeatClickMessage = require("../../../../src/js/proto/messages/SeatClickMessa
 var ShowDialogMessage = require("../../../../src/js/proto/messages/ShowDialogMessage");
 var ButtonClickMessage = require("../../../../src/js/proto/messages/ButtonClickMessage");
 var ButtonsMessage = require("../../../../src/js/proto/messages/ButtonsMessage");
+var FinishedState = require("../../../../src/js/server/game/FinishedState");
 var ButtonData = require("../../../../src/js/proto/data/ButtonData");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
 var AskBlindState = require("../../../../src/js/server/game/AskBlindState");
@@ -16,6 +17,7 @@ describe("NetPokerServer - game", function() {
 	var mockBackend;
 
 	beforeEach(function() {
+		jasmine.clock().install();
 		mockBackend = {};
 
 		mockBackend.call = function(method, params) {
@@ -91,6 +93,10 @@ describe("NetPokerServer - game", function() {
 		}
 	});
 
+	afterEach(function() {
+		jasmine.clock().uninstall();
+	})
+
 	it("starts a game when two users connect", function(done) {
 		var netPokerServer = new PipeNetPokerServer();
 		netPokerServer.setBackend(mockBackend);
@@ -104,6 +110,7 @@ describe("NetPokerServer - game", function() {
 		AsyncSequence.run(
 			function(next) {
 				netPokerServer.run().then(next);
+				jasmine.clock().tick(10);
 			},
 
 			function(next) {
@@ -153,9 +160,16 @@ describe("NetPokerServer - game", function() {
 
 				expect(table.getCurrentGame().getNumInGame()).toBe(3);
 
-				netPokerServer.close();
+				table.stop();
+				jasmine.clock().tick(FinishedState.FINISH_DELAY+1);
 				next();
+			},
+
+			function() {
+				expect(table.getCurrentGame()).toBe(null);
+				netPokerServer.close();
+				done();
 			}
-		).then(done);
+		);
 	});
 });

@@ -102,6 +102,14 @@ Game.prototype.setGameState = function(gameState) {
 }
 
 /**
+ * The game is finished!
+ */
+Game.prototype.notifyFinished=function() {
+	this.gameState=null;
+	this.trigger(Game.FINISHED);
+}
+
+/**
  * Get game state.
  */
 Game.prototype.getGameState = function() {
@@ -145,6 +153,13 @@ Game.prototype.addGameSeat = function(gameSeat) {
 		throw new Error("A game seat is already added for that index");
 
 	this.gameSeats.push(gameSeat);
+}
+
+/**
+ * To string.
+ */
+Game.prototype.toString = function() {
+	return "[Game]";
 }
 
 module.exports = Game;

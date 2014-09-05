@@ -37,6 +37,7 @@ function Table(services, config) {
 	this.services = services;
 
 	this.currentGame = null;
+	this.stopped = false;
 }
 
 FunctionUtil.extend(Table, BaseTable);
@@ -74,7 +75,7 @@ Table.prototype.onTableSeatClose = function(e) {
  * Table seat ready.
  */
 Table.prototype.onTableSeatReady = function() {
-	if (!this.currentGame && this.getNumInGame() >= 2)
+	if (!this.currentGame && this.getNumInGame() >= 2 && !this.stopped)
 		this.startGame();
 }
 
@@ -174,7 +175,22 @@ Table.prototype.startGame = function() {
 		throw "There is already a game started";
 
 	this.currentGame = new Game(this);
+	this.currentGame.on(Game.FINISHED, this.onCurrentGameFinished, this);
 	this.currentGame.start();
+}
+
+/**
+ * Current game finished.
+ */
+Table.prototype.onCurrentGameFinished = function() {
+	this.currentGame.off(Game.FINISHED, this.onCurrentGameFinished, this);
+	this.currentGame=null;
+
+	if (this.stopped)
+		return;
+
+	if (this.getNumInGame())
+		this.startGame();
 }
 
 /**
@@ -203,6 +219,33 @@ Table.prototype.getStartGameFunctionName = function() {
  */
 Table.prototype.getStake = function() {
 	return this.stake;
+}
+
+/**
+ * Stop.
+ */
+Table.prototype.stop=function() {
+	this.stopped=true;
+}
+
+/**
+ * Send.
+ */
+Table.prototype.send = function(m) {
+	var i;
+
+	for (i = 0; i < this.tableSpectators.length; i++)
+		this.tableSpectators[i].send(m);
+
+	for (i = 0; i < this.tableSeats.length; i++)
+		this.tableSeats[i].send(m);
+}
+
+/**
+ * To string.
+ */
+Table.prototype.toString=function() {
+	return "[Table id="+this.id+"]";
 }
 
 module.exports = Table;

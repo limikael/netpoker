@@ -4,6 +4,7 @@ var GameState = require("./GameState");
 var GameSeat = require("./GameSeat");
 var GameSeatPrompt = require("./GameSeatPrompt");
 var ButtonData = require("../../proto/data/ButtonData");
+var FinishedState = require("./FinishedState");
 
 /**
  * Ask blind state.
@@ -79,6 +80,9 @@ AskBlindState.prototype.askDone = function() {
 
 	if (this.askTableSeatIndex == table.getDealerButtonIndex()) {
 		console.log("ask complete!!!");
+
+		// Should be round state...
+		this.game.setGameState(new FinishedState());
 		return;
 	}
 

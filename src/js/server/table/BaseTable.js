@@ -99,7 +99,14 @@ BaseTable.prototype.getDealerButtonIndex = function() {
 /**
  * Get stake.
  */
-BaseTable.prototype.getStake=function() {
+BaseTable.prototype.getStake = function() {
+	throw "abstract";
+}
+
+/**
+ * Send.
+ */
+BaseTable.prototype.send = function(m) {
 	throw "abstract";
 }
 

@@ -10,6 +10,8 @@ var SeatClickMessage = require("./messages/SeatClickMessage");
 var ShowDialogMessage = require("./messages/ShowDialogMessage");
 var ButtonClickMessage = require("./messages/ButtonClickMessage");
 var ButtonsMessage = require("./messages/ButtonsMessage");
+var DelayMessage = require("./messages/DelayMessage");
+var ClearMessage = require("./messages/ClearMessage");
 
 /**
  * @class ProtoConnection
@@ -39,6 +41,8 @@ ProtoConnection.MESSAGE_TYPES[SeatClickMessage.TYPE] = SeatClickMessage;
 ProtoConnection.MESSAGE_TYPES[ShowDialogMessage.TYPE] = ShowDialogMessage;
 ProtoConnection.MESSAGE_TYPES[ButtonClickMessage.TYPE] = ButtonClickMessage;
 ProtoConnection.MESSAGE_TYPES[ButtonsMessage.TYPE] = ButtonsMessage;
+ProtoConnection.MESSAGE_TYPES[DelayMessage.TYPE] = DelayMessage;
+ProtoConnection.MESSAGE_TYPES[ClearMessage.TYPE] = ClearMessage;
 
 /**
  * Add message handler.
