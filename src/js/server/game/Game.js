@@ -13,6 +13,7 @@ function Game(table) {
 	this.table = table;
 	this.id = null;
 	this.gameState = null;
+	this.gameSeats = [];
 }
 
 FunctionUtil.extend(Game, EventDispatcher);
@@ -111,4 +112,30 @@ Game.prototype.getGameState = function() {
 Game.prototype.getTable = function() {
 	return this.table;
 }
+
+/**
+ * Get game seat for seat index.
+ * @method getGameSeatForSeatIndex
+ */
+Game.prototype.getGameSeatForSeatIndex = function(seatIndex) {
+	for (i = 0; i < this.gameSeats.length; i++) {
+		var gameSeat = this.gameSeats[i];
+
+		if (gameSeat.getSeatIndex() == seatIndex)
+			return gameSeat;
+	}
+
+	return null;
+}
+
+/**
+ * Add a game seat.
+ */
+Game.prototype.addGameSeat = function(gameSeat) {
+	if (this.getGameSeatForSeatIndex(gameSeat.getSeatIndex()))
+		throw new Error("A game seat is already added for that index");
+
+	this.gameSeats.push(gameSeat);
+}
+
 module.exports = Game;

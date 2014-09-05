@@ -7,4 +7,11 @@ function GameSeat(game, tableSeat) {
 	this.tableSeat = tableSeat;
 }
 
+/**
+ * Get seat index.
+ */
+GameSeat.prototype.getSeatIndex = function() {
+	return this.tableSeat.getSeatIndex();
+}
+
 module.exports = GameSeat;

@@ -1,4 +1,5 @@
 var Game = require("../../../../src/js/server/game/Game");
+var GameSeat = require("../../../../src/js/server/game/GameSeat");
 var Thenable = require("../../../../src/js/utils/Thenable");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
 
@@ -14,8 +15,19 @@ describe("Game", function() {
 			return mockBackend;
 		}
 
-		mockTable = {};
+		mockTableSeats = [];
+		for (var i = 0; i < 10; i++) {
+			var mockTableSeat = {};
+			mockTableSeat.seatIndex = i;
 
+			mockTableSeat.getSeatIndex = function() {
+				return this.seatIndex;
+			}
+
+			mockTableSeats.push(mockTableSeat);
+		}
+
+		mockTable = {};
 		mockTable.getStartGameParentId = function() {
 			return 123;
 		};
@@ -31,6 +43,9 @@ describe("Game", function() {
 		mockTable.advanceDealer = function() {};
 		mockTable.getDealerButtonIndex = function() {};
 		mockTable.getNextSeatIndexInGame = function() {};
+		mockTable.getTableSeatBySeatIndex = function(seatIndex) {
+			return mockTableSeats[seatIndex];
+		}
 	});
 
 	afterEach(function() {
@@ -93,5 +108,22 @@ describe("Game", function() {
 		});
 
 		jasmine.clock().tick(10);
+	});
+
+	it("can get a seat index", function() {
+		expect(mockTable.getTableSeatBySeatIndex(0).getSeatIndex()).toBe(0);
+		expect(mockTable.getTableSeatBySeatIndex(1).getSeatIndex()).toBe(1);
+
+		var g = new Game(mockTable);
+		expect(g.getGameSeatForSeatIndex(5)).toBe(null);
+
+		var gameSeat = new GameSeat(g, mockTable.getTableSeatBySeatIndex(5));
+		g.addGameSeat(gameSeat);
+
+		expect(g.getGameSeatForSeatIndex(5)).toBe(gameSeat);
+
+		expect(function() {
+			g.addGameSeat(gameSeat);
+		}).toThrow();
 	});
 });
