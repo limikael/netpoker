@@ -2,6 +2,7 @@ var Game = require("../../../../src/js/server/game/Game");
 var GameSeat = require("../../../../src/js/server/game/GameSeat");
 var Thenable = require("../../../../src/js/utils/Thenable");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
+var EventDispatcher = require("../../../../src/js/utils/EventDispatcher");
 
 describe("Game", function() {
 	var mockTable;
@@ -17,12 +18,14 @@ describe("Game", function() {
 
 		mockTableSeats = [];
 		for (var i = 0; i < 10; i++) {
-			var mockTableSeat = {};
+			var mockTableSeat = new EventDispatcher();
 			mockTableSeat.seatIndex = i;
 
 			mockTableSeat.getSeatIndex = function() {
 				return this.seatIndex;
 			}
+
+			mockTableSeat.send = function() {};
 
 			mockTableSeats.push(mockTableSeat);
 		}
@@ -42,9 +45,14 @@ describe("Game", function() {
 
 		mockTable.advanceDealer = function() {};
 		mockTable.getDealerButtonIndex = function() {};
-		mockTable.getNextSeatIndexInGame = function() {};
+		mockTable.getNextSeatIndexInGame = function() {
+			return 2;
+		};
 		mockTable.getTableSeatBySeatIndex = function(seatIndex) {
 			return mockTableSeats[seatIndex];
+		}
+		mockTable.getStake=function() {
+			return 2;
 		}
 	});
 
@@ -117,7 +125,7 @@ describe("Game", function() {
 		var g = new Game(mockTable);
 		expect(g.getGameSeatForSeatIndex(5)).toBe(null);
 
-		var gameSeat = new GameSeat(g, mockTable.getTableSeatBySeatIndex(5));
+		var gameSeat = new GameSeat(g, 5);
 		g.addGameSeat(gameSeat);
 
 		expect(g.getGameSeatForSeatIndex(5)).toBe(gameSeat);

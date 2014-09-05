@@ -96,4 +96,11 @@ BaseTable.prototype.getDealerButtonIndex = function() {
 	return this.dealerButtonIndex;
 }
 
+/**
+ * Get stake.
+ */
+BaseTable.prototype.getStake=function() {
+	throw "abstract";
+}
+
 module.exports = BaseTable;

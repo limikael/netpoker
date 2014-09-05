@@ -16,7 +16,8 @@ describe("Table", function() {
 			currency: "PLY",
 			name: "Test Table",
 			minSitInAmount: 10,
-			maxSitInAmount: 100
+			maxSitInAmount: 100,
+			stake: 2
 		};
 	});
 

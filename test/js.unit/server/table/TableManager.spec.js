@@ -46,14 +46,16 @@ describe("TableManager", function() {
 				currency: "PLY",
 				name: "Test Table",
 				minSitInAmount: 10,
-				maxSitInAmount: 100
+				maxSitInAmount: 100,
+				stake: 2
 			}, {
 				id: 124,
 				numseats: 4,
 				currency: "PLY",
 				name: "Test Table",
 				minSitInAmount: 10,
-				maxSitInAmount: 100
+				maxSitInAmount: 100,
+				stake: 2
 			}]
 		};
 
@@ -81,7 +83,8 @@ describe("TableManager", function() {
 				currency: "PLY",
 				name: "Test Table",
 				minSitInAmount: 10,
-				maxSitInAmount: 100
+				maxSitInAmount: 100,
+				stake: 2
 			}]
 		};
 

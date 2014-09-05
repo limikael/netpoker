@@ -8,6 +8,7 @@ function BotConnection(connectionTarget, token) {
 	this.connectionTarget = connectionTarget;
 	this.token = token;
 	this.replies = {};
+	this.messages = [];
 }
 
 BotConnection.prototype.connectToTable = function(tableId) {
@@ -36,6 +37,24 @@ BotConnection.prototype.onConnectionConnect = function() {
 	this.protoConnection.send(this.initMessage);
 }
 
+BotConnection.prototype.clearMessages = function() {
+	this.messages = [];
+}
+
+BotConnection.prototype.getLastMessageOfType = function(messageClass) {
+	var type = messageClass.TYPE;
+
+	//console.log("looking for type: "+type);
+
+	for (var i = this.messages.length - 1; i >= 0; i--) {
+		//console.log(this.messages[i]);
+		if (this.messages[i].type == type)
+			return this.messages[i];
+	}
+
+	return null;
+}
+
 BotConnection.prototype.waitForMessage = function(messageClass) {
 	if (this.waitThenable)
 		throw "Already waiting for message";
@@ -48,6 +67,8 @@ BotConnection.prototype.waitForMessage = function(messageClass) {
 
 BotConnection.prototype.onProtoConnectionMessage = function(e) {
 	console.log("** BOT message: " + e.message.type + " replying: " + this.replies[e.message.type]);
+
+	this.messages.push(e.message);
 
 	if (this.replies[e.message.type])
 		this.send(this.replies[e.message.type]);

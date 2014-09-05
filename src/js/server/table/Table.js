@@ -20,12 +20,14 @@ function Table(services, config) {
 		!config.currency ||
 		!config.name ||
 		!config.minSitInAmount ||
-		!config.maxSitInAmount)
+		!config.maxSitInAmount ||
+		!config.stake)
 		throw new Error("Bad table config");
 
 	this.name = config.name;
 	this.id = config.id;
 	this.currency = config.currency;
+	this.stake = config.stake;
 
 	this.setupSeats(config.numseats);
 
@@ -172,6 +174,7 @@ Table.prototype.startGame = function() {
 		throw "There is already a game started";
 
 	this.currentGame = new Game(this);
+	this.currentGame.start();
 }
 
 /**
@@ -184,15 +187,22 @@ Table.prototype.getCurrentGame = function() {
 /**
  * Get parent id.
  */
-Table.prototype.getStartGameParentId=function() {
+Table.prototype.getStartGameParentId = function() {
 	return this.id;
 }
 
 /**
  * Get function to call on game start.
  */
-Table.prototype.getStartGameFunctionName=function() {
+Table.prototype.getStartGameFunctionName = function() {
 	return Backend.START_CASH_GAME;
+}
+
+/**
+ * Get stake.
+ */
+Table.prototype.getStake = function() {
+	return this.stake;
 }
 
 module.exports = Table;

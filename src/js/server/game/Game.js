@@ -10,6 +10,8 @@ var AskBlindState = require("./AskBlindState");
 function Game(table) {
 	EventDispatcher.call(this);
 
+	console.log("***** creating game...");
+
 	this.table = table;
 	this.id = null;
 	this.gameState = null;
@@ -126,6 +128,13 @@ Game.prototype.getGameSeatForSeatIndex = function(seatIndex) {
 	}
 
 	return null;
+}
+
+/**
+ * Get number of players in game.
+ */
+Game.prototype.getNumInGame = function() {
+	return this.gameSeats.length;
 }
 
 /**

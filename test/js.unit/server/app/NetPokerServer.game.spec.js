@@ -7,8 +7,10 @@ var StateCompleteMessage = require("../../../../src/js/proto/messages/StateCompl
 var SeatClickMessage = require("../../../../src/js/proto/messages/SeatClickMessage");
 var ShowDialogMessage = require("../../../../src/js/proto/messages/ShowDialogMessage");
 var ButtonClickMessage = require("../../../../src/js/proto/messages/ButtonClickMessage");
+var ButtonsMessage = require("../../../../src/js/proto/messages/ButtonsMessage");
 var ButtonData = require("../../../../src/js/proto/data/ButtonData");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
+var AskBlindState = require("../../../../src/js/server/game/AskBlindState");
 
 describe("NetPokerServer - game", function() {
 	var mockBackend;
@@ -17,7 +19,7 @@ describe("NetPokerServer - game", function() {
 		mockBackend = {};
 
 		mockBackend.call = function(method, params) {
-			console.log("backend call: " + method);
+			console.log("#### backend call: " + method);
 			var thenable = new Thenable();
 
 			switch (method) {
@@ -29,7 +31,8 @@ describe("NetPokerServer - game", function() {
 							currency: "PLY",
 							name: "Test Table",
 							minSitInAmount: 10,
-							maxSitInAmount: 100
+							maxSitInAmount: 100,
+							stake: 2
 						}]
 					});
 					break;
@@ -50,6 +53,13 @@ describe("NetPokerServer - game", function() {
 							});
 							break;
 
+						case "user3":
+							thenable.notifySuccess({
+								id: 777,
+								name: "testson_three"
+							});
+							break;
+
 						default:
 							thenable.notifyError();
 							break;
@@ -64,6 +74,12 @@ describe("NetPokerServer - game", function() {
 
 				case Backend.SIT_IN:
 					thenable.notifySuccess();
+					break;
+
+				case Backend.START_CASH_GAME:
+					thenable.notifySuccess({
+						gameId: 111
+					});
 					break;
 
 				default:
@@ -81,6 +97,7 @@ describe("NetPokerServer - game", function() {
 
 		var bot1 = new BotConnection(netPokerServer, "user1");
 		var bot2 = new BotConnection(netPokerServer, "user2");
+		var bot3 = new BotConnection(netPokerServer, "user3");
 
 		var table;
 
@@ -96,17 +113,46 @@ describe("NetPokerServer - game", function() {
 				bot1.reply(ShowDialogMessage, new ButtonClickMessage(ButtonData.SIT_IN));
 				bot2.reply(StateCompleteMessage, new SeatClickMessage(5));
 				bot2.reply(ShowDialogMessage, new ButtonClickMessage(ButtonData.SIT_IN));
+				bot3.reply(StateCompleteMessage, new SeatClickMessage(7));
+				bot3.reply(ShowDialogMessage, new ButtonClickMessage(ButtonData.SIT_IN));
 
 				bot1.connectToTable(123);
 				bot2.connectToTable(123);
+				bot3.connectToTable(123);
 
 				TickLoopRunner.runTicks().then(next);
 			},
 
 			function(next) {
+				expect(table.getNumInGame()).toBe(3);
+
 				expect(table.getTableSeatBySeatIndex(3).isInGame()).toBe(true);
 				expect(table.getTableSeatBySeatIndex(5).isInGame()).toBe(true);
 				expect(table.getCurrentGame()).not.toBe(null);
+				expect(table.getCurrentGame().getGameState()).toEqual(jasmine.any(AskBlindState));
+
+				expect(bot1.getLastMessageOfType(ButtonsMessage)).toBe(null);
+				expect(bot2.getLastMessageOfType(ButtonsMessage)).not.toBe(null);
+				expect(bot3.getLastMessageOfType(ButtonsMessage)).toBe(null);
+
+				bot1.clearMessages();
+				bot2.clearMessages();
+
+				bot2.send(new ButtonClickMessage(ButtonData.POST_SB));
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				expect(table.getCurrentGame().getNumInGame()).toBe(1);
+
+				expect(bot1.getLastMessageOfType(ButtonsMessage)).toBe(null);
+				expect(bot2.getLastMessageOfType(ButtonsMessage)).toBe(null);
+				expect(bot3.getLastMessageOfType(ButtonsMessage)).not.toBe(null);
+
+				bot3.send(new ButtonClickMessage(ButtonData.POST_BB));
+
+				expect(table.getCurrentGame().getNumInGame()).toBe(3);
+
 				netPokerServer.close();
 				next();
 			}
