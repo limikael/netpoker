@@ -1,11 +1,36 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>Testing</title>
 	</head>
 	<body>
-		<script>
-			NET_POKER_URL="ws://localhost:2000/?viewcase=basic.json";
-		</script>
-		<script src="netpokerclient.bundle.js"></script>
+		<h1>Let's get this mothafucka tested!</h1>
+
+		<h2>Cashgame mock server test</h2>
+
+		This is the primary test to run for the moment. You can test it by yourself by opening up two different sessions
+		in two browser windows. Or contact me using any of the methods above, I'm always up for some poker... 
+		<br><br>
+		<i>These tests uses four fixed "mock accounts" with infinite funds. It is possible to open up the same
+		account in several browser windows or from several client machines, but in that case only one of the 
+		instances (the last opened one) will work as expected. The other ones will not accept any button input.</i>
+		<br><br>
+		Mock Sessions:
+		<ul>
+			<li><b>1. Mock Olle</b> <a target="user1" href="table.html?tableId=123&token=user1">open</a></li>
+			<li><b>2. Mock Kalle</b> <a target="user2" href="table.html?tableId=123&token=user2">open</a></li>
+			<li><b>3. Mock Pelle</b> <a target="user3" href="table.html?tableId=123&token=user3">open</a></li>
+			<li><b>4. Mock Lisa</b> <a target="user4" href="table.html?tableId=123&token=user4">open</a></li>
+		</ul>
+
+		<h2>Client visual test cases</h2>
+		<i>These tests is for visual unit testing of the client. Go ahead and try if you want. :)</i>
+
+		<ul>
+			<li>
+				<!--<b><?php echo $case; ?></b>
+				<a href="test/visualtest?case=<?php echo $case; ?>">open</a>-->
+			</li>
+		</ul>
 	</body>
 </html>

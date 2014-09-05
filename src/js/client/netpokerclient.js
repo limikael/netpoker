@@ -1,2 +1,2 @@
-var NetPokerClient = require("./app/NetPokerClient");
-var netPokerClient = new NetPokerClient();
+NetPokerClient = require("./app/NetPokerClient");
+//var netPokerClient = new NetPokerClient();

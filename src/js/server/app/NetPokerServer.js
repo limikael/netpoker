@@ -42,6 +42,7 @@ NetPokerServer.prototype.onConnectionManagerConnection = function(e) {
 		var table = this.tableManager.getTableById(initMessage.getTableId());
 
 		if (!table) {
+			console.log("table not found, refusing...")
 			e.getProtoConnection().close();
 			return;
 		}
@@ -49,6 +50,7 @@ NetPokerServer.prototype.onConnectionManagerConnection = function(e) {
 		console.log("user " + e.getUser().getName() + " connecting to table " + table.getId());
 		table.notifyNewConnection(e.getProtoConnection(), e.getUser());
 	} else {
+		console.log("no entity to connect to, refusing...")
 		e.getProtoConnection().close();
 	}
 }

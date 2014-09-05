@@ -5,18 +5,23 @@ var Backend = require("../../src/js/server/backend/Backend");
 var MockBackendServer = require("../utils/MockBackendServer");
 var minimist = require("minimist");
 var fs = require("fs");
+var url = require("url");
 
 function handleWebRequest(e) {
 	console.log("web request: " + e.request.url);
 
-	var url = e.request.url;
+	var urlParts=url.parse(e.request.url);
+	var path=urlParts.pathname;
 
-	if (url == "/")
-		url = "/index.html";
+	if (path == "/")
+		path = "/index.html";
 
-	var content = fs.readFileSync(__dirname + "/../view/" + url);
+	var fileName = __dirname + "/../view/" + path;
 
-	e.response.write(content);
+	if (fs.existsSync(fileName)) {
+		e.response.write(fs.readFileSync(fileName));
+	}
+
 	e.response.end();
 }
 

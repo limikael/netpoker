@@ -1,0 +1,41 @@
+<html>
+	<head>
+		<title>Testing</title>
+		<script src="netpokerclient.js"></script>
+		<script>
+			function getQueryStringParams() {
+				var params = {};
+				(function() {
+
+					var match,
+						pl = /\+/g, // Regex for replacing addition symbol with a space
+						search = /([^&=]+)=?([^&]*)/g,
+						decode = function(s) {
+							return decodeURIComponent(s.replace(pl, " "));
+						},
+						query = window.location.search.substring(1).replace(/amp;/g, "");
+
+					while (match = search.exec(query))
+						params[decode(match[1])] = decode(match[2]);
+				})();
+
+				return params;
+			};
+
+			function run() {
+				var params=getQueryStringParams();
+
+				var netPokerClient=new NetPokerClient();
+				netPokerClient.setUrl("ws://"+window.location.host+"/");
+				netPokerClient.setToken(params["token"]);
+
+				if (params["tableId"])
+					netPokerClient.setTableId(params["tableId"]);
+
+				netPokerClient.run();
+			}
+		</script>
+	</head>
+	<body onload="run();">
+	</body>
+</html>
