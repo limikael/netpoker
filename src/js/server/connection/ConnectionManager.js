@@ -85,7 +85,15 @@ ConnectionManager.prototype.onUserConnectionClose = function(e) {
 ConnectionManager.prototype.listen = function(port) {
 	this.messageServer = new MessageServer();
 	this.messageServer.on(MessageServer.CONNECTION, this.onMessageServerConnection, this);
+	this.messageServer.on("request", this.onMessageServerRequest, this);
 	this.messageServer.listen(port);
+}
+
+/**
+ * Regular web request from the server.
+ */
+ConnectionManager.prototype.onMessageServerRequest=function(ev) {
+	this.trigger(ev);
 }
 
 /**

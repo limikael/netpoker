@@ -16,6 +16,7 @@ function MessageServer() {
 	this.server = http.createServer();
 
 	this.server.on("upgrade", this.onServerUpgrade.bind(this));
+	this.server.on("request", this.onServerRequest.bind(this));
 }
 
 FunctionUtil.extend(MessageServer, EventDispatcher);
@@ -31,6 +32,8 @@ MessageServer.prototype.onServerUpgrade = function(request, socket, body) {
 	if (!WebSocket.isWebSocket(request))
 		return;
 
+	//	console.log("webserver protocol upgrade");
+
 	var urlObject = url.parse(request.url);
 	var parameters = querystring.parse(urlObject.query);
 
@@ -41,6 +44,17 @@ MessageServer.prototype.onServerUpgrade = function(request, socket, body) {
 	this.trigger({
 		type: MessageServer.CONNECTION,
 		connection: connection
+	});
+}
+
+/**
+ * Server request.
+ */
+MessageServer.prototype.onServerRequest = function(request, response) {
+	this.trigger({
+		type: "request",
+		request: request,
+		response: response
 	});
 }
 

@@ -54,6 +54,13 @@ NetPokerServer.prototype.onConnectionManagerConnection = function(e) {
 }
 
 /**
+ * Web request from connection manager.
+ */
+NetPokerServer.prototype.onConnectionManagerRequest=function(e) {
+	this.trigger(e);
+}
+
+/**
  * Set backend to use.
  * @method setBackend
  */
@@ -75,6 +82,7 @@ NetPokerServer.prototype.getBackend = function() {
  */
 NetPokerServer.prototype.onTableManagerInitialized = function() {
 	this.connectionManager.on(ConnectionManager.CONNECTION, this.onConnectionManagerConnection, this);
+	this.connectionManager.on("request", this.onConnectionManagerRequest, this);
 
 	if (this.listenPort)
 		this.connectionManager.listen(this.listenPort);
