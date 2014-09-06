@@ -1,7 +1,6 @@
 var SeatInfoMessage = require("../../proto/messages/SeatInfoMessage");
 var CommunityCardsMessage = require("../../proto/messages/CommunityCardsMessage");
 var PocketCardsMessage = require("../../proto/messages/PocketCardsMessage");
-var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 
 /**
  * Control the table
@@ -14,7 +13,6 @@ function TableController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(SeatInfoMessage.TYPE, this.onSeatInfoMessage, this);
 	this.messageSequencer.addMessageHandler(CommunityCardsMessage.TYPE, this.onCommunityCardsMessage, this);
 	this.messageSequencer.addMessageHandler(PocketCardsMessage.TYPE, this.onPocketCardsMessage, this);
-	this.messageSequencer.addMessageHandler(ButtonsMessage.TYPE, this.onButtonsMessage, this);
 }
 
 /**
@@ -57,15 +55,6 @@ TableController.prototype.onPocketCardsMessage = function(m) {
 		cardView.setCardData(cardData);
 		cardView.show();
 	}
-}
-
-/**
- * Buttons message.
- */
-TableController.prototype.onButtonsMessage = function(m) {
-	var buttonsView = this.view.getButtonsView();
-
-	buttonsView.setButtons(m.getButtons());
 }
 
 module.exports = TableController;

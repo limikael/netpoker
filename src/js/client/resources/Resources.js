@@ -33,9 +33,9 @@ function Resources() {
 	for (i = 0; i < 4; i++)
 		this.suitSymbols.push(this.getComponentsPart(246 + i * 23, 67, 18, 19));
 
-	this.framePlate=this.getComponentsPart(301,262,74,76);
-
-	this.bigButton=this.getComponentsPart(33,298,95,94);
+	this.framePlate = this.getComponentsPart(301, 262, 74, 76);
+	this.bigButton = this.getComponentsPart(33, 298, 95, 94);
+	this.dialogButton = this.getComponentsPart(383, 461, 82, 47);
 }
 
 /**

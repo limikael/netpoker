@@ -1,11 +1,12 @@
 var FunctionUtil = require("../../utils/FunctionUtil");
 var MessageSequencer = require("./MessageSequencer");
-var TableController = require("./TableController");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var ButtonsView = require("../view/ButtonsView");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 var SeatClickMessage = require("../../proto/messages/SeatClickMessage");
 var NetPokerClientView = require("../view/NetPokerClientView");
+var TableController = require("./TableController");
+var InterfaceController = require("./InterfaceController");
 
 /**
  * Main controller
@@ -17,6 +18,7 @@ function NetPokerClientController(view) {
 	this.messageSequencer = new MessageSequencer();
 
 	this.tableController = new TableController(this.messageSequencer, this.netPokerClientView);
+	this.interfaceController = new InterfaceController(this.messageSequencer, this.netPokerClientView);
 
 	this.netPokerClientView.getButtonsView().on(ButtonsView.BUTTON_CLICK, this.onButtonClick, this);
 	this.netPokerClientView.on(NetPokerClientView.SEAT_CLICK, this.onSeatClick, this);

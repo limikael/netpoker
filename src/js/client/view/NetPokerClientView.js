@@ -154,4 +154,12 @@ NetPokerClientView.prototype.getButtonsView = function() {
 	return this.buttonsView;
 }
 
+/**
+ * Get dialog view.
+ * @method getDialogView
+ */
+NetPokerClientView.prototype.getDialogView = function() {
+	return this.dialogView;
+}
+
 module.exports = NetPokerClientView;

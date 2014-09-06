@@ -10,11 +10,10 @@ module.exports = function(grunt) {
 
 	grunt.registerTask("deploy",function() {
 		var done=this.async();
-
-		qsub("./node_modules/.bin/jitsu")
-			.arg("deploy","-c")
-			.show().expect(0).run()
-			.then(done);
+		var job=qsub("./node_modules/.bin/jitsu");
+		job.arg("deploy","-c");
+		job.show().expect(0);
+		job.run().then(done);
 	});
 
 	grunt.registerTask("js-unit-test", function() {

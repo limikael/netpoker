@@ -23,6 +23,13 @@ ShowDialogMessage.prototype.getText = function() {
 }
 
 /**
+ * Getter.
+ */
+ShowDialogMessage.prototype.getButtons = function() {
+	return this.buttons;
+}
+
+/**
  * Setter.
  */
 ShowDialogMessage.prototype.setText = function(text) {
@@ -35,6 +42,7 @@ ShowDialogMessage.prototype.setText = function(text) {
  */
 ShowDialogMessage.prototype.unserialize = function(data) {
 	this.text = data.text;
+	this.buttons = data.buttons;
 }
 
 /**
@@ -44,6 +52,7 @@ ShowDialogMessage.prototype.unserialize = function(data) {
 ShowDialogMessage.prototype.serialize = function() {
 	return {
 		text: this.text,
+		buttons: this.buttons
 	};
 }
 

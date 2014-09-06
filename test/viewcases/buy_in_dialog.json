@@ -1,2 +1,2 @@
-{"type":"showDialog","text":"Hello and walcome! Do you want to join?","buttons":["buyChips","cancel"]}
+{"type":"showDialog","text":"Hello and walcome!\n\nDo you want to join?","buttons":["buyIn","cancel"]}
 {"type":"stateComplete"}
