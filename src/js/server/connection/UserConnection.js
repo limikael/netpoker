@@ -3,6 +3,7 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var Backend = require("../backend/Backend");
 var InitMessage = require("../../proto/messages/InitMessage");
 var User = require("../user/User");
+var fs = require("fs");
 
 /**
  * Represents a connected user.
@@ -11,7 +12,9 @@ var User = require("../user/User");
 function UserConnection(services, connection) {
 	ProtoConnection.call(this, connection);
 
+	this.connection = connection;
 	this.services = services;
+	this.viewCaseDir = null;
 
 	this.addMessageHandler(InitMessage.TYPE, this.onInitMessage, this);
 }
@@ -28,6 +31,11 @@ UserConnection.CLOSE = ProtoConnection.CLOSE;
 UserConnection.prototype.onInitMessage = function(initMessage) {
 	this.initMessage = initMessage;
 
+	if (initMessage.getViewCase() && this.viewCaseDir) {
+		this.handleViewCase(initMessage.getViewCase());
+		return;
+	}
+
 	var params = {
 		token: initMessage.getToken()
 	};
@@ -37,6 +45,33 @@ UserConnection.prototype.onInitMessage = function(initMessage) {
 		this.onFetchUserCallSuccess.bind(this),
 		this.onFetchUserCallError.bind(this)
 	);
+}
+
+/**
+ * Handle view case.
+ */
+UserConnection.prototype.handleViewCase = function(viewCase) {
+	console.log("serving view case: " + viewCase);
+
+	var caseFileName = this.viewCaseDir + "/" + viewCase + ".json";
+
+	if (!fs.existsSync(caseFileName)) {
+		console.log("got request for non existing view case");
+		this.close();
+		this.trigger(UserConnection.CLOSE);
+		return;
+	}
+
+	f = fs.readFileSync(caseFileName);
+	var lines = f.toString().split("\n");
+
+	for (var i = 0; i < lines.length; i++) {
+		var line = lines[i];
+
+		if (line.length && line[0] != "/") {
+			this.connection.send(JSON.parse(line));
+		}
+	}
 }
 
 /**
@@ -85,6 +120,14 @@ UserConnection.prototype.getUser = function() {
  */
 UserConnection.prototype.getInitMessage = function() {
 	return this.initMessage;
+}
+
+/**
+ * Serve view cases.
+ * @method serveViewCases
+ */
+UserConnection.prototype.serveViewCases = function(dir) {
+	this.viewCaseDir = dir;
 }
 
 module.exports = UserConnection;

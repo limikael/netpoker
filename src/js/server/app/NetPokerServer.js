@@ -79,6 +79,14 @@ NetPokerServer.prototype.getBackend = function() {
 }
 
 /**
+ * Serve view cases from directory.
+ */
+NetPokerServer.prototype.serveViewCases = function(dir) {
+	console.log("Serving view cases from: "+dir);
+	this.connectionManager.serveViewCases(dir);
+}
+
+/**
  * The table manager is initialized.
  * @method onTableManagerInitialized
  */

@@ -14,6 +14,7 @@ function ConnectionManager(services) {
 	EventDispatcher.call(this);
 
 	this.messageServer = null;
+	this.viewCaseDir = null;
 }
 
 FunctionUtil.extend(ConnectionManager, EventDispatcher);
@@ -39,6 +40,9 @@ ConnectionManager.prototype.onMessageServerConnection = function(e) {
  */
 ConnectionManager.prototype.handleNewConnection = function(connection) {
 	var userConnection = new UserConnection(this.services, connection);
+
+	if (this.viewCaseDir)
+		userConnection.serveViewCases(this.viewCaseDir);
 
 	userConnection.on(UserConnection.CLOSE, this.onUserConnectionClose, this);
 	userConnection.on(UserConnection.INITIALIZED, this.onUserConnectionInitialized, this);
@@ -92,7 +96,7 @@ ConnectionManager.prototype.listen = function(port) {
 /**
  * Regular web request from the server.
  */
-ConnectionManager.prototype.onMessageServerRequest=function(ev) {
+ConnectionManager.prototype.onMessageServerRequest = function(ev) {
 	this.trigger(ev);
 }
 
@@ -105,6 +109,14 @@ ConnectionManager.prototype.close = function() {
 		this.messageServer.close();
 		this.messageServer = null;
 	}
+}
+
+/**
+ * Serve view cases.
+ * @method serveViewCases
+ */
+ConnectionManager.prototype.serveViewCases = function(dir) {
+	this.viewCaseDir = dir;
 }
 
 module.exports = ConnectionManager;

@@ -4,6 +4,7 @@
 function InitMessage(token) {
 	this.token = token;
 	this.tableId = null;
+	this.viewCase = null;
 }
 
 InitMessage.TYPE = "init";
@@ -33,12 +34,29 @@ InitMessage.prototype.getTableId = function() {
 }
 
 /**
+ * Set view case.
+ * @method setTableId
+ */
+InitMessage.prototype.setViewCase = function(viewCase) {
+	this.viewCase = viewCase;
+}
+
+/**
+ * Get view case.
+ * @method getTableId
+ */
+InitMessage.prototype.getViewCase = function() {
+	return this.viewCase;
+}
+
+/**
  * Un-serialize.
  * @method unserialize.
  */
 InitMessage.prototype.unserialize = function(data) {
 	this.token = data.token;
 	this.tableId = data.tableId;
+	this.viewCase = data.viewCase;
 }
 
 /**
@@ -48,7 +66,8 @@ InitMessage.prototype.unserialize = function(data) {
 InitMessage.prototype.serialize = function() {
 	return {
 		token: this.token,
-		tableId: this.tableId
+		tableId: this.tableId,
+		viewCase: this.viewCase
 	};
 }
 
