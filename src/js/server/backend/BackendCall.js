@@ -42,7 +42,16 @@ BackendCall.prototype.onRequestComplete = function(e, r, body) {
 
 	console.log("backend call returned: " + body);
 
-	this.thenable.resolve(JSON.parse(body));
+	var data;
+
+	try {
+		data=JSON.parse(body)
+		this.thenable.resolve(data);
+	}
+
+	catch (e) {
+		this.thenable.reject(e);
+	}
 }
 
 module.exports = BackendCall;

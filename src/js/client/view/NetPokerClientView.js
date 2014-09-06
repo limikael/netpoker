@@ -1,5 +1,6 @@
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
+var EventDispatcher = require("../../utils/EventDispatcher");
 var Resources = require("../resources/Resources");
 var SeatView = require("./SeatView");
 var CardView = require("./CardView");
@@ -33,6 +34,9 @@ function NetPokerClientView() {
 }
 
 FunctionUtil.extend(NetPokerClientView, PIXI.DisplayObjectContainer);
+EventDispatcher.init(NetPokerClientView);
+
+NetPokerClientView.SEAT_CLICK = "seatClick";
 
 /**
  * Setup background.
@@ -79,11 +83,29 @@ NetPokerClientView.prototype.setupSeats = function() {
 			c.setTargetPosition(Point(p.x + j * 30 - 60, p.y - 100));
 			this.tableContainer.addChild(c);
 			seatView.addPocketCard(c);
+			seatView.on("click", this.onSeatClick, this);
 		}
 
 		this.tableContainer.addChild(seatView);
 		this.seatViews.push(seatView);
 	}
+}
+
+/**
+ * Seat click.
+ */
+NetPokerClientView.prototype.onSeatClick = function(e) {
+	var seatIndex = -1;
+
+	for (var i = 0; i < this.seatViews.length; i++)
+		if (e.target == this.seatViews[i])
+			seatIndex = i;
+
+	console.log("seat click: " + seatIndex);
+	this.trigger({
+		type: NetPokerClientView.SEAT_CLICK,
+		seatIndex: seatIndex
+	});
 }
 
 /**

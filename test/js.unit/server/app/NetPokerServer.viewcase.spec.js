@@ -59,7 +59,7 @@ describe("NetPokerServer - viewcase", function() {
 			},
 			function(next) {
 				var initMessage = new InitMessage();
-				initMessage.setViewCase("basic");
+				initMessage.setViewCase("cards_players_and_buttons");
 				protoConnection.send(initMessage);
 				protoConnection.on(ProtoConnection.MESSAGE,function(e) {
 					console.log("got message: "+e.message.type);

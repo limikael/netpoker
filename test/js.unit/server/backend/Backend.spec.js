@@ -24,4 +24,25 @@ describe("Backend", function() {
 				done();
 			});
 	});
+
+	it("handles errors gracefully", function(done) {
+		var mockBackendServer = new MockBackendServer();
+		mockBackendServer.setListenPort(9998);
+		mockBackendServer.start();
+
+		var backend = new Backend();
+		backend.setBaseUrl("http://localhost:9998/");
+
+		var params = {
+			token: "user1"
+		};
+
+		backend.call("doesnt_exist", params).then(
+			function(res) {},
+			function(err) {
+				mockBackendServer.close();
+				done();
+			}
+		);
+	});
 });

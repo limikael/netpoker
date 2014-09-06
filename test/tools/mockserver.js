@@ -1,13 +1,4 @@
-/*var connect = require('connect');
-var serveStatic = require('serve-static');
-
-console.log("---- starting ----");
-
-connect().use(serveStatic(__dirname+"/../view/")).listen(8081);
-
-console.log("---- started ----");*/
-
-/*#!/usr/bin/env node*/
+#!/usr/bin/env node
 
 var NetPokerServer = require("../../src/js/server/app/NetPokerServer");
 var Backend = require("../../src/js/server/backend/Backend");

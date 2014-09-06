@@ -4,6 +4,8 @@ var TableController = require("./TableController");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var ButtonsView = require("../view/ButtonsView");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
+var SeatClickMessage = require("../../proto/messages/SeatClickMessage");
+var NetPokerClientView = require("../view/NetPokerClientView");
 
 /**
  * Main controller
@@ -17,6 +19,7 @@ function NetPokerClientController(view) {
 	this.tableController = new TableController(this.messageSequencer, this.netPokerClientView);
 
 	this.netPokerClientView.getButtonsView().on(ButtonsView.BUTTON_CLICK, this.onButtonClick, this);
+	this.netPokerClientView.on(NetPokerClientView.SEAT_CLICK, this.onSeatClick, this);
 }
 
 /**
@@ -53,6 +56,15 @@ NetPokerClientController.prototype.onButtonClick = function(e) {
 		return;
 
 	var m = new ButtonClickMessage(e.button, e.value);
+	this.protoConnection.send(m);
+}
+
+/**
+ * Seat click.
+ * @private
+ */
+NetPokerClientController.prototype.onSeatClick = function(e) {
+	var m = new SeatClickMessage(e.seatIndex);
 	this.protoConnection.send(m);
 }
 

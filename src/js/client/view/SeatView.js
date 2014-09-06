@@ -1,13 +1,14 @@
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("../resources/Resources");
+var Button=require("../../utils/Button");
 
 /**
  * A seat view.
  * @class SeatView
  */
 function SeatView(seatIndex) {
-	PIXI.DisplayObjectContainer.call(this);
+	Button.call(this);
 
 	this.pocketCards = [];
 	this.seatIndex = seatIndex;
@@ -47,7 +48,7 @@ function SeatView(seatIndex) {
 	this.setChips("");
 }
 
-FunctionUtil.extend(SeatView, PIXI.DisplayObjectContainer);
+FunctionUtil.extend(SeatView, Button);
 
 /**
  * Set name.
