@@ -1,7 +1,7 @@
 {
   "name": "netpoker",
   "subdomain": "limikael-netpoker",
-  "version": "0.0.1-11",
+  "version": "0.0.1-15",
   "dependencies": {
     "minimist": "^1.1.0",
     "q": "^1.0.1",
@@ -15,10 +15,11 @@
     "url": "https://github.com/limikael/netpoker.git"
   },
   "devDependencies": {
-    "pixi.js": "git://github.com/GoodBoyDigital/pixi.js",
     "browserify": "^5.9.1",
     "grunt": "^0.4.5",
     "jasmine-node": "^2.0.0-beta4",
+    "jitsu": "^0.13.18",
+    "pixi.js": "git://github.com/GoodBoyDigital/pixi.js",
     "qsub": "0.0.2"
   },
   "engines": {

@@ -37,8 +37,8 @@ function handleWebRequest(e) {
 	e.response.end();
 }
 
-var port = 2000;
-var mockBackendPort = 9999;
+var port = 2222;
+var mockBackendPort = 2223;
 
 var mockBackendServer = new MockBackendServer();
 mockBackendServer.setListenPort(mockBackendPort);

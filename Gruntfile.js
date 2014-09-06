@@ -1,10 +1,20 @@
 var qsub = require("qsub");
 var Q = require("q");
+var AsyncSequence=require("./src/js/utils/AsyncSequence");
 
 module.exports = function(grunt) {
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json')
+	});
+
+	grunt.registerTask("deploy",function() {
+		var done=this.async();
+
+		qsub("./node_modules/.bin/jitsu")
+			.arg("deploy","-c")
+			.show().expect(0).run()
+			.then(done);
 	});
 
 	grunt.registerTask("js-unit-test", function() {
