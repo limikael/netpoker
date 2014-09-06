@@ -94,9 +94,6 @@ NetPokerServer.prototype.onTableManagerInitialized = function() {
 	this.connectionManager.on(ConnectionManager.CONNECTION, this.onConnectionManagerConnection, this);
 	this.connectionManager.on("request", this.onConnectionManagerRequest, this);
 
-	if (this.listenPort)
-		this.connectionManager.listen(this.listenPort);
-
 	this.trigger(NetPokerServer.STARTED);
 	this.runThenable.notifySuccess();
 }
@@ -111,6 +108,9 @@ NetPokerServer.prototype.run = function() {
 
 	if (!this.listenPort && !this.mockNetwork)
 		throw new Error("No port to listen to.");
+
+	if (this.listenPort)
+		this.connectionManager.listen(this.listenPort);
 
 	this.runThenable = new Thenable();
 

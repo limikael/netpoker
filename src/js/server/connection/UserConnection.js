@@ -51,9 +51,8 @@ UserConnection.prototype.onInitMessage = function(initMessage) {
  * Handle view case.
  */
 UserConnection.prototype.handleViewCase = function(viewCase) {
-	console.log("serving view case: " + viewCase);
-
 	var caseFileName = this.viewCaseDir + "/" + viewCase + ".json";
+	console.log("serving view case: " + caseFileName);
 
 	if (!fs.existsSync(caseFileName)) {
 		console.log("got request for non existing view case");

@@ -42,6 +42,14 @@ NetPokerClient.prototype.setTableId = function(tableId) {
 }
 
 /**
+ * Set view case.
+ */
+NetPokerClient.prototype.setViewCase = function(viewCase) {
+	console.log("****** running view case: "+viewCase);
+	this.viewCase=viewCase;
+}
+
+/**
  * Set token.
  */
 NetPokerClient.prototype.setToken = function(token) {
@@ -79,8 +87,8 @@ NetPokerClient.prototype.onAssetLoaderComplete = function() {
  * Connect.
  */
 NetPokerClient.prototype.connect = function() {
-	if (!this.url || !this.token) {
-		this.loadingScreen.show("NEED URL AND TOKEN");
+	if (!this.url) {
+		this.loadingScreen.show("NEED URL");
 		return;
 	}
 
@@ -105,6 +113,9 @@ NetPokerClient.prototype.onConnectionConnect = function() {
 
 	if (this.tableId)
 		initMessage.setTableId(this.tableId);
+
+	if (this.viewCase)
+		initMessage.setViewCase(this.viewCase);
 
 	this.protoConnection.send(initMessage);
 }
