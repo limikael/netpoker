@@ -118,6 +118,7 @@ NetPokerClientView.prototype.setupCommunityCards = function() {
 
 	for (i = 0; i < 5; i++) {
 		var cardView = new CardView();
+		cardView.hide();
 		cardView.setTargetPosition(Point(p.x + i * 90, p.y));
 
 		this.communityCards.push(cardView);
