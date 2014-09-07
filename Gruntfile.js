@@ -75,7 +75,7 @@ module.exports = function(grunt) {
 
 		que = que.then(function() {
 			var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
-			job.arg("test/view/netpokerclient.js", "src/js/client/netpokerclient.js");
+			job.arg("test/view/netpokerclient.bundle.js", "src/js/client/netpokerclient.js");
 			job.show().expect(0);
 			return job.run();
 		});
