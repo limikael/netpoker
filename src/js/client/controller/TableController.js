@@ -57,6 +57,7 @@ TableController.prototype.onPocketCardsMessage = function(m) {
 		var cardData = m.getCards()[i];
 		var cardView = seatView.getPocketCards()[m.getFirstIndex() + i];
 
+		this.messageSequencer.waitFor(cardView, "animationDone");
 		cardView.setCardData(cardData);
 		cardView.show();
 	}

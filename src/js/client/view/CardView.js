@@ -1,6 +1,8 @@
 var PIXI = require("pixi.js");
+var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("../resources/Resources");
+var EventDispatcher = require("../../utils/EventDispatcher");
 
 /**
  * A card view.
@@ -32,6 +34,7 @@ function CardView() {
 }
 
 FunctionUtil.extend(CardView, PIXI.DisplayObjectContainer);
+EventDispatcher.init(CardView);
 
 /**
  * Set card data.
@@ -40,10 +43,12 @@ FunctionUtil.extend(CardView, PIXI.DisplayObjectContainer);
 CardView.prototype.setCardData = function(cardData) {
 	this.cardData = cardData;
 
+
 	if (this.cardData.isShown()) {
+		/*
 		this.back.visible = false;
 		this.frame.visible = true;
-
+*/
 		this.valueField.style.fill = this.cardData.getColor();
 
 		this.valueField.setText(this.cardData.getCardValueString());
@@ -51,10 +56,9 @@ CardView.prototype.setCardData = function(cardData) {
 		this.valueField.position.x = 17 - this.valueField.canvas.width / 2;
 
 		this.suit.setTexture(Resources.getInstance().suitSymbols[this.cardData.getSuitIndex()]);
-	} else {
-		this.back.visible = true;
-		this.frame.visible = false;
 	}
+	this.back.visible = true;
+	this.frame.visible = false;
 }
 
 /**
@@ -82,6 +86,28 @@ CardView.prototype.hide = function() {
  */
 CardView.prototype.show = function() {
 	this.visible = true;
+
+	var destination = {x: this.position.x, y: this.position.y};
+	this.position.x = (this.parent.width - this.width)*0.5;
+	this.position.y = -this.height;
+
+	var diffX = this.position.x - destination.x;
+	var diffY = this.position.y - destination.y;
+	var diff = Math.sqrt(diffX*diffX + diffY*diffY);
+
+	var thisPtr = this;
+	var tween = new TWEEN.Tween( this.position )
+            .to( { x: destination.x, y: destination.y }, 3*diff )
+            .easing( TWEEN.Easing.Quadratic.Out )
+            .onComplete(function()
+			{
+				if(thisPtr.cardData.isShown()) {
+					thisPtr.back.visible = false;
+					thisPtr.frame.visible = true;
+				}
+				thisPtr.dispatchEvent("animationDone", thisPtr);
+			})
+            .start();
 }
 
 module.exports = CardView;
