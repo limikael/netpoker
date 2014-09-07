@@ -17,6 +17,7 @@ Backend.START_CASH_GAME = "game/startForTable";
 
 /**
  * Set base url.
+ * @method setBaseUrl
  */
 Backend.prototype.setBaseUrl = function(baseUrl) {
 	this.baseUrl = baseUrl;
