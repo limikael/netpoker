@@ -6,7 +6,7 @@ var Thenable = require("../../utils/Thenable");
 
 /**
  * Main app class.
- *
+ * @class NetPokerServer
  */
 function NetPokerServer() {
 	EventDispatcher.call(this);
@@ -57,6 +57,8 @@ NetPokerServer.prototype.onConnectionManagerConnection = function(e) {
 
 /**
  * Web request from connection manager.
+ * @method onConnectionManagerRequest
+ * @private
  */
 NetPokerServer.prototype.onConnectionManagerRequest=function(e) {
 	this.trigger(e);
@@ -80,6 +82,7 @@ NetPokerServer.prototype.getBackend = function() {
 
 /**
  * Serve view cases from directory.
+ * @method serveViewCases
  */
 NetPokerServer.prototype.serveViewCases = function(dir) {
 	console.log("Serving view cases from: "+dir);
@@ -123,6 +126,7 @@ NetPokerServer.prototype.run = function() {
 
 /**
  * Close.
+ * @method close
  */
 NetPokerServer.prototype.close = function() {
 	this.connectionManager.close();

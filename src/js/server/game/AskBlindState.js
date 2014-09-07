@@ -7,7 +7,11 @@ var ButtonData = require("../../proto/data/ButtonData");
 var FinishedState = require("./FinishedState");
 
 /**
- * Ask blind state.
+ * During this state, we ask each participating user if they want to pay
+ * the required blind to join the game. If enough players join, we
+ * proceed with setting a RoundState as next state for the game object.
+ * If the number of players is not enough to start the game, we cancel
+ * the game by setting a FinishedState as next state instead.
  * @class AskBlindState
  */
 function AskBlindState() {
@@ -55,6 +59,8 @@ AskBlindState.prototype.askNextBlind = function() {
 
 /**
  * Prompt complete.
+ * @method onPromptComplete
+ * @private
  */
 AskBlindState.prototype.onPromptComplete = function() {
 	var button = this.prompt.getButton();
@@ -74,6 +80,7 @@ AskBlindState.prototype.onPromptComplete = function() {
 
 /**
  * Ask done.
+ * @method askDone
  */
 AskBlindState.prototype.askDone = function() {
 	var table = this.game.getTable();
@@ -91,7 +98,9 @@ AskBlindState.prototype.askDone = function() {
 }
 
 /**
- * Get current blind.
+ * Get the blind that we are currently asking for.
+ * @method getCurrentBlind
+ * @private
  */
 AskBlindState.prototype.getCurrentBlind = function() {
 	switch (this.game.getNumInGame()) {
@@ -107,7 +116,9 @@ AskBlindState.prototype.getCurrentBlind = function() {
 }
 
 /**
- * Get current blind amout.
+ * Get the amount of the blind that we are currently asking for.
+ * @method getCurrentBlindAmount
+ * @private
  */
 AskBlindState.prototype.getCurrentBlindAmount = function() {
 	var cand;

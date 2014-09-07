@@ -3,6 +3,7 @@ var request = require("request");
 
 /**
  * A call to a backend.
+ * @class BackendCall
  */
 function BackendCall(url, params) {
 	this.url = url;
@@ -15,7 +16,8 @@ function BackendCall(url, params) {
 }
 
 /**
- * Perform.
+ * Perform the call.
+ * @method perform
  */
 BackendCall.prototype.perform = function() {
 	var components = [];
@@ -33,6 +35,8 @@ BackendCall.prototype.perform = function() {
 
 /**
  * Request complete.
+ * @method onRequestComplete
+ * @private
  */
 BackendCall.prototype.onRequestComplete = function(e, r, body) {
 	if (e) {

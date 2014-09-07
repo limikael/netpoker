@@ -5,7 +5,8 @@ var DelayMessage = require("../../proto/messages/DelayMessage");
 var ClearMessage = require("../../proto/messages/ClearMessage");
 
 /**
- * Ask blind state.
+ * The game is finished. We do a wait and then clear the table,
+ * and then we notify the game object that the game is finished.
  * @class FinishedState
  */
 function FinishedState() {
@@ -27,7 +28,9 @@ FinishedState.prototype.run = function() {
 }
 
 /**
- *
+ * The timeout is complete.
+ * @method onTimout
+ * @private
  */
 FinishedState.prototype.onTimout = function() {
 	var clear = [
