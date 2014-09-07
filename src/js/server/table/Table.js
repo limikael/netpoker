@@ -63,6 +63,7 @@ Table.prototype.setupSeats = function(numseats) {
 
 /**
  * Table seat close.
+ * @method onTableSeatClose
  */
 Table.prototype.onTableSeatClose = function(e) {
 	if (this.currentGame)
@@ -73,6 +74,7 @@ Table.prototype.onTableSeatClose = function(e) {
 
 /**
  * Table seat ready.
+ * @method onTableSeatReady
  */
 Table.prototype.onTableSeatReady = function() {
 	if (!this.currentGame && this.getNumInGame() >= 2 && !this.stopped)
@@ -94,6 +96,7 @@ Table.prototype.notifyNewConnection = function(protoConnection, user) {
 
 /**
  * Table spectator done.
+ * @method  onTableSpectatorDone
  */
 Table.prototype.onTableSpectatorDone = function(e) {
 	var tableSpectator = e.target;
@@ -134,6 +137,7 @@ Table.prototype.isUserSeated = function(user) {
 
 /**
  * Get currency.
+ * @method getCurrency
  */
 Table.prototype.getCurrency = function() {
 	return this.currency;
@@ -141,6 +145,7 @@ Table.prototype.getCurrency = function() {
 
 /**
  * Get services.
+ * @method getServices
  */
 Table.prototype.getServices = function() {
 	return this.services;
@@ -148,6 +153,7 @@ Table.prototype.getServices = function() {
 
 /**
  * Get table name.
+ * @method getName
  */
 Table.prototype.getName = function() {
 	return this.name;
@@ -155,6 +161,7 @@ Table.prototype.getName = function() {
 
 /**
  * Get table name.
+ * @method getMinSitInAmount
  */
 Table.prototype.getMinSitInAmount = function() {
 	return this.minSitInAmount;
@@ -162,6 +169,7 @@ Table.prototype.getMinSitInAmount = function() {
 
 /**
  * Get table name.
+ * @method getMaxSitInAmount
  */
 Table.prototype.getMaxSitInAmount = function() {
 	return this.maxSitInAmount;
@@ -169,6 +177,7 @@ Table.prototype.getMaxSitInAmount = function() {
 
 /**
  * Start the game.
+ * @method startGame
  */
 Table.prototype.startGame = function() {
 	if (this.currentGame)
@@ -181,6 +190,7 @@ Table.prototype.startGame = function() {
 
 /**
  * Current game finished.
+ * @method onCurrentGameFinished
  */
 Table.prototype.onCurrentGameFinished = function() {
 	this.currentGame.off(Game.FINISHED, this.onCurrentGameFinished, this);
@@ -195,6 +205,7 @@ Table.prototype.onCurrentGameFinished = function() {
 
 /**
  * Get current game for this table.
+ * @method getCurrentGame
  */
 Table.prototype.getCurrentGame = function() {
 	return this.currentGame;
@@ -202,6 +213,7 @@ Table.prototype.getCurrentGame = function() {
 
 /**
  * Get parent id.
+ * @method getStartGameParentId
  */
 Table.prototype.getStartGameParentId = function() {
 	return this.id;
@@ -209,6 +221,7 @@ Table.prototype.getStartGameParentId = function() {
 
 /**
  * Get function to call on game start.
+ * @method getStartGameFunctionName
  */
 Table.prototype.getStartGameFunctionName = function() {
 	return Backend.START_CASH_GAME;
@@ -216,6 +229,7 @@ Table.prototype.getStartGameFunctionName = function() {
 
 /**
  * Get stake.
+ * @method getStake
  */
 Table.prototype.getStake = function() {
 	return this.stake;
@@ -223,13 +237,15 @@ Table.prototype.getStake = function() {
 
 /**
  * Stop.
+ * @method stop
  */
 Table.prototype.stop=function() {
 	this.stopped=true;
 }
 
 /**
- * Send.
+ * Send a message to all connections on the table.
+ * @method send
  */
 Table.prototype.send = function(m) {
 	var i;
@@ -243,6 +259,7 @@ Table.prototype.send = function(m) {
 
 /**
  * To string.
+ * @method toString
  */
 Table.prototype.toString=function() {
 	return "[Table id="+this.id+"]";
