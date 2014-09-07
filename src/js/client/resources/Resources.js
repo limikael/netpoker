@@ -36,6 +36,14 @@ function Resources() {
 	this.framePlate = this.getComponentsPart(301, 262, 74, 76);
 	this.bigButton = this.getComponentsPart(33, 298, 95, 94);
 	this.dialogButton = this.getComponentsPart(383, 461, 82, 47);
+	this.dealerButton = this.getComponentsPart(197, 236, 41, 35);
+
+	this.dealerButtonPositions = [
+		Point(347, 133), Point(395, 133), Point(574, 133),
+		Point(762, 267), Point(715, 358), Point(574, 434),
+		Point(536, 432), Point(351, 432), Point(193, 362),
+		Point(168, 266)
+	];
 }
 
 /**
