@@ -5,7 +5,8 @@ var ArrayUtil = require("../../utils/ArrayUtil");
 var AskBlindState = require("./AskBlindState");
 
 /**
- * Game.
+ * Represents one game of poker.
+ * @class Game
  */
 function Game(table) {
 	EventDispatcher.call(this);
@@ -26,6 +27,7 @@ Game.ERROR_WAIT = 10000;
 
 /**
  * Start the game.
+ * @method start
  */
 Game.prototype.start = function() {
 	var params = {
@@ -43,6 +45,8 @@ Game.prototype.start = function() {
 
 /**
  * Start game call complete.
+ * @method onStartCallComplete
+ * @private
  */
 Game.prototype.onStartCallComplete = function(result) {
 	this.id = result.gameId;
@@ -58,6 +62,8 @@ Game.prototype.onStartCallComplete = function(result) {
 
 /**
  * Start call error.
+ * @method onStartCallError
+ * @private
  */
 Game.prototype.onStartCallError = function() {
 	console.log("error starting game");
@@ -66,6 +72,8 @@ Game.prototype.onStartCallError = function() {
 
 /**
  * Error wait timer.
+ * @method onErrorWaitTimer
+ * @private
  */
 Game.prototype.onErrorWaitTimer = function() {
 	this.trigger(Game.FINISHED);
@@ -73,6 +81,7 @@ Game.prototype.onErrorWaitTimer = function() {
 
 /**
  * Get deck.
+ * @method getDeck
  */
 Game.prototype.getDeck = function() {
 	return this.deck;
@@ -80,6 +89,7 @@ Game.prototype.getDeck = function() {
 
 /**
  * Get id.
+ * @method getId
  */
 Game.prototype.getId = function() {
 	return this.id;
@@ -87,6 +97,7 @@ Game.prototype.getId = function() {
 
 /**
  * Get next card.
+ * @method getNextCard
  */
 Game.prototype.getNextCard = function() {
 	return this.deck.shift();
@@ -94,6 +105,7 @@ Game.prototype.getNextCard = function() {
 
 /**
  * Set and run game state.
+ * @method setGameState
  */
 Game.prototype.setGameState = function(gameState) {
 	this.gameState = gameState;
@@ -103,6 +115,7 @@ Game.prototype.setGameState = function(gameState) {
 
 /**
  * The game is finished!
+ * @method notifyFinished
  */
 Game.prototype.notifyFinished=function() {
 	this.gameState=null;
@@ -110,7 +123,8 @@ Game.prototype.notifyFinished=function() {
 }
 
 /**
- * Get game state.
+ * Get current game state.
+ * @method getGameState
  */
 Game.prototype.getGameState = function() {
 	return this.gameState;
@@ -118,6 +132,7 @@ Game.prototype.getGameState = function() {
 
 /**
  * Get reference to table.
+ * @method getTable
  */
 Game.prototype.getTable = function() {
 	return this.table;
@@ -140,6 +155,7 @@ Game.prototype.getGameSeatForSeatIndex = function(seatIndex) {
 
 /**
  * Get number of players in game.
+ * @method getNumInGame
  */
 Game.prototype.getNumInGame = function() {
 	return this.gameSeats.length;
@@ -147,6 +163,7 @@ Game.prototype.getNumInGame = function() {
 
 /**
  * Add a game seat.
+ * @method addGameSeat
  */
 Game.prototype.addGameSeat = function(gameSeat) {
 	if (this.getGameSeatForSeatIndex(gameSeat.getSeatIndex()))
@@ -157,6 +174,7 @@ Game.prototype.addGameSeat = function(gameSeat) {
 
 /**
  * To string.
+ * @method toString
  */
 Game.prototype.toString = function() {
 	return "[Game]";

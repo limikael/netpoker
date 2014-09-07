@@ -11,13 +11,15 @@ function GameSeat(game, seatIndex) {
 
 /**
  * Get seat index.
+ * @method getSeatIndex
  */
 GameSeat.prototype.getSeatIndex = function() {
 	return this.tableSeat.getSeatIndex();
 }
 
 /**
- * Get table.
+ * Get table seat.
+ * @method getTableSeat
  */
 GameSeat.prototype.getTableSeat = function() {
 	return this.tableSeat;
@@ -25,6 +27,7 @@ GameSeat.prototype.getTableSeat = function() {
 
 /**
  * Send a message to the game seat.
+ * @method send
  */
 GameSeat.prototype.send = function(m) {
 	this.tableSeat.send(m);

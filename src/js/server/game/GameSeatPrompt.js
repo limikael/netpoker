@@ -26,6 +26,7 @@ GameSeatPrompt.COMPLETE = "complete";
 
 /**
  * Add button.
+ * @method addButton
  */
 GameSeatPrompt.prototype.addButton = function(buttonData) {
 	this.buttonsMessage.addButton(buttonData);
