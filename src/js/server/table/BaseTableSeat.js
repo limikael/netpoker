@@ -37,6 +37,7 @@ BaseTableSeat.prototype.getSeatIndex = function() {
 
 /**
  * Set proto connection.
+ * @method setProtoConnection
  * @protected
  */
 BaseTableSeat.prototype.setProtoConnection = function(protoConnection) {
@@ -55,6 +56,7 @@ BaseTableSeat.prototype.setProtoConnection = function(protoConnection) {
 
 /**
  * Get proto connection.
+ * @method getProtoConnection
  */
 BaseTableSeat.prototype.getProtoConnection = function() {
 	return this.protoConnection;
@@ -62,6 +64,7 @@ BaseTableSeat.prototype.getProtoConnection = function() {
 
 /**
  * Button click message.
+ * @method onButtonClickMessage
  * @private
  */
 BaseTableSeat.prototype.onButtonClickMessage = function(message) {
@@ -70,6 +73,7 @@ BaseTableSeat.prototype.onButtonClickMessage = function(message) {
 
 /**
  * Button click message.
+ * @method onProtoConnectionClose
  * @private
  */
 BaseTableSeat.prototype.onProtoConnectionClose = function() {
@@ -79,6 +83,7 @@ BaseTableSeat.prototype.onProtoConnectionClose = function() {
 
 /**
  * Get table.
+ * @method getTable
  */
 BaseTableSeat.prototype.getTable=function() {
 	return this.table;
@@ -86,6 +91,7 @@ BaseTableSeat.prototype.getTable=function() {
 
 /**
  * Get services.
+ * @method getServices
  */
 BaseTableSeat.prototype.getServices=function() {
 	return this.table.getServices();
@@ -93,6 +99,7 @@ BaseTableSeat.prototype.getServices=function() {
 
 /**
  * Send.
+ * @method send
  */
 BaseTableSeat.prototype.send=function(message) {
 	if (this.protoConnection)
@@ -101,6 +108,7 @@ BaseTableSeat.prototype.send=function(message) {
 
 /**
  * Get chips.
+ * @method getChips
  */
 BaseTableSeat.prototype.getChips=function() {
 	throw "abstract";
