@@ -13,7 +13,9 @@ CardData.SUIT_STRINGS =
 	["D", "C", "H", "S"];
 
 /**
- * Shown?
+ * Does this CardData represent a show card?
+ * If not it should be rendered with its backside.
+ * @method isShown
  */
 CardData.prototype.isShown = function() {
 	return this.value >= 0;
@@ -21,6 +23,7 @@ CardData.prototype.isShown = function() {
 
 /**
  * Get card value string.
+ * @method getCardValueString
  */
 CardData.prototype.getCardValueString = function() {
 	return CardData.CARD_VALUE_STRINGS[this.value % 13];
@@ -28,6 +31,7 @@ CardData.prototype.getCardValueString = function() {
 
 /**
  * Get suit index.
+ * @method getSuitIndex
  */
 CardData.prototype.getSuitIndex = function() {
 	return Math.floor(this.value / 13);
@@ -35,6 +39,7 @@ CardData.prototype.getSuitIndex = function() {
 
 /**
  * Get suit string.
+ * @method getSuitString
  */
 CardData.prototype.getSuitString = function() {
 	return CardData.SUIT_STRINGS[this.getSuitIndex()];
@@ -42,6 +47,7 @@ CardData.prototype.getSuitString = function() {
 
 /**
  * Get color.
+ * @method getColor
  */
 CardData.prototype.getColor = function() {
 	if (this.getSuitIndex() % 2 != 0)
@@ -53,6 +59,7 @@ CardData.prototype.getColor = function() {
 
 /**
  * To string.
+ * @method toString
  */
 CardData.prototype.toString = function() {
 	return this.getCardValueString() + this.getSuitString();
