@@ -31,6 +31,7 @@ TableSeat.prototype.isAvailable = function() {
 
 /**
  * Get currently seated user.
+ * @method getUser
  */
 TableSeat.prototype.getUser = function() {
 	if (!this.tableSeatUser)
@@ -41,6 +42,7 @@ TableSeat.prototype.getUser = function() {
 
 /**
  * Reserve seat.
+ * @method reserve
  */
 TableSeat.prototype.reserve = function(user, protoConnection) {
 	if (!this.active)
@@ -58,6 +60,7 @@ TableSeat.prototype.reserve = function(user, protoConnection) {
 
 /**
  * The table seat user is done.
+ * @method onTableSeatUserDone
  */
 TableSeat.prototype.onTableSeatUserDone = function() {
 	var protoConnection = this.getProtoConnection();
@@ -76,6 +79,7 @@ TableSeat.prototype.onTableSeatUserDone = function() {
 
 /**
  * Table seat ready.
+ * @method onTableSeatUserReady
  */
 TableSeat.prototype.onTableSeatUserReady = function() {
 	this.trigger(TableSeat.READY);
@@ -83,6 +87,7 @@ TableSeat.prototype.onTableSeatUserReady = function() {
 
 /**
  * Is this table seat in the game.
+ * @method isInGame
  */
 TableSeat.prototype.isInGame = function() {
 	if (!this.tableSeatUser)
@@ -93,6 +98,7 @@ TableSeat.prototype.isInGame = function() {
 
 /**
  * Get chips.
+ * @method getChips
  */
 TableSeat.prototype.getChips = function() {
 	if (!this.tableSeatUser)
@@ -103,6 +109,7 @@ TableSeat.prototype.getChips = function() {
 
 /**
  * Make the user leave the table when possible.
+ * @method leaveTable
  */
 TableSeat.prototype.leaveTable = function() {
 	if (!this.tableSeatUser)
