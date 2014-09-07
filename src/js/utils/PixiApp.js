@@ -1,6 +1,7 @@
 "use strict";
 
 var PIXI=require("pixi.js");
+var TWEEN=require("tween.js");
 var FunctionUtil=require("./FunctionUtil");
 var ContentScaler=require("./ContentScaler");
 var FrameTimer=require("./FrameTimer");
@@ -117,6 +118,7 @@ PixiApp.prototype.onWindowResize=function() {
  */
 PixiApp.prototype.onAnimationFrame=function() {
 	this.renderer.render(this.appStage);
+	TWEEN.update();
 }
 
 /**

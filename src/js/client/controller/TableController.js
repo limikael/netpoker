@@ -64,6 +64,7 @@ TableController.prototype.onPocketCardsMessage = function(m) {
  */
 TableController.prototype.onDealerButtonMessage = function(m) {
 	var dealerButtonView = this.view.getDealerButtonView();
+	this.messageSequencer.waitFor(dealerButtonView, "animationDone");
 	dealerButtonView.show(m.getSeatIndex(), m.getAnimate());
 };
 
