@@ -22,6 +22,7 @@ MessageServerConnection.CLOSE = "close";
 
 /**
  * On websocket message.
+ * @method onWebSocketMessage
  * @private
  */
 MessageServerConnection.prototype.onWebSocketMessage = function(event) {
@@ -40,6 +41,7 @@ MessageServerConnection.prototype.onWebSocketMessage = function(event) {
 
 /**
  * On websocket message.
+ * @method onWebSocketClose
  * @private
  */
 MessageServerConnection.prototype.onWebSocketClose = function() {

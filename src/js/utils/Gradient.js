@@ -2,7 +2,8 @@ var PIXI = require("pixi.js");
 var FunctionUtil = require("./FunctionUtil");
 
 /**
- * A sprite with a gradient.
+ * Create a sprite with a gradient.
+ * @class Gradient
  */
 function Gradient() {
 	this.width = 100;
@@ -12,6 +13,7 @@ function Gradient() {
 
 /**
  * Set size of the gradient.
+ * @method setSize
  */
 Gradient.prototype.setSize = function(w, h) {
 	this.width = w;
@@ -20,6 +22,7 @@ Gradient.prototype.setSize = function(w, h) {
 
 /**
  * Add color stop.
+ * @method addColorStop
  */
 Gradient.prototype.addColorStop = function(weight, color) {
 	this.stops.push({
@@ -30,6 +33,7 @@ Gradient.prototype.addColorStop = function(weight, color) {
 
 /**
  * Render the sprite.
+ * @method createSprite
  */
 Gradient.prototype.createSprite = function() {
 	console.log("rendering gradient...");
