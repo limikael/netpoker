@@ -37,6 +37,7 @@ Sequencer.prototype.enqueue = function(task) {
 
 /**
  * Start the task.
+ * @method startTask
  * @private
  */
 Sequencer.prototype.startTask = function(task) {
@@ -50,6 +51,7 @@ Sequencer.prototype.startTask = function(task) {
 
 /**
  * The current task is complete.
+ * @method onTaskComplete
  * @private
  */
 Sequencer.prototype.onTaskComplete = function() {
