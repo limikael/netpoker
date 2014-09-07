@@ -34,6 +34,7 @@ GameSeatPrompt.prototype.addButton = function(buttonData) {
 
 /**
  * Send question and wait for reply.
+ * @method ask
  */
 GameSeatPrompt.prototype.ask = function() {
 	this.gameSeat.getTableSeat().on(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
@@ -42,6 +43,7 @@ GameSeatPrompt.prototype.ask = function() {
 
 /**
  * Button click message.
+ * @method onButtonClickMessage
  */
 GameSeatPrompt.prototype.onButtonClickMessage = function(m) {
 	//console.log("********** button click in GameSeatPrompt");
@@ -56,6 +58,7 @@ GameSeatPrompt.prototype.onButtonClickMessage = function(m) {
 
 /**
  * Get button.
+ * @method getButton
  */
 GameSeatPrompt.prototype.getButton = function() {
 	if (!this.button)
@@ -66,6 +69,7 @@ GameSeatPrompt.prototype.getButton = function() {
 
 /**
  * Get value.
+ * @method getValue
  */
 GameSeatPrompt.prototype.getValue = function() {
 	return this.value;
@@ -73,6 +77,7 @@ GameSeatPrompt.prototype.getValue = function() {
 
 /**
  * Get game seat.
+ * @method getGameSeat
  */
 GameSeatPrompt.prototype.getGameSeat = function() {
 	return this.gameSeat;
