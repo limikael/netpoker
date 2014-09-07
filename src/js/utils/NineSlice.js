@@ -3,6 +3,7 @@ var FunctionUtil = require("./FunctionUtil");
 
 /**
  * Nine slice.
+ * @class clearWebSocket
  */
 function NineSlice(texture, left, top, right, bottom) {
 	PIXI.DisplayObjectContainer.call(this);
@@ -34,6 +35,8 @@ FunctionUtil.extend(NineSlice, PIXI.DisplayObjectContainer);
 
 /**
  * Build parts.
+ * @method buildParts
+ * @private
  */
 NineSlice.prototype.buildParts = function() {
 	var xp = [0, this.left, this.texture.width - this.right, this.texture.width];
@@ -62,6 +65,8 @@ NineSlice.prototype.buildParts = function() {
 
 /**
  * Update sizes.
+ * @method updateSizes
+ * @private
  */
 NineSlice.prototype.updateSizes = function() {
 	var xp = [0, this.left, this.localWidth - this.right, this.localWidth];
@@ -86,6 +91,7 @@ NineSlice.prototype.updateSizes = function() {
 
 /**
  * Set local size.
+ * @method setLocalSize
  */
 NineSlice.prototype.setLocalSize = function(w, h) {
 	this.localWidth = w;
@@ -95,6 +101,8 @@ NineSlice.prototype.setLocalSize = function(w, h) {
 
 /**
  * Create texture part.
+ * @method createTexturePart
+ * @private
  */
 NineSlice.prototype.createTexturePart = function(x, y, width, height) {
 	var frame = {

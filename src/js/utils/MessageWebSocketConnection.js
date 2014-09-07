@@ -40,6 +40,7 @@ MessageWebSocketConnection.prototype.send = function(m) {
 
 /**
  * Web socket open.
+ * @method onWebSocketOpen
  * @private
  */
 MessageWebSocketConnection.prototype.onWebSocketOpen = function() {
@@ -48,6 +49,7 @@ MessageWebSocketConnection.prototype.onWebSocketOpen = function() {
 
 /**
  * Web socket message.
+ * @method onWebSocketMessage
  * @private
  */
 MessageWebSocketConnection.prototype.onWebSocketMessage = function(e) {
@@ -61,6 +63,7 @@ MessageWebSocketConnection.prototype.onWebSocketMessage = function(e) {
 
 /**
  * Web socket close.
+ * @method onWebSocketClose
  * @private
  */
 MessageWebSocketConnection.prototype.onWebSocketClose = function() {
@@ -73,6 +76,7 @@ MessageWebSocketConnection.prototype.onWebSocketClose = function() {
 
 /**
  * Web socket error.
+ * @method onWebSocketError
  * @private
  */
 MessageWebSocketConnection.prototype.onWebSocketError = function() {
@@ -86,6 +90,7 @@ MessageWebSocketConnection.prototype.onWebSocketError = function() {
 
 /**
  * Clear the current web socket.
+ * @method clearWebSocket
  */
 MessageWebSocketConnection.prototype.clearWebSocket = function() {
 	this.webSocket.onopen = null;
