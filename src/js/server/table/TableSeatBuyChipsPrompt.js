@@ -26,6 +26,7 @@ TableSeatBuyChipsPrompt.CANCEL = "cancel";
 
 /**
  * Ask if the user wants to be seated.
+ * @method ask
  */
 TableSeatBuyChipsPrompt.prototype.ask = function() {
 	if (!this.tableSeat.getProtoConnection())
@@ -46,6 +47,7 @@ TableSeatBuyChipsPrompt.prototype.ask = function() {
 
 /**
  * Balance call success.
+ * @method onGetBalanceCallComplete
  */
 TableSeatBuyChipsPrompt.prototype.onGetBalanceCallComplete = function(result) {
 	if (!this.tableSeat.getProtoConnection()) {
@@ -82,6 +84,7 @@ TableSeatBuyChipsPrompt.prototype.onGetBalanceCallComplete = function(result) {
 
 /**
  * Balance call fail.
+ * @method onGetBalanceCallError
  */
 TableSeatBuyChipsPrompt.prototype.onGetBalanceCallError = function(e) {
 	var d = new ShowDialogMessage();
@@ -95,6 +98,7 @@ TableSeatBuyChipsPrompt.prototype.onGetBalanceCallError = function(e) {
 
 /**
  * Connection close.
+ * @method onConnectionClose
  */
 TableSeatBuyChipsPrompt.prototype.onConnectionClose = function() {
 	this.tableSeat.off(ProtoConnection.CLOSE, this.onConnectionClose, this);
@@ -104,7 +108,9 @@ TableSeatBuyChipsPrompt.prototype.onConnectionClose = function() {
 }
 
 /**
- * Connection close.
+ * Handle the button click.
+ * @method onButtonClick
+ * @private
  */
 TableSeatBuyChipsPrompt.prototype.onButtonClick = function(e) {
 	if (e.getButton() == ButtonData.SIT_IN) {
@@ -137,6 +143,7 @@ TableSeatBuyChipsPrompt.prototype.onButtonClick = function(e) {
 
 /**
  * Balance call success.
+ * @method onSitInCallComplete
  */
 TableSeatBuyChipsPrompt.prototype.onSitInCallComplete = function(r) {
 	this.trigger(TableSeatBuyChipsPrompt.COMPLETE);
@@ -144,6 +151,7 @@ TableSeatBuyChipsPrompt.prototype.onSitInCallComplete = function(r) {
 
 /**
  * Balance call fail.
+ * @method onSitInCallError
  */
 TableSeatBuyChipsPrompt.prototype.onSitInCallError = function(e) {
 	var d=new ShowDialogMessage();
@@ -156,6 +164,7 @@ TableSeatBuyChipsPrompt.prototype.onSitInCallError = function(e) {
 
 /**
  * Get chips.
+ * @method getChips
  */
 TableSeatBuyChipsPrompt.prototype.getChips = function() {
 	return this.chips;

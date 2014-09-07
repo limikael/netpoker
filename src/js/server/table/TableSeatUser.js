@@ -47,6 +47,7 @@ TableSeatUser.prototype.sitIn = function() {
 
 /**
  * Buy chips prompt complete.
+ * @method onBuyChipsPromptComplete
  */
 TableSeatUser.prototype.onBuyChipsPromptComplete = function() {
 	this.buyChipsPrompt.off(TableSeatBuyChipsPrompt.COMPLETE, this.onBuyChipsPromptComplete, this);
@@ -69,6 +70,7 @@ TableSeatUser.prototype.onBuyChipsPromptComplete = function() {
 
 /**
  * Buy chips prompt complete.
+ * @method onBuyChipsPromptCancel
  */
 TableSeatUser.prototype.onBuyChipsPromptCancel = function() {
 	this.buyChipsPrompt.off(TableSeatBuyChipsPrompt.COMPLETE, this.onBuyChipsPromptComplete, this);
@@ -79,6 +81,7 @@ TableSeatUser.prototype.onBuyChipsPromptCancel = function() {
 
 /**
  * Is this table seat user in the game?
+ * @method isInGame
  */
 TableSeatUser.prototype.isInGame = function() {
 	return this.sitInCompleted;
@@ -86,6 +89,7 @@ TableSeatUser.prototype.isInGame = function() {
 
 /**
  * Get chips.
+ * @method getChips
  */
 TableSeatUser.prototype.getChips = function() {
 	return this.chips;
@@ -93,6 +97,7 @@ TableSeatUser.prototype.getChips = function() {
 
 /**
  * Leave.
+ * @method leave
  */
 TableSeatUser.prototype.leave = function() {
 	this.leaving = true;
