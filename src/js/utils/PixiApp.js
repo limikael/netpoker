@@ -9,6 +9,7 @@ var FrameTimer=require("./FrameTimer");
 /**
  * Pixi full window app.
  * Can operate using window coordinates or scaled to specific area.
+ * @class PixiApp
  */
 function PixiApp(width, height) {
 	if (PixiApp.instance)
@@ -68,6 +69,7 @@ FunctionUtil.extend(PixiApp,PIXI.DisplayObjectContainer);
 
 /**
  * Use scaling mode.
+ * @method useScaling
  */
 PixiApp.prototype.useScaling=function(w, h) {
 	this.removeContent();
@@ -80,6 +82,7 @@ PixiApp.prototype.useScaling=function(w, h) {
 
 /**
  * Use no scaling mode.
+ * @method useNoScaling
  */
 PixiApp.prototype.useNoScaling=function() {
 	this.removeContent();
@@ -89,7 +92,8 @@ PixiApp.prototype.useNoScaling=function() {
 
 /**
  * Remove any content.
- * Internal.
+ * @method removeContent
+ * @private
  */
 PixiApp.prototype.removeContent=function() {
 	if (this.appStage.children.indexOf(this)>=0)
@@ -103,6 +107,8 @@ PixiApp.prototype.removeContent=function() {
 
 /**
  * Window resize.
+ * @method onWindowResize
+ * @private
  */
 PixiApp.prototype.onWindowResize=function() {
 	if (this.contentScaler)
@@ -115,6 +121,8 @@ PixiApp.prototype.onWindowResize=function() {
 
 /**
  * Animation frame.
+ * @method onAnimationFrame
+ * @private
  */
 PixiApp.prototype.onAnimationFrame=function() {
 	this.renderer.render(this.appStage);
@@ -123,6 +131,7 @@ PixiApp.prototype.onAnimationFrame=function() {
 
 /**
  * Get canvas.
+ * @method getCanvas
  */
 PixiApp.prototype.getCanvas=function() {
 	return this.renderer.view;
@@ -130,6 +139,7 @@ PixiApp.prototype.getCanvas=function() {
 
 /**
  * Get stage.
+ * @method getStage
  */
 PixiApp.prototype.getStage=function() {
 	return this.appStage;
