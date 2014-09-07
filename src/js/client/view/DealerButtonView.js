@@ -1,7 +1,8 @@
 var PIXI = require("pixi.js");
-var Tween = require("tween.js");
+var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("../resources/Resources");
+var EventDispatcher = require("../../utils/EventDispatcher");
 
 /**
  * Dialog view.
@@ -18,6 +19,7 @@ function DealerButtonView() {
 }
 
 FunctionUtil.extend(DealerButtonView, PIXI.DisplayObjectContainer);
+EventDispatcher.init(DealerButtonView);
 
 /**
  * Set seat index
@@ -26,6 +28,7 @@ FunctionUtil.extend(DealerButtonView, PIXI.DisplayObjectContainer);
 DealerButtonView.prototype.setSeatIndex = function(seatIndex) {
 	this.position.x = Resources.getInstance().dealerButtonPositions[seatIndex].x;
 	this.position.y = Resources.getInstance().dealerButtonPositions[seatIndex].y;
+	this.dispatchEvent("animationDone", this);
 };
 /**
  * Animate to seat index.
@@ -34,19 +37,22 @@ DealerButtonView.prototype.animateToSeatIndex = function(seatIndex) {
 	if (!this.visible) {
 		this.setSeatIndex(seatIndex);
 		// todo dispatch event that it's complete?
+		this.dispatchEvent("animationDone", this);
 		return;
 	}
 
-	console.log("Animate Seat Index");
-	// Todo animate.
-	this.position.x = Resources.getInstance().dealerButtonPositions[seatIndex].x;
-	this.position.y = Resources.getInstance().dealerButtonPositions[seatIndex].y;
-/*	Tween.Tween(this.position).to(
-			{
+	var thisPtr = this;
+	var tween = new TWEEN.Tween( this.position )
+            .to( { 
 				x: Resources.getInstance().dealerButtonPositions[seatIndex].x, 
 				y: Resources.getInstance().dealerButtonPositions[seatIndex].y
-			}, 1000).easing(Tween.Easing.Elastic.InOut).start();*/
-
+             }, 500 )/*
+            .easing( TWEEN.Easing.Elastic.InOut )*/
+            .onComplete(function()
+			{
+				thisPtr.dispatchEvent("animationDone", thisPtr);
+			})
+            .start();
 };
 
 /**
