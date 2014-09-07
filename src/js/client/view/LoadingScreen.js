@@ -4,6 +4,7 @@ var Gradient = require("../../utils/Gradient");
 
 /**
  * Loading screen.
+ * @class LoadingScreen
  */
 function LoadingScreen() {
 	PIXI.DisplayObjectContainer.call(this);
@@ -33,6 +34,7 @@ FunctionUtil.extend(LoadingScreen, PIXI.DisplayObjectContainer);
 
 /**
  * Show.
+ * @method show
  */
 LoadingScreen.prototype.show = function(message) {
 	this.textField.setText(message);
@@ -43,6 +45,7 @@ LoadingScreen.prototype.show = function(message) {
 
 /**
  * Hide.
+ * @method hide
  */
 LoadingScreen.prototype.hide = function() {
 	this.visible = false;

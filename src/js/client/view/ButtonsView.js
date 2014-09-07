@@ -6,6 +6,7 @@ var BigButton = require("./BigButton");
 
 /**
  * Buttons
+ * @class ButtonsView
  */
 function ButtonsView() {
 	PIXI.DisplayObjectContainer.call(this);
@@ -38,6 +39,7 @@ ButtonsView.BUTTON_CLICK = "buttonClick";
 
 /**
  * Set button datas.
+ * @method setButtons
  */
 ButtonsView.prototype.setButtons = function(buttonDatas) {
 	this.buttonDatas = buttonDatas;
@@ -64,6 +66,8 @@ ButtonsView.prototype.setButtons = function(buttonDatas) {
 
 /**
  * Button click.
+ * @method onButtonClick
+ * @private
  */
 ButtonsView.prototype.onButtonClick = function(e) {
 	var buttonIndex = -1;

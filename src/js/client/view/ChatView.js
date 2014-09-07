@@ -4,7 +4,8 @@ var NineSlice = require("../../utils/NineSlice");
 var Resources = require("../resources/Resources");
 
 /**
- * Loading screen.
+ * Chat view.
+ * @class ChatView
  */
 function ChatView() {
 	PIXI.DisplayObjectContainer.call(this);

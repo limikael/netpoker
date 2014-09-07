@@ -24,14 +24,14 @@ describe("MessageSequencer", function() {
 		var e = new EventDispatcher();
 		var s = new MessageSequencer();
 
-		var spy=jasmine.createSpy();
+		var spy = jasmine.createSpy();
 
 		function handler() {
 			spy();
 			s.waitFor(e, "event");
 		}
 
-		var spy2=jasmine.createSpy();
+		var spy2 = jasmine.createSpy();
 
 		s.addMessageHandler(StateCompleteMessage.TYPE, handler);
 		s.addMessageHandler(SeatInfoMessage.TYPE, spy2);

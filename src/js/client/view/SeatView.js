@@ -52,6 +52,7 @@ FunctionUtil.extend(SeatView, Button);
 
 /**
  * Set name.
+ * @method setName
  */
 SeatView.prototype.setName = function(name) {
 	this.nameField.setText(name);
@@ -62,6 +63,7 @@ SeatView.prototype.setName = function(name) {
 
 /**
  * Set name.
+ * @method setChips
  */
 SeatView.prototype.setChips = function(chips) {
 	this.chipsField.setText(chips);
@@ -72,6 +74,7 @@ SeatView.prototype.setChips = function(chips) {
 
 /**
  * Set sitout.
+ * @method setSitout
  */
 SeatView.prototype.setSitout = function(sitout) {
 	if (sitout)
@@ -83,6 +86,7 @@ SeatView.prototype.setSitout = function(sitout) {
 
 /**
  * Set sitout.
+ * @method setActive
  */
 SeatView.prototype.setActive = function(active) {
 	this.visible = active;
@@ -90,6 +94,7 @@ SeatView.prototype.setActive = function(active) {
 
 /**
  * Add pocket card.
+ * @method addPocketCard
  */
 SeatView.prototype.addPocketCard = function(cardView) {
 	this.pocketCards.push(cardView);
@@ -97,6 +102,7 @@ SeatView.prototype.addPocketCard = function(cardView) {
 
 /**
  * Get pocket cards.
+ * @method getPocketCards
  */
 SeatView.prototype.getPocketCards = function() {
 	return this.pocketCards;

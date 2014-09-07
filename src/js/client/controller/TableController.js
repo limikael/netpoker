@@ -19,6 +19,7 @@ function TableController(messageSequencer, view) {
 
 /**
  * Seat info message.
+ * @method onSeatInfoMessage
  */
 TableController.prototype.onSeatInfoMessage = function(m) {
 	var seatView = this.view.getSeatViewByIndex(m.getSeatIndex());
@@ -31,6 +32,7 @@ TableController.prototype.onSeatInfoMessage = function(m) {
 
 /**
  * Seat info message.
+ * @method onCommunityCardsMessage
  */
 TableController.prototype.onCommunityCardsMessage = function(m) {
 	var i;
@@ -45,6 +47,7 @@ TableController.prototype.onCommunityCardsMessage = function(m) {
 
 /**
  * Pocket cards message.
+ * @method onPocketCardsMessage
  */
 TableController.prototype.onPocketCardsMessage = function(m) {
 	var seatView = this.view.getSeatViewByIndex(m.getSeatIndex());
@@ -61,6 +64,7 @@ TableController.prototype.onPocketCardsMessage = function(m) {
 
 /**
  * Dealer button message.
+ * @method onDealerButtonMessage
  */
 TableController.prototype.onDealerButtonMessage = function(m) {
 	var dealerButtonView = this.view.getDealerButtonView();

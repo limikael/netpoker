@@ -34,6 +34,7 @@ ButtonData.LEAVE_TOURNAMENT = "leaveTournament";
 
 /**
  * Get button.
+ * @method getButton
  */
 ButtonData.prototype.getButton = function() {
 	return this.button;
@@ -41,6 +42,7 @@ ButtonData.prototype.getButton = function() {
 
 /**
  * Get value.
+ * @method getValue
  */
 ButtonData.prototype.getValue = function() {
 	return this.value;
@@ -48,6 +50,8 @@ ButtonData.prototype.getValue = function() {
 
 /**
  * Get button string for id.
+ * @method getButtonStringForId
+ * @static
  */
 ButtonData.getButtonStringForId = function(b) {
 	switch (b) {
@@ -115,16 +119,10 @@ ButtonData.getButtonStringForId = function(b) {
 	return "";
 }
 
-/**
- * Get min.
- */
 /*ButtonData.prototype.getMin = function() {
 	return this.min;
 }*/
 
-/**
- * Get max.
- */
 /*ButtonData.prototype.getMax = function() {
 	return this.max;
 }*/

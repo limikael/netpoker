@@ -48,6 +48,7 @@ NetPokerClientView.SEAT_CLICK = "seatClick";
 
 /**
  * Setup background.
+ * @method setupBackground
  */
 NetPokerClientView.prototype.setupBackground = function() {
 	var gradient = new Gradient();
@@ -74,6 +75,7 @@ NetPokerClientView.prototype.setupBackground = function() {
 
 /**
  * Setup seats.
+ * @method serupSeats
  */
 NetPokerClientView.prototype.setupSeats = function() {
 	var i, j;
@@ -101,6 +103,8 @@ NetPokerClientView.prototype.setupSeats = function() {
 
 /**
  * Seat click.
+ * @method onSeatClick
+ * @private
  */
 NetPokerClientView.prototype.onSeatClick = function(e) {
 	var seatIndex = -1;
@@ -118,6 +122,8 @@ NetPokerClientView.prototype.onSeatClick = function(e) {
 
 /**
  * Setup community cards.
+ * @method setupCommunityCards
+ * @private
  */
 NetPokerClientView.prototype.setupCommunityCards = function() {
 	this.communityCards = [];

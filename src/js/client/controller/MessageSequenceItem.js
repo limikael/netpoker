@@ -18,6 +18,7 @@ FunctionUtil.extend(MessageSequenceItem, EventDispatcher);
 
 /**
  * Get message.
+ * @method getMessage
  */
 MessageSequenceItem.prototype.getMessage = function() {
 	//console.log("getting: " + this.message.type);
@@ -27,6 +28,7 @@ MessageSequenceItem.prototype.getMessage = function() {
 
 /**
  * Are we waiting for an event?
+ * @method isWaiting
  */
 MessageSequenceItem.prototype.isWaiting = function() {
 	return this.waitEvent != null;
@@ -41,7 +43,8 @@ MessageSequenceItem.prototype.notifyComplete = function() {
 }
 
 /**
- * Wait for event.
+ * Wait for event before processing next message.
+ * @method waitFor
  */
 MessageSequenceItem.prototype.waitFor = function(target, event) {
 	this.waitTarget = target;

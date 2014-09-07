@@ -43,6 +43,7 @@ NetPokerClientController.prototype.setProtoConnection = function(protoConnection
 /**
  * Incoming message.
  * Enqueue for processing.
+ * @method onProtoConnectionMessage
  * @private
  */
 NetPokerClientController.prototype.onProtoConnectionMessage = function(e) {
@@ -51,6 +52,7 @@ NetPokerClientController.prototype.onProtoConnectionMessage = function(e) {
 
 /**
  * Button click.
+ * @method onButtonClick
  * @private
  */
 NetPokerClientController.prototype.onButtonClick = function(e) {
@@ -63,6 +65,7 @@ NetPokerClientController.prototype.onButtonClick = function(e) {
 
 /**
  * Seat click.
+ * @method onSeatClick
  * @private
  */
 NetPokerClientController.prototype.onSeatClick = function(e) {
