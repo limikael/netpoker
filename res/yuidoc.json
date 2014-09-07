@@ -1,0 +1,9 @@
+{
+    "name": "netpoker",
+    "description": "Poker gameplay client and server",
+    "version": "0.1",
+    "options": {
+        "outdir": "doc",
+        "paths": "src/js"
+    }
+}
