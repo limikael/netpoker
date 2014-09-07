@@ -28,7 +28,8 @@ function DialogButton() {
 FunctionUtil.extend(DialogButton, Button);
 
 /**
- * Set text.
+ * Set text for the button.
+ * @method setText
  */
 DialogButton.prototype.setText = function(text) {
 	this.textField.setText(text);

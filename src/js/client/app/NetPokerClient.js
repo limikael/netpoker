@@ -29,6 +29,7 @@ FunctionUtil.extend(NetPokerClient, PixiApp);
 
 /**
  * Set url.
+ * @method setUrl
  */
 NetPokerClient.prototype.setUrl = function(url) {
 	this.url = url;
@@ -36,6 +37,7 @@ NetPokerClient.prototype.setUrl = function(url) {
 
 /**
  * Set table id.
+ * @method setTableId
  */
 NetPokerClient.prototype.setTableId = function(tableId) {
 	this.tableId = tableId;
@@ -43,6 +45,7 @@ NetPokerClient.prototype.setTableId = function(tableId) {
 
 /**
  * Set view case.
+ * @method setViewCase
  */
 NetPokerClient.prototype.setViewCase = function(viewCase) {
 	console.log("****** running view case: "+viewCase);
@@ -51,6 +54,7 @@ NetPokerClient.prototype.setViewCase = function(viewCase) {
 
 /**
  * Set token.
+ * @method setToken
  */
 NetPokerClient.prototype.setToken = function(token) {
 	this.token = token;
@@ -58,6 +62,7 @@ NetPokerClient.prototype.setToken = function(token) {
 
 /**
  * Run.
+ * @method run
  */
 NetPokerClient.prototype.run = function() {
 	var assets = [
@@ -72,6 +77,8 @@ NetPokerClient.prototype.run = function() {
 
 /**
  * Assets loaded, connect.
+ * @method onAssetLoaderComplete
+ * @private
  */
 NetPokerClient.prototype.onAssetLoaderComplete = function() {
 	console.log("asset loader complete...");
@@ -85,6 +92,8 @@ NetPokerClient.prototype.onAssetLoaderComplete = function() {
 
 /**
  * Connect.
+ * @method connect
+ * @private
  */
 NetPokerClient.prototype.connect = function() {
 	if (!this.url) {
@@ -101,6 +110,8 @@ NetPokerClient.prototype.connect = function() {
 
 /**
  * Connection complete.
+ * @method onConnectionConnect
+ * @private
  */
 NetPokerClient.prototype.onConnectionConnect = function() {
 	console.log("**** connected");
@@ -122,13 +133,17 @@ NetPokerClient.prototype.onConnectionConnect = function() {
 
 /**
  * State complete.
+ * @method onStateCompleteMessage
+ * @private
  */
 NetPokerClient.prototype.onStateCompleteMessage=function() {
 	this.loadingScreen.hide();
 }
 
 /**
- * Connection complete.
+ * Connection closed.
+ * @method onConnectionClose
+ * @private
  */
 NetPokerClient.prototype.onConnectionClose = function() {
 	console.log("**** connection closed");

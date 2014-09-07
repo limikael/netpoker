@@ -5,6 +5,7 @@ var Resources = require("../resources/Resources");
 
 /**
  * Big button.
+ * @class BigButton
  */
 function BigButton() {
 	Button.call(this);
@@ -38,7 +39,8 @@ function BigButton() {
 FunctionUtil.extend(BigButton, Button);
 
 /**
- * Set label.
+ * Set label for the button.
+ * @method setLabel
  */
 BigButton.prototype.setLabel = function(label) {
 	this.labelField.setText(label);
@@ -48,6 +50,7 @@ BigButton.prototype.setLabel = function(label) {
 
 /**
  * Set value.
+ * @method setValue
  */
 BigButton.prototype.setValue = function(value) {
 	if (!value)

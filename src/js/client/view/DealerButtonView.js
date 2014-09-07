@@ -30,8 +30,10 @@ DealerButtonView.prototype.setSeatIndex = function(seatIndex) {
 	this.position.y = Resources.getInstance().dealerButtonPositions[seatIndex].y;
 	this.dispatchEvent("animationDone", this);
 };
+
 /**
  * Animate to seat index.
+ * @method animateToSeatIndex
  */
 DealerButtonView.prototype.animateToSeatIndex = function(seatIndex) {
 	if (!this.visible) {
@@ -65,6 +67,7 @@ DealerButtonView.prototype.hide = function() {
 
 /**
  * Show.
+ * @method show
  */
 DealerButtonView.prototype.show = function(seatIndex, animate) {
 	this.visible = true;

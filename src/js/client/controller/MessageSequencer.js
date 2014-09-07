@@ -4,6 +4,7 @@ var MessageSequenceItem = require("./MessageSequenceItem");
 
 /**
  * Sequences messages.
+ * @class MessageSequencer
  */
 function MessageSequencer() {
 	this.sequencer = new Sequencer();
@@ -54,7 +55,9 @@ MessageSequencer.prototype.addMessageHandler = function(messageType, handler, sc
 }
 
 /**
- * Wait for event.
+ * Wait for the target to dispatch an event before continuing to
+ * process the messages in the que.
+ * @method waitFor
  */
 MessageSequencer.prototype.waitFor = function(target, event) {
 	if (!this.currentItem)

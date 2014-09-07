@@ -70,6 +70,7 @@ DialogView.prototype.hide = function() {
 
 /**
  * Show.
+ * @method show
  */
 DialogView.prototype.show = function(text, buttonIds, defaultValue) {
 	this.visible = true;

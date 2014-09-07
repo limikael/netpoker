@@ -70,6 +70,7 @@ CardView.prototype.setTargetPosition = function(point) {
 
 /**
  * Hide.
+ * @method hide
  */
 CardView.prototype.hide = function() {
 	this.visible = false;
@@ -77,6 +78,7 @@ CardView.prototype.hide = function() {
 
 /**
  * Show.
+ * @method show
  */
 CardView.prototype.show = function() {
 	this.visible = true;

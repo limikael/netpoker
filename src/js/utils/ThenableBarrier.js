@@ -4,7 +4,6 @@ var FunctionUtil=require("../utils/FunctionUtil");
 /**
  * Listen to several promises that all must be fulfilled.
  * @class ThenableBarrier
- * @internal
  */
 function ThenableBarrier() {
 	Thenable.call(this);
@@ -60,7 +59,6 @@ ThenableBarrier.prototype.onThenableError=function(e) {
 /**
  * Create a thenable barrier
  * @method wait
- * @internal
  */
 ThenableBarrier.wait=function(/* thenables */) {
 	var t=new ThenableBarrier();
