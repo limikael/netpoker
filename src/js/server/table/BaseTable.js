@@ -18,6 +18,7 @@ FunctionUtil.extend(BaseTable, EventDispatcher);
 
 /**
  * Get table seats.
+ * @method getTableSeats
  */
 BaseTable.prototype.getTableSeats = function() {
 	return this.tableSeats;
@@ -25,6 +26,7 @@ BaseTable.prototype.getTableSeats = function() {
 
 /**
  * Get table seat by seat index.
+ * @method getTableSeatBySeatIndex
  */
 BaseTable.prototype.getTableSeatBySeatIndex = function(seatIndex) {
 	return this.tableSeats[seatIndex];
@@ -32,6 +34,7 @@ BaseTable.prototype.getTableSeatBySeatIndex = function(seatIndex) {
 
 /**
  * Get number of seats that is in game.
+ * @method getNumInGame
  */
 BaseTable.prototype.getNumInGame = function() {
 	var cnt = 0;
@@ -44,7 +47,11 @@ BaseTable.prototype.getNumInGame = function() {
 }
 
 /**
- * Get parent id.
+ * Get parent id. This id is what should be used for the
+ * start game call for backend. For cashgames, this will
+ * represent the table id, for tournamets, it will 
+ * represent the tournament id.
+ * @method getStartGameParentId
  */
 BaseTable.prototype.getStartGameParentId = function() {
 	throw "abstract";
@@ -52,13 +59,18 @@ BaseTable.prototype.getStartGameParentId = function() {
 
 /**
  * Get start function.
+ * @method getStartGameFunctionName
  */
 BaseTable.prototype.getStartGameFunctionName = function() {
 	throw "abstract";
 }
 
 /**
- * Get next seated index.
+ * Get the index of the seat that has seated player, that
+ * comes after the from index. This function wraps around
+ * the table clockwise. If no player is seated at all,
+ * -1 will be returned.
+ * @method getNextSeatIndexInGame
  */
 BaseTable.prototype.getNextSeatIndexInGame = function(from) {
 	var cand = from + 1;
@@ -81,7 +93,8 @@ BaseTable.prototype.getNextSeatIndexInGame = function(from) {
 }
 
 /**
- * Advance dealer.
+ * Advance the dealer position to the next seated player.
+ * @method advanceDealer
  */
 BaseTable.prototype.advanceDealer = function() {
 	this.dealerButtonIndex = this.getNextSeatIndexInGame(this.dealerButtonIndex);
@@ -91,6 +104,7 @@ BaseTable.prototype.advanceDealer = function() {
 
 /**
  * Get dealer button index.
+ * @method getDealerButtonIndex
  */
 BaseTable.prototype.getDealerButtonIndex = function() {
 	return this.dealerButtonIndex;
@@ -98,6 +112,7 @@ BaseTable.prototype.getDealerButtonIndex = function() {
 
 /**
  * Get stake.
+ * @method getStake
  */
 BaseTable.prototype.getStake = function() {
 	throw "abstract";
@@ -105,6 +120,7 @@ BaseTable.prototype.getStake = function() {
 
 /**
  * Send.
+ * @method send
  */
 BaseTable.prototype.send = function(m) {
 	throw "abstract";
