@@ -36,6 +36,7 @@ ConnectionManager.prototype.onMessageServerConnection = function(e) {
 
 /**
  * Handle a new connection
+ * @method handleNewConnection
  * @private
  */
 ConnectionManager.prototype.handleNewConnection = function(connection) {
@@ -95,6 +96,8 @@ ConnectionManager.prototype.listen = function(port) {
 
 /**
  * Regular web request from the server.
+ * @method onMessageServerRequest
+ * @private
  */
 ConnectionManager.prototype.onMessageServerRequest = function(ev) {
 	this.trigger(ev);

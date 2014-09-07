@@ -6,7 +6,11 @@ var User = require("../user/User");
 var fs = require("fs");
 
 /**
- * Represents a connected user.
+ * Represents a connection waiting for a user to be authenticated.
+ * Users and connections are generally handles seperatly in the server,
+ * since browsers can disconnect and reconnect. This class is used
+ * by the connection manager, just to find out which user we should
+ * report to be using this connection.
  * @class UserConnection
  */
 function UserConnection(services, connection) {
@@ -49,6 +53,9 @@ UserConnection.prototype.onInitMessage = function(initMessage) {
 
 /**
  * Handle view case.
+ * This serves up a view case, used by the mock server.
+ * @method handleViewCase
+ * @private
  */
 UserConnection.prototype.handleViewCase = function(viewCase) {
 	var caseFileName = this.viewCaseDir + "/" + viewCase + ".json";
