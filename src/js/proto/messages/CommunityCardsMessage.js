@@ -1,7 +1,8 @@
 var CardData=require("../data/CardData");
 
 /**
- * @class SeatInfoMessage
+ * Show community cards.
+ * @class CommunityCardsMessage
  */
 function CommunityCardsMessage() {
 	this.animate = false;
@@ -13,13 +14,15 @@ CommunityCardsMessage.TYPE = "communityCards";
 
 /**
  * Get card data.
+ * @method getCards
  */
 CommunityCardsMessage.prototype.getCards = function() {
 	return this.cards;
 }
 
 /**
- * Get first index.
+ * Get the index of the first card to be shown in the sequence.
+ * @method getFirstIndex
  */
 CommunityCardsMessage.prototype.getFirstIndex = function() {
 	return this.firstIndex;

@@ -1,4 +1,5 @@
 /**
+ * Show dialog, for e.g. buy in.
  * @class ShowDialogMessage
  */
 function ShowDialogMessage() {
@@ -9,28 +10,32 @@ function ShowDialogMessage() {
 ShowDialogMessage.TYPE = "showDialog";
 
 /**
- * Getter.
+ * Add a button to the dialog.
+ * @method addButton
  */
 ShowDialogMessage.prototype.addButton = function(button) {
 	this.buttons.push(button);
 }
 
 /**
- * Getter.
+ * Get text of the dialog.
+ * @method getText
  */
 ShowDialogMessage.prototype.getText = function() {
 	return this.text;
 }
 
 /**
- * Getter.
+ * Get array of ButtonData to be shown in the dialog.
+ * @method getButtons
  */
 ShowDialogMessage.prototype.getButtons = function() {
 	return this.buttons;
 }
 
 /**
- * Setter.
+ * Set text in the dialog.
+ * @method setText
  */
 ShowDialogMessage.prototype.setText = function(text) {
 	this.text = text;

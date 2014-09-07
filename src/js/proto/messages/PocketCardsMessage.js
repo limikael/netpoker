@@ -1,7 +1,8 @@
 var CardData = require("../data/CardData");
 
 /**
- * @class SeatInfoMessage
+ * Show pocket cards.
+ * @class PocketCardsMessage
  */
 function PocketCardsMessage() {
 	this.animate = false;
@@ -13,7 +14,8 @@ function PocketCardsMessage() {
 PocketCardsMessage.TYPE = "pocketCards";
 
 /**
- * Get card data.
+ * Get array of CardData.
+ * @method getCards
  */
 PocketCardsMessage.prototype.getCards = function() {
 	return this.cards;
@@ -21,6 +23,7 @@ PocketCardsMessage.prototype.getCards = function() {
 
 /**
  * Get first index.
+ * @method getFirstIndex
  */
 PocketCardsMessage.prototype.getFirstIndex = function() {
 	return this.firstIndex;
@@ -28,6 +31,7 @@ PocketCardsMessage.prototype.getFirstIndex = function() {
 
 /**
  * Get seat index.
+ * @method getSeatIndex
  */
 PocketCardsMessage.prototype.getSeatIndex = function() {
 	return this.seatIndex;

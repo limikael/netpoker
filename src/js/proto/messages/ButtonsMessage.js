@@ -1,6 +1,8 @@
 var ButtonData = require("../data/ButtonData");
 
 /**
+ * Message sent when the client should show game action buttons,
+ * FOLD, RAISE etc.
  * @class ButtonsMessage
  */
 function ButtonsMessage() {
@@ -10,14 +12,16 @@ function ButtonsMessage() {
 ButtonsMessage.TYPE = "buttons";
 
 /**
- * Getter.
+ * Get an array of ButtonData indicating which buttons to show.
+ * @method getButtons
  */
 ButtonsMessage.prototype.getButtons = function() {
 	return this.buttons;
 }
 
 /**
- * Add button.
+ * Add a button to be sent.
+ * @method addButton
  */
 ButtonsMessage.prototype.addButton = function(button) {
 	this.buttons.push(button);

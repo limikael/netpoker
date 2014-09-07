@@ -1,4 +1,5 @@
 /**
+ * Show username and chips on seat.
  * @class SeatInfoMessage
  */
 function SeatInfoMessage() {
@@ -9,6 +10,7 @@ SeatInfoMessage.TYPE = "seatInfo";
 
 /**
  * Getter.
+ * @method getSeatIndex
  */
 SeatInfoMessage.prototype.getSeatIndex = function() {
 	return this.seatIndex;
@@ -16,6 +18,7 @@ SeatInfoMessage.prototype.getSeatIndex = function() {
 
 /**
  * Getter.
+ * @method getName
  */
 SeatInfoMessage.prototype.getName = function() {
 	return this.name;
@@ -23,6 +26,7 @@ SeatInfoMessage.prototype.getName = function() {
 
 /**
  * Getter.
+ * @method getChips
  */
 SeatInfoMessage.prototype.getChips = function() {
 	return this.chips;
@@ -30,6 +34,7 @@ SeatInfoMessage.prototype.getChips = function() {
 
 /**
  * Getter.
+ * @method isSitout
  */
 SeatInfoMessage.prototype.isSitout = function() {
 	return this.sitout;
@@ -37,6 +42,7 @@ SeatInfoMessage.prototype.isSitout = function() {
 
 /**
  * Getter.
+ * @method isActive
  */
 SeatInfoMessage.prototype.isActive = function() {
 	return this.active;

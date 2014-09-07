@@ -1,5 +1,7 @@
 /**
- * @class ShowDialogMessage
+ * Sent when the user clicks a button, either in a dialog or
+ * for a game action.
+ * @class ButtonClickMessage
  */
 function ButtonClickMessage(button, value) {
 	this.button=button;
@@ -9,7 +11,8 @@ function ButtonClickMessage(button, value) {
 ButtonClickMessage.TYPE = "buttonClick";
 
 /**
- * Getter.
+ * The the button that was pressed.
+ * @method getButton
  */
 ButtonClickMessage.prototype.getButton = function() {
 	return this.button;
@@ -17,6 +20,7 @@ ButtonClickMessage.prototype.getButton = function() {
 
 /**
  * Setter.
+ * @method getValue
  */
 ButtonClickMessage.prototype.getValue = function() {
 	return this.value;
@@ -24,7 +28,7 @@ ButtonClickMessage.prototype.getValue = function() {
 
 /**
  * Un-serialize.
- * @method unserialize.
+ * @method unserialize
  */
 ButtonClickMessage.prototype.unserialize = function(data) {
 	this.button=data.button;

@@ -1,4 +1,5 @@
 /**
+ * Message indicating that the user has clicked a seat.
  * @class SeatClickMessage
  */
 function SeatClickMessage(seatIndex) {
@@ -9,6 +10,7 @@ SeatClickMessage.TYPE = "seatClick";
 
 /**
  * Getter.
+ * @method getSeatIndex
  */
 SeatClickMessage.prototype.getSeatIndex = function() {
 	return this.seatIndex;

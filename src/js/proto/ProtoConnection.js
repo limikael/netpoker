@@ -48,6 +48,7 @@ ProtoConnection.MESSAGE_TYPES[DealerButtonMessage.TYPE] = DealerButtonMessage;
 
 /**
  * Add message handler.
+ * @method addMessageHandler
  */
 ProtoConnection.prototype.addMessageHandler = function(messageType, handler, scope) {
 	if (messageType.hasOwnProperty("TYPE"))
@@ -58,6 +59,7 @@ ProtoConnection.prototype.addMessageHandler = function(messageType, handler, sco
 
 /**
  * Remove message handler.
+ * @method removeMessageHandler
  */
 ProtoConnection.prototype.removeMessageHandler = function(messageType, handler, scope) {
 	if (messageType.hasOwnProperty("TYPE"))
@@ -69,6 +71,7 @@ ProtoConnection.prototype.removeMessageHandler = function(messageType, handler, 
 /**
  * Connection message.
  * @method onConnectionMessage
+ * @private
  */
 ProtoConnection.prototype.onConnectionMessage = function(ev) {
 	var message = ev.message;
@@ -101,6 +104,7 @@ ProtoConnection.prototype.onConnectionMessage = function(ev) {
 /**
  * Connection close.
  * @method onConnectionClose
+ * @private
  */
 ProtoConnection.prototype.onConnectionClose = function(ev) {
 	this.connection.off("message", this.onConnectionMessage, this);
@@ -112,6 +116,7 @@ ProtoConnection.prototype.onConnectionClose = function(ev) {
 
 /**
  * Send a message.
+ * @method send
  */
 ProtoConnection.prototype.send = function(message) {
 	var serialized = message.serialize();
