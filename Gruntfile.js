@@ -8,6 +8,13 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json')
 	});
 
+	grunt.registerTask("mockserver",function() {
+		var done=this.async();
+		var job=qsub("node").arg("test/tools/mockserver.js");
+		job.show().expect(0);
+		job.run().then(done);
+	});
+
 	grunt.registerTask("deploy",function() {
 		var done=this.async();
 		var job=qsub("./node_modules/.bin/jitsu");
@@ -88,5 +95,14 @@ module.exports = function(grunt) {
 		});
 
 		que.done();
+	});
+
+	grunt.registerTask("default",function() {
+		console.log("Available Tasks");
+		console.log();
+		console.log("  browserify   - Build client bundle.")
+		console.log("  mockserver   - Start mock server.")
+		console.log("  deploy       - Deploy to nodejitsu.")
+		console.log("  js-unit-test - Run server tests.")
 	});
 }

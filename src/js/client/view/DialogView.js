@@ -50,6 +50,12 @@ function DialogView() {
 	}
 
 	this.hide();
+
+	var input=document.createElement("input");
+	input.type="text";
+	input.style.position="absolute";
+	input.style.zIndex=1;
+	document.body.appendChild(input);
 }
 
 FunctionUtil.extend(DialogView, PIXI.DisplayObjectContainer);
