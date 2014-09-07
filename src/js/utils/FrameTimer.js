@@ -5,6 +5,7 @@ var FunctionUtil=require("./FunctionUtil");
 
 /**
  * Frame timer.
+ * @class FrameTimer
  */
 function FrameTimer() {
 	EventDispatcher.call(this);
@@ -19,6 +20,8 @@ FrameTimer.RENDER="render";
 
 /**
  * On interval.
+ * @method onInterval
+ * @private
  */
 FrameTimer.prototype.onInterval=function() {
 	this.dispatchEvent(FrameTimer.TIMER);
@@ -27,6 +30,8 @@ FrameTimer.prototype.onInterval=function() {
 
 /**
  * Get singleton instance.
+ * @method getInstance
+ * @static
  */
 FrameTimer.getInstance=function() {
 	if (!FrameTimer.instance)
