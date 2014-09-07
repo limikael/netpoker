@@ -8,6 +8,14 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json')
 	});
 
+	grunt.registerTask("doc",function() {
+		var done=this.async();
+		var job=qsub("./node_modules/.bin/yuidoc");
+		job.arg("--configfile","res/yuidoc.json");
+		job.show().expect(0);
+		job.run().then(done);
+	});
+
 	grunt.registerTask("mockserver",function() {
 		var done=this.async();
 		var job=qsub("node").arg("test/tools/mockserver.js");

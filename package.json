@@ -21,7 +21,8 @@
     "jitsu": "^0.13.18",
     "pixi.js": "git://github.com/GoodBoyDigital/pixi.js",
     "qsub": "0.0.2",
-    "tween.js": "^0.14.0"
+    "tween.js": "^0.14.0",
+    "yuidocjs": "^0.3.50"
   },
   "engines": {
     "node": "0.10.x"
