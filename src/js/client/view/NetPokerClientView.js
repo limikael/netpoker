@@ -9,6 +9,7 @@ var Point = require("../../utils/Point");
 var Gradient = require("../../utils/Gradient");
 var ButtonsView = require("./ButtonsView");
 var DialogView = require("./DialogView");
+var DealerButtonView = require("./DealerButtonView");
 
 /**
  * Net poker client view.
@@ -35,6 +36,9 @@ function NetPokerClientView() {
 
 	this.dialogView = new DialogView();
 	this.addChild(this.dialogView);
+
+	this.dealerButtonView = new DealerButtonView();
+	this.addChild(this.dealerButtonView);
 }
 
 FunctionUtil.extend(NetPokerClientView, PIXI.DisplayObjectContainer);
@@ -160,6 +164,14 @@ NetPokerClientView.prototype.getButtonsView = function() {
  */
 NetPokerClientView.prototype.getDialogView = function() {
 	return this.dialogView;
+}
+
+/**
+ * Get dialog view.
+ * @method getDialogView
+ */
+NetPokerClientView.prototype.getDealerButtonView = function() {
+	return this.dealerButtonView;
 }
 
 module.exports = NetPokerClientView;

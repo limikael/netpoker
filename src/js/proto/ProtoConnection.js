@@ -12,6 +12,7 @@ var ButtonClickMessage = require("./messages/ButtonClickMessage");
 var ButtonsMessage = require("./messages/ButtonsMessage");
 var DelayMessage = require("./messages/DelayMessage");
 var ClearMessage = require("./messages/ClearMessage");
+var DealerButtonMessage = require("./messages/DealerButtonMessage");
 
 /**
  * @class ProtoConnection
@@ -43,6 +44,7 @@ ProtoConnection.MESSAGE_TYPES[ButtonClickMessage.TYPE] = ButtonClickMessage;
 ProtoConnection.MESSAGE_TYPES[ButtonsMessage.TYPE] = ButtonsMessage;
 ProtoConnection.MESSAGE_TYPES[DelayMessage.TYPE] = DelayMessage;
 ProtoConnection.MESSAGE_TYPES[ClearMessage.TYPE] = ClearMessage;
+ProtoConnection.MESSAGE_TYPES[DealerButtonMessage.TYPE] = DealerButtonMessage;
 
 /**
  * Add message handler.
