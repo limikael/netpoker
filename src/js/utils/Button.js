@@ -4,6 +4,7 @@ var EventDispatcher = require("./EventDispatcher");
 
 /**
  * Button.
+ * @class Button
  */
 function Button(content) {
 	PIXI.DisplayObjectContainer.call(this);
@@ -37,6 +38,8 @@ Button.CLICK = "click";
 
 /**
  * Mouse over.
+ * @method onMouseover
+ * @private
  */
 Button.prototype.onMouseover = function() {
 	this.colorMatrixFilter.matrix = Button.LIGHT_MATRIX;
@@ -44,6 +47,8 @@ Button.prototype.onMouseover = function() {
 
 /**
  * Mouse out.
+ * @method onMouseout
+ * @private
  */
 Button.prototype.onMouseout = function() {
 	this.colorMatrixFilter.matrix = Button.DEFAULT_MATRIX;
@@ -51,6 +56,8 @@ Button.prototype.onMouseout = function() {
 
 /**
  * Mouse down.
+ * @method onMousedown
+ * @private
  */
 Button.prototype.onMousedown = function() {
 	this.colorMatrixFilter.matrix = Button.DARK_MATRIX;
@@ -58,6 +65,8 @@ Button.prototype.onMousedown = function() {
 
 /**
  * Mouse up.
+ * @method onMouseup
+ * @private
  */
 Button.prototype.onMouseup = function() {
 	this.colorMatrixFilter.matrix = Button.LIGHT_MATRIX;
@@ -65,6 +74,8 @@ Button.prototype.onMouseup = function() {
 
 /**
  * Click.
+ * @method onClick
+ * @private
  */
 Button.prototype.onClick = function() {
 	this.trigger(Button.CLICK);

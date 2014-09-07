@@ -24,6 +24,7 @@ TableSpectator.DONE = "done";
 
 /**
  * Connection close.
+ * @method onConnectionClose
  */
 TableSpectator.prototype.onConnectionClose = function() {
 	console.log("table spectator connection close");
@@ -32,6 +33,7 @@ TableSpectator.prototype.onConnectionClose = function() {
 
 /**
  * Seat click.
+ * @method onSeatClick
  */
 TableSpectator.prototype.onSeatClick = function(m) {
 	var tableSeat = this.table.getTableSeatBySeatIndex(m.getSeatIndex());

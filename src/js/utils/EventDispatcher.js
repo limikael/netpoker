@@ -1,7 +1,8 @@
 "use strict";
 
 /**
- * AS3 style event dispatcher.
+ * AS3/jquery style event dispatcher.
+ * @class EventDispatcher
  */
 function EventDispatcher() {
 	this.listenerMap = {};
@@ -9,6 +10,7 @@ function EventDispatcher() {
 
 /**
  * Add event listener.
+ * @method addEventListener
  */
 EventDispatcher.prototype.addEventListener = function(eventType, listener, scope) {
 	if (!this.listenerMap)
@@ -33,6 +35,7 @@ EventDispatcher.prototype.addEventListener = function(eventType, listener, scope
 
 /**
  * Remove event listener.
+ * @method removeEventListener
  */
 EventDispatcher.prototype.removeEventListener = function(eventType, listener, scope) {
 	if (!this.listenerMap)
@@ -58,6 +61,7 @@ EventDispatcher.prototype.removeEventListener = function(eventType, listener, sc
 
 /**
  * Dispatch event.
+ * @method dispatchEvent
  */
 EventDispatcher.prototype.dispatchEvent = function(event, data) {
 	if (!this.listenerMap)
@@ -85,14 +89,27 @@ EventDispatcher.prototype.dispatchEvent = function(event, data) {
 }
 
 /**
- * Jquery style alias.
+ * Jquery style alias for addEventListener
+ * @method on
  */
 EventDispatcher.prototype.on = EventDispatcher.prototype.addEventListener;
+
+/**
+ * Jquery style alias for removeEventListener
+ * @method off
+ */
 EventDispatcher.prototype.off = EventDispatcher.prototype.removeEventListener;
+
+/**
+ * Jquery style alias for dispatchEvent
+ * @method trigger
+ */
 EventDispatcher.prototype.trigger = EventDispatcher.prototype.dispatchEvent;
 
 /**
- * Make something an event dispatcher.
+ * Make something an event dispatcher. Can be used for multiple inheritance.
+ * @method init
+ * @static
  */
 EventDispatcher.init = function(cls) {
 	cls.prototype.addEventListener = EventDispatcher.prototype.addEventListener;
