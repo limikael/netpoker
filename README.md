@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/limikael/netpoker.svg?branch=master)](https://travis-ci.org/limikael/netpoker)
+
 netpoker
 ========
 
@@ -14,5 +16,3 @@ In order to hack on this, clone the repository, then run:
     grunt mockserver
 
 And then go to http://localhost:2222
-
-travis?
