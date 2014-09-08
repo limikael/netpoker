@@ -2,4 +2,4 @@ language: node_js
 node_js:
   - "0.10"
 
-script: "cat .ftppass && ./node_modules/.bin/grunt doc"
+script: "./node_modules/.bin/grunt js-unit-test && ./node_modules/.bin/grunt doc"
