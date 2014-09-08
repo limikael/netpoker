@@ -15,8 +15,8 @@ var ClearMessage = require("./messages/ClearMessage");
 var DealerButtonMessage = require("./messages/DealerButtonMessage");
 
 /**
- * @class ProtoConnection
  * A protocol connection with an underlying connection.
+ * @class ProtoConnection
  */
 function ProtoConnection(connection) {
 	EventDispatcher.call(this);

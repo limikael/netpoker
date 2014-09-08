@@ -16,7 +16,9 @@
   },
   "devDependencies": {
     "browserify": "^5.9.1",
+    "ftpsync": "^0.1.6",
     "grunt": "^0.4.5",
+    "grunt-ftpush": "^0.3.3",
     "jasmine-node": "^2.0.0-beta4",
     "jitsu": "^0.13.18",
     "pixi.js": "git://github.com/GoodBoyDigital/pixi.js",

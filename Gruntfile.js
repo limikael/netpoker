@@ -1,15 +1,31 @@
 var qsub = require("qsub");
 var Q = require("q");
-var AsyncSequence=require("./src/js/utils/AsyncSequence");
+var AsyncSequence = require("./src/js/utils/AsyncSequence");
+var ftpsync = require("ftpsync");
 
 module.exports = function(grunt) {
+	grunt.loadNpmTasks('grunt-ftpush');
 
 	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json')
+		pkg: grunt.file.readJSON('package.json'),
+		ftpush: {
+			doc: {
+				auth: {
+					host: 'ftp.netpokerdoc.altervista.org',
+					authKey: 'altervista',
+					port: 21
+				},
+				src: 'doc',
+				dest: '',
+				useList: true
+			}
+		}
 	});
 
-	grunt.registerTask("doc",function() {
-		var done=this.async();
+	grunt.registerTask("doc", function() {
+		grunt.task.run("ftpush:doc");
+
+		var done = this.async();
 		var job=qsub("./node_modules/.bin/yuidoc");
 		job.arg("--configfile","res/yuidoc.json");
 		job.show().expect(0);
@@ -18,17 +34,17 @@ module.exports = function(grunt) {
 		});
 	});
 
-	grunt.registerTask("mockserver",function() {
-		var done=this.async();
-		var job=qsub("node").arg("test/tools/mockserver.js");
+	grunt.registerTask("mockserver", function() {
+		var done = this.async();
+		var job = qsub("node").arg("test/tools/mockserver.js");
 		job.show().expect(0);
 		job.run().then(done);
 	});
 
-	grunt.registerTask("deploy",function() {
-		var done=this.async();
-		var job=qsub("./node_modules/.bin/jitsu");
-		job.arg("deploy","-c");
+	grunt.registerTask("deploy", function() {
+		var done = this.async();
+		var job = qsub("./node_modules/.bin/jitsu");
+		job.arg("deploy", "-c");
 		job.show().expect(0);
 		job.run().then(done);
 	});
@@ -107,7 +123,7 @@ module.exports = function(grunt) {
 		que.done();
 	});
 
-	grunt.registerTask("default",function() {
+	grunt.registerTask("default", function() {
 		console.log("Available Tasks");
 		console.log();
 		console.log("  browserify   - Build client bundle.")

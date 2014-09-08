@@ -2,8 +2,9 @@ var PIXI = require("pixi.js");
 var FunctionUtil = require("./FunctionUtil");
 
 /**
- * Nine slice.
- * @class clearWebSocket
+ * Nine slice. This is a sprite that is a grid, and only the
+ * middle part stretches when scaling.
+ * @class NineSlice
  */
 function NineSlice(texture, left, top, right, bottom) {
 	PIXI.DisplayObjectContainer.call(this);
@@ -34,7 +35,7 @@ function NineSlice(texture, left, top, right, bottom) {
 FunctionUtil.extend(NineSlice, PIXI.DisplayObjectContainer);
 
 /**
- * Build parts.
+ * Build the parts for the slices.
  * @method buildParts
  * @private
  */
