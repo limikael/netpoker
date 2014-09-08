@@ -126,9 +126,10 @@ module.exports = function(grunt) {
 	grunt.registerTask("default", function() {
 		console.log("Available Tasks");
 		console.log();
-		console.log("  browserify   - Build client bundle.")
-		console.log("  mockserver   - Start mock server.")
-		console.log("  deploy       - Deploy to nodejitsu.")
-		console.log("  js-unit-test - Run server tests.")
-	});
+		console.log("  browserify   - Build client bundle.");
+		console.log("  mockserver   - Start mock server.");
+		console.log("  deploy       - Deploy to nodejitsu.");
+		console.log("  js-unit-test - Run server tests.");
+		console.log("  doc          - Create project docs and push to http://netpokerdoc.altervista.org/")
+		});
 }
