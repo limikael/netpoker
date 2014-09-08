@@ -13,7 +13,9 @@ module.exports = function(grunt) {
 		var job=qsub("./node_modules/.bin/yuidoc");
 		job.arg("--configfile","res/yuidoc.json");
 		job.show().expect(0);
-		job.run().then(done);
+		job.run().then(done,function(e) {
+			console.log(e);
+		});
 	});
 
 	grunt.registerTask("mockserver",function() {
