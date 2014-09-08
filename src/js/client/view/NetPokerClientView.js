@@ -10,6 +10,7 @@ var Gradient = require("../../utils/Gradient");
 var ButtonsView = require("./ButtonsView");
 var DialogView = require("./DialogView");
 var DealerButtonView = require("./DealerButtonView");
+var ChipsView = require("./ChipsView");
 
 /**
  * Net poker client view.
@@ -39,6 +40,8 @@ function NetPokerClientView() {
 
 	this.dealerButtonView = new DealerButtonView();
 	this.addChild(this.dealerButtonView);
+
+	this.setupChips();
 }
 
 FunctionUtil.extend(NetPokerClientView, PIXI.DisplayObjectContainer);
@@ -98,6 +101,22 @@ NetPokerClientView.prototype.setupSeats = function() {
 
 		this.tableContainer.addChild(seatView);
 		this.seatViews.push(seatView);
+	}
+}
+
+/**
+ * Setup chips.
+ * @method serupSeats
+ */
+NetPokerClientView.prototype.setupChips = function() {
+	var i;
+	for(i = 0; i < Resources.getInstance().betPositions.length; i++) {
+		var chipsView = new ChipsView();
+		this.seatViews[i].betChips = chipsView;
+
+		chipsView.setAlignment(Resources.getInstance().betAlign[i]);
+		chipsView.setTargetPosition(Resources.getInstance().betPositions[i]);
+		this.tableContainer.addChild(chipsView);
 	}
 }
 

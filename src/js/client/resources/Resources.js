@@ -4,6 +4,11 @@ var PIXI = require("pixi.js");
 var Point = require("../../utils/Point");
 
 /**
+ *
+ *
+ */
+
+/**
  * Client resources
  * @class Resources.
  */
@@ -44,6 +49,29 @@ function Resources() {
 		Point(536, 432), Point(351, 432), Point(193, 362),
 		Point(168, 266)
 	];
+
+
+	 this.Align = {
+	 	Left: "left",
+	 	Right: "right",
+	 	Center: "center",
+	 };
+
+	this.betAlign = [
+			this.Align.Left, this.Align.Center, this.Align.Right,
+			this.Align.Right, this.Align.Right, 
+			this.Align.Right, this.Align.Center, this.Align.Left,
+			this.Align.Left, this.Align.Left
+		];
+
+	this.betPositions = [
+			Point(225,150), Point(478,150), Point(730,150),
+			Point(778,196), Point(748,322), Point(719,360),
+			Point(481,360), Point(232,360), Point(199,322),
+			Point(181,200)
+		];
+
+
 }
 
 /**
