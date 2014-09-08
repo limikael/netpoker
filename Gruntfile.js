@@ -23,7 +23,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask("doc", function() {
-		grunt.task.run("ftpush:doc");
+		//grunt.task.run("ftpush:doc");
 
 		var done = this.async();
 		var job=qsub("./node_modules/.bin/yuidoc");
