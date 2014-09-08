@@ -1,4 +1,4 @@
-![travis](https://travis-ci.org/limikael/netpoker.svg?branch=master)
+[![Build Status](https://travis-ci.org/limikael/netpoker.svg?branch=master)](https://travis-ci.org/limikael/netpoker)
 
 netpoker
 ========
