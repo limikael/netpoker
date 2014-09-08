@@ -1,0 +1,4405 @@
+{
+    "project": {
+        "name": "netpoker",
+        "description": "Poker gameplay client and server",
+        "version": "0.1"
+    },
+    "files": {
+        "src/js/client/app/NetPokerClient.js": {
+            "name": "src/js/client/app/NetPokerClient.js",
+            "modules": {},
+            "classes": {
+                "NetPokerClient": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/controller/InterfaceController.js": {
+            "name": "src/js/client/controller/InterfaceController.js",
+            "modules": {},
+            "classes": {
+                "InterfaceController": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/controller/MessageSequenceItem.js": {
+            "name": "src/js/client/controller/MessageSequenceItem.js",
+            "modules": {},
+            "classes": {
+                "MessageSequenceItem": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/controller/MessageSequencer.js": {
+            "name": "src/js/client/controller/MessageSequencer.js",
+            "modules": {},
+            "classes": {
+                "MessageSequencer": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/controller/NetPokerClientController.js": {
+            "name": "src/js/client/controller/NetPokerClientController.js",
+            "modules": {},
+            "classes": {
+                "NetPokerClientController": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/controller/TableController.js": {
+            "name": "src/js/client/controller/TableController.js",
+            "modules": {},
+            "classes": {
+                "TableController": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/resources/Resources.js": {
+            "name": "src/js/client/resources/Resources.js",
+            "modules": {},
+            "classes": {
+                "Resources.": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/view/BigButton.js": {
+            "name": "src/js/client/view/BigButton.js",
+            "modules": {},
+            "classes": {
+                "BigButton": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/view/ButtonsView.js": {
+            "name": "src/js/client/view/ButtonsView.js",
+            "modules": {},
+            "classes": {
+                "ButtonsView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/view/CardView.js": {
+            "name": "src/js/client/view/CardView.js",
+            "modules": {},
+            "classes": {
+                "CardView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/view/ChatView.js": {
+            "name": "src/js/client/view/ChatView.js",
+            "modules": {},
+            "classes": {
+                "ChatView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/view/DealerButtonView.js": {
+            "name": "src/js/client/view/DealerButtonView.js",
+            "modules": {},
+            "classes": {
+                "DealerButtonView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/view/DialogButton.js": {
+            "name": "src/js/client/view/DialogButton.js",
+            "modules": {},
+            "classes": {
+                "DialogButton": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/view/DialogView.js": {
+            "name": "src/js/client/view/DialogView.js",
+            "modules": {},
+            "classes": {
+                "DialogView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/view/LoadingScreen.js": {
+            "name": "src/js/client/view/LoadingScreen.js",
+            "modules": {},
+            "classes": {
+                "LoadingScreen": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/view/NetPokerClientView.js": {
+            "name": "src/js/client/view/NetPokerClientView.js",
+            "modules": {},
+            "classes": {
+                "NetPokerClientView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/client/view/SeatView.js": {
+            "name": "src/js/client/view/SeatView.js",
+            "modules": {},
+            "classes": {
+                "SeatView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/data/ButtonData.js": {
+            "name": "src/js/proto/data/ButtonData.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/data/CardData.js": {
+            "name": "src/js/proto/data/CardData.js",
+            "modules": {},
+            "classes": {
+                "CardData": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/data/PresetButtonData.js": {
+            "name": "src/js/proto/data/PresetButtonData.js",
+            "modules": {},
+            "classes": {
+                "ButtonData": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/messages/ButtonClickMessage.js": {
+            "name": "src/js/proto/messages/ButtonClickMessage.js",
+            "modules": {},
+            "classes": {
+                "ButtonClickMessage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/messages/ButtonsMessage.js": {
+            "name": "src/js/proto/messages/ButtonsMessage.js",
+            "modules": {},
+            "classes": {
+                "ButtonsMessage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/messages/ClearMessage.js": {
+            "name": "src/js/proto/messages/ClearMessage.js",
+            "modules": {},
+            "classes": {
+                "ClearMessage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/messages/CommunityCardsMessage.js": {
+            "name": "src/js/proto/messages/CommunityCardsMessage.js",
+            "modules": {},
+            "classes": {
+                "CommunityCardsMessage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/messages/DealerButtonMessage.js": {
+            "name": "src/js/proto/messages/DealerButtonMessage.js",
+            "modules": {},
+            "classes": {
+                "DealerButtonMessage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/messages/DelayMessage.js": {
+            "name": "src/js/proto/messages/DelayMessage.js",
+            "modules": {},
+            "classes": {
+                "DelayMessage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/messages/InitMessage.js": {
+            "name": "src/js/proto/messages/InitMessage.js",
+            "modules": {},
+            "classes": {
+                "InitMessage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/messages/PocketCardsMessage.js": {
+            "name": "src/js/proto/messages/PocketCardsMessage.js",
+            "modules": {},
+            "classes": {
+                "PocketCardsMessage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/messages/SeatClickMessage.js": {
+            "name": "src/js/proto/messages/SeatClickMessage.js",
+            "modules": {},
+            "classes": {
+                "SeatClickMessage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/messages/SeatInfoMessage.js": {
+            "name": "src/js/proto/messages/SeatInfoMessage.js",
+            "modules": {},
+            "classes": {
+                "SeatInfoMessage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/messages/ShowDialogMessage.js": {
+            "name": "src/js/proto/messages/ShowDialogMessage.js",
+            "modules": {},
+            "classes": {
+                "ShowDialogMessage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/messages/StateCompleteMessage.js": {
+            "name": "src/js/proto/messages/StateCompleteMessage.js",
+            "modules": {},
+            "classes": {
+                "StateCompleteMessage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/proto/ProtoConnection.js": {
+            "name": "src/js/proto/ProtoConnection.js",
+            "modules": {},
+            "classes": {
+                "ProtoConnection\nA protocol connection with an underlying connection.": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/app/NetPokerServer.js": {
+            "name": "src/js/server/app/NetPokerServer.js",
+            "modules": {},
+            "classes": {
+                "NetPokerServer": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/backend/Backend.js": {
+            "name": "src/js/server/backend/Backend.js",
+            "modules": {},
+            "classes": {
+                "Backend": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/backend/BackendCall.js": {
+            "name": "src/js/server/backend/BackendCall.js",
+            "modules": {},
+            "classes": {
+                "BackendCall": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/connection/ConnectionManager.js": {
+            "name": "src/js/server/connection/ConnectionManager.js",
+            "modules": {},
+            "classes": {
+                "ConnectionManager": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/connection/ConnectionManagerConnectionEvent.js": {
+            "name": "src/js/server/connection/ConnectionManagerConnectionEvent.js",
+            "modules": {},
+            "classes": {
+                "ConnectionManagerConnectionEvent": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/connection/UserConnection.js": {
+            "name": "src/js/server/connection/UserConnection.js",
+            "modules": {},
+            "classes": {
+                "UserConnection": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/game/AskBlindState.js": {
+            "name": "src/js/server/game/AskBlindState.js",
+            "modules": {},
+            "classes": {
+                "AskBlindState": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/game/FinishedState.js": {
+            "name": "src/js/server/game/FinishedState.js",
+            "modules": {},
+            "classes": {
+                "FinishedState": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/game/Game.js": {
+            "name": "src/js/server/game/Game.js",
+            "modules": {},
+            "classes": {
+                "Game": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/game/GameSeat.js": {
+            "name": "src/js/server/game/GameSeat.js",
+            "modules": {},
+            "classes": {
+                "GameSeat": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/game/GameSeatPrompt.js": {
+            "name": "src/js/server/game/GameSeatPrompt.js",
+            "modules": {},
+            "classes": {
+                "GameSeatPrompt": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/game/GameState.js": {
+            "name": "src/js/server/game/GameState.js",
+            "modules": {},
+            "classes": {
+                "GameState": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/table/BaseTable.js": {
+            "name": "src/js/server/table/BaseTable.js",
+            "modules": {},
+            "classes": {
+                "BaseTable": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/table/BaseTableSeat.js": {
+            "name": "src/js/server/table/BaseTableSeat.js",
+            "modules": {},
+            "classes": {
+                "BaseTableSeat": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/table/Table.js": {
+            "name": "src/js/server/table/Table.js",
+            "modules": {},
+            "classes": {
+                "Table": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/table/TableManager.js": {
+            "name": "src/js/server/table/TableManager.js",
+            "modules": {},
+            "classes": {
+                "TableManager": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/table/TableSeat.js": {
+            "name": "src/js/server/table/TableSeat.js",
+            "modules": {},
+            "classes": {
+                "TableSeat": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/table/TableSeatBuyChipsPrompt.js": {
+            "name": "src/js/server/table/TableSeatBuyChipsPrompt.js",
+            "modules": {},
+            "classes": {
+                "TableSeatBuyChipsPrompt": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/table/TableSeatUser.js": {
+            "name": "src/js/server/table/TableSeatUser.js",
+            "modules": {},
+            "classes": {
+                "TableSeatUser": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/table/TableSpectator.js": {
+            "name": "src/js/server/table/TableSpectator.js",
+            "modules": {},
+            "classes": {
+                "TableSpectator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/table/TableUtil.js": {
+            "name": "src/js/server/table/TableUtil.js",
+            "modules": {},
+            "classes": {
+                "TableUtil": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/server/user/User.js": {
+            "name": "src/js/server/user/User.js",
+            "modules": {},
+            "classes": {
+                "User": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/ArrayUtil.js": {
+            "name": "src/js/utils/ArrayUtil.js",
+            "modules": {},
+            "classes": {
+                "ArrayUtil": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/Button.js": {
+            "name": "src/js/utils/Button.js",
+            "modules": {},
+            "classes": {
+                "Button": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/EventDispatcher.js": {
+            "name": "src/js/utils/EventDispatcher.js",
+            "modules": {},
+            "classes": {
+                "EventDispatcher": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/FrameTimer.js": {
+            "name": "src/js/utils/FrameTimer.js",
+            "modules": {},
+            "classes": {
+                "FrameTimer": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/FunctionUtil.js": {
+            "name": "src/js/utils/FunctionUtil.js",
+            "modules": {},
+            "classes": {
+                "FunctionUtil": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/Gradient.js": {
+            "name": "src/js/utils/Gradient.js",
+            "modules": {},
+            "classes": {
+                "Gradient": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/MessageClientConnection.js": {
+            "name": "src/js/utils/MessageClientConnection.js",
+            "modules": {},
+            "classes": {
+                "MessageClientConnection": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/MessageServer.js": {
+            "name": "src/js/utils/MessageServer.js",
+            "modules": {},
+            "classes": {
+                "MessageServer": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/MessageServerConnection.js": {
+            "name": "src/js/utils/MessageServerConnection.js",
+            "modules": {},
+            "classes": {
+                "MessageServerConnection": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/MessageWebSocketConnection.js": {
+            "name": "src/js/utils/MessageWebSocketConnection.js",
+            "modules": {},
+            "classes": {
+                "MessageWebSocketConnection": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/NineSlice.js": {
+            "name": "src/js/utils/NineSlice.js",
+            "modules": {},
+            "classes": {
+                "clearWebSocket": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/PixiApp.js": {
+            "name": "src/js/utils/PixiApp.js",
+            "modules": {},
+            "classes": {
+                "PixiApp": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/Point.js": {
+            "name": "src/js/utils/Point.js",
+            "modules": {},
+            "classes": {
+                "Point": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/Sequencer.js": {
+            "name": "src/js/utils/Sequencer.js",
+            "modules": {},
+            "classes": {
+                "Sequencer": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/Thenable.js": {
+            "name": "src/js/utils/Thenable.js",
+            "modules": {},
+            "classes": {
+                "Thenable": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/js/utils/ThenableBarrier.js": {
+            "name": "src/js/utils/ThenableBarrier.js",
+            "modules": {},
+            "classes": {
+                "ThenableBarrier": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "NetPokerClient": {
+            "name": "NetPokerClient",
+            "shortname": "NetPokerClient",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/app/NetPokerClient.js",
+            "line": 12,
+            "description": "Main entry point for client."
+        },
+        "InterfaceController": {
+            "name": "InterfaceController",
+            "shortname": "InterfaceController",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/controller/InterfaceController.js",
+            "line": 4,
+            "description": "Control user interface."
+        },
+        "MessageSequenceItem": {
+            "name": "MessageSequenceItem",
+            "shortname": "MessageSequenceItem",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/controller/MessageSequenceItem.js",
+            "line": 5,
+            "description": "An item in a message sequence."
+        },
+        "MessageSequencer": {
+            "name": "MessageSequencer",
+            "shortname": "MessageSequencer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/controller/MessageSequencer.js",
+            "line": 5,
+            "description": "Sequences messages."
+        },
+        "NetPokerClientController": {
+            "name": "NetPokerClientController",
+            "shortname": "NetPokerClientController",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/controller/NetPokerClientController.js",
+            "line": 11,
+            "description": "Main controller"
+        },
+        "TableController": {
+            "name": "TableController",
+            "shortname": "TableController",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/controller/TableController.js",
+            "line": 6,
+            "description": "Control the table"
+        },
+        "Resources.": {
+            "name": "Resources.",
+            "shortname": "Resources.",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/resources/Resources.js",
+            "line": 6,
+            "description": "Client resources"
+        },
+        "BigButton": {
+            "name": "BigButton",
+            "shortname": "BigButton",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/view/BigButton.js",
+            "line": 6,
+            "description": "Big button."
+        },
+        "ButtonsView": {
+            "name": "ButtonsView",
+            "shortname": "ButtonsView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/view/ButtonsView.js",
+            "line": 7,
+            "description": "Buttons"
+        },
+        "CardView": {
+            "name": "CardView",
+            "shortname": "CardView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/view/CardView.js",
+            "line": 7,
+            "description": "A card view."
+        },
+        "ChatView": {
+            "name": "ChatView",
+            "shortname": "ChatView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/view/ChatView.js",
+            "line": 6,
+            "description": "Chat view."
+        },
+        "DealerButtonView": {
+            "name": "DealerButtonView",
+            "shortname": "DealerButtonView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/view/DealerButtonView.js",
+            "line": 7,
+            "description": "Dialog view."
+        },
+        "DialogButton": {
+            "name": "DialogButton",
+            "shortname": "DialogButton",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/view/DialogButton.js",
+            "line": 6,
+            "description": "Dialog button."
+        },
+        "DialogView": {
+            "name": "DialogView",
+            "shortname": "DialogView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/view/DialogView.js",
+            "line": 8,
+            "description": "Dialog view."
+        },
+        "LoadingScreen": {
+            "name": "LoadingScreen",
+            "shortname": "LoadingScreen",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/view/LoadingScreen.js",
+            "line": 5,
+            "description": "Loading screen."
+        },
+        "NetPokerClientView": {
+            "name": "NetPokerClientView",
+            "shortname": "NetPokerClientView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/view/NetPokerClientView.js",
+            "line": 14,
+            "description": "Net poker client view."
+        },
+        "SeatView": {
+            "name": "SeatView",
+            "shortname": "SeatView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/client/view/SeatView.js",
+            "line": 6,
+            "description": "A seat view."
+        },
+        "ButtonData": {
+            "name": "ButtonData",
+            "shortname": "ButtonData",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/proto/data/PresetButtonData.js",
+            "line": 1,
+            "description": "Button data."
+        },
+        "CardData": {
+            "name": "CardData",
+            "shortname": "CardData",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/proto/data/CardData.js",
+            "line": 1,
+            "description": "Card data."
+        },
+        "ButtonClickMessage": {
+            "name": "ButtonClickMessage",
+            "shortname": "ButtonClickMessage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/proto/messages/ButtonClickMessage.js",
+            "line": 1,
+            "description": "Sent when the user clicks a button, either in a dialog or\nfor a game action."
+        },
+        "ButtonsMessage": {
+            "name": "ButtonsMessage",
+            "shortname": "ButtonsMessage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/proto/messages/ButtonsMessage.js",
+            "line": 3,
+            "description": "Message sent when the client should show game action buttons,\nFOLD, RAISE etc."
+        },
+        "ClearMessage": {
+            "name": "ClearMessage",
+            "shortname": "ClearMessage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/proto/messages/ClearMessage.js",
+            "line": 1
+        },
+        "CommunityCardsMessage": {
+            "name": "CommunityCardsMessage",
+            "shortname": "CommunityCardsMessage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/proto/messages/CommunityCardsMessage.js",
+            "line": 3,
+            "description": "Show community cards."
+        },
+        "DealerButtonMessage": {
+            "name": "DealerButtonMessage",
+            "shortname": "DealerButtonMessage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/proto/messages/DealerButtonMessage.js",
+            "line": 1
+        },
+        "DelayMessage": {
+            "name": "DelayMessage",
+            "shortname": "DelayMessage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/proto/messages/DelayMessage.js",
+            "line": 1
+        },
+        "InitMessage": {
+            "name": "InitMessage",
+            "shortname": "InitMessage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/proto/messages/InitMessage.js",
+            "line": 1
+        },
+        "PocketCardsMessage": {
+            "name": "PocketCardsMessage",
+            "shortname": "PocketCardsMessage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/proto/messages/PocketCardsMessage.js",
+            "line": 3,
+            "description": "Show pocket cards."
+        },
+        "SeatClickMessage": {
+            "name": "SeatClickMessage",
+            "shortname": "SeatClickMessage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/proto/messages/SeatClickMessage.js",
+            "line": 1,
+            "description": "Message indicating that the user has clicked a seat."
+        },
+        "SeatInfoMessage": {
+            "name": "SeatInfoMessage",
+            "shortname": "SeatInfoMessage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/proto/messages/SeatInfoMessage.js",
+            "line": 1,
+            "description": "Show username and chips on seat."
+        },
+        "ShowDialogMessage": {
+            "name": "ShowDialogMessage",
+            "shortname": "ShowDialogMessage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/proto/messages/ShowDialogMessage.js",
+            "line": 1,
+            "description": "Show dialog, for e.g. buy in."
+        },
+        "StateCompleteMessage": {
+            "name": "StateCompleteMessage",
+            "shortname": "StateCompleteMessage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/proto/messages/StateCompleteMessage.js",
+            "line": 1
+        },
+        "ProtoConnection\nA protocol connection with an underlying connection.": {
+            "name": "ProtoConnection\nA protocol connection with an underlying connection.",
+            "shortname": "ProtoConnection\nA protocol connection with an underlying connection.",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/proto/ProtoConnection.js",
+            "line": 17
+        },
+        "NetPokerServer": {
+            "name": "NetPokerServer",
+            "shortname": "NetPokerServer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/app/NetPokerServer.js",
+            "line": 7,
+            "description": "Main app class."
+        },
+        "Backend": {
+            "name": "Backend",
+            "shortname": "Backend",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/backend/Backend.js",
+            "line": 3,
+            "description": "Connection to backend."
+        },
+        "BackendCall": {
+            "name": "BackendCall",
+            "shortname": "BackendCall",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/backend/BackendCall.js",
+            "line": 4,
+            "description": "A call to a backend."
+        },
+        "ConnectionManager": {
+            "name": "ConnectionManager",
+            "shortname": "ConnectionManager",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/connection/ConnectionManager.js",
+            "line": 7,
+            "description": "Connection manager."
+        },
+        "ConnectionManagerConnectionEvent": {
+            "name": "ConnectionManagerConnectionEvent",
+            "shortname": "ConnectionManagerConnectionEvent",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/connection/ConnectionManagerConnectionEvent.js",
+            "line": 1,
+            "description": "Connection event for connection manager."
+        },
+        "UserConnection": {
+            "name": "UserConnection",
+            "shortname": "UserConnection",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/connection/UserConnection.js",
+            "line": 8,
+            "description": "Represents a connection waiting for a user to be authenticated.\nUsers and connections are generally handles seperatly in the server,\nsince browsers can disconnect and reconnect. This class is used\nby the connection manager, just to find out which user we should\nreport to be using this connection."
+        },
+        "AskBlindState": {
+            "name": "AskBlindState",
+            "shortname": "AskBlindState",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/game/AskBlindState.js",
+            "line": 9,
+            "description": "During this state, we ask each participating user if they want to pay\nthe required blind to join the game. If enough players join, we\nproceed with setting a RoundState as next state for the game object.\nIf the number of players is not enough to start the game, we cancel\nthe game by setting a FinishedState as next state instead."
+        },
+        "FinishedState": {
+            "name": "FinishedState",
+            "shortname": "FinishedState",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/game/FinishedState.js",
+            "line": 7,
+            "description": "The game is finished. We do a wait and then clear the table,\nand then we notify the game object that the game is finished."
+        },
+        "Game": {
+            "name": "Game",
+            "shortname": "Game",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/game/Game.js",
+            "line": 7,
+            "description": "Represents one game of poker."
+        },
+        "GameSeat": {
+            "name": "GameSeat",
+            "shortname": "GameSeat",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/game/GameSeat.js",
+            "line": 1,
+            "description": "A seat at a game."
+        },
+        "GameSeatPrompt": {
+            "name": "GameSeatPrompt",
+            "shortname": "GameSeatPrompt",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/game/GameSeatPrompt.js",
+            "line": 6,
+            "description": "Game seat prompt."
+        },
+        "GameState": {
+            "name": "GameState",
+            "shortname": "GameState",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/game/GameState.js",
+            "line": 1,
+            "description": "The state of a game."
+        },
+        "BaseTable": {
+            "name": "BaseTable",
+            "shortname": "BaseTable",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/table/BaseTable.js",
+            "line": 4,
+            "description": "Base class for cash game and tournament tables."
+        },
+        "BaseTableSeat": {
+            "name": "BaseTableSeat",
+            "shortname": "BaseTableSeat",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/table/BaseTableSeat.js",
+            "line": 6,
+            "description": "Base table seat."
+        },
+        "Table": {
+            "name": "Table",
+            "shortname": "Table",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/table/Table.js",
+            "line": 13,
+            "description": "Cash game table."
+        },
+        "TableManager": {
+            "name": "TableManager",
+            "shortname": "TableManager",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/table/TableManager.js",
+            "line": 6,
+            "description": "Manage list of current cash game tables."
+        },
+        "TableSeat": {
+            "name": "TableSeat",
+            "shortname": "TableSeat",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/table/TableSeat.js",
+            "line": 6,
+            "description": "A table seat."
+        },
+        "TableSeatBuyChipsPrompt": {
+            "name": "TableSeatBuyChipsPrompt",
+            "shortname": "TableSeatBuyChipsPrompt",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/table/TableSeatBuyChipsPrompt.js",
+            "line": 9,
+            "description": "Prompt user to buy chips."
+        },
+        "TableSeatUser": {
+            "name": "TableSeatUser",
+            "shortname": "TableSeatUser",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/table/TableSeatUser.js",
+            "line": 6,
+            "description": "A user seated at a table."
+        },
+        "TableSpectator": {
+            "name": "TableSpectator",
+            "shortname": "TableSpectator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/table/TableSpectator.js",
+            "line": 6,
+            "description": "Someone watching a table."
+        },
+        "TableUtil": {
+            "name": "TableUtil",
+            "shortname": "TableUtil",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/table/TableUtil.js",
+            "line": 1,
+            "description": "Table util."
+        },
+        "User": {
+            "name": "User",
+            "shortname": "User",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/server/user/User.js",
+            "line": 1,
+            "description": "Represents a user."
+        },
+        "ArrayUtil": {
+            "name": "ArrayUtil",
+            "shortname": "ArrayUtil",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/ArrayUtil.js",
+            "line": 1,
+            "description": "Array utilities."
+        },
+        "Button": {
+            "name": "Button",
+            "shortname": "Button",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/Button.js",
+            "line": 5,
+            "description": "Button."
+        },
+        "EventDispatcher": {
+            "name": "EventDispatcher",
+            "shortname": "EventDispatcher",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/EventDispatcher.js",
+            "line": 3,
+            "description": "AS3/jquery style event dispatcher."
+        },
+        "FrameTimer": {
+            "name": "FrameTimer",
+            "shortname": "FrameTimer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/FrameTimer.js",
+            "line": 6,
+            "description": "Frame timer."
+        },
+        "FunctionUtil": {
+            "name": "FunctionUtil",
+            "shortname": "FunctionUtil",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/FunctionUtil.js",
+            "line": 1,
+            "description": "Function utils."
+        },
+        "Gradient": {
+            "name": "Gradient",
+            "shortname": "Gradient",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/Gradient.js",
+            "line": 4,
+            "description": "Create a sprite with a gradient."
+        },
+        "MessageClientConnection": {
+            "name": "MessageClientConnection",
+            "shortname": "MessageClientConnection",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/MessageClientConnection.js",
+            "line": 5,
+            "description": "Send and receive websocket messages."
+        },
+        "MessageServer": {
+            "name": "MessageServer",
+            "shortname": "MessageServer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/MessageServer.js",
+            "line": 9,
+            "description": "Server that manages connections where each message is a JSON document."
+        },
+        "MessageServerConnection": {
+            "name": "MessageServerConnection",
+            "shortname": "MessageServerConnection",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/MessageServerConnection.js",
+            "line": 4,
+            "description": "Represents one connection to a MessageServer"
+        },
+        "MessageWebSocketConnection": {
+            "name": "MessageWebSocketConnection",
+            "shortname": "MessageWebSocketConnection",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/MessageWebSocketConnection.js",
+            "line": 5,
+            "description": "Message connection in a browser."
+        },
+        "clearWebSocket": {
+            "name": "clearWebSocket",
+            "shortname": "clearWebSocket",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/NineSlice.js",
+            "line": 4,
+            "description": "Nine slice."
+        },
+        "PixiApp": {
+            "name": "PixiApp",
+            "shortname": "PixiApp",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/PixiApp.js",
+            "line": 9,
+            "description": "Pixi full window app.\nCan operate using window coordinates or scaled to specific area."
+        },
+        "Point": {
+            "name": "Point",
+            "shortname": "Point",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/Point.js",
+            "line": 1,
+            "description": "Represents a point."
+        },
+        "Sequencer": {
+            "name": "Sequencer",
+            "shortname": "Sequencer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/Sequencer.js",
+            "line": 4,
+            "description": "Perform tasks in a sequence.\nTasks, which should be event dispatchers,\nare euqueued with the enqueue function,\na START event is dispatcher upon task\nstart, and the task is considered complete\nas it dispatches a COMPLETE event."
+        },
+        "Thenable": {
+            "name": "Thenable",
+            "shortname": "Thenable",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/Thenable.js",
+            "line": 4,
+            "description": "An implementation of promises as defined here:\nhttp://promises-aplus.github.io/promises-spec/"
+        },
+        "ThenableBarrier": {
+            "name": "ThenableBarrier",
+            "shortname": "ThenableBarrier",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/js/utils/ThenableBarrier.js",
+            "line": 4,
+            "description": "Listen to several promises that all must be fulfilled."
+        }
+    },
+    "classitems": [
+        {
+            "file": "src/js/client/app/NetPokerClient.js",
+            "line": 30,
+            "description": "Set url.",
+            "itemtype": "method",
+            "name": "setUrl",
+            "class": "NetPokerClient"
+        },
+        {
+            "file": "src/js/client/app/NetPokerClient.js",
+            "line": 38,
+            "description": "Set table id.",
+            "itemtype": "method",
+            "name": "setTableId",
+            "class": "NetPokerClient"
+        },
+        {
+            "file": "src/js/client/app/NetPokerClient.js",
+            "line": 46,
+            "description": "Set view case.",
+            "itemtype": "method",
+            "name": "setViewCase",
+            "class": "NetPokerClient"
+        },
+        {
+            "file": "src/js/client/app/NetPokerClient.js",
+            "line": 55,
+            "description": "Set token.",
+            "itemtype": "method",
+            "name": "setToken",
+            "class": "NetPokerClient"
+        },
+        {
+            "file": "src/js/client/app/NetPokerClient.js",
+            "line": 63,
+            "description": "Run.",
+            "itemtype": "method",
+            "name": "run",
+            "class": "NetPokerClient"
+        },
+        {
+            "file": "src/js/client/app/NetPokerClient.js",
+            "line": 78,
+            "description": "Assets loaded, connect.",
+            "itemtype": "method",
+            "name": "onAssetLoaderComplete",
+            "access": "private",
+            "tagname": "",
+            "class": "NetPokerClient"
+        },
+        {
+            "file": "src/js/client/app/NetPokerClient.js",
+            "line": 93,
+            "description": "Connect.",
+            "itemtype": "method",
+            "name": "connect",
+            "access": "private",
+            "tagname": "",
+            "class": "NetPokerClient"
+        },
+        {
+            "file": "src/js/client/app/NetPokerClient.js",
+            "line": 111,
+            "description": "Connection complete.",
+            "itemtype": "method",
+            "name": "onConnectionConnect",
+            "access": "private",
+            "tagname": "",
+            "class": "NetPokerClient"
+        },
+        {
+            "file": "src/js/client/app/NetPokerClient.js",
+            "line": 134,
+            "description": "State complete.",
+            "itemtype": "method",
+            "name": "onStateCompleteMessage",
+            "access": "private",
+            "tagname": "",
+            "class": "NetPokerClient"
+        },
+        {
+            "file": "src/js/client/app/NetPokerClient.js",
+            "line": 143,
+            "description": "Connection closed.",
+            "itemtype": "method",
+            "name": "onConnectionClose",
+            "access": "private",
+            "tagname": "",
+            "class": "NetPokerClient"
+        },
+        {
+            "file": "src/js/client/controller/InterfaceController.js",
+            "line": 16,
+            "description": "Buttons message.",
+            "itemtype": "method",
+            "name": "onButtonsMessage",
+            "class": "InterfaceController"
+        },
+        {
+            "file": "src/js/client/controller/InterfaceController.js",
+            "line": 26,
+            "description": "Show dialog.",
+            "itemtype": "method",
+            "name": "onShowDialogMessage",
+            "class": "InterfaceController"
+        },
+        {
+            "file": "src/js/client/controller/MessageSequenceItem.js",
+            "line": 19,
+            "description": "Get message.",
+            "itemtype": "method",
+            "name": "getMessage",
+            "class": "MessageSequenceItem"
+        },
+        {
+            "file": "src/js/client/controller/MessageSequenceItem.js",
+            "line": 29,
+            "description": "Are we waiting for an event?",
+            "itemtype": "method",
+            "name": "isWaiting",
+            "class": "MessageSequenceItem"
+        },
+        {
+            "file": "src/js/client/controller/MessageSequenceItem.js",
+            "line": 37,
+            "description": "Notify complete.",
+            "itemtype": "method",
+            "name": "notifyComplete",
+            "class": "MessageSequenceItem"
+        },
+        {
+            "file": "src/js/client/controller/MessageSequenceItem.js",
+            "line": 45,
+            "description": "Wait for event before processing next message.",
+            "itemtype": "method",
+            "name": "waitFor",
+            "class": "MessageSequenceItem"
+        },
+        {
+            "file": "src/js/client/controller/MessageSequenceItem.js",
+            "line": 57,
+            "description": "Wait target complete.",
+            "itemtype": "method",
+            "name": "onTargetComplete",
+            "access": "private",
+            "tagname": "",
+            "class": "MessageSequenceItem"
+        },
+        {
+            "file": "src/js/client/controller/MessageSequencer.js",
+            "line": 15,
+            "description": "Add a message for procesing.",
+            "itemtype": "method",
+            "name": "enqueue",
+            "class": "MessageSequencer"
+        },
+        {
+            "file": "src/js/client/controller/MessageSequencer.js",
+            "line": 30,
+            "description": "Sequence item start.",
+            "itemtype": "method",
+            "name": "onSequenceItemStart",
+            "access": "private",
+            "tagname": "",
+            "class": "MessageSequencer"
+        },
+        {
+            "file": "src/js/client/controller/MessageSequencer.js",
+            "line": 49,
+            "description": "Add message handler.",
+            "itemtype": "method",
+            "name": "addMessageHandler",
+            "class": "MessageSequencer"
+        },
+        {
+            "file": "src/js/client/controller/MessageSequencer.js",
+            "line": 57,
+            "description": "Wait for the target to dispatch an event before continuing to\nprocess the messages in the que.",
+            "itemtype": "method",
+            "name": "waitFor",
+            "class": "MessageSequencer"
+        },
+        {
+            "file": "src/js/client/controller/NetPokerClientController.js",
+            "line": 27,
+            "description": "Set connection.",
+            "itemtype": "method",
+            "name": "setProtoConnection",
+            "class": "NetPokerClientController"
+        },
+        {
+            "file": "src/js/client/controller/NetPokerClientController.js",
+            "line": 43,
+            "description": "Incoming message.\nEnqueue for processing.",
+            "itemtype": "method",
+            "name": "onProtoConnectionMessage",
+            "access": "private",
+            "tagname": "",
+            "class": "NetPokerClientController"
+        },
+        {
+            "file": "src/js/client/controller/NetPokerClientController.js",
+            "line": 53,
+            "description": "Button click.",
+            "itemtype": "method",
+            "name": "onButtonClick",
+            "access": "private",
+            "tagname": "",
+            "class": "NetPokerClientController"
+        },
+        {
+            "file": "src/js/client/controller/NetPokerClientController.js",
+            "line": 66,
+            "description": "Seat click.",
+            "itemtype": "method",
+            "name": "onSeatClick",
+            "access": "private",
+            "tagname": "",
+            "class": "NetPokerClientController"
+        },
+        {
+            "file": "src/js/client/controller/TableController.js",
+            "line": 20,
+            "description": "Seat info message.",
+            "itemtype": "method",
+            "name": "onSeatInfoMessage",
+            "class": "TableController"
+        },
+        {
+            "file": "src/js/client/controller/TableController.js",
+            "line": 33,
+            "description": "Seat info message.",
+            "itemtype": "method",
+            "name": "onCommunityCardsMessage",
+            "class": "TableController"
+        },
+        {
+            "file": "src/js/client/controller/TableController.js",
+            "line": 49,
+            "description": "Pocket cards message.",
+            "itemtype": "method",
+            "name": "onPocketCardsMessage",
+            "class": "TableController"
+        },
+        {
+            "file": "src/js/client/controller/TableController.js",
+            "line": 67,
+            "description": "Dealer button message.",
+            "itemtype": "method",
+            "name": "onDealerButtonMessage",
+            "class": "TableController"
+        },
+        {
+            "file": "src/js/client/resources/Resources.js",
+            "line": 49,
+            "description": "Get part from components atlas.",
+            "itemtype": "method",
+            "name": "getComponentsPart",
+            "access": "private",
+            "tagname": "",
+            "class": "Resources."
+        },
+        {
+            "file": "src/js/client/resources/Resources.js",
+            "line": 65,
+            "description": "Get singleton instance.",
+            "itemtype": "method",
+            "name": "getInstance",
+            "class": "Resources."
+        },
+        {
+            "file": "src/js/client/view/BigButton.js",
+            "line": 41,
+            "description": "Set label for the button.",
+            "itemtype": "method",
+            "name": "setLabel",
+            "class": "BigButton"
+        },
+        {
+            "file": "src/js/client/view/BigButton.js",
+            "line": 51,
+            "description": "Set value.",
+            "itemtype": "method",
+            "name": "setValue",
+            "class": "BigButton"
+        },
+        {
+            "file": "src/js/client/view/ButtonsView.js",
+            "line": 40,
+            "description": "Set button datas.",
+            "itemtype": "method",
+            "name": "setButtons",
+            "class": "ButtonsView"
+        },
+        {
+            "file": "src/js/client/view/ButtonsView.js",
+            "line": 67,
+            "description": "Button click.",
+            "itemtype": "method",
+            "name": "onButtonClick",
+            "access": "private",
+            "tagname": "",
+            "class": "ButtonsView"
+        },
+        {
+            "file": "src/js/client/view/CardView.js",
+            "line": 39,
+            "description": "Set card data.",
+            "itemtype": "method",
+            "name": "setCardData",
+            "class": "CardView"
+        },
+        {
+            "file": "src/js/client/view/CardView.js",
+            "line": 64,
+            "description": "Set card data.",
+            "itemtype": "method",
+            "name": "setCardData",
+            "class": "CardView"
+        },
+        {
+            "file": "src/js/client/view/CardView.js",
+            "line": 75,
+            "description": "Hide.",
+            "itemtype": "method",
+            "name": "hide",
+            "class": "CardView"
+        },
+        {
+            "file": "src/js/client/view/CardView.js",
+            "line": 83,
+            "description": "Show.",
+            "itemtype": "method",
+            "name": "show",
+            "class": "CardView"
+        },
+        {
+            "file": "src/js/client/view/DealerButtonView.js",
+            "line": 24,
+            "description": "Set seat index",
+            "itemtype": "method",
+            "name": "setSeatIndex",
+            "class": "DealerButtonView"
+        },
+        {
+            "file": "src/js/client/view/DealerButtonView.js",
+            "line": 34,
+            "description": "Animate to seat index.",
+            "itemtype": "method",
+            "name": "animateToSeatIndex",
+            "class": "DealerButtonView"
+        },
+        {
+            "file": "src/js/client/view/DealerButtonView.js",
+            "line": 60,
+            "description": "Hide.",
+            "itemtype": "method",
+            "name": "hide",
+            "class": "DealerButtonView"
+        },
+        {
+            "file": "src/js/client/view/DealerButtonView.js",
+            "line": 68,
+            "description": "Show.",
+            "itemtype": "method",
+            "name": "show",
+            "class": "DealerButtonView"
+        },
+        {
+            "file": "src/js/client/view/DialogButton.js",
+            "line": 30,
+            "description": "Set text for the button.",
+            "itemtype": "method",
+            "name": "setText",
+            "class": "DialogButton"
+        },
+        {
+            "file": "src/js/client/view/DialogView.js",
+            "line": 63,
+            "description": "Hide.",
+            "itemtype": "method",
+            "name": "hide",
+            "class": "DialogView"
+        },
+        {
+            "file": "src/js/client/view/DialogView.js",
+            "line": 71,
+            "description": "Show.",
+            "itemtype": "method",
+            "name": "show",
+            "class": "DialogView"
+        },
+        {
+            "file": "src/js/client/view/LoadingScreen.js",
+            "line": 35,
+            "description": "Show.",
+            "itemtype": "method",
+            "name": "show",
+            "class": "LoadingScreen"
+        },
+        {
+            "file": "src/js/client/view/LoadingScreen.js",
+            "line": 46,
+            "description": "Hide.",
+            "itemtype": "method",
+            "name": "hide",
+            "class": "LoadingScreen"
+        },
+        {
+            "file": "src/js/client/view/NetPokerClientView.js",
+            "line": 49,
+            "description": "Setup background.",
+            "itemtype": "method",
+            "name": "setupBackground",
+            "class": "NetPokerClientView"
+        },
+        {
+            "file": "src/js/client/view/NetPokerClientView.js",
+            "line": 76,
+            "description": "Setup seats.",
+            "itemtype": "method",
+            "name": "serupSeats",
+            "class": "NetPokerClientView"
+        },
+        {
+            "file": "src/js/client/view/NetPokerClientView.js",
+            "line": 104,
+            "description": "Seat click.",
+            "itemtype": "method",
+            "name": "onSeatClick",
+            "access": "private",
+            "tagname": "",
+            "class": "NetPokerClientView"
+        },
+        {
+            "file": "src/js/client/view/NetPokerClientView.js",
+            "line": 123,
+            "description": "Setup community cards.",
+            "itemtype": "method",
+            "name": "setupCommunityCards",
+            "access": "private",
+            "tagname": "",
+            "class": "NetPokerClientView"
+        },
+        {
+            "file": "src/js/client/view/NetPokerClientView.js",
+            "line": 143,
+            "description": "Get seat view by index.",
+            "itemtype": "method",
+            "name": "getSeatViewByIndex",
+            "class": "NetPokerClientView"
+        },
+        {
+            "file": "src/js/client/view/NetPokerClientView.js",
+            "line": 151,
+            "description": "Get seat view by index.",
+            "itemtype": "method",
+            "name": "getSeatViewByIndex",
+            "class": "NetPokerClientView"
+        },
+        {
+            "file": "src/js/client/view/NetPokerClientView.js",
+            "line": 159,
+            "description": "Get buttons view.",
+            "itemtype": "method",
+            "name": "getSeatViewByIndex",
+            "class": "NetPokerClientView"
+        },
+        {
+            "file": "src/js/client/view/NetPokerClientView.js",
+            "line": 167,
+            "description": "Get dialog view.",
+            "itemtype": "method",
+            "name": "getDialogView",
+            "class": "NetPokerClientView"
+        },
+        {
+            "file": "src/js/client/view/NetPokerClientView.js",
+            "line": 175,
+            "description": "Get dialog view.",
+            "itemtype": "method",
+            "name": "getDialogView",
+            "class": "NetPokerClientView"
+        },
+        {
+            "file": "src/js/client/view/SeatView.js",
+            "line": 53,
+            "description": "Set name.",
+            "itemtype": "method",
+            "name": "setName",
+            "class": "SeatView"
+        },
+        {
+            "file": "src/js/client/view/SeatView.js",
+            "line": 64,
+            "description": "Set name.",
+            "itemtype": "method",
+            "name": "setChips",
+            "class": "SeatView"
+        },
+        {
+            "file": "src/js/client/view/SeatView.js",
+            "line": 75,
+            "description": "Set sitout.",
+            "itemtype": "method",
+            "name": "setSitout",
+            "class": "SeatView"
+        },
+        {
+            "file": "src/js/client/view/SeatView.js",
+            "line": 87,
+            "description": "Set sitout.",
+            "itemtype": "method",
+            "name": "setActive",
+            "class": "SeatView"
+        },
+        {
+            "file": "src/js/client/view/SeatView.js",
+            "line": 95,
+            "description": "Add pocket card.",
+            "itemtype": "method",
+            "name": "addPocketCard",
+            "class": "SeatView"
+        },
+        {
+            "file": "src/js/client/view/SeatView.js",
+            "line": 103,
+            "description": "Get pocket cards.",
+            "itemtype": "method",
+            "name": "getPocketCards",
+            "class": "SeatView"
+        },
+        {
+            "file": "src/js/proto/data/ButtonData.js",
+            "line": 35,
+            "description": "Get button.",
+            "itemtype": "method",
+            "name": "getButton",
+            "class": "ButtonData"
+        },
+        {
+            "file": "src/js/proto/data/ButtonData.js",
+            "line": 43,
+            "description": "Get value.",
+            "itemtype": "method",
+            "name": "getValue",
+            "class": "ButtonData"
+        },
+        {
+            "file": "src/js/proto/data/ButtonData.js",
+            "line": 51,
+            "description": "Get button string for id.",
+            "itemtype": "method",
+            "name": "getButtonStringForId",
+            "static": 1,
+            "class": "ButtonData"
+        },
+        {
+            "file": "src/js/proto/data/CardData.js",
+            "line": 15,
+            "description": "Does this CardData represent a show card?\nIf not it should be rendered with its backside.",
+            "itemtype": "method",
+            "name": "isShown",
+            "class": "CardData"
+        },
+        {
+            "file": "src/js/proto/data/CardData.js",
+            "line": 24,
+            "description": "Get card value string.",
+            "itemtype": "method",
+            "name": "getCardValueString",
+            "class": "CardData"
+        },
+        {
+            "file": "src/js/proto/data/CardData.js",
+            "line": 32,
+            "description": "Get suit index.",
+            "itemtype": "method",
+            "name": "getSuitIndex",
+            "class": "CardData"
+        },
+        {
+            "file": "src/js/proto/data/CardData.js",
+            "line": 40,
+            "description": "Get suit string.",
+            "itemtype": "method",
+            "name": "getSuitString",
+            "class": "CardData"
+        },
+        {
+            "file": "src/js/proto/data/CardData.js",
+            "line": 48,
+            "description": "Get color.",
+            "itemtype": "method",
+            "name": "getColor",
+            "class": "CardData"
+        },
+        {
+            "file": "src/js/proto/data/CardData.js",
+            "line": 60,
+            "description": "To string.",
+            "itemtype": "method",
+            "name": "toString",
+            "class": "CardData"
+        },
+        {
+            "file": "src/js/proto/data/PresetButtonData.js",
+            "line": 10,
+            "description": "Get button.",
+            "itemtype": "method",
+            "name": "getButton",
+            "class": "ButtonData"
+        },
+        {
+            "file": "src/js/proto/data/PresetButtonData.js",
+            "line": 18,
+            "description": "Get value.",
+            "itemtype": "method",
+            "name": "getValue",
+            "class": "ButtonData"
+        },
+        {
+            "file": "src/js/proto/messages/ButtonClickMessage.js",
+            "line": 13,
+            "description": "The the button that was pressed.",
+            "itemtype": "method",
+            "name": "getButton",
+            "class": "ButtonClickMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ButtonClickMessage.js",
+            "line": 21,
+            "description": "Setter.",
+            "itemtype": "method",
+            "name": "getValue",
+            "class": "ButtonClickMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ButtonClickMessage.js",
+            "line": 29,
+            "description": "Un-serialize.",
+            "itemtype": "method",
+            "name": "unserialize",
+            "class": "ButtonClickMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ButtonClickMessage.js",
+            "line": 38,
+            "description": "Serialize message.",
+            "itemtype": "method",
+            "name": "serialize",
+            "class": "ButtonClickMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ButtonsMessage.js",
+            "line": 14,
+            "description": "Get an array of ButtonData indicating which buttons to show.",
+            "itemtype": "method",
+            "name": "getButtons",
+            "class": "ButtonsMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ButtonsMessage.js",
+            "line": 22,
+            "description": "Add a button to be sent.",
+            "itemtype": "method",
+            "name": "addButton",
+            "class": "ButtonsMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ButtonsMessage.js",
+            "line": 30,
+            "description": "Un-serialize.",
+            "itemtype": "method",
+            "name": "unserialize.",
+            "class": "ButtonsMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ButtonsMessage.js",
+            "line": 44,
+            "description": "Serialize message.",
+            "itemtype": "method",
+            "name": "serialize",
+            "class": "ButtonsMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ClearMessage.js",
+            "line": 18,
+            "description": "Getter.",
+            "itemtype": "method",
+            "name": "getComponents",
+            "class": "ClearMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ClearMessage.js",
+            "line": 26,
+            "description": "Un-serialize.",
+            "itemtype": "method",
+            "name": "unserialize",
+            "class": "ClearMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ClearMessage.js",
+            "line": 34,
+            "description": "Serialize message.",
+            "itemtype": "method",
+            "name": "serialize",
+            "class": "ClearMessage"
+        },
+        {
+            "file": "src/js/proto/messages/CommunityCardsMessage.js",
+            "line": 15,
+            "description": "Get card data.",
+            "itemtype": "method",
+            "name": "getCards",
+            "class": "CommunityCardsMessage"
+        },
+        {
+            "file": "src/js/proto/messages/CommunityCardsMessage.js",
+            "line": 23,
+            "description": "Get the index of the first card to be shown in the sequence.",
+            "itemtype": "method",
+            "name": "getFirstIndex",
+            "class": "CommunityCardsMessage"
+        },
+        {
+            "file": "src/js/proto/messages/CommunityCardsMessage.js",
+            "line": 31,
+            "description": "Un-serialize.",
+            "itemtype": "method",
+            "name": "unserialize.",
+            "class": "CommunityCardsMessage"
+        },
+        {
+            "file": "src/js/proto/messages/CommunityCardsMessage.js",
+            "line": 46,
+            "description": "Serialize message.",
+            "itemtype": "method",
+            "name": "serialize",
+            "class": "CommunityCardsMessage"
+        },
+        {
+            "file": "src/js/proto/messages/DealerButtonMessage.js",
+            "line": 11,
+            "description": "Getter.",
+            "itemtype": "method",
+            "name": "getSeatIndex",
+            "class": "DealerButtonMessage"
+        },
+        {
+            "file": "src/js/proto/messages/DealerButtonMessage.js",
+            "line": 19,
+            "description": "Getter.",
+            "itemtype": "method",
+            "name": "getAnimate",
+            "class": "DealerButtonMessage"
+        },
+        {
+            "file": "src/js/proto/messages/DealerButtonMessage.js",
+            "line": 27,
+            "description": "Un-serialize.",
+            "itemtype": "method",
+            "name": "unserialize",
+            "class": "DealerButtonMessage"
+        },
+        {
+            "file": "src/js/proto/messages/DealerButtonMessage.js",
+            "line": 36,
+            "description": "Serialize message.",
+            "itemtype": "method",
+            "name": "serialize",
+            "class": "DealerButtonMessage"
+        },
+        {
+            "file": "src/js/proto/messages/DelayMessage.js",
+            "line": 10,
+            "description": "Getter.",
+            "itemtype": "method",
+            "name": "getDelay",
+            "class": "DelayMessage"
+        },
+        {
+            "file": "src/js/proto/messages/DelayMessage.js",
+            "line": 18,
+            "description": "Un-serialize.",
+            "itemtype": "method",
+            "name": "unserialize",
+            "class": "DelayMessage"
+        },
+        {
+            "file": "src/js/proto/messages/DelayMessage.js",
+            "line": 26,
+            "description": "Serialize message.",
+            "itemtype": "method",
+            "name": "serialize",
+            "class": "DelayMessage"
+        },
+        {
+            "file": "src/js/proto/messages/InitMessage.js",
+            "line": 12,
+            "description": "get token.",
+            "itemtype": "method",
+            "name": "getToken",
+            "class": "InitMessage"
+        },
+        {
+            "file": "src/js/proto/messages/InitMessage.js",
+            "line": 20,
+            "description": "Set table id.",
+            "itemtype": "method",
+            "name": "setTableId",
+            "class": "InitMessage"
+        },
+        {
+            "file": "src/js/proto/messages/InitMessage.js",
+            "line": 28,
+            "description": "Get table id.",
+            "itemtype": "method",
+            "name": "getTableId",
+            "class": "InitMessage"
+        },
+        {
+            "file": "src/js/proto/messages/InitMessage.js",
+            "line": 36,
+            "description": "Set view case.",
+            "itemtype": "method",
+            "name": "setTableId",
+            "class": "InitMessage"
+        },
+        {
+            "file": "src/js/proto/messages/InitMessage.js",
+            "line": 44,
+            "description": "Get view case.",
+            "itemtype": "method",
+            "name": "getTableId",
+            "class": "InitMessage"
+        },
+        {
+            "file": "src/js/proto/messages/InitMessage.js",
+            "line": 52,
+            "description": "Un-serialize.",
+            "itemtype": "method",
+            "name": "unserialize.",
+            "class": "InitMessage"
+        },
+        {
+            "file": "src/js/proto/messages/InitMessage.js",
+            "line": 62,
+            "description": "Serialize message.",
+            "itemtype": "method",
+            "name": "serialize",
+            "class": "InitMessage"
+        },
+        {
+            "file": "src/js/proto/messages/PocketCardsMessage.js",
+            "line": 16,
+            "description": "Get array of CardData.",
+            "itemtype": "method",
+            "name": "getCards",
+            "class": "PocketCardsMessage"
+        },
+        {
+            "file": "src/js/proto/messages/PocketCardsMessage.js",
+            "line": 24,
+            "description": "Get first index.",
+            "itemtype": "method",
+            "name": "getFirstIndex",
+            "class": "PocketCardsMessage"
+        },
+        {
+            "file": "src/js/proto/messages/PocketCardsMessage.js",
+            "line": 32,
+            "description": "Get seat index.",
+            "itemtype": "method",
+            "name": "getSeatIndex",
+            "class": "PocketCardsMessage"
+        },
+        {
+            "file": "src/js/proto/messages/PocketCardsMessage.js",
+            "line": 40,
+            "description": "Un-serialize.",
+            "itemtype": "method",
+            "name": "unserialize.",
+            "class": "PocketCardsMessage"
+        },
+        {
+            "file": "src/js/proto/messages/PocketCardsMessage.js",
+            "line": 56,
+            "description": "Serialize message.",
+            "itemtype": "method",
+            "name": "serialize",
+            "class": "PocketCardsMessage"
+        },
+        {
+            "file": "src/js/proto/messages/SeatClickMessage.js",
+            "line": 11,
+            "description": "Getter.",
+            "itemtype": "method",
+            "name": "getSeatIndex",
+            "class": "SeatClickMessage"
+        },
+        {
+            "file": "src/js/proto/messages/SeatClickMessage.js",
+            "line": 19,
+            "description": "Un-serialize.",
+            "itemtype": "method",
+            "name": "unserialize.",
+            "class": "SeatClickMessage"
+        },
+        {
+            "file": "src/js/proto/messages/SeatClickMessage.js",
+            "line": 27,
+            "description": "Serialize message.",
+            "itemtype": "method",
+            "name": "serialize",
+            "class": "SeatClickMessage"
+        },
+        {
+            "file": "src/js/proto/messages/SeatInfoMessage.js",
+            "line": 11,
+            "description": "Getter.",
+            "itemtype": "method",
+            "name": "getSeatIndex",
+            "class": "SeatInfoMessage"
+        },
+        {
+            "file": "src/js/proto/messages/SeatInfoMessage.js",
+            "line": 19,
+            "description": "Getter.",
+            "itemtype": "method",
+            "name": "getName",
+            "class": "SeatInfoMessage"
+        },
+        {
+            "file": "src/js/proto/messages/SeatInfoMessage.js",
+            "line": 27,
+            "description": "Getter.",
+            "itemtype": "method",
+            "name": "getChips",
+            "class": "SeatInfoMessage"
+        },
+        {
+            "file": "src/js/proto/messages/SeatInfoMessage.js",
+            "line": 35,
+            "description": "Getter.",
+            "itemtype": "method",
+            "name": "isSitout",
+            "class": "SeatInfoMessage"
+        },
+        {
+            "file": "src/js/proto/messages/SeatInfoMessage.js",
+            "line": 43,
+            "description": "Getter.",
+            "itemtype": "method",
+            "name": "isActive",
+            "class": "SeatInfoMessage"
+        },
+        {
+            "file": "src/js/proto/messages/SeatInfoMessage.js",
+            "line": 51,
+            "description": "Un-serialize.",
+            "itemtype": "method",
+            "name": "unserialize.",
+            "class": "SeatInfoMessage"
+        },
+        {
+            "file": "src/js/proto/messages/SeatInfoMessage.js",
+            "line": 63,
+            "description": "Serialize message.",
+            "itemtype": "method",
+            "name": "serialize",
+            "class": "SeatInfoMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ShowDialogMessage.js",
+            "line": 12,
+            "description": "Add a button to the dialog.",
+            "itemtype": "method",
+            "name": "addButton",
+            "class": "ShowDialogMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ShowDialogMessage.js",
+            "line": 20,
+            "description": "Get text of the dialog.",
+            "itemtype": "method",
+            "name": "getText",
+            "class": "ShowDialogMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ShowDialogMessage.js",
+            "line": 28,
+            "description": "Get array of ButtonData to be shown in the dialog.",
+            "itemtype": "method",
+            "name": "getButtons",
+            "class": "ShowDialogMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ShowDialogMessage.js",
+            "line": 36,
+            "description": "Set text in the dialog.",
+            "itemtype": "method",
+            "name": "setText",
+            "class": "ShowDialogMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ShowDialogMessage.js",
+            "line": 44,
+            "description": "Un-serialize.",
+            "itemtype": "method",
+            "name": "unserialize.",
+            "class": "ShowDialogMessage"
+        },
+        {
+            "file": "src/js/proto/messages/ShowDialogMessage.js",
+            "line": 53,
+            "description": "Serialize message.",
+            "itemtype": "method",
+            "name": "serialize",
+            "class": "ShowDialogMessage"
+        },
+        {
+            "file": "src/js/proto/messages/StateCompleteMessage.js",
+            "line": 8,
+            "description": "Un-serialize.",
+            "itemtype": "method",
+            "name": "unserialize.",
+            "class": "StateCompleteMessage"
+        },
+        {
+            "file": "src/js/proto/messages/StateCompleteMessage.js",
+            "line": 14,
+            "description": "Serialize message.",
+            "itemtype": "method",
+            "name": "serialize",
+            "class": "StateCompleteMessage"
+        },
+        {
+            "file": "src/js/proto/ProtoConnection.js",
+            "line": 49,
+            "description": "Add message handler.",
+            "itemtype": "method",
+            "name": "addMessageHandler",
+            "class": "ProtoConnection\nA protocol connection with an underlying connection."
+        },
+        {
+            "file": "src/js/proto/ProtoConnection.js",
+            "line": 60,
+            "description": "Remove message handler.",
+            "itemtype": "method",
+            "name": "removeMessageHandler",
+            "class": "ProtoConnection\nA protocol connection with an underlying connection."
+        },
+        {
+            "file": "src/js/proto/ProtoConnection.js",
+            "line": 71,
+            "description": "Connection message.",
+            "itemtype": "method",
+            "name": "onConnectionMessage",
+            "access": "private",
+            "tagname": "",
+            "class": "ProtoConnection\nA protocol connection with an underlying connection."
+        },
+        {
+            "file": "src/js/proto/ProtoConnection.js",
+            "line": 104,
+            "description": "Connection close.",
+            "itemtype": "method",
+            "name": "onConnectionClose",
+            "access": "private",
+            "tagname": "",
+            "class": "ProtoConnection\nA protocol connection with an underlying connection."
+        },
+        {
+            "file": "src/js/proto/ProtoConnection.js",
+            "line": 117,
+            "description": "Send a message.",
+            "itemtype": "method",
+            "name": "send",
+            "class": "ProtoConnection\nA protocol connection with an underlying connection."
+        },
+        {
+            "file": "src/js/proto/ProtoConnection.js",
+            "line": 137,
+            "description": "Close the connection.",
+            "itemtype": "method",
+            "name": "close",
+            "class": "ProtoConnection\nA protocol connection with an underlying connection."
+        },
+        {
+            "file": "src/js/server/app/NetPokerServer.js",
+            "line": 26,
+            "description": "Set port to tisten to.",
+            "itemtype": "method",
+            "name": "setListenPort",
+            "class": "NetPokerServer"
+        },
+        {
+            "file": "src/js/server/app/NetPokerServer.js",
+            "line": 34,
+            "description": "New connection.",
+            "itemtype": "method",
+            "name": "onConnectionManagerConnection",
+            "class": "NetPokerServer"
+        },
+        {
+            "file": "src/js/server/app/NetPokerServer.js",
+            "line": 58,
+            "description": "Web request from connection manager.",
+            "itemtype": "method",
+            "name": "onConnectionManagerRequest",
+            "access": "private",
+            "tagname": "",
+            "class": "NetPokerServer"
+        },
+        {
+            "file": "src/js/server/app/NetPokerServer.js",
+            "line": 67,
+            "description": "Set backend to use.",
+            "itemtype": "method",
+            "name": "setBackend",
+            "class": "NetPokerServer"
+        },
+        {
+            "file": "src/js/server/app/NetPokerServer.js",
+            "line": 75,
+            "description": "Get backend.",
+            "itemtype": "method",
+            "name": "getBackend",
+            "class": "NetPokerServer"
+        },
+        {
+            "file": "src/js/server/app/NetPokerServer.js",
+            "line": 83,
+            "description": "Serve view cases from directory.",
+            "itemtype": "method",
+            "name": "serveViewCases",
+            "class": "NetPokerServer"
+        },
+        {
+            "file": "src/js/server/app/NetPokerServer.js",
+            "line": 92,
+            "description": "The table manager is initialized.",
+            "itemtype": "method",
+            "name": "onTableManagerInitialized",
+            "class": "NetPokerServer"
+        },
+        {
+            "file": "src/js/server/app/NetPokerServer.js",
+            "line": 104,
+            "description": "Run.",
+            "itemtype": "method",
+            "name": "run",
+            "class": "NetPokerServer"
+        },
+        {
+            "file": "src/js/server/app/NetPokerServer.js",
+            "line": 127,
+            "description": "Close.",
+            "itemtype": "method",
+            "name": "close",
+            "class": "NetPokerServer"
+        },
+        {
+            "file": "src/js/server/backend/Backend.js",
+            "line": 18,
+            "description": "Set base url.",
+            "itemtype": "method",
+            "name": "setBaseUrl",
+            "class": "Backend"
+        },
+        {
+            "file": "src/js/server/backend/Backend.js",
+            "line": 26,
+            "description": "Call a backend method.",
+            "itemtype": "method",
+            "name": "call",
+            "class": "Backend"
+        },
+        {
+            "file": "src/js/server/backend/BackendCall.js",
+            "line": 18,
+            "description": "Perform the call.",
+            "itemtype": "method",
+            "name": "perform",
+            "class": "BackendCall"
+        },
+        {
+            "file": "src/js/server/backend/BackendCall.js",
+            "line": 36,
+            "description": "Request complete.",
+            "itemtype": "method",
+            "name": "onRequestComplete",
+            "access": "private",
+            "tagname": "",
+            "class": "BackendCall"
+        },
+        {
+            "file": "src/js/server/connection/ConnectionManager.js",
+            "line": 22,
+            "description": "Dispatched on new connections.",
+            "itemtype": "event",
+            "name": "ConnectionManager.CONNECTION",
+            "class": "ConnectionManager"
+        },
+        {
+            "file": "src/js/server/connection/ConnectionManager.js",
+            "line": 28,
+            "description": "Message server connection.",
+            "itemtype": "method",
+            "name": "onMessageServerConnection",
+            "access": "private",
+            "tagname": "",
+            "class": "ConnectionManager"
+        },
+        {
+            "file": "src/js/server/connection/ConnectionManager.js",
+            "line": 37,
+            "description": "Handle a new connection",
+            "itemtype": "method",
+            "name": "handleNewConnection",
+            "access": "private",
+            "tagname": "",
+            "class": "ConnectionManager"
+        },
+        {
+            "file": "src/js/server/connection/ConnectionManager.js",
+            "line": 52,
+            "description": "User connection initialized.",
+            "itemtype": "method",
+            "name": "onUserConnectionInitialized",
+            "access": "private",
+            "tagname": "",
+            "class": "ConnectionManager"
+        },
+        {
+            "file": "src/js/server/connection/ConnectionManager.js",
+            "line": 74,
+            "description": "User connection close.",
+            "itemtype": "method",
+            "name": "onUserConnectionClose",
+            "access": "private",
+            "tagname": "",
+            "class": "ConnectionManager"
+        },
+        {
+            "file": "src/js/server/connection/ConnectionManager.js",
+            "line": 86,
+            "description": "Start listening for connections.",
+            "itemtype": "method",
+            "name": "listen",
+            "class": "ConnectionManager"
+        },
+        {
+            "file": "src/js/server/connection/ConnectionManager.js",
+            "line": 97,
+            "description": "Regular web request from the server.",
+            "itemtype": "method",
+            "name": "onMessageServerRequest",
+            "access": "private",
+            "tagname": "",
+            "class": "ConnectionManager"
+        },
+        {
+            "file": "src/js/server/connection/ConnectionManager.js",
+            "line": 106,
+            "description": "Close",
+            "itemtype": "method",
+            "name": "close",
+            "class": "ConnectionManager"
+        },
+        {
+            "file": "src/js/server/connection/ConnectionManager.js",
+            "line": 117,
+            "description": "Serve view cases.",
+            "itemtype": "method",
+            "name": "serveViewCases",
+            "class": "ConnectionManager"
+        },
+        {
+            "file": "src/js/server/connection/ConnectionManagerConnectionEvent.js",
+            "line": 13,
+            "description": "Getter.",
+            "itemtype": "method",
+            "name": "getProtoConnection",
+            "class": "ConnectionManagerConnectionEvent"
+        },
+        {
+            "file": "src/js/server/connection/ConnectionManagerConnectionEvent.js",
+            "line": 21,
+            "description": "Getter.",
+            "itemtype": "method",
+            "name": "getUser",
+            "class": "ConnectionManagerConnectionEvent"
+        },
+        {
+            "file": "src/js/server/connection/ConnectionManagerConnectionEvent.js",
+            "line": 29,
+            "description": "Getter.",
+            "itemtype": "method",
+            "name": "getInitMessage",
+            "class": "ConnectionManagerConnectionEvent"
+        },
+        {
+            "file": "src/js/server/connection/UserConnection.js",
+            "line": 31,
+            "description": "Init message.",
+            "itemtype": "method",
+            "name": "onInitMessage",
+            "class": "UserConnection"
+        },
+        {
+            "file": "src/js/server/connection/UserConnection.js",
+            "line": 54,
+            "description": "Handle view case.\nThis serves up a view case, used by the mock server.",
+            "itemtype": "method",
+            "name": "handleViewCase",
+            "access": "private",
+            "tagname": "",
+            "class": "UserConnection"
+        },
+        {
+            "file": "src/js/server/connection/UserConnection.js",
+            "line": 83,
+            "description": "User call success.",
+            "itemtype": "method",
+            "name": "onFetchUserCallSuccess",
+            "class": "UserConnection"
+        },
+        {
+            "file": "src/js/server/connection/UserConnection.js",
+            "line": 102,
+            "description": "User call error.",
+            "itemtype": "method",
+            "name": "onFetchUserCallError",
+            "class": "UserConnection"
+        },
+        {
+            "file": "src/js/server/connection/UserConnection.js",
+            "line": 115,
+            "description": "Get user.",
+            "itemtype": "method",
+            "name": "getUser",
+            "class": "UserConnection"
+        },
+        {
+            "file": "src/js/server/connection/UserConnection.js",
+            "line": 123,
+            "description": "Get the init message.",
+            "itemtype": "method",
+            "name": "getInitMessage",
+            "class": "UserConnection"
+        },
+        {
+            "file": "src/js/server/connection/UserConnection.js",
+            "line": 131,
+            "description": "Serve view cases.",
+            "itemtype": "method",
+            "name": "serveViewCases",
+            "class": "UserConnection"
+        },
+        {
+            "file": "src/js/server/game/AskBlindState.js",
+            "line": 23,
+            "description": "Run the state.",
+            "itemtype": "method",
+            "name": "run",
+            "class": "AskBlindState"
+        },
+        {
+            "file": "src/js/server/game/AskBlindState.js",
+            "line": 34,
+            "description": "Ask next blind.",
+            "itemtype": "method",
+            "name": "askNextBlind",
+            "class": "AskBlindState"
+        },
+        {
+            "file": "src/js/server/game/AskBlindState.js",
+            "line": 60,
+            "description": "Prompt complete.",
+            "itemtype": "method",
+            "name": "onPromptComplete",
+            "access": "private",
+            "tagname": "",
+            "class": "AskBlindState"
+        },
+        {
+            "file": "src/js/server/game/AskBlindState.js",
+            "line": 81,
+            "description": "Ask done.",
+            "itemtype": "method",
+            "name": "askDone",
+            "class": "AskBlindState"
+        },
+        {
+            "file": "src/js/server/game/AskBlindState.js",
+            "line": 100,
+            "description": "Get the blind that we are currently asking for.",
+            "itemtype": "method",
+            "name": "getCurrentBlind",
+            "access": "private",
+            "tagname": "",
+            "class": "AskBlindState"
+        },
+        {
+            "file": "src/js/server/game/AskBlindState.js",
+            "line": 118,
+            "description": "Get the amount of the blind that we are currently asking for.",
+            "itemtype": "method",
+            "name": "getCurrentBlindAmount",
+            "access": "private",
+            "tagname": "",
+            "class": "AskBlindState"
+        },
+        {
+            "file": "src/js/server/game/FinishedState.js",
+            "line": 20,
+            "description": "Run the state.",
+            "itemtype": "method",
+            "name": "run",
+            "class": "FinishedState"
+        },
+        {
+            "file": "src/js/server/game/FinishedState.js",
+            "line": 30,
+            "description": "The timeout is complete.",
+            "itemtype": "method",
+            "name": "onTimout",
+            "access": "private",
+            "tagname": "",
+            "class": "FinishedState"
+        },
+        {
+            "file": "src/js/server/game/Game.js",
+            "line": 28,
+            "description": "Start the game.",
+            "itemtype": "method",
+            "name": "start",
+            "class": "Game"
+        },
+        {
+            "file": "src/js/server/game/Game.js",
+            "line": 46,
+            "description": "Start game call complete.",
+            "itemtype": "method",
+            "name": "onStartCallComplete",
+            "access": "private",
+            "tagname": "",
+            "class": "Game"
+        },
+        {
+            "file": "src/js/server/game/Game.js",
+            "line": 63,
+            "description": "Start call error.",
+            "itemtype": "method",
+            "name": "onStartCallError",
+            "access": "private",
+            "tagname": "",
+            "class": "Game"
+        },
+        {
+            "file": "src/js/server/game/Game.js",
+            "line": 73,
+            "description": "Error wait timer.",
+            "itemtype": "method",
+            "name": "onErrorWaitTimer",
+            "access": "private",
+            "tagname": "",
+            "class": "Game"
+        },
+        {
+            "file": "src/js/server/game/Game.js",
+            "line": 82,
+            "description": "Get deck.",
+            "itemtype": "method",
+            "name": "getDeck",
+            "class": "Game"
+        },
+        {
+            "file": "src/js/server/game/Game.js",
+            "line": 90,
+            "description": "Get id.",
+            "itemtype": "method",
+            "name": "getId",
+            "class": "Game"
+        },
+        {
+            "file": "src/js/server/game/Game.js",
+            "line": 98,
+            "description": "Get next card.",
+            "itemtype": "method",
+            "name": "getNextCard",
+            "class": "Game"
+        },
+        {
+            "file": "src/js/server/game/Game.js",
+            "line": 106,
+            "description": "Set and run game state.",
+            "itemtype": "method",
+            "name": "setGameState",
+            "class": "Game"
+        },
+        {
+            "file": "src/js/server/game/Game.js",
+            "line": 116,
+            "description": "The game is finished!",
+            "itemtype": "method",
+            "name": "notifyFinished",
+            "class": "Game"
+        },
+        {
+            "file": "src/js/server/game/Game.js",
+            "line": 125,
+            "description": "Get current game state.",
+            "itemtype": "method",
+            "name": "getGameState",
+            "class": "Game"
+        },
+        {
+            "file": "src/js/server/game/Game.js",
+            "line": 133,
+            "description": "Get reference to table.",
+            "itemtype": "method",
+            "name": "getTable",
+            "class": "Game"
+        },
+        {
+            "file": "src/js/server/game/Game.js",
+            "line": 141,
+            "description": "Get game seat for seat index.",
+            "itemtype": "method",
+            "name": "getGameSeatForSeatIndex",
+            "class": "Game"
+        },
+        {
+            "file": "src/js/server/game/Game.js",
+            "line": 156,
+            "description": "Get number of players in game.",
+            "itemtype": "method",
+            "name": "getNumInGame",
+            "class": "Game"
+        },
+        {
+            "file": "src/js/server/game/Game.js",
+            "line": 164,
+            "description": "Add a game seat.",
+            "itemtype": "method",
+            "name": "addGameSeat",
+            "class": "Game"
+        },
+        {
+            "file": "src/js/server/game/Game.js",
+            "line": 175,
+            "description": "To string.",
+            "itemtype": "method",
+            "name": "toString",
+            "class": "Game"
+        },
+        {
+            "file": "src/js/server/game/GameSeat.js",
+            "line": 12,
+            "description": "Get seat index.",
+            "itemtype": "method",
+            "name": "getSeatIndex",
+            "class": "GameSeat"
+        },
+        {
+            "file": "src/js/server/game/GameSeat.js",
+            "line": 20,
+            "description": "Get table seat.",
+            "itemtype": "method",
+            "name": "getTableSeat",
+            "class": "GameSeat"
+        },
+        {
+            "file": "src/js/server/game/GameSeat.js",
+            "line": 28,
+            "description": "Send a message to the game seat.",
+            "itemtype": "method",
+            "name": "send",
+            "class": "GameSeat"
+        },
+        {
+            "file": "src/js/server/game/GameSeatPrompt.js",
+            "line": 27,
+            "description": "Add button.",
+            "itemtype": "method",
+            "name": "addButton",
+            "class": "GameSeatPrompt"
+        },
+        {
+            "file": "src/js/server/game/GameSeatPrompt.js",
+            "line": 35,
+            "description": "Send question and wait for reply.",
+            "itemtype": "method",
+            "name": "ask",
+            "class": "GameSeatPrompt"
+        },
+        {
+            "file": "src/js/server/game/GameSeatPrompt.js",
+            "line": 44,
+            "description": "Button click message.",
+            "itemtype": "method",
+            "name": "onButtonClickMessage",
+            "class": "GameSeatPrompt"
+        },
+        {
+            "file": "src/js/server/game/GameSeatPrompt.js",
+            "line": 59,
+            "description": "Get button.",
+            "itemtype": "method",
+            "name": "getButton",
+            "class": "GameSeatPrompt"
+        },
+        {
+            "file": "src/js/server/game/GameSeatPrompt.js",
+            "line": 70,
+            "description": "Get value.",
+            "itemtype": "method",
+            "name": "getValue",
+            "class": "GameSeatPrompt"
+        },
+        {
+            "file": "src/js/server/game/GameSeatPrompt.js",
+            "line": 78,
+            "description": "Get game seat.",
+            "itemtype": "method",
+            "name": "getGameSeat",
+            "class": "GameSeatPrompt"
+        },
+        {
+            "file": "src/js/server/game/GameState.js",
+            "line": 9,
+            "description": "Set reference to game.",
+            "itemtype": "method",
+            "name": "setGame",
+            "class": "GameState"
+        },
+        {
+            "file": "src/js/server/game/GameState.js",
+            "line": 17,
+            "description": "Run this state.",
+            "itemtype": "method",
+            "name": "run",
+            "class": "GameState"
+        },
+        {
+            "file": "src/js/server/table/BaseTable.js",
+            "line": 19,
+            "description": "Get table seats.",
+            "itemtype": "method",
+            "name": "getTableSeats",
+            "class": "BaseTable"
+        },
+        {
+            "file": "src/js/server/table/BaseTable.js",
+            "line": 27,
+            "description": "Get table seat by seat index.",
+            "itemtype": "method",
+            "name": "getTableSeatBySeatIndex",
+            "class": "BaseTable"
+        },
+        {
+            "file": "src/js/server/table/BaseTable.js",
+            "line": 35,
+            "description": "Get number of seats that is in game.",
+            "itemtype": "method",
+            "name": "getNumInGame",
+            "class": "BaseTable"
+        },
+        {
+            "file": "src/js/server/table/BaseTable.js",
+            "line": 49,
+            "description": "Get parent id. This id is what should be used for the\nstart game call for backend. For cashgames, this will\nrepresent the table id, for tournamets, it will \nrepresent the tournament id.",
+            "itemtype": "method",
+            "name": "getStartGameParentId",
+            "class": "BaseTable"
+        },
+        {
+            "file": "src/js/server/table/BaseTable.js",
+            "line": 60,
+            "description": "Get start function.",
+            "itemtype": "method",
+            "name": "getStartGameFunctionName",
+            "class": "BaseTable"
+        },
+        {
+            "file": "src/js/server/table/BaseTable.js",
+            "line": 68,
+            "description": "Get the index of the seat that has seated player, that\ncomes after the from index. This function wraps around\nthe table clockwise. If no player is seated at all,\n-1 will be returned.",
+            "itemtype": "method",
+            "name": "getNextSeatIndexInGame",
+            "class": "BaseTable"
+        },
+        {
+            "file": "src/js/server/table/BaseTable.js",
+            "line": 95,
+            "description": "Advance the dealer position to the next seated player.",
+            "itemtype": "method",
+            "name": "advanceDealer",
+            "class": "BaseTable"
+        },
+        {
+            "file": "src/js/server/table/BaseTable.js",
+            "line": 105,
+            "description": "Get dealer button index.",
+            "itemtype": "method",
+            "name": "getDealerButtonIndex",
+            "class": "BaseTable"
+        },
+        {
+            "file": "src/js/server/table/BaseTable.js",
+            "line": 113,
+            "description": "Get stake.",
+            "itemtype": "method",
+            "name": "getStake",
+            "class": "BaseTable"
+        },
+        {
+            "file": "src/js/server/table/BaseTable.js",
+            "line": 121,
+            "description": "Send.",
+            "itemtype": "method",
+            "name": "send",
+            "class": "BaseTable"
+        },
+        {
+            "file": "src/js/server/table/BaseTableSeat.js",
+            "line": 22,
+            "description": "Is tihs seat active?",
+            "itemtype": "method",
+            "name": "isActive",
+            "class": "BaseTableSeat"
+        },
+        {
+            "file": "src/js/server/table/BaseTableSeat.js",
+            "line": 30,
+            "description": "Get seat index for this seat?",
+            "itemtype": "method",
+            "name": "getSeatIndex",
+            "class": "BaseTableSeat"
+        },
+        {
+            "file": "src/js/server/table/BaseTableSeat.js",
+            "line": 38,
+            "description": "Set proto connection.",
+            "itemtype": "method",
+            "name": "setProtoConnection",
+            "access": "protected",
+            "tagname": "",
+            "class": "BaseTableSeat"
+        },
+        {
+            "file": "src/js/server/table/BaseTableSeat.js",
+            "line": 57,
+            "description": "Get proto connection.",
+            "itemtype": "method",
+            "name": "getProtoConnection",
+            "class": "BaseTableSeat"
+        },
+        {
+            "file": "src/js/server/table/BaseTableSeat.js",
+            "line": 65,
+            "description": "Button click message.",
+            "itemtype": "method",
+            "name": "onButtonClickMessage",
+            "access": "private",
+            "tagname": "",
+            "class": "BaseTableSeat"
+        },
+        {
+            "file": "src/js/server/table/BaseTableSeat.js",
+            "line": 74,
+            "description": "Button click message.",
+            "itemtype": "method",
+            "name": "onProtoConnectionClose",
+            "access": "private",
+            "tagname": "",
+            "class": "BaseTableSeat"
+        },
+        {
+            "file": "src/js/server/table/BaseTableSeat.js",
+            "line": 84,
+            "description": "Get table.",
+            "itemtype": "method",
+            "name": "getTable",
+            "class": "BaseTableSeat"
+        },
+        {
+            "file": "src/js/server/table/BaseTableSeat.js",
+            "line": 92,
+            "description": "Get services.",
+            "itemtype": "method",
+            "name": "getServices",
+            "class": "BaseTableSeat"
+        },
+        {
+            "file": "src/js/server/table/BaseTableSeat.js",
+            "line": 100,
+            "description": "Send.",
+            "itemtype": "method",
+            "name": "send",
+            "class": "BaseTableSeat"
+        },
+        {
+            "file": "src/js/server/table/BaseTableSeat.js",
+            "line": 109,
+            "description": "Get chips.",
+            "itemtype": "method",
+            "name": "getChips",
+            "class": "BaseTableSeat"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 45,
+            "description": "Setup seats.",
+            "itemtype": "method",
+            "name": "setupSeats",
+            "access": "private",
+            "tagname": "",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 64,
+            "description": "Table seat close.",
+            "itemtype": "method",
+            "name": "onTableSeatClose",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 75,
+            "description": "Table seat ready.",
+            "itemtype": "method",
+            "name": "onTableSeatReady",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 84,
+            "description": "New connection.",
+            "itemtype": "method",
+            "name": "notifyNewConnection",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 97,
+            "description": "Table spectator done.",
+            "itemtype": "method",
+            "name": "onTableSpectatorDone",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 108,
+            "description": "Send state.",
+            "itemtype": "method",
+            "name": "sendState",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 116,
+            "description": "Get id.",
+            "itemtype": "method",
+            "name": "getId",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 124,
+            "description": "Is user seated?",
+            "itemtype": "method",
+            "name": "isUserSeated",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 138,
+            "description": "Get currency.",
+            "itemtype": "method",
+            "name": "getCurrency",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 146,
+            "description": "Get services.",
+            "itemtype": "method",
+            "name": "getServices",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 154,
+            "description": "Get table name.",
+            "itemtype": "method",
+            "name": "getName",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 162,
+            "description": "Get table name.",
+            "itemtype": "method",
+            "name": "getMinSitInAmount",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 170,
+            "description": "Get table name.",
+            "itemtype": "method",
+            "name": "getMaxSitInAmount",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 178,
+            "description": "Start the game.",
+            "itemtype": "method",
+            "name": "startGame",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 191,
+            "description": "Current game finished.",
+            "itemtype": "method",
+            "name": "onCurrentGameFinished",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 206,
+            "description": "Get current game for this table.",
+            "itemtype": "method",
+            "name": "getCurrentGame",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 214,
+            "description": "Get parent id.",
+            "itemtype": "method",
+            "name": "getStartGameParentId",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 222,
+            "description": "Get function to call on game start.",
+            "itemtype": "method",
+            "name": "getStartGameFunctionName",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 230,
+            "description": "Get stake.",
+            "itemtype": "method",
+            "name": "getStake",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 238,
+            "description": "Stop.",
+            "itemtype": "method",
+            "name": "stop",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 246,
+            "description": "Send a message to all connections on the table.",
+            "itemtype": "method",
+            "name": "send",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/Table.js",
+            "line": 260,
+            "description": "To string.",
+            "itemtype": "method",
+            "name": "toString",
+            "class": "Table"
+        },
+        {
+            "file": "src/js/server/table/TableManager.js",
+            "line": 22,
+            "description": "Initialize.",
+            "itemtype": "method",
+            "name": "initialize",
+            "class": "TableManager"
+        },
+        {
+            "file": "src/js/server/table/TableManager.js",
+            "line": 33,
+            "description": "Initial table fetch success.",
+            "itemtype": "method",
+            "name": "onInitializeTableListSuccess",
+            "access": "private",
+            "tagname": "",
+            "class": "TableManager"
+        },
+        {
+            "file": "src/js/server/table/TableManager.js",
+            "line": 50,
+            "description": "Initial table fetch error.",
+            "itemtype": "method",
+            "name": "onInitializeTableListError",
+            "access": "private",
+            "tagname": "",
+            "class": "TableManager"
+        },
+        {
+            "file": "src/js/server/table/TableManager.js",
+            "line": 59,
+            "description": "Find a table by id.",
+            "itemtype": "method",
+            "name": "getTableById",
+            "class": "TableManager"
+        },
+        {
+            "file": "src/js/server/table/TableSeat.js",
+            "line": 20,
+            "description": "Is thie seat available?",
+            "itemtype": "method",
+            "name": "isAvailable",
+            "class": "TableSeat"
+        },
+        {
+            "file": "src/js/server/table/TableSeat.js",
+            "line": 32,
+            "description": "Get currently seated user.",
+            "itemtype": "method",
+            "name": "getUser",
+            "class": "TableSeat"
+        },
+        {
+            "file": "src/js/server/table/TableSeat.js",
+            "line": 43,
+            "description": "Reserve seat.",
+            "itemtype": "method",
+            "name": "reserve",
+            "class": "TableSeat"
+        },
+        {
+            "file": "src/js/server/table/TableSeat.js",
+            "line": 61,
+            "description": "The table seat user is done.",
+            "itemtype": "method",
+            "name": "onTableSeatUserDone",
+            "class": "TableSeat"
+        },
+        {
+            "file": "src/js/server/table/TableSeat.js",
+            "line": 80,
+            "description": "Table seat ready.",
+            "itemtype": "method",
+            "name": "onTableSeatUserReady",
+            "class": "TableSeat"
+        },
+        {
+            "file": "src/js/server/table/TableSeat.js",
+            "line": 88,
+            "description": "Is this table seat in the game.",
+            "itemtype": "method",
+            "name": "isInGame",
+            "class": "TableSeat"
+        },
+        {
+            "file": "src/js/server/table/TableSeat.js",
+            "line": 99,
+            "description": "Get chips.",
+            "itemtype": "method",
+            "name": "getChips",
+            "class": "TableSeat"
+        },
+        {
+            "file": "src/js/server/table/TableSeat.js",
+            "line": 110,
+            "description": "Make the user leave the table when possible.",
+            "itemtype": "method",
+            "name": "leaveTable",
+            "class": "TableSeat"
+        },
+        {
+            "file": "src/js/server/table/TableSeatBuyChipsPrompt.js",
+            "line": 27,
+            "description": "Ask if the user wants to be seated.",
+            "itemtype": "method",
+            "name": "ask",
+            "class": "TableSeatBuyChipsPrompt"
+        },
+        {
+            "file": "src/js/server/table/TableSeatBuyChipsPrompt.js",
+            "line": 48,
+            "description": "Balance call success.",
+            "itemtype": "method",
+            "name": "onGetBalanceCallComplete",
+            "class": "TableSeatBuyChipsPrompt"
+        },
+        {
+            "file": "src/js/server/table/TableSeatBuyChipsPrompt.js",
+            "line": 85,
+            "description": "Balance call fail.",
+            "itemtype": "method",
+            "name": "onGetBalanceCallError",
+            "class": "TableSeatBuyChipsPrompt"
+        },
+        {
+            "file": "src/js/server/table/TableSeatBuyChipsPrompt.js",
+            "line": 99,
+            "description": "Connection close.",
+            "itemtype": "method",
+            "name": "onConnectionClose",
+            "class": "TableSeatBuyChipsPrompt"
+        },
+        {
+            "file": "src/js/server/table/TableSeatBuyChipsPrompt.js",
+            "line": 110,
+            "description": "Handle the button click.",
+            "itemtype": "method",
+            "name": "onButtonClick",
+            "access": "private",
+            "tagname": "",
+            "class": "TableSeatBuyChipsPrompt"
+        },
+        {
+            "file": "src/js/server/table/TableSeatBuyChipsPrompt.js",
+            "line": 144,
+            "description": "Balance call success.",
+            "itemtype": "method",
+            "name": "onSitInCallComplete",
+            "class": "TableSeatBuyChipsPrompt"
+        },
+        {
+            "file": "src/js/server/table/TableSeatBuyChipsPrompt.js",
+            "line": 152,
+            "description": "Balance call fail.",
+            "itemtype": "method",
+            "name": "onSitInCallError",
+            "class": "TableSeatBuyChipsPrompt"
+        },
+        {
+            "file": "src/js/server/table/TableSeatBuyChipsPrompt.js",
+            "line": 165,
+            "description": "Get chips.",
+            "itemtype": "method",
+            "name": "getChips",
+            "class": "TableSeatBuyChipsPrompt"
+        },
+        {
+            "file": "src/js/server/table/TableSeatUser.js",
+            "line": 23,
+            "description": "Get seated user.",
+            "itemtype": "method",
+            "name": "getUser",
+            "class": "TableSeatUser"
+        },
+        {
+            "file": "src/js/server/table/TableSeatUser.js",
+            "line": 31,
+            "description": "Sit in user.",
+            "itemtype": "method",
+            "name": "sitIn",
+            "class": "TableSeatUser"
+        },
+        {
+            "file": "src/js/server/table/TableSeatUser.js",
+            "line": 48,
+            "description": "Buy chips prompt complete.",
+            "itemtype": "method",
+            "name": "onBuyChipsPromptComplete",
+            "class": "TableSeatUser"
+        },
+        {
+            "file": "src/js/server/table/TableSeatUser.js",
+            "line": 71,
+            "description": "Buy chips prompt complete.",
+            "itemtype": "method",
+            "name": "onBuyChipsPromptCancel",
+            "class": "TableSeatUser"
+        },
+        {
+            "file": "src/js/server/table/TableSeatUser.js",
+            "line": 82,
+            "description": "Is this table seat user in the game?",
+            "itemtype": "method",
+            "name": "isInGame",
+            "class": "TableSeatUser"
+        },
+        {
+            "file": "src/js/server/table/TableSeatUser.js",
+            "line": 90,
+            "description": "Get chips.",
+            "itemtype": "method",
+            "name": "getChips",
+            "class": "TableSeatUser"
+        },
+        {
+            "file": "src/js/server/table/TableSeatUser.js",
+            "line": 98,
+            "description": "Leave.",
+            "itemtype": "method",
+            "name": "leave",
+            "class": "TableSeatUser"
+        },
+        {
+            "file": "src/js/server/table/TableSeatUser.js",
+            "line": 126,
+            "description": "Sitout call complete.",
+            "itemtype": "method",
+            "name": "onSitoutCallComplete",
+            "access": "private",
+            "tagname": "",
+            "class": "TableSeatUser"
+        },
+        {
+            "file": "src/js/server/table/TableSeatUser.js",
+            "line": 135,
+            "description": "Sitout call error.",
+            "itemtype": "method",
+            "name": "onSitoutCallError",
+            "access": "private",
+            "tagname": "",
+            "class": "TableSeatUser"
+        },
+        {
+            "file": "src/js/server/table/TableSpectator.js",
+            "line": 25,
+            "description": "Connection close.",
+            "itemtype": "method",
+            "name": "onConnectionClose",
+            "class": "TableSpectator"
+        },
+        {
+            "file": "src/js/server/table/TableSpectator.js",
+            "line": 34,
+            "description": "Seat click.",
+            "itemtype": "method",
+            "name": "onSeatClick",
+            "class": "TableSpectator"
+        },
+        {
+            "file": "src/js/server/table/TableUtil.js",
+            "line": 7,
+            "description": "Which seats should be active given number of seats.",
+            "itemtype": "method",
+            "name": "getActiveSeatIndices",
+            "static": 1,
+            "class": "TableUtil"
+        },
+        {
+            "file": "src/js/server/user/User.js",
+            "line": 13,
+            "description": "Get name.",
+            "itemtype": "method",
+            "name": "getName",
+            "class": "User"
+        },
+        {
+            "file": "src/js/server/user/User.js",
+            "line": 21,
+            "description": "Get id.",
+            "itemtype": "method",
+            "name": "getId",
+            "class": "User"
+        },
+        {
+            "file": "src/js/utils/ArrayUtil.js",
+            "line": 7,
+            "description": "Remove an element.",
+            "itemtype": "method",
+            "name": "remove",
+            "class": "ArrayUtil"
+        },
+        {
+            "file": "src/js/utils/ArrayUtil.js",
+            "line": 18,
+            "description": "Shuffles the \"arr\" Array (in place) according to a randomly chosen permutation\nThis is the classic Fisher-Yates style shuffle.",
+            "itemtype": "method",
+            "name": "",
+            "class": "ArrayUtil"
+        },
+        {
+            "file": "src/js/utils/Button.js",
+            "line": 39,
+            "description": "Mouse over.",
+            "itemtype": "method",
+            "name": "onMouseover",
+            "access": "private",
+            "tagname": "",
+            "class": "Button"
+        },
+        {
+            "file": "src/js/utils/Button.js",
+            "line": 48,
+            "description": "Mouse out.",
+            "itemtype": "method",
+            "name": "onMouseout",
+            "access": "private",
+            "tagname": "",
+            "class": "Button"
+        },
+        {
+            "file": "src/js/utils/Button.js",
+            "line": 57,
+            "description": "Mouse down.",
+            "itemtype": "method",
+            "name": "onMousedown",
+            "access": "private",
+            "tagname": "",
+            "class": "Button"
+        },
+        {
+            "file": "src/js/utils/Button.js",
+            "line": 66,
+            "description": "Mouse up.",
+            "itemtype": "method",
+            "name": "onMouseup",
+            "access": "private",
+            "tagname": "",
+            "class": "Button"
+        },
+        {
+            "file": "src/js/utils/Button.js",
+            "line": 75,
+            "description": "Click.",
+            "itemtype": "method",
+            "name": "onClick",
+            "access": "private",
+            "tagname": "",
+            "class": "Button"
+        },
+        {
+            "file": "src/js/utils/EventDispatcher.js",
+            "line": 11,
+            "description": "Add event listener.",
+            "itemtype": "method",
+            "name": "addEventListener",
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "src/js/utils/EventDispatcher.js",
+            "line": 36,
+            "description": "Remove event listener.",
+            "itemtype": "method",
+            "name": "removeEventListener",
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "src/js/utils/EventDispatcher.js",
+            "line": 62,
+            "description": "Dispatch event.",
+            "itemtype": "method",
+            "name": "dispatchEvent",
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "src/js/utils/EventDispatcher.js",
+            "line": 91,
+            "description": "Jquery style alias for addEventListener",
+            "itemtype": "method",
+            "name": "on",
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "src/js/utils/EventDispatcher.js",
+            "line": 97,
+            "description": "Jquery style alias for removeEventListener",
+            "itemtype": "method",
+            "name": "off",
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "src/js/utils/EventDispatcher.js",
+            "line": 103,
+            "description": "Jquery style alias for dispatchEvent",
+            "itemtype": "method",
+            "name": "trigger",
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "src/js/utils/EventDispatcher.js",
+            "line": 109,
+            "description": "Make something an event dispatcher. Can be used for multiple inheritance.",
+            "itemtype": "method",
+            "name": "init",
+            "static": 1,
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "src/js/utils/FrameTimer.js",
+            "line": 21,
+            "description": "On interval.",
+            "itemtype": "method",
+            "name": "onInterval",
+            "access": "private",
+            "tagname": "",
+            "class": "FrameTimer"
+        },
+        {
+            "file": "src/js/utils/FrameTimer.js",
+            "line": 31,
+            "description": "Get singleton instance.",
+            "itemtype": "method",
+            "name": "getInstance",
+            "static": 1,
+            "class": "FrameTimer"
+        },
+        {
+            "file": "src/js/utils/FunctionUtil.js",
+            "line": 8,
+            "description": "Extend a class.\nDon't forget to call super.",
+            "itemtype": "method",
+            "name": "extend",
+            "static": 1,
+            "class": "FunctionUtil"
+        },
+        {
+            "file": "src/js/utils/FunctionUtil.js",
+            "line": 19,
+            "description": "Create delegate function. Deprecated, use bind() instead.",
+            "itemtype": "method",
+            "name": "createDelegate",
+            "deprecated": true,
+            "static": 1,
+            "class": "FunctionUtil"
+        },
+        {
+            "file": "src/js/utils/Gradient.js",
+            "line": 14,
+            "description": "Set size of the gradient.",
+            "itemtype": "method",
+            "name": "setSize",
+            "class": "Gradient"
+        },
+        {
+            "file": "src/js/utils/Gradient.js",
+            "line": 23,
+            "description": "Add color stop.",
+            "itemtype": "method",
+            "name": "addColorStop",
+            "class": "Gradient"
+        },
+        {
+            "file": "src/js/utils/Gradient.js",
+            "line": 34,
+            "description": "Render the sprite.",
+            "itemtype": "method",
+            "name": "createSprite",
+            "class": "Gradient"
+        },
+        {
+            "file": "src/js/utils/MessageClientConnection.js",
+            "line": 21,
+            "description": "Connect to a server",
+            "itemtype": "method",
+            "name": "connect",
+            "class": "MessageClientConnection"
+        },
+        {
+            "file": "src/js/utils/MessageClientConnection.js",
+            "line": 36,
+            "description": "Opened.",
+            "itemtype": "method",
+            "name": "onWebSocketOpen",
+            "access": "private",
+            "tagname": "",
+            "class": "MessageClientConnection"
+        },
+        {
+            "file": "src/js/utils/MessageClientConnection.js",
+            "line": 46,
+            "description": "Message.",
+            "itemtype": "method",
+            "name": "onWebSocketMessage",
+            "access": "private",
+            "tagname": "",
+            "class": "MessageClientConnection"
+        },
+        {
+            "file": "src/js/utils/MessageClientConnection.js",
+            "line": 64,
+            "description": "Closed.",
+            "itemtype": "method",
+            "name": "onWebSocketClose",
+            "access": "private",
+            "tagname": "",
+            "class": "MessageClientConnection"
+        },
+        {
+            "file": "src/js/utils/MessageClientConnection.js",
+            "line": 74,
+            "description": "Send a message.",
+            "itemtype": "method",
+            "name": "send",
+            "class": "MessageClientConnection"
+        },
+        {
+            "file": "src/js/utils/MessageClientConnection.js",
+            "line": 82,
+            "description": "Close the connection.",
+            "itemtype": "method",
+            "name": "close",
+            "class": "MessageClientConnection"
+        },
+        {
+            "file": "src/js/utils/MessageServer.js",
+            "line": 26,
+            "description": "Handle server upgrade messages.",
+            "itemtype": "method",
+            "name": "onServerUpgrade",
+            "access": "private",
+            "tagname": "",
+            "class": "MessageServer"
+        },
+        {
+            "file": "src/js/utils/MessageServer.js",
+            "line": 50,
+            "description": "Server request.",
+            "itemtype": "method",
+            "name": "onServerRequest",
+            "access": "private",
+            "tagname": "",
+            "class": "MessageServer"
+        },
+        {
+            "file": "src/js/utils/MessageServer.js",
+            "line": 63,
+            "description": "Set security options.",
+            "itemtype": "method",
+            "name": "setSecurity",
+            "class": "MessageServer"
+        },
+        {
+            "file": "src/js/utils/MessageServer.js",
+            "line": 69,
+            "description": "Start listening for connections.",
+            "itemtype": "method",
+            "name": "listen",
+            "class": "MessageServer"
+        },
+        {
+            "file": "src/js/utils/MessageServer.js",
+            "line": 77,
+            "description": "Close.",
+            "itemtype": "method",
+            "name": "close",
+            "class": "MessageServer"
+        },
+        {
+            "file": "src/js/utils/MessageServerConnection.js",
+            "line": 23,
+            "description": "On websocket message.",
+            "itemtype": "method",
+            "name": "onWebSocketMessage",
+            "access": "private",
+            "tagname": "",
+            "class": "MessageServerConnection"
+        },
+        {
+            "file": "src/js/utils/MessageServerConnection.js",
+            "line": 42,
+            "description": "On websocket message.",
+            "itemtype": "method",
+            "name": "onWebSocketClose",
+            "access": "private",
+            "tagname": "",
+            "class": "MessageServerConnection"
+        },
+        {
+            "file": "src/js/utils/MessageServerConnection.js",
+            "line": 53,
+            "description": "Send a message.",
+            "itemtype": "method",
+            "name": "send",
+            "class": "MessageServerConnection"
+        },
+        {
+            "file": "src/js/utils/MessageServerConnection.js",
+            "line": 61,
+            "description": "Get connection parameters.",
+            "itemtype": "method",
+            "name": "getConnectionParameters",
+            "class": "MessageServerConnection"
+        },
+        {
+            "file": "src/js/utils/MessageServerConnection.js",
+            "line": 69,
+            "description": "Close.",
+            "itemtype": "method",
+            "name": "close",
+            "class": "MessageServerConnection"
+        },
+        {
+            "file": "src/js/utils/MessageWebSocketConnection.js",
+            "line": 20,
+            "description": "Connect.",
+            "itemtype": "method",
+            "name": "connect",
+            "class": "MessageWebSocketConnection"
+        },
+        {
+            "file": "src/js/utils/MessageWebSocketConnection.js",
+            "line": 33,
+            "description": "Send.",
+            "itemtype": "method",
+            "name": "send",
+            "class": "MessageWebSocketConnection"
+        },
+        {
+            "file": "src/js/utils/MessageWebSocketConnection.js",
+            "line": 41,
+            "description": "Web socket open.",
+            "itemtype": "method",
+            "name": "onWebSocketOpen",
+            "access": "private",
+            "tagname": "",
+            "class": "MessageWebSocketConnection"
+        },
+        {
+            "file": "src/js/utils/MessageWebSocketConnection.js",
+            "line": 50,
+            "description": "Web socket message.",
+            "itemtype": "method",
+            "name": "onWebSocketMessage",
+            "access": "private",
+            "tagname": "",
+            "class": "MessageWebSocketConnection"
+        },
+        {
+            "file": "src/js/utils/MessageWebSocketConnection.js",
+            "line": 64,
+            "description": "Web socket close.",
+            "itemtype": "method",
+            "name": "onWebSocketClose",
+            "access": "private",
+            "tagname": "",
+            "class": "MessageWebSocketConnection"
+        },
+        {
+            "file": "src/js/utils/MessageWebSocketConnection.js",
+            "line": 77,
+            "description": "Web socket error.",
+            "itemtype": "method",
+            "name": "onWebSocketError",
+            "access": "private",
+            "tagname": "",
+            "class": "MessageWebSocketConnection"
+        },
+        {
+            "file": "src/js/utils/MessageWebSocketConnection.js",
+            "line": 91,
+            "description": "Clear the current web socket.",
+            "itemtype": "method",
+            "name": "clearWebSocket",
+            "class": "MessageWebSocketConnection"
+        },
+        {
+            "file": "src/js/utils/NineSlice.js",
+            "line": 36,
+            "description": "Build parts.",
+            "itemtype": "method",
+            "name": "buildParts",
+            "access": "private",
+            "tagname": "",
+            "class": "clearWebSocket"
+        },
+        {
+            "file": "src/js/utils/NineSlice.js",
+            "line": 66,
+            "description": "Update sizes.",
+            "itemtype": "method",
+            "name": "updateSizes",
+            "access": "private",
+            "tagname": "",
+            "class": "clearWebSocket"
+        },
+        {
+            "file": "src/js/utils/NineSlice.js",
+            "line": 92,
+            "description": "Set local size.",
+            "itemtype": "method",
+            "name": "setLocalSize",
+            "class": "clearWebSocket"
+        },
+        {
+            "file": "src/js/utils/NineSlice.js",
+            "line": 102,
+            "description": "Create texture part.",
+            "itemtype": "method",
+            "name": "createTexturePart",
+            "access": "private",
+            "tagname": "",
+            "class": "clearWebSocket"
+        },
+        {
+            "file": "src/js/utils/PixiApp.js",
+            "line": 70,
+            "description": "Use scaling mode.",
+            "itemtype": "method",
+            "name": "useScaling",
+            "class": "PixiApp"
+        },
+        {
+            "file": "src/js/utils/PixiApp.js",
+            "line": 83,
+            "description": "Use no scaling mode.",
+            "itemtype": "method",
+            "name": "useNoScaling",
+            "class": "PixiApp"
+        },
+        {
+            "file": "src/js/utils/PixiApp.js",
+            "line": 93,
+            "description": "Remove any content.",
+            "itemtype": "method",
+            "name": "removeContent",
+            "access": "private",
+            "tagname": "",
+            "class": "PixiApp"
+        },
+        {
+            "file": "src/js/utils/PixiApp.js",
+            "line": 108,
+            "description": "Window resize.",
+            "itemtype": "method",
+            "name": "onWindowResize",
+            "access": "private",
+            "tagname": "",
+            "class": "PixiApp"
+        },
+        {
+            "file": "src/js/utils/PixiApp.js",
+            "line": 122,
+            "description": "Animation frame.",
+            "itemtype": "method",
+            "name": "onAnimationFrame",
+            "access": "private",
+            "tagname": "",
+            "class": "PixiApp"
+        },
+        {
+            "file": "src/js/utils/PixiApp.js",
+            "line": 132,
+            "description": "Get canvas.",
+            "itemtype": "method",
+            "name": "getCanvas",
+            "class": "PixiApp"
+        },
+        {
+            "file": "src/js/utils/PixiApp.js",
+            "line": 140,
+            "description": "Get stage.",
+            "itemtype": "method",
+            "name": "getStage",
+            "class": "PixiApp"
+        },
+        {
+            "file": "src/js/utils/Sequencer.js",
+            "line": 26,
+            "description": "Enqueue a task to be performed.",
+            "itemtype": "method",
+            "name": "enqueue",
+            "class": "Sequencer"
+        },
+        {
+            "file": "src/js/utils/Sequencer.js",
+            "line": 38,
+            "description": "Start the task.",
+            "itemtype": "method",
+            "name": "startTask",
+            "access": "private",
+            "tagname": "",
+            "class": "Sequencer"
+        },
+        {
+            "file": "src/js/utils/Sequencer.js",
+            "line": 52,
+            "description": "The current task is complete.",
+            "itemtype": "method",
+            "name": "onTaskComplete",
+            "access": "private",
+            "tagname": "",
+            "class": "Sequencer"
+        },
+        {
+            "file": "src/js/utils/Sequencer.js",
+            "line": 69,
+            "description": "Abort the sequence.",
+            "itemtype": "method",
+            "name": "abort",
+            "class": "Sequencer"
+        },
+        {
+            "file": "src/js/utils/Thenable.js",
+            "line": 21,
+            "description": "Set resolution handlers.",
+            "itemtype": "method",
+            "name": "then",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "The function called to handle success."
+                },
+                {
+                    "name": "error",
+                    "description": "The function called to handle error."
+                }
+            ],
+            "return": {
+                "description": "This Thenable for chaining."
+            },
+            "class": "Thenable"
+        },
+        {
+            "file": "src/js/utils/Thenable.js",
+            "line": 38,
+            "description": "Notify success of the operation.",
+            "itemtype": "method",
+            "name": "notifySuccess",
+            "class": "Thenable"
+        },
+        {
+            "file": "src/js/utils/Thenable.js",
+            "line": 50,
+            "description": "Notify failure of the operation.",
+            "itemtype": "method",
+            "name": "notifyError",
+            "class": "Thenable"
+        },
+        {
+            "file": "src/js/utils/Thenable.js",
+            "line": 62,
+            "description": "Actually notify success.",
+            "itemtype": "method",
+            "name": "doNotifySuccess",
+            "access": "private",
+            "tagname": "",
+            "class": "Thenable"
+        },
+        {
+            "file": "src/js/utils/Thenable.js",
+            "line": 74,
+            "description": "Actually notify error.",
+            "itemtype": "method",
+            "name": "doNotifyError",
+            "access": "private",
+            "tagname": "",
+            "class": "Thenable"
+        },
+        {
+            "file": "src/js/utils/Thenable.js",
+            "line": 83,
+            "description": "Call handlers.",
+            "itemtype": "method",
+            "name": "callHandlers",
+            "access": "private",
+            "tagname": "",
+            "class": "Thenable"
+        },
+        {
+            "file": "src/js/utils/Thenable.js",
+            "line": 107,
+            "description": "Resolve promise.",
+            "itemtype": "method",
+            "name": "resolve",
+            "class": "Thenable"
+        },
+        {
+            "file": "src/js/utils/Thenable.js",
+            "line": 115,
+            "description": "Reject promise.",
+            "itemtype": "method",
+            "name": "reject",
+            "class": "Thenable"
+        },
+        {
+            "file": "src/js/utils/ThenableBarrier.js",
+            "line": 17,
+            "itemtype": "method",
+            "name": "addThenable\nAdd a thenable to listen to.",
+            "class": "ThenableBarrier"
+        },
+        {
+            "file": "src/js/utils/ThenableBarrier.js",
+            "line": 33,
+            "description": "A thenable notified success.",
+            "itemtype": "method",
+            "name": "onThenableSuccess",
+            "access": "private",
+            "tagname": "",
+            "class": "ThenableBarrier"
+        },
+        {
+            "file": "src/js/utils/ThenableBarrier.js",
+            "line": 49,
+            "description": "A thenable notified error.",
+            "itemtype": "method",
+            "name": "onThenableError",
+            "access": "private",
+            "tagname": "",
+            "class": "ThenableBarrier"
+        },
+        {
+            "file": "src/js/utils/ThenableBarrier.js",
+            "line": 59,
+            "description": "Create a thenable barrier",
+            "itemtype": "method",
+            "name": "wait",
+            "class": "ThenableBarrier"
+        }
+    ],
+    "warnings": []
+}
