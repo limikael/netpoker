@@ -1,5 +1,5 @@
 var Sequencer = require("../../utils/Sequencer");
-var EventDispatcher = require("../../utils/Eventdispatcher");
+var EventDispatcher = require("../../utils/EventDispatcher");
 var MessageSequenceItem = require("./MessageSequenceItem");
 
 /**
