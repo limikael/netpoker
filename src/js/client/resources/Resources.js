@@ -4,11 +4,6 @@ var PIXI = require("pixi.js");
 var Point = require("../../utils/Point");
 
 /**
- *
- *
- */
-
-/**
  * Client resources
  * @class Resources.
  */
@@ -71,6 +66,13 @@ function Resources() {
 			Point(181,200)
 		];
 
+	this.chips = new Array();
+	for (var i = 0; i < 5; i++) {
+		var b = this.getComponentsPart(30 + i*40, 25, 40, 30);
+		this.chips.push(b);
+	}
+
+	this.chipsColors = [0x404040, 0x008000, 0x808000, 0x000080, 0xff0000];
 
 }
 

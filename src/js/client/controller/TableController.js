@@ -2,6 +2,7 @@ var SeatInfoMessage = require("../../proto/messages/SeatInfoMessage");
 var CommunityCardsMessage = require("../../proto/messages/CommunityCardsMessage");
 var PocketCardsMessage = require("../../proto/messages/PocketCardsMessage");
 var DealerButtonMessage = require("../../proto/messages/DealerButtonMessage");
+var BetMessage = require("../../proto/messages/BetMessage");
 
 /**
  * Control the table
@@ -15,6 +16,7 @@ function TableController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(CommunityCardsMessage.TYPE, this.onCommunityCardsMessage, this);
 	this.messageSequencer.addMessageHandler(PocketCardsMessage.TYPE, this.onPocketCardsMessage, this);
 	this.messageSequencer.addMessageHandler(DealerButtonMessage.TYPE, this.onDealerButtonMessage, this);
+	this.messageSequencer.addMessageHandler(BetMessage.TYPE, this.onBetMessage, this);
 }
 
 /**
@@ -72,6 +74,14 @@ TableController.prototype.onDealerButtonMessage = function(m) {
 	var dealerButtonView = this.view.getDealerButtonView();
 	this.messageSequencer.waitFor(dealerButtonView, "animationDone");
 	dealerButtonView.show(m.getSeatIndex(), m.getAnimate());
+};
+
+/**
+ * Bet message.
+ * @method onBetMessage
+ */
+TableController.prototype.onBetMessage = function(m) {
+	this.view.seatViews[m.seatIndex].betChips.setValue(m.value);
 };
 
 module.exports = TableController;
