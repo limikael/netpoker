@@ -11,6 +11,7 @@ function EventDispatcher() {
 /**
  * Add event listener.
  * @method addEventListener
+ * @deprecated
  */
 EventDispatcher.prototype.addEventListener = function(eventType, listener, scope) {
 	if (!this.listenerMap)
@@ -36,6 +37,7 @@ EventDispatcher.prototype.addEventListener = function(eventType, listener, scope
 /**
  * Remove event listener.
  * @method removeEventListener
+ * @deprecated
  */
 EventDispatcher.prototype.removeEventListener = function(eventType, listener, scope) {
 	if (!this.listenerMap)

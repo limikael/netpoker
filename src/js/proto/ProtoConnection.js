@@ -17,7 +17,45 @@ var BetMessage = require("./messages/BetMessage");
 
 /**
  * A protocol connection with an underlying connection.
+ * 
+ * There are two ways to liten for connections, the first one and most straight
+ * forward is the addMessageHandler, which registers a listener for a
+ * particular network message. The first argument should be the message
+ * class to listen for:
+ * 
+ *     function onSeatInfoMessage(m) {
+ *         // Check if the seat is active.
+ *         m.isActive();
+ *     }
+ *
+ *     protoConnection.addMessageHandler(SeatInfoMessage, onSeatInfoMessage);
+ *
+ * The second method is to listen to the ProtoConnection.MESSAGE dispatched
+ * by the instance of the ProtoConnection. In this case, the listener
+ * will be called for all messages received on the connection.
+ *
+ *     function onMessage(e) {
+ *         var message=e.message;
+ *
+ *         // Is it a SeatInfoMessage?
+ *         if (message instanceof SeatInfoMessage) {
+ *             // ...
+ *         }
+ *     }
+ *
+ *     protoConnection.addMessageHandler(SeatInfoMessage, onMessage);
+ *
+ * The underlying connection should be an object that implements an "interface"
+ * of a connection. It is not an interface per se, since JavaScript doesn't support
+ * it. Anyway, the signature of this interface, is that the connection object
+ * should have a `send` method which receives a object to be send. It should also
+ * dispatch "message" events as messages are received, and "close" events if the
+ * connection is closed by the remote party.
+ *
  * @class ProtoConnection
+ * @extends EventDispatcher
+ * @constructor
+ * @param connection The underlying connection object.
  */
 function ProtoConnection(connection) {
 	EventDispatcher.call(this);
@@ -30,7 +68,17 @@ function ProtoConnection(connection) {
 
 FunctionUtil.extend(ProtoConnection, EventDispatcher);
 
+/**
+ * Triggers if the remote party closes the underlying connection.
+ * @event ProtoConnection.CLOSE
+ */
 ProtoConnection.CLOSE = "close";
+
+/**
+ * Triggers when we receive a message from the remote party.
+ * @event ProtoConnection.MESSAGE
+ * @param {Object} message The message that was received.
+ */
 ProtoConnection.MESSAGE = "message";
 
 ProtoConnection.MESSAGE_TYPES = {};
@@ -137,7 +185,7 @@ ProtoConnection.prototype.send = function(message) {
 }
 
 /**
- * Close the connection.
+ * Close the underlying connection.
  * @method close
  */
 ProtoConnection.prototype.close = function() {
