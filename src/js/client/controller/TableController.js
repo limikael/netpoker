@@ -3,6 +3,7 @@ var CommunityCardsMessage = require("../../proto/messages/CommunityCardsMessage"
 var PocketCardsMessage = require("../../proto/messages/PocketCardsMessage");
 var DealerButtonMessage = require("../../proto/messages/DealerButtonMessage");
 var BetMessage = require("../../proto/messages/BetMessage");
+var BetsToPotMessage = require("../../proto/messages/BetsToPotMessage");
 
 /**
  * Control the table
@@ -17,6 +18,7 @@ function TableController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(PocketCardsMessage.TYPE, this.onPocketCardsMessage, this);
 	this.messageSequencer.addMessageHandler(DealerButtonMessage.TYPE, this.onDealerButtonMessage, this);
 	this.messageSequencer.addMessageHandler(BetMessage.TYPE, this.onBetMessage, this);
+	this.messageSequencer.addMessageHandler(BetsToPotMessage.TYPE, this.onBetsToPot, this);
 }
 
 /**
@@ -83,5 +85,25 @@ TableController.prototype.onDealerButtonMessage = function(m) {
 TableController.prototype.onBetMessage = function(m) {
 	this.view.seatViews[m.seatIndex].betChips.setValue(m.value);
 };
+
+/**
+ * Bets to pot.
+ * @method onBetsToPot
+ */
+TableController.prototype.onBetsToPot = function(m) {
+	var haveChips = false;
+
+	for(var i = 0; i < this.view.seatViews.length; i++)
+		if(this.view.seatViews[i].betChips.value > 0)
+			haveChips = true;
+
+	if (!haveChips)
+		return;
+
+	for(var i = 0; i < this.view.seatViews.length; i++)
+		this.view.seatViews[i].betChips.animateIn();
+
+	this.messageSequencer.waitFor(this.view.seatViews[0].betChips, "animationDone");
+}
 
 module.exports = TableController;

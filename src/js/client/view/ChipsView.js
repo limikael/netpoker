@@ -16,6 +16,7 @@ function ChipsView(showToolTip) {
 
 	this.align = Resources.getInstance().Align.Left;
 
+	this.value = 0;
 
 	this.denominations = [500000,100000,25000,5000,1000,500,100,25,5,1];
 
@@ -63,8 +64,8 @@ ChipsView.prototype.setValue = function(value) {
 
 	var sprite;
 
-	for(s in this.stackClips)
-		this.holder.removeChild(s);
+	for(var i = 0; i < this.stackClips.length; i++)
+		this.holder.removeChild(this.stackClips[i]);
 
 	this.stackClips = new Array();
 
@@ -163,19 +164,60 @@ ChipsView.prototype.show = function() {
 	var diffY = this.position.y - destination.y;
 	var diff = Math.sqrt(diffX*diffX + diffY*diffY);
 
-	var thisPtr = this;
 	var tween = new TWEEN.Tween( this.position )
             .to( { x: destination.x, y: destination.y }, 3*diff )
             .easing( TWEEN.Easing.Quadratic.Out )
-            .onComplete(function()
-			{
-				if(thisPtr.cardData.isShown()) {
-					thisPtr.back.visible = false;
-					thisPtr.frame.visible = true;
-				}
-				thisPtr.dispatchEvent("animationDone", thisPtr);
-			})
+            .onComplete(this.onShowComplete.bind(this))
             .start();
+}
+
+/**
+ * Show complete.
+ * @method onShowComplete
+ */
+ChipsView.prototype.onShowComplete = function() {
+	
+	this.dispatchEvent("animationDone", this);
+}
+
+/**
+ * Animate in.
+ * @method animateIn
+ */
+ChipsView.prototype.animateIn = function() {
+	var o = {
+		y: Resources.getInstance().potPosition.y
+	};
+
+	switch (this.align) {
+		case Resources.getInstance().Align.LEFT:
+			o.x = Resources.getInstance().potPosition.x-width/2;
+
+		case Resources.getInstance().Align.CENTER:
+			o.x = Resources.getInstance().potPosition.x;
+
+		case Resources.getInstance().Align.RIGHT:
+			o.x = Resources.getInstance().x+width/2;
+	}
+
+	var time = 500;
+	var tween = new TWEEN.Tween(this)
+					.to({ y: Resources.getInstance().potPosition.y }, time)
+					.onComplete(this.onInAnimationComplete.bind(this))
+					.start();
+}
+
+/**
+ * In animation complete.
+ * @method onInAnimationComplete
+ */
+ChipsView.prototype.onInAnimationComplete = function() {
+	this.setValue(0);
+
+	x = this.targetPosition.x;
+	y = this.targetPosition.y;
+
+	this.dispatchEvent("animationDone", this);
 }
 
 module.exports = ChipsView;

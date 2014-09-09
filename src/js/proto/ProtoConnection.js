@@ -14,6 +14,7 @@ var DelayMessage = require("./messages/DelayMessage");
 var ClearMessage = require("./messages/ClearMessage");
 var DealerButtonMessage = require("./messages/DealerButtonMessage");
 var BetMessage = require("./messages/BetMessage");
+var BetsToPotMessage = require("./messages/BetsToPotMessage");
 
 /**
  * A protocol connection with an underlying connection.
@@ -95,6 +96,7 @@ ProtoConnection.MESSAGE_TYPES[DelayMessage.TYPE] = DelayMessage;
 ProtoConnection.MESSAGE_TYPES[ClearMessage.TYPE] = ClearMessage;
 ProtoConnection.MESSAGE_TYPES[DealerButtonMessage.TYPE] = DealerButtonMessage;
 ProtoConnection.MESSAGE_TYPES[BetMessage.TYPE] = BetMessage;
+ProtoConnection.MESSAGE_TYPES[BetsToPotMessage.TYPE] = BetsToPotMessage;
 
 /**
  * Add message handler.

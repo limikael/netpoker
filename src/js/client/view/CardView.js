@@ -95,19 +95,23 @@ CardView.prototype.show = function() {
 	var diffY = this.position.y - destination.y;
 	var diff = Math.sqrt(diffX*diffX + diffY*diffY);
 
-	var thisPtr = this;
 	var tween = new TWEEN.Tween( this.position )
             .to( { x: destination.x, y: destination.y }, 3*diff )
             .easing( TWEEN.Easing.Quadratic.Out )
-            .onComplete(function()
-			{
-				if(thisPtr.cardData.isShown()) {
-					thisPtr.back.visible = false;
-					thisPtr.frame.visible = true;
-				}
-				thisPtr.dispatchEvent("animationDone", thisPtr);
-			})
+            .onComplete(this.onShowComplete.bind(this))
             .start();
+}
+
+/**
+ * Show complete.
+ * @method onShowComplete
+ */
+CardView.prototype.onShowComplete = function() {
+	if(this.cardData.isShown()) {
+		this.back.visible = false;
+		this.frame.visible = true;
+	}
+	this.dispatchEvent("animationDone", this);
 }
 
 module.exports = CardView;

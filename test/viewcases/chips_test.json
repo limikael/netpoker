@@ -3,3 +3,5 @@
 {"type":"bet", "seatIndex": 6, "value": 10096}
 {"type":"bet", "seatIndex": 0, "value": 47}
 {"type":"stateComplete"}
+{"type":"betsToPot"}
+{"type":"stateComplete"}

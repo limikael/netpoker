@@ -74,6 +74,7 @@ function Resources() {
 
 	this.chipsColors = [0x404040, 0x008000, 0x808000, 0x000080, 0xff0000];
 
+	this.potPosition = Point(485,315);
 }
 
 /**

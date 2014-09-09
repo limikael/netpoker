@@ -46,16 +46,21 @@ DealerButtonView.prototype.animateToSeatIndex = function(seatIndex) {
 	var diffX = this.position.x - destination.x;
 	var diffY = this.position.y - destination.y;
 	var diff = Math.sqrt(diffX*diffX + diffY*diffY);
-	var thisPtr = this;
+
 	var tween = new TWEEN.Tween( this.position )
             .to( { x: destination.x, y: destination.y }, 5*diff )
             .easing( TWEEN.Easing.Quadratic.Out )
-            .onComplete(function()
-			{
-				thisPtr.dispatchEvent("animationDone", thisPtr);
-			})
+            .onComplete(this.onShowComplete.bind(this))
             .start();
 };
+
+/**
+ * Show Complete.
+ * @method onShowComplete
+ */
+DealerButtonView.prototype.onShowComplete = function() {
+	this.dispatchEvent("animationDone", this);
+}
 
 /**
  * Hide.
