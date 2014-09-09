@@ -1,7 +1,6 @@
 var qsub = require("qsub");
 var Q = require("q");
 var AsyncSequence = require("./src/js/utils/AsyncSequence");
-var ftpsync = require("ftpsync");
 
 module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-ftpush');
