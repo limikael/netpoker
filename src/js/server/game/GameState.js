@@ -1,13 +1,12 @@
 /**
- * The state of a game.
+ * Abstract class representing the current state of the poker game.
  * @class GameState
+ * @constructor
  */
-function GameState() {
-
-}
+function GameState() {}
 
 /**
- * Set reference to game.
+ * Set reference to game that this instance is a state for.
  * @method setGame
  */
 GameState.prototype.setGame = function(game) {
@@ -15,7 +14,7 @@ GameState.prototype.setGame = function(game) {
 }
 
 /**
- * Run this state.
+ * Run this state. This is an abstract method intended to be implemented by each state.
  * @method run
  */
 GameState.prototype.run = function() {

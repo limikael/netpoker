@@ -5,7 +5,12 @@ var EventDispatcher = require("../../utils/EventDispatcher");
 var Thenable = require("../../utils/Thenable");
 
 /**
- * Main app class.
+ * This is the main class for the server. The 'netpokerserver' command is pretty much a wrapper
+ * around this class. This class does pretty much everything that the app is responsible for,
+ * such as managing the TableManager with active tables, it is responsible for creating
+ * the ConnectionManager to listen for incoming connections, etc. It does not concern itself
+ * with reading command line options or parsing configuration files, these things are left
+ * to the entity implementing this class.
  * @class NetPokerServer
  */
 function NetPokerServer() {
@@ -32,8 +37,11 @@ NetPokerServer.prototype.setListenPort = function(port) {
 }
 
 /**
- * New connection.
+ * We got a new connection from the ConnectionManager.
+ * Find out what the connection is for, i.e. table, tournament etc., and route
+ * the connection to the right peer.
  * @method onConnectionManagerConnection
+ * @private
  */
 NetPokerServer.prototype.onConnectionManagerConnection = function(e) {
 	var initMessage = e.getInitMessage();
@@ -56,7 +64,11 @@ NetPokerServer.prototype.onConnectionManagerConnection = function(e) {
 }
 
 /**
- * Web request from connection manager.
+ * We got a regular web request on one of the connections. By regular is ment
+ * such a request that browsers usually send, such as GET or POST, i.e. not
+ * a web socket request. These requests are normally not handled by this server
+ * in production mode, but can be handled for debugging purposes by the 
+ * mocked server.
  * @method onConnectionManagerRequest
  * @private
  */
@@ -92,6 +104,7 @@ NetPokerServer.prototype.serveViewCases = function(dir) {
 /**
  * The table manager is initialized.
  * @method onTableManagerInitialized
+ * @private
  */
 NetPokerServer.prototype.onTableManagerInitialized = function() {
 	this.connectionManager.on(ConnectionManager.CONNECTION, this.onConnectionManagerConnection, this);
@@ -102,8 +115,11 @@ NetPokerServer.prototype.onTableManagerInitialized = function() {
 }
 
 /**
- * Run.
+ * Start up the server. The server will not be usable immideatly when this function returns,
+ * since it needs to ask the backend for the current list of tables. This function returns
+ * a promise that will fulfill as the startup sequence is complete.
  * @method run
+ * @return {Thenable} A promise that fulfills as the server has started.
  */
 NetPokerServer.prototype.run = function() {
 	if (!this.backend)

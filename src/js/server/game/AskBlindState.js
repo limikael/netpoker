@@ -13,6 +13,8 @@ var FinishedState = require("./FinishedState");
  * If the number of players is not enough to start the game, we cancel
  * the game by setting a FinishedState as next state instead.
  * @class AskBlindState
+ * @extends GameState
+ * @constructor
  */
 function AskBlindState() {
 	GameState.call(this);
@@ -34,6 +36,7 @@ AskBlindState.prototype.run = function() {
 /**
  * Ask next blind.
  * @method askNextBlind
+ * @private
  */
 AskBlindState.prototype.askNextBlind = function() {
 	console.log("********** ask next blind, ask index=" + this.askTableSeatIndex);
@@ -81,6 +84,7 @@ AskBlindState.prototype.onPromptComplete = function() {
 /**
  * Ask done.
  * @method askDone
+ * @private
  */
 AskBlindState.prototype.askDone = function() {
 	var table = this.game.getTable();
