@@ -16,6 +16,24 @@ var DealerButtonMessage = require("./messages/DealerButtonMessage");
 var BetMessage = require("./messages/BetMessage");
 var BetsToPotMessage = require("./messages/BetsToPotMessage");
 
+var ActionMessage = require("./messages/ActionMessage");
+var ChatMessage = require("./messages/ChatMessage");
+var CheckboxMessage = require("./messages/CheckboxMessage");
+var FadeTableMessage = require("./messages/FadeTableMessage");
+var HandInfoMessage = require("./messages/HandInfoMessage");
+var InterfaceStateMessage = require("./messages/InterfaceStateMessage");
+var PayOutMessage = require("./messages/PayOutMessage");
+var PotMessage = require("./messages/PotMessage");
+var PresetButtonClickMessage = require("./messages/PresetButtonClickMessage");
+var PresetButtonsMessage = require("./messages/PresetButtonsMessage");
+var PreTournamentInfoMessage = require("./messages/PreTournamentInfoMessage");
+var TableButtonClickMessage = require("./messages/TableButtonClickMessage");
+var TableButtonsMessage = require("./messages/TableButtonsMessage");
+var TableInfoMessage = require("./messages/TableInfoMessage");
+var TestCaseRequestMessage = require("./messages/TestCaseRequestMessage");
+var TimerMessage = require("./messages/TimerMessage");
+var TournamentResultMessage = require("./messages/TournamentResultMessage");
+
 /**
  * A protocol connection with an underlying connection.
  * 
@@ -97,6 +115,24 @@ ProtoConnection.MESSAGE_TYPES[ClearMessage.TYPE] = ClearMessage;
 ProtoConnection.MESSAGE_TYPES[DealerButtonMessage.TYPE] = DealerButtonMessage;
 ProtoConnection.MESSAGE_TYPES[BetMessage.TYPE] = BetMessage;
 ProtoConnection.MESSAGE_TYPES[BetsToPotMessage.TYPE] = BetsToPotMessage;
+
+ProtoConnection.MESSAGE_TYPES[ActionMessage.TYPE] = ActionMessage;
+ProtoConnection.MESSAGE_TYPES[ChatMessage.TYPE] = ChatMessage;
+ProtoConnection.MESSAGE_TYPES[CheckboxMessage.TYPE] = CheckboxMessage;
+ProtoConnection.MESSAGE_TYPES[FadeTableMessage.TYPE] = FadeTableMessage;
+ProtoConnection.MESSAGE_TYPES[HandInfoMessage.TYPE] = HandInfoMessage;
+ProtoConnection.MESSAGE_TYPES[InterfaceStateMessage.TYPE] = InterfaceStateMessage;
+ProtoConnection.MESSAGE_TYPES[PayOutMessage.TYPE] = PayOutMessage;
+ProtoConnection.MESSAGE_TYPES[PotMessage.TYPE] = PotMessage;
+ProtoConnection.MESSAGE_TYPES[PresetButtonClickMessage.TYPE] = PresetButtonClickMessage;
+ProtoConnection.MESSAGE_TYPES[PresetButtonsMessage.TYPE] = PresetButtonsMessage;
+ProtoConnection.MESSAGE_TYPES[PreTournamentInfoMessage.TYPE] = PreTournamentInfoMessage;
+ProtoConnection.MESSAGE_TYPES[TableButtonClickMessage.TYPE] = TableButtonClickMessage;
+ProtoConnection.MESSAGE_TYPES[TableButtonsMessage.TYPE] = TableButtonsMessage;
+ProtoConnection.MESSAGE_TYPES[TableInfoMessage.TYPE] = TableInfoMessage;
+ProtoConnection.MESSAGE_TYPES[TestCaseRequestMessage.TYPE] = TestCaseRequestMessage;
+ProtoConnection.MESSAGE_TYPES[TimerMessage.TYPE] = TimerMessage;
+ProtoConnection.MESSAGE_TYPES[TournamentResultMessage.TYPE] = TournamentResultMessage;
 
 /**
  * Add message handler.

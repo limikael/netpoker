@@ -10,15 +10,15 @@ function BetMessage(seatIndex, value) {
 BetMessage.TYPE = "bet";
 
 /**
- * Seat index.
+ * Getter.
  * @method getSeatIndex
  */
 BetMessage.prototype.getSeatIndex = function() {
-	return this.button;
+	return this.seatIndex;
 }
 
 /**
- * Setter.
+ * Getter.
  * @method getValue
  */
 BetMessage.prototype.getValue = function() {
