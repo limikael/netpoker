@@ -1,7 +1,9 @@
 "use strict";
 
 /**
- * AS3/jquery style event dispatcher.
+ * AS3/jquery style event dispatcher. Slightly modified. The
+ * jquery style on/off/trigger style of adding listeners is
+ * currently the preferred one. is this here?
  * @class EventDispatcher
  */
 function EventDispatcher() {

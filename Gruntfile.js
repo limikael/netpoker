@@ -1,34 +1,66 @@
 var qsub = require("qsub");
 var Q = require("q");
 var AsyncSequence = require("./src/js/utils/AsyncSequence");
+var fs = require("fs");
 
 module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-ftpush');
 
 	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json'),
-		ftpush: {
-			doc: {
-				auth: {
-					host: 'ftp.netpokerdoc.altervista.org',
-					authKey: 'altervista',
-					port: 21
-				},
-				src: 'doc',
-				dest: '',
-				useList: true
+		pkg: grunt.file.readJSON('package.json')
+	});
+
+	grunt.registerTask("publish-doc", function() {
+		var done = this.async();
+
+		if (fs.existsSync("doc.zip"))
+			fs.unlinkSync("doc.zip");
+
+		AsyncSequence.run(
+			function(next) {
+				var job = qsub("zip");
+				job.arg("-r", "doc.zip", "doc");
+				job.expect(0);
+				job.run().then(next, function(e) {
+					throw e
+				});
+			},
+
+			function(next) {
+				var job = qsub("curl");
+				job.arg("-s", "-X", "POST");
+				job.arg("--data-binary", "@doc.zip");
+				job.arg("http://netpokerdoc.altervista.org/netpoker/deployzip.php");
+				job.expect(0);
+
+				job.run().then(
+					function() {
+						if (job.getOutput() != "OK")
+							grunt.fail.fatal("Unexpected output from curl");
+
+						next();
+					},
+					function(e) {
+						grunt.fail.fatal(e);
+					}
+				);
+			},
+
+			function(next) {
+				if (fs.existsSync("doc.zip"))
+					fs.unlinkSync("doc.zip");
+
+				next();
 			}
-		}
+		).then(done);
 	});
 
 	grunt.registerTask("doc", function() {
-		//grunt.task.run("ftpush:doc");
-
 		var done = this.async();
-		var job=qsub("./node_modules/.bin/yuidoc");
-		job.arg("--configfile","res/yuidoc.json");
+		var job = qsub("./node_modules/.bin/yuidoc");
+		job.arg("--configfile", "res/yuidoc.json");
 		job.show().expect(0);
-		job.run().then(done,function(e) {
+		job.run().then(done, function(e) {
 			console.log(e);
 		});
 	});
@@ -130,5 +162,5 @@ module.exports = function(grunt) {
 		console.log("  deploy       - Deploy to nodejitsu.");
 		console.log("  js-unit-test - Run server tests.");
 		console.log("  doc          - Create project docs and push to http://netpokerdoc.altervista.org/")
-		});
+	});
 }

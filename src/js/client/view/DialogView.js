@@ -46,6 +46,7 @@ function DialogView() {
 		var b = new DialogButton();
 
 		b.position.x = i * 90;
+		b.on("click", this.onButtonClick, this);
 		this.buttonsHolder.addChild(b);
 		this.buttons.push(b);
 	}

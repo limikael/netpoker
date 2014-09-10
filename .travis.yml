@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - "0.10"
 
-script: "./node_modules/.bin/grunt js-unit-test && ./node_modules/.bin/grunt doc && ./node_modules/.bin/grunt ftpush:doc"
+script: "./node_modules/.bin/grunt js-unit-test && ./node_modules/.bin/grunt doc && ./node_modules/.bin/grunt publish-doc"
 
 cache:
   directories:
