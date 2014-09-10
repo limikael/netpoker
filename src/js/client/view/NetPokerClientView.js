@@ -193,7 +193,7 @@ NetPokerClientView.prototype.getDialogView = function() {
 
 /**
  * Get dialog view.
- * @method getDialogView
+ * @method getDealerButtonView
  */
 NetPokerClientView.prototype.getDealerButtonView = function() {
 	return this.dealerButtonView;

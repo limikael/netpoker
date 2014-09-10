@@ -5,7 +5,7 @@ var Resources = require("../resources/Resources");
 var DialogButton = require("./DialogButton");
 var ButtonData = require("../../proto/data/ButtonData");
 var PixiTextInput = require("PixiTextInput");
-
+var EventDispatcher = require("../../utils/EventDispatcher");
 /**
  * Dialog view.
  * @class DialogView
@@ -70,6 +70,9 @@ function DialogView() {
 }
 
 FunctionUtil.extend(DialogView, PIXI.DisplayObjectContainer);
+EventDispatcher.init(DialogView);
+
+DialogView.BUTTON_CLICK = "buttonClick";
 
 /**
  * Hide.
@@ -85,6 +88,8 @@ DialogView.prototype.hide = function() {
  */
 DialogView.prototype.show = function(text, buttonIds, defaultValue) {
 	this.visible = true;
+
+	this.buttonIds = buttonIds;
 
 	for (i = 0; i < this.buttons.length; i++) {
 		if (i < buttonIds.length) {
@@ -111,6 +116,31 @@ DialogView.prototype.show = function(text, buttonIds, defaultValue) {
 		this.inputField.visible = false;
 		this.inputFrame.visible = false;
 	}
+}
+
+/**
+ * Handle button click.
+ * @method onButtonClick
+ */
+DialogView.prototype.onButtonClick = function(e) {
+	var buttonIndex = -1;
+
+	for (var i = 0; i < this.buttons.length; i++)
+		if (e.target == this.buttons[i])
+			buttonIndex = i;
+
+	var value = null;
+	if (this.inputField.visible)
+		value = this.inputField.text;
+
+	var ev = {
+		type: DialogView.BUTTON_CLICK,
+		button: this.buttonIds[buttonIndex],
+		value: value
+	};
+
+	this.trigger(ev);
+	this.hide();
 }
 
 module.exports = DialogView;

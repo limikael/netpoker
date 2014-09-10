@@ -78,6 +78,10 @@ UserConnection.prototype.handleViewCase = function(viewCase) {
 			this.connection.send(JSON.parse(line));
 		}
 	}
+
+	this.connection.on("message",function(e) {
+		console.log(JSON.stringify(e.message));
+	});
 }
 
 /**
