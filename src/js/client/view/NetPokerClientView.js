@@ -199,4 +199,21 @@ NetPokerClientView.prototype.getDealerButtonView = function() {
 	return this.dealerButtonView;
 }
 
+/**
+ * Clear everything to an empty state.
+ * @method clear
+ */
+NetPokerClientView.prototype.clear = function() {
+	var i;
+
+	for (i=0; i<this.communityCards.length; i++)
+		this.communityCards[i].hide();
+
+	for (i=0; i<this.seatViews.length; i++)
+		this.seatViews[i].clear();
+
+	this.dialogView.hide();
+	this.buttonsView.clear();
+}
+
 module.exports = NetPokerClientView;

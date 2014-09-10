@@ -13,6 +13,7 @@ function TableSeatUser(tableSeat, user) {
 	this.sitInCompleted = false;
 	this.leaving = false;
 	this.chips = 0;
+	this.sitout = false;
 }
 
 FunctionUtil.extend(TableSeatUser, EventDispatcher);
@@ -42,6 +43,9 @@ TableSeatUser.prototype.sitIn = function() {
 	this.buyChipsPrompt = new TableSeatBuyChipsPrompt(this.tableSeat);
 	this.buyChipsPrompt.on(TableSeatBuyChipsPrompt.COMPLETE, this.onBuyChipsPromptComplete, this);
 	this.buyChipsPrompt.on(TableSeatBuyChipsPrompt.CANCEL, this.onBuyChipsPromptCancel, this);
+
+	this.tableSeat.getTable().send(this.tableSeat.getSeatInfoMessage());
+
 	this.buyChipsPrompt.ask();
 }
 
@@ -60,7 +64,7 @@ TableSeatUser.prototype.onBuyChipsPromptComplete = function() {
 	if (this.leaving) {
 		this.leave();
 	} else {
-		//this.tableSeat.table.send(this.tableSeat.getSeatInfoMessage());
+		this.tableSeat.table.send(this.tableSeat.getSeatInfoMessage());
 
 		this.trigger(TableSeatUser.READY);
 	}
@@ -140,6 +144,26 @@ TableSeatUser.prototype.onSitoutCallComplete = function() {
 TableSeatUser.prototype.onSitoutCallError = function() {
 	console.log("sitout call failed!!!");
 	this.trigger(TableSeatUser.DONE);
+}
+
+/**
+ * Is this seat currently in reserved mode?
+ * @method isReserved
+ */
+TableSeatUser.prototype.isReserved = function() {
+	if (this.buyChipsPrompt)
+		return true;
+
+	else
+		return false;
+}
+
+/**
+ * Is this table seat user sitting out?
+ * @method isSitout
+ */
+TableSeatUser.prototype.isSitout = function() {
+	return this.sitout;
 }
 
 module.exports = TableSeatUser;

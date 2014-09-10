@@ -1,7 +1,7 @@
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("../resources/Resources");
-var Button=require("../../utils/Button");
+var Button = require("../../utils/Button");
 
 /**
  * A seat view.
@@ -106,6 +106,23 @@ SeatView.prototype.addPocketCard = function(cardView) {
  */
 SeatView.prototype.getPocketCards = function() {
 	return this.pocketCards;
+}
+
+/**
+ * Clear.
+ * @method clear
+ */
+SeatView.prototype.clear = function() {
+	var i;
+
+	this.visible = true;
+	this.sitout = false;
+	//seat.betChips.setValue(0);
+	this.setName("");
+	this.setChips("");
+
+	for (i=0; i<this.pocketCards.length; i++)
+		this.pocketCards[i].hide();
 }
 
 module.exports = SeatView;

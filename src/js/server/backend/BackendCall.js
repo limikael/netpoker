@@ -46,6 +46,11 @@ BackendCall.prototype.onRequestComplete = function(e, r, body) {
 
 	console.log("backend call returned: " + body);
 
+	if (!body.toString().length) {
+		this.thenable.reject("Empty response from server");
+		return;
+	}
+
 	var data;
 
 	try {
@@ -54,7 +59,7 @@ BackendCall.prototype.onRequestComplete = function(e, r, body) {
 	}
 
 	catch (e) {
-		this.thenable.reject(e);
+		this.thenable.reject(e.toString()+"\n\nServer response:\n"+body);
 	}
 }
 

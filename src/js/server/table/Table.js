@@ -28,6 +28,8 @@ function Table(services, config) {
 	this.id = config.id;
 	this.currency = config.currency;
 	this.stake = config.stake;
+	this.minSitInAmount = config.minSitInAmount;
+	this.maxSitInAmount = config.maxSitInAmount;
 
 	this.setupSeats(config.numseats);
 
@@ -110,7 +112,23 @@ Table.prototype.onTableSpectatorDone = function(e) {
  * @method sendState
  */
 Table.prototype.sendState = function(protoConnection) {
+	var i;
+
+	for (i = 0; i < this.tableSeats.length; i++)
+		protoConnection.send(this.tableSeats[i].getSeatInfoMessage());
+
 	protoConnection.send(new StateCompleteMessage());
+
+	/*var b: DealerButtonMessage = new DealerButtonMessage(dealerButtonIndex);
+	c.send(b);
+
+	for (line in chatLines)
+		c.send(new ChatMessage(line));
+
+	c.send(getHandInfoMessage());
+
+	if (currentGame != null)
+		currentGame.sendState(c);*/
 }
 
 /**
@@ -194,7 +212,7 @@ Table.prototype.startGame = function() {
  */
 Table.prototype.onCurrentGameFinished = function() {
 	this.currentGame.off(Game.FINISHED, this.onCurrentGameFinished, this);
-	this.currentGame=null;
+	this.currentGame = null;
 
 	if (this.stopped)
 		return;
@@ -239,8 +257,8 @@ Table.prototype.getStake = function() {
  * Stop.
  * @method stop
  */
-Table.prototype.stop=function() {
-	this.stopped=true;
+Table.prototype.stop = function() {
+	this.stopped = true;
 }
 
 /**
@@ -261,8 +279,8 @@ Table.prototype.send = function(m) {
  * To string.
  * @method toString
  */
-Table.prototype.toString=function() {
-	return "[Table id="+this.id+"]";
+Table.prototype.toString = function() {
+	return "[Table id=" + this.id + "]";
 }
 
 module.exports = Table;

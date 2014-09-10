@@ -38,6 +38,14 @@ EventDispatcher.init(ButtonsView);
 ButtonsView.BUTTON_CLICK = "buttonClick";
 
 /**
+ * Clear.
+ * @method clear
+ */
+ButtonsView.prototype.clear = function(buttonDatas) {
+	this.setButtons([]);
+}
+
+/**
  * Set button datas.
  * @method setButtons
  */

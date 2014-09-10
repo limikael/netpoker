@@ -2,8 +2,12 @@
  * Show username and chips on seat.
  * @class SeatInfoMessage
  */
-function SeatInfoMessage() {
+function SeatInfoMessage(seatIndex) {
+	this.seatIndex = seatIndex;
 	this.active = true;
+	this.sitout = false;
+	this.name = "";
+	this.chips = "";
 }
 
 SeatInfoMessage.TYPE = "seatInfo";
@@ -46,6 +50,38 @@ SeatInfoMessage.prototype.isSitout = function() {
  */
 SeatInfoMessage.prototype.isActive = function() {
 	return this.active;
+}
+
+/**
+ * Setter.
+ * @method setActive
+ */
+SeatInfoMessage.prototype.setActive = function(v) {
+	this.active = v;
+}
+
+/**
+ * Set sitout.
+ * @method setSitout
+ */
+SeatInfoMessage.prototype.setSitout = function(v) {
+	this.sitout = v;
+}
+
+/**
+ * Setter.
+ * @method setName
+ */
+SeatInfoMessage.prototype.setName = function(v) {
+	this.name = v;
+}
+
+/**
+ * Setter.
+ * @method setChips
+ */
+SeatInfoMessage.prototype.setChips = function(v) {
+	this.chips = v;
 }
 
 /**

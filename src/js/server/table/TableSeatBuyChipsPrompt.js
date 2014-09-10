@@ -59,22 +59,23 @@ TableSeatBuyChipsPrompt.prototype.onGetBalanceCallComplete = function(result) {
 	var balance = result.balance;
 	var d = new ShowDialogMessage();
 	d.setText(
-		"<b>Welcome to " +
-		this.tableSeat.getTable().getName() + "</b>\n\n" +
-		"The minimum required to sit in is <b>" +
+		"Welcome to " +
+		this.tableSeat.getTable().getName() + ".\n\n" +
+		"The minimum required to sit in is " +
 		this.tableSeat.getTable().getCurrency() + " " +
-		this.tableSeat.getTable().getMinSitInAmount() + "</b>.\n" +
-		"The maximum allowed is <b>" +
+		this.tableSeat.getTable().getMinSitInAmount() + ".\n" +
+		"The maximum allowed is " +
 		this.tableSeat.getTable().getCurrency() + " " +
-		this.tableSeat.getTable().getMaxSitInAmount() + "</b>.\n\n" +
-		"You currently have <b>" +
+		this.tableSeat.getTable().getMaxSitInAmount() + ".\n\n" +
+		"You currently have " +
 		this.tableSeat.getTable().getCurrency() + " " +
-		balance + "</b> on your account.\n\n" +
+		balance + " on your account.\n\n" +
 		"How much do you want to bring to the table?"
 	);
 
-	d.addButton(ButtonData.CANCEL);
+	d.setDefaultValue(this.tableSeat.getTable().getMinSitInAmount());
 	d.addButton(ButtonData.SIT_IN);
+	d.addButton(ButtonData.CANCEL);
 
 	this.tableSeat.on(ProtoConnection.CLOSE, this.onConnectionClose, this);
 	this.tableSeat.on(ButtonClickMessage.TYPE, this.onButtonClick, this);
@@ -114,7 +115,7 @@ TableSeatBuyChipsPrompt.prototype.onConnectionClose = function() {
  */
 TableSeatBuyChipsPrompt.prototype.onButtonClick = function(e) {
 	if (e.getButton() == ButtonData.SIT_IN) {
-		this.chips=e.getValue();
+		this.chips = e.getValue();
 
 		this.tableSeat.off(ProtoConnection.CLOSE, this.onConnectionClose, this);
 		this.tableSeat.off(ButtonClickMessage.TYPE, this.onButtonClick, this);
@@ -154,8 +155,8 @@ TableSeatBuyChipsPrompt.prototype.onSitInCallComplete = function(r) {
  * @method onSitInCallError
  */
 TableSeatBuyChipsPrompt.prototype.onSitInCallError = function(e) {
-	var d=new ShowDialogMessage();
-	d.setText("Unable to sit you in at the table.\n\n"+e);
+	var d = new ShowDialogMessage();
+	d.setText("Unable to sit you in at the table.\n\n" + e);
 	d.addButton(ButtonData.OK);
 
 	this.tableSeat.send(d);

@@ -58,6 +58,14 @@ MockBackendServer.prototype.handleMethod = function(method, params) {
 					stake: 2
 				}]
 			};
+
+		case Backend.GET_USER_BALANCE:
+			return {
+				"balance": 10000
+			};
+
+		case Backend.SIT_IN:
+			return true;
 	}
 }
 

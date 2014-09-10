@@ -54,4 +54,13 @@ TableSpectator.prototype.onSeatClick = function(m) {
 	this.trigger(TableSpectator.DONE);
 }
 
+/**
+ * Send a message to this table spectator.
+ * @method send
+ */
+TableSpectator.prototype.send = function(m) {
+	if (this.connection)
+		this.connection.send(m);
+}
+
 module.exports = TableSpectator;

@@ -70,6 +70,8 @@ TableSeat.prototype.onTableSeatUserDone = function() {
 	this.tableSeatUser.off(TableSeatUser.DONE, this.onTableSeatUserDone, this);
 	this.tableSeatUser = null;
 
+	this.table.send(this.getSeatInfoMessage());
+
 	this.setProtoConnection(null);
 
 	if (protoConnection) {
@@ -116,6 +118,33 @@ TableSeat.prototype.leaveTable = function() {
 		return;
 
 	this.tableSeatUser.leave();
+}
+
+/**
+ * Get SeatInfoMessage
+ * @method getSeatInfoMessage
+ */
+TableSeat.prototype.getSeatInfoMessage = function() {
+	var m = BaseTableSeat.prototype.getSeatInfoMessage.call(this);
+
+	if (this.tableSeatUser && this.tableSeatUser.isReserved())
+		m.setChips("RESERVED");
+
+	if (this.tableSeatUser && this.isSitout())
+		m.setChips("SIT OUT");
+
+	return m;
+}
+
+/**
+ * Is this seat sitting out?
+ * @method isSitout
+ */
+TableSeat.prototype.isSitout = function() {
+	if (!this.tableSeatUser)
+		return false;
+
+	return this.tableSeatUser.isSitout();
 }
 
 module.exports = TableSeat;

@@ -2,6 +2,7 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 var ProtoConnection = require("../../proto/ProtoConnection");
+var SeatInfoMessage = require("../../proto/messages/SeatInfoMessage");
 
 /**
  * Base table seat.
@@ -55,6 +56,14 @@ BaseTableSeat.prototype.setProtoConnection = function(protoConnection) {
 }
 
 /**
+ * Get user currently seated as this TableSeat.
+ * @method getUser
+ */
+BaseTableSeat.prototype.getUser = function() {
+	throw new Error("abstract");
+}
+
+/**
  * Get proto connection.
  * @method getProtoConnection
  */
@@ -85,7 +94,7 @@ BaseTableSeat.prototype.onProtoConnectionClose = function() {
  * Get table.
  * @method getTable
  */
-BaseTableSeat.prototype.getTable=function() {
+BaseTableSeat.prototype.getTable = function() {
 	return this.table;
 }
 
@@ -93,7 +102,7 @@ BaseTableSeat.prototype.getTable=function() {
  * Get services.
  * @method getServices
  */
-BaseTableSeat.prototype.getServices=function() {
+BaseTableSeat.prototype.getServices = function() {
 	return this.table.getServices();
 }
 
@@ -101,7 +110,7 @@ BaseTableSeat.prototype.getServices=function() {
  * Send.
  * @method send
  */
-BaseTableSeat.prototype.send=function(message) {
+BaseTableSeat.prototype.send = function(message) {
 	if (this.protoConnection)
 		this.protoConnection.send(message);
 }
@@ -110,8 +119,41 @@ BaseTableSeat.prototype.send=function(message) {
  * Get chips.
  * @method getChips
  */
-BaseTableSeat.prototype.getChips=function() {
-	throw "abstract";
+BaseTableSeat.prototype.getChips = function() {
+	throw new Error("abstract");
+}
+
+/**
+ * Is this table seat sitting out?
+ * @method isSitout
+ */
+BaseTableSeat.prototype.isSitout = function() {
+	throw new Error("abstract");
+}
+
+/**
+ * Get SeatInfoMessage representing this seat.
+ * @method getSeatInfoMessage
+ */
+BaseTableSeat.prototype.getSeatInfoMessage = function() {
+	var m = new SeatInfoMessage(this.seatIndex);
+
+	m.setActive(this.isActive());
+
+	if (this.getUser()) {
+		var user = this.getUser();
+
+		m.setName(user.getName());
+		m.setSitout(this.isSitout());
+
+		if (this.getChips() == 0)
+			m.chips = "ALL IN";
+
+		else
+			m.chips = this.getChips().toString();
+	}
+
+	return m;
 }
 
 module.exports = BaseTableSeat;

@@ -43,6 +43,14 @@ ShowDialogMessage.prototype.getDefaultValue = function() {
 }
 
 /**
+ * Set default value.
+ * @method setDefaultValue
+ */
+ShowDialogMessage.prototype.setDefaultValue = function(v) {
+	this.defaultValue=v;
+}
+
+/**
  * Set text in the dialog.
  * @method setText
  */

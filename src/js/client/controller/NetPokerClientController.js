@@ -39,6 +39,7 @@ NetPokerClientController.prototype.setProtoConnection = function(protoConnection
 	}
 
 	this.protoConnection = protoConnection;
+	this.netPokerClientView.clear();
 
 	if (this.protoConnection) {
 		this.protoConnection.on(ProtoConnection.MESSAGE, this.onProtoConnectionMessage, this);
