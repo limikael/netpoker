@@ -150,7 +150,7 @@ BaseTableSeat.prototype.getSeatInfoMessage = function() {
 			m.chips = "ALL IN";
 
 		else
-			m.chips = this.getChips().toString();
+			m.chips = this.getChips();
 	}
 
 	return m;
