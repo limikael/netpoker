@@ -3,7 +3,24 @@
 /**
  * AS3/jquery style event dispatcher. Slightly modified. The
  * jquery style on/off/trigger style of adding listeners is
- * currently the preferred one. is this here?
+ * currently the preferred one.
+ * 
+ * The on method for adding listeners takes an extra parameter which is the
+ * scope in which listeners should be called. So this:
+ *
+ *     object.on("event", listener, this);
+ *
+ * Has the same function when adding events as:
+ *
+ *     object.on("event", listener.bind(this));
+ *
+ * However, the difference is that if we use the second method it
+ * will not be possible to remove the listeners later, unless
+ * the closure created by bind is stored somewhere. If the 
+ * first method is used, we can remove the listener with:
+ *
+ *     object.off("event", listener, this);
+ *
  * @class EventDispatcher
  */
 function EventDispatcher() {
