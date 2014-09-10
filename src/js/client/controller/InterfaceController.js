@@ -30,7 +30,7 @@ InterfaceController.prototype.onButtonsMessage = function(m) {
 InterfaceController.prototype.onShowDialogMessage = function(m) {
 	var dialogView = this.view.getDialogView();
 
-	dialogView.show(m.getText(), m.getButtons());
+	dialogView.show(m.getText(), m.getButtons(), m.getDefaultValue());
 }
 
 module.exports = InterfaceController;

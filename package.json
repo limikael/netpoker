@@ -25,6 +25,7 @@
     "jasmine-node": "^2.0.0-beta4",
     "jitsu": "^0.13.18",
     "pixi.js": "git://github.com/GoodBoyDigital/pixi.js",
+    "pixitextinput": "git://github.com/limikael/pixitextinput",
     "qsub": "0.0.2",
     "serve-static": "^1.6.1",
     "tween.js": "^0.14.0",

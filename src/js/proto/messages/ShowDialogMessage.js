@@ -5,6 +5,7 @@
 function ShowDialogMessage() {
 	this.text = "";
 	this.buttons = [];
+	this.defaultValue = null;
 }
 
 ShowDialogMessage.TYPE = "showDialog";
@@ -34,6 +35,14 @@ ShowDialogMessage.prototype.getButtons = function() {
 }
 
 /**
+ * Get default value.
+ * @method getButtons
+ */
+ShowDialogMessage.prototype.getDefaultValue = function() {
+	return this.defaultValue;
+}
+
+/**
  * Set text in the dialog.
  * @method setText
  */
@@ -48,6 +57,7 @@ ShowDialogMessage.prototype.setText = function(text) {
 ShowDialogMessage.prototype.unserialize = function(data) {
 	this.text = data.text;
 	this.buttons = data.buttons;
+	this.defaultValue = data.defaultValue;
 }
 
 /**
@@ -57,7 +67,8 @@ ShowDialogMessage.prototype.unserialize = function(data) {
 ShowDialogMessage.prototype.serialize = function() {
 	return {
 		text: this.text,
-		buttons: this.buttons
+		buttons: this.buttons,
+		defaultValue: this.defaultValue
 	};
 }
 

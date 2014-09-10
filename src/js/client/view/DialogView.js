@@ -4,6 +4,7 @@ var NineSlice = require("../../utils/NineSlice");
 var Resources = require("../resources/Resources");
 var DialogButton = require("./DialogButton");
 var ButtonData = require("../../proto/data/ButtonData");
+var PixiTextInput = require("PixiTextInput");
 
 /**
  * Dialog view.
@@ -49,13 +50,22 @@ function DialogView() {
 		this.buttons.push(b);
 	}
 
-	this.hide();
+	style = {
+		font: "normal 18px Arial"
+	};
 
-	var input=document.createElement("input");
-	input.type="text";
-	input.style.position="absolute";
-	input.style.zIndex=1;
-	document.body.appendChild(input);
+	this.inputField = new PixiTextInput("", style);
+	this.inputField.position.x = this.textField.position.x;
+
+	this.inputFrame = new PIXI.Graphics();
+	this.inputFrame.beginFill(0x000000);
+	this.inputFrame.drawRect(-1, -1, 102, 23);
+	this.inputFrame.position.x = this.inputField.position.x;
+	this.addChild(this.inputFrame);
+
+	this.addChild(this.inputField);
+
+	this.hide();
 }
 
 FunctionUtil.extend(DialogView, PIXI.DisplayObjectContainer);
@@ -87,6 +97,19 @@ DialogView.prototype.show = function(text, buttonIds, defaultValue) {
 
 	this.buttonsHolder.x = 480 - buttonIds.length * 90 / 2;
 	this.textField.setText(text);
+
+	if (defaultValue) {
+		this.inputField.position.y = this.textField.position.y + this.textField.height + 20;
+		this.inputFrame.position.y = this.inputField.position.y;
+		this.inputField.visible = true;
+		this.inputFrame.visible = true;
+
+		this.inputField.text = defaultValue;
+		this.inputField.focus();
+	} else {
+		this.inputField.visible = false;
+		this.inputFrame.visible = false;
+	}
 }
 
 module.exports = DialogView;
