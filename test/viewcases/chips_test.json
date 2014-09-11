@@ -5,3 +5,5 @@
 {"type":"stateComplete"}
 {"type":"betsToPot"}
 {"type":"stateComplete"}
+{"type":"pot", "values": [10143]}
+{"type":"stateComplete"}

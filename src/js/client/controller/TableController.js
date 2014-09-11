@@ -4,6 +4,7 @@ var PocketCardsMessage = require("../../proto/messages/PocketCardsMessage");
 var DealerButtonMessage = require("../../proto/messages/DealerButtonMessage");
 var BetMessage = require("../../proto/messages/BetMessage");
 var BetsToPotMessage = require("../../proto/messages/BetsToPotMessage");
+var PotMessage = require("../../proto/messages/PotMessage");
 
 /**
  * Control the table
@@ -19,6 +20,7 @@ function TableController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(DealerButtonMessage.TYPE, this.onDealerButtonMessage, this);
 	this.messageSequencer.addMessageHandler(BetMessage.TYPE, this.onBetMessage, this);
 	this.messageSequencer.addMessageHandler(BetsToPotMessage.TYPE, this.onBetsToPot, this);
+	this.messageSequencer.addMessageHandler(PotMessage.TYPE, this.onPot, this);
 }
 
 /**
@@ -105,5 +107,13 @@ TableController.prototype.onBetsToPot = function(m) {
 
 	this.messageSequencer.waitFor(this.view.seatViews[0].betChips, "animationDone");
 }
+
+/**
+ * Pot message.
+ * @method onPot
+ */
+TableController.prototype.onPot = function(m) {
+	this.view.potView.setValues(m.values);
+};
 
 module.exports = TableController;
