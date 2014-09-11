@@ -20,6 +20,8 @@ function Resources() {
 		Point(123, 247)
 	];
 
+	this.timerBackground = this.getComponentsPart(121,200,32,32); 
+
 	this.seatPlate = this.getComponentsPart(40, 116, 160, 70);
 
 	this.communityCardsPosition = Point(255, 190);

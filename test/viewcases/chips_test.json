@@ -7,3 +7,5 @@
 {"type":"stateComplete"}
 {"type":"pot", "values": [10143]}
 {"type":"stateComplete"}
+{"type":"timer", "seatIndex": 0, "timeLeft": 15, "totalTime": 15}
+{"type":"stateComplete"}

@@ -12,6 +12,7 @@ var DialogView = require("./DialogView");
 var DealerButtonView = require("./DealerButtonView");
 var ChipsView = require("./ChipsView");
 var PotView = require("./PotView");
+var TimerView = require("./TimerView");
 
 /**
  * Net poker client view.
@@ -29,6 +30,9 @@ function NetPokerClientView() {
 
 	this.setupSeats();
 	this.setupCommunityCards();
+
+	this.timerView = new TimerView();
+	this.tableContainer.addChild(this.timerView);
 
 	this.chatView = new ChatView();
 	this.addChild(this.chatView);

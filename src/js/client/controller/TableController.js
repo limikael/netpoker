@@ -5,6 +5,7 @@ var DealerButtonMessage = require("../../proto/messages/DealerButtonMessage");
 var BetMessage = require("../../proto/messages/BetMessage");
 var BetsToPotMessage = require("../../proto/messages/BetsToPotMessage");
 var PotMessage = require("../../proto/messages/PotMessage");
+var TimerMessage = require("../../proto/messages/TimerMessage");
 
 /**
  * Control the table
@@ -21,6 +22,7 @@ function TableController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(BetMessage.TYPE, this.onBetMessage, this);
 	this.messageSequencer.addMessageHandler(BetsToPotMessage.TYPE, this.onBetsToPot, this);
 	this.messageSequencer.addMessageHandler(PotMessage.TYPE, this.onPot, this);
+	this.messageSequencer.addMessageHandler(TimerMessage.TYPE, this.onTimer, this);
 }
 
 /**
@@ -114,6 +116,20 @@ TableController.prototype.onBetsToPot = function(m) {
  */
 TableController.prototype.onPot = function(m) {
 	this.view.potView.setValues(m.values);
+};
+
+/**
+ * Timer message.
+ * @method onTimer
+ */
+TableController.prototype.onTimer = function(m) {
+	if (m.seatIndex < 0)
+		this.view.timerView.hide();
+
+	else {
+		this.view.timerView.show(m.seatIndex);
+		this.view.timerView.countdown(m.totalTime, m.timeLeft);
+	}
 };
 
 module.exports = TableController;
