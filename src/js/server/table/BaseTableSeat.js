@@ -5,8 +5,27 @@ var ProtoConnection = require("../../proto/ProtoConnection");
 var SeatInfoMessage = require("../../proto/messages/SeatInfoMessage");
 
 /**
- * Base table seat.
+ * Base table seat. This is an abstract class representing a seat at a table.
+ * The extending classes modify the behaivour slightly depending on the type
+ * of the game, such as gash games, tournaments, etc. 
+ *
+ * These are long lived objects, in the sense that they are active 
+ * as long as the table they belong to is active. 
+ *
+ * The table seat may be "active" or "inactive". Inactive seats are just
+ * placeholders and will be represented in the client by removing the
+ * seatplate for the seat. For example, on a four player table, the remaining
+ * six seats that cannot be used are the inactive seats.
+ *
+ * There may or may not be a user associated with the seat. The seated
+ * user can be retreived using the getUser function.
+ *
+ * This class has an associated connection which is the connection to the user
+ * currently controlling this seat. Note that the same user may be connected
+ * to the same table from several clients, but each user may only have one
+ * connection that controls a seat at a given time.
  * @class BaseTableSeat
+ * @extends EventDispatcher
  */
 function BaseTableSeat(table, seatIndex, active) {
 	EventDispatcher.call(this);
@@ -37,8 +56,9 @@ BaseTableSeat.prototype.getSeatIndex = function() {
 }
 
 /**
- * Set proto connection.
+ * Set the protoConnection currently associated with this seat.
  * @method setProtoConnection
+ * @param {ProtoConnection} protoConnection
  * @protected
  */
 BaseTableSeat.prototype.setProtoConnection = function(protoConnection) {
@@ -56,7 +76,11 @@ BaseTableSeat.prototype.setProtoConnection = function(protoConnection) {
 }
 
 /**
- * Get user currently seated as this TableSeat.
+ * Get user currently seated as this BaseTableSeat.
+ *
+ * This is an abstract function, it is up to the concrete class
+ * extending this class to actually implement a mechanism for
+ * managing what user that is seated at this seat.
  * @method getUser
  */
 BaseTableSeat.prototype.getUser = function() {
@@ -107,8 +131,9 @@ BaseTableSeat.prototype.getServices = function() {
 }
 
 /**
- * Send.
+ * Send a message to the connection currently associated with this seat.
  * @method send
+ * @param {Object} message The message to send.
  */
 BaseTableSeat.prototype.send = function(message) {
 	if (this.protoConnection)
@@ -133,7 +158,11 @@ BaseTableSeat.prototype.isSitout = function() {
 
 /**
  * Get SeatInfoMessage representing this seat.
+ *
+ * Implementing classes may want to extend this function to modify
+ * how the seat appears depening on details of the game.
  * @method getSeatInfoMessage
+ * @return {SeatInfoMessage}
  */
 BaseTableSeat.prototype.getSeatInfoMessage = function() {
 	var m = new SeatInfoMessage(this.seatIndex);

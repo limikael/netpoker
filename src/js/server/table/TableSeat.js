@@ -4,8 +4,12 @@ var BaseTableSeat = require("./BaseTableSeat");
 var TableSeatUser = require("./TableSeatUser");
 
 /**
- * A table seat.
+ * A table seat. This class represents a seat in a cash game.
+ *
+ * The management of the seated user at this TableSeat is handled
+ * using the `reserve` and `leaveTable` methods.
  * @class TableSeat
+ * @extends BaseTableSeat
  */
 function TableSeat(table, seatIndex, active) {
 	BaseTableSeat.call(this, table, seatIndex, active);
@@ -15,6 +19,11 @@ function TableSeat(table, seatIndex, active) {
 
 FunctionUtil.extend(TableSeat, BaseTableSeat);
 
+/**
+ * Dispatched to signal when user, previously registered using the
+ * `reserve` function, is ready to join the game.
+ * @event TableSeat.READY
+ */
 TableSeat.READY = "ready";
 
 /**
@@ -41,8 +50,27 @@ TableSeat.prototype.getUser = function() {
 }
 
 /**
- * Reserve seat.
+ * Reserve seat for the specified user, connecting from the specified connection.
+ * 
+ * At this point, the TableSeat will assume responsibility and manage the
+ * user as seated at this seat. The TableSeat may only have one seated user,
+ * and needs to do a bit of clean up before switching user, therefore this function
+ * will fail if there is already a user seated at this TableSeat.
+ *
+ * The TableSeat will manage the seated user until the associated TableSeatUser object
+ * signals that it is complete, at which point a the associated user will be reset.
+ * 
+ * It is possible to request that this class relinquishes the associated user using
+ * the `leaveTable` method, but this is an asynchronous operation.
+ *
+ * The is no mechanism to know when the associated user is reset.
+ *
+ * The user will not be immediately ready to play at the table, since the user needs
+ * to buy chips before doing so. The `TableSeat.READY` event is used to signal when
+ * the user is ready to play.
  * @method reserve
+ * @param {User} user The user that reserves the seat.
+ * @param {ProtoConnection} protoConnection The connection to the user.
  */
 TableSeat.prototype.reserve = function(user, protoConnection) {
 	if (!this.active)
@@ -61,6 +89,7 @@ TableSeat.prototype.reserve = function(user, protoConnection) {
 /**
  * The table seat user is done.
  * @method onTableSeatUserDone
+ * @private
  */
 TableSeat.prototype.onTableSeatUserDone = function() {
 	var protoConnection = this.getProtoConnection();
@@ -82,6 +111,7 @@ TableSeat.prototype.onTableSeatUserDone = function() {
 /**
  * Table seat ready.
  * @method onTableSeatUserReady
+ * @private
  */
 TableSeat.prototype.onTableSeatUserReady = function() {
 	this.trigger(TableSeat.READY);
@@ -101,6 +131,7 @@ TableSeat.prototype.isInGame = function() {
 /**
  * Get chips.
  * @method getChips
+ * @return {Number} The current number of chips for this seat.
  */
 TableSeat.prototype.getChips = function() {
 	if (!this.tableSeatUser)
@@ -111,6 +142,9 @@ TableSeat.prototype.getChips = function() {
 
 /**
  * Make the user leave the table when possible.
+ *
+ * This is an asychronous operation, since we need to communicate with
+ * the backend before giving the user up.
  * @method leaveTable
  */
 TableSeat.prototype.leaveTable = function() {
@@ -121,8 +155,10 @@ TableSeat.prototype.leaveTable = function() {
 }
 
 /**
- * Get SeatInfoMessage
+ * Get SeatInfoMessage. This method is based on the implementation in the base class
+ * but adds a sitout label in case the seat is in sitout mode.
  * @method getSeatInfoMessage
+ * @return {SeatInfoMessage}
  */
 TableSeat.prototype.getSeatInfoMessage = function() {
 	var m = BaseTableSeat.prototype.getSeatInfoMessage.call(this);
