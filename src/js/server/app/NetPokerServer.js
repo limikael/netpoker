@@ -46,7 +46,7 @@ NetPokerServer.prototype.setListenPort = function(port) {
 NetPokerServer.prototype.onConnectionManagerConnection = function(e) {
 	var initMessage = e.getInitMessage();
 
-	if (initMessage.getTableId()) {
+	if (initMessage.getTableId() && this.tableManager) {
 		var table = this.tableManager.getTableById(initMessage.getTableId());
 
 		if (!table) {
@@ -115,6 +115,14 @@ NetPokerServer.prototype.onTableManagerInitialized = function() {
 }
 
 /**
+ * Listen.
+ * @method listen.
+ */
+NetPokerServer.prototype.listen=function() {
+	this.connectionManager.listen(this.listenPort);
+}
+
+/**
  * Start up the server. The server will not be usable immideatly when this function returns,
  * since it needs to ask the backend for the current list of tables. This function returns
  * a promise that will fulfill as the startup sequence is complete.
@@ -128,7 +136,7 @@ NetPokerServer.prototype.run = function() {
 	if (!this.listenPort && !this.mockNetwork)
 		throw new Error("No port to listen to.");
 
-	if (this.listenPort)
+	if (this.listenPort && !this.connectionManager.isListening())
 		this.connectionManager.listen(this.listenPort);
 
 	this.runThenable = new Thenable();

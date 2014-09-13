@@ -48,9 +48,13 @@ netPokerServer.setListenPort(port);
 netPokerServer.serveViewCases(__dirname + "/../viewcases");
 netPokerServer.setBackend(new Backend("http://localhost:" + mockBackendPort));
 netPokerServer.on("request", handleWebRequest);
-netPokerServer.run().then(function() {
-	console.log("");
-	console.log("Mockserver started on port " + port+", visit: http://localhost:2222/");
-});
 
-mockBackendServer.start();
+netPokerServer.listen();
+
+setTimeout(function() {
+	mockBackendServer.start();
+	netPokerServer.run().then(function() {
+		console.log("");
+		console.log("Mockserver started on port " + port + ", visit: http://localhost:2222/");
+	});
+}, 0);

@@ -1,7 +1,7 @@
 var BackendCall = require("./BackendCall");
 
 /**
- * Connection to backend.
+ * Manage the connection backend.
  * @class Backend
  */
 function Backend(baseUrl) {

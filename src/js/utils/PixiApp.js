@@ -105,7 +105,7 @@ PixiApp.prototype.onWindowResize = function() {
 	if (this.contentScaler)
 		this.contentScaler.setScreenSize(this.containerEl.clientWidth, this.containerEl.clientHeight);
 
-	this.renderer.resize(this.containerEl.clientWidth, this.containerEl.clientWidth);
+	this.renderer.resize(this.containerEl.clientWidth, this.containerEl.clientHeight);
 	this.renderer.render(this.appStage);
 }
 

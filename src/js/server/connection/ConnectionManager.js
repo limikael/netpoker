@@ -84,6 +84,18 @@ ConnectionManager.prototype.onUserConnectionClose = function(e) {
 }
 
 /**
+ * Are we listening yet?
+ * @method isListening
+ */
+ConnectionManager.prototype.isListening = function() {
+	if (this.messageServer)
+		return true;
+
+	else
+		return false;
+}
+
+/**
  * Start listening for connections.
  * @method listen
  */
