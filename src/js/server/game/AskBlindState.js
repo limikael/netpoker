@@ -56,6 +56,8 @@ AskBlindState.prototype.askNextBlind = function() {
 
 	var b = new ButtonData(this.getCurrentBlind(), this.getCurrentBlindAmount());
 	this.prompt.addButton(b);
+	this.prompt.addButton(new ButtonData(ButtonData.SIT_OUT));
+	this.prompt.setDefaultButton(ButtonData.SIT_OUT);
 	this.prompt.on(GameSeatPrompt.COMPLETE, this.onPromptComplete, this);
 	this.prompt.ask();
 }
@@ -75,7 +77,7 @@ AskBlindState.prototype.onPromptComplete = function() {
 	if (button == ButtonData.POST_BB || button == ButtonData.POST_SB) {
 		this.game.addGameSeat(gameSeat);
 	} else {
-		gameSeat.getTableSeat().sitout();
+		//gameSeat.getTableSeat().sitout();
 	}
 
 	this.askDone();

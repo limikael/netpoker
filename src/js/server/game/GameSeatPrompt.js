@@ -18,11 +18,23 @@ function GameSeatPrompt(gameSeat) {
 	this.buttonsMessage = new ButtonsMessage();
 	this.button = null;
 	this.value = null;
+	this.responseTime = 30;
+	this.timeoutId = null;
+	this.defaultButton = null;
 }
 
 FunctionUtil.extend(GameSeatPrompt, EventDispatcher);
 
 GameSeatPrompt.COMPLETE = "complete";
+
+/**
+ * Set response time in seconds.
+ * If not set, default response time is 30 secs.
+ * @method setResponseTime
+ */
+GameSeatPrompt.prototype.setResponseTime = function(secs) {
+	this.responseTime = secs;
+}
 
 /**
  * Add button.
@@ -33,12 +45,24 @@ GameSeatPrompt.prototype.addButton = function(buttonData) {
 }
 
 /**
+ * Set default button
+ * @method setDefaultButton
+ */
+GameSeatPrompt.prototype.setDefaultButton = function(button) {
+	this.defaultButton = button;
+}
+
+/**
  * Send question and wait for reply.
  * @method ask
  */
 GameSeatPrompt.prototype.ask = function() {
+	if (!this.defaultButton)
+		throw new Error("GameSeatPrompt doesn't have a default button");
+
 	this.gameSeat.getTableSeat().on(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
 	this.gameSeat.send(this.buttonsMessage);
+	this.timeoutId = setTimeout(this.onTimeout.bind(this), this.responseTime * 1000);
 }
 
 /**
@@ -47,6 +71,11 @@ GameSeatPrompt.prototype.ask = function() {
  */
 GameSeatPrompt.prototype.onButtonClickMessage = function(m) {
 	//console.log("********** button click in GameSeatPrompt");
+
+	if (this.timeoutId) {
+		clearTimeout(this.timeoutId);
+		this.timeoutId = null;
+	}
 
 	this.gameSeat.getTableSeat().off(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
 
@@ -81,6 +110,25 @@ GameSeatPrompt.prototype.getValue = function() {
  */
 GameSeatPrompt.prototype.getGameSeat = function() {
 	return this.gameSeat;
+}
+
+/**
+ * Timeout.
+ * @method onTimeout
+ */
+GameSeatPrompt.prototype.onTimeout = function() {
+	if (!this.timeoutId) {
+		console.log("clearTimeout not working?");
+		return;
+	}
+
+	this.timeoutId = null;
+
+	if (this.defaultButton) {
+		console.log("chosing default button: "+this.defaultButton);
+		this.button = this.defaultButton;
+		this.trigger(GameSeatPrompt.COMPLETE);
+	}
 }
 
 module.exports = GameSeatPrompt;
