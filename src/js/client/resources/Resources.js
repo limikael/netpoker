@@ -11,7 +11,7 @@ function Resources() {
 	var i;
 
 	this.componentsTexture = new PIXI.Texture.fromImage("components.png");
-	this.tableBackground = PIXI.Sprite.fromImage("table.png");
+	this.tableBackground = PIXI.Texture.fromImage("table.png");
 
 	this.seatPositions = [
 		Point(287, 118), Point(483, 112), Point(676, 118),

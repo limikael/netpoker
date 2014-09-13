@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<title>Testing</title>
+		<script src="netpokerclient.bundle.js"></script>
+		<script>
+			function getQueryStringParams() {
+				var params = {};
+				(function() {
+
+					var match,
+						pl = /\+/g, // Regex for replacing addition symbol with a space
+						search = /([^&=]+)=?([^&]*)/g,
+						decode = function(s) {
+							return decodeURIComponent(s.replace(pl, " "));
+						},
+						query = window.location.search.substring(1).replace(/amp;/g, "");
+
+					while (match = search.exec(query))
+						params[decode(match[1])] = decode(match[2]);
+				})();
+
+				return params;
+			};
+
+			function run() {
+				var params=getQueryStringParams();
+				var ids=["user1","user2","user3","user4"];
+
+				for (var i=0; i<ids.length; i++) {
+					var id=ids[i];
+
+					var netPokerClient=new NetPokerClient(id);
+					netPokerClient.setUrl("ws://"+window.location.host+"/");
+					netPokerClient.setToken(id);
+
+					if (params["tableId"])
+						netPokerClient.setTableId(params["tableId"]);
+
+					netPokerClient.run();
+				}
+			}
+		</script>
+	</head>
+	<body height="100%" onload="run();">
+		<table width="100%" height="100%">
+			<tr>
+				<td width="50%" height="50%" id="user1">
+				</td>
+				<td width="50%" height="50%" id="user2">
+				</td>
+			</tr>
+			<tr>
+				<td width="50%" height="50%" id="user3">
+				</td>
+				<td width="50%" height="50%" id="user4">
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

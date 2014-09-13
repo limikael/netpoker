@@ -3,18 +3,18 @@
  * @class User
  */
 function User(data) {
-	if (!data || !data.name || !data.id)
+	if (!data || !data.name || !data.id)
 		throw new Error("Bad user data.");
 
-	this.name=data.name;
-	this.id=data.id;
+	this.name = data.name;
+	this.id = data.id;
 }
 
 /**
  * Get name.
  * @method getName
  */
-User.prototype.getName=function() {
+User.prototype.getName = function() {
 	return this.name;
 }
 
@@ -22,8 +22,8 @@ User.prototype.getName=function() {
  * Get id.
  * @method getId
  */
-User.prototype.getId=function() {
+User.prototype.getId = function() {
 	return this.id;
 }
 
-module.exports=User;
+module.exports = User;
