@@ -50,10 +50,11 @@ describe("Game", function() {
 		};
 		mockTable.getTableSeatBySeatIndex = function(seatIndex) {
 			return mockTableSeats[seatIndex];
-		}
+		};
 		mockTable.getStake=function() {
 			return 2;
-		}
+		};
+		mockTable.send=jasmine.createSpy();
 	});
 
 	afterEach(function() {

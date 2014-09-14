@@ -33,4 +33,12 @@ GameSeat.prototype.send = function(m) {
 	this.tableSeat.send(m);
 }
 
+/**
+ * Get game reference.
+ * @method getGame
+ */
+GameSeat.prototype.getGame = function() {
+	return this.game;
+}
+
 module.exports = GameSeat;

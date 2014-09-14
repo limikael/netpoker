@@ -98,7 +98,7 @@ TimerView.prototype.onUpdate = function() {
 	var time = Date.now();
 	var percent = 100*(time - this.startAt)/(this.stopAt - this.startAt);
 
-	console.log("p = " + percent);
+//	console.log("p = " + percent);
 
 	this.showPercent(percent);
 }

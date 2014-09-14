@@ -41,6 +41,14 @@ ButtonData.prototype.getButton = function() {
 }
 
 /**
+ * Get button string for this button.
+ * @method getButtonString
+ */
+ButtonData.prototype.getButtonString = function() {
+	return ButtonData.getButtonStringForId(this.button);
+}
+
+/**
  * Get value.
  * @method getValue
  */

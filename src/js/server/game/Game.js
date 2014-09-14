@@ -17,6 +17,7 @@ function Game(table) {
 	this.id = null;
 	this.gameState = null;
 	this.gameSeats = [];
+	this.gameSeatPrompt = null;
 }
 
 FunctionUtil.extend(Game, EventDispatcher);
@@ -117,8 +118,8 @@ Game.prototype.setGameState = function(gameState) {
  * The game is finished!
  * @method notifyFinished
  */
-Game.prototype.notifyFinished=function() {
-	this.gameState=null;
+Game.prototype.notifyFinished = function() {
+	this.gameState = null;
 	this.trigger(Game.FINISHED);
 }
 
@@ -178,6 +179,39 @@ Game.prototype.addGameSeat = function(gameSeat) {
  */
 Game.prototype.toString = function() {
 	return "[Game]";
+}
+
+/**
+ * Send message to table.
+ * @method send
+ */
+Game.prototype.send = function(m) {
+	this.table.send(m);
+}
+
+/**
+ * Send state to connection.
+ * @method sendState
+ */
+Game.prototype.sendState = function(protoConnection) {
+	if (this.gameSeatPrompt != null) {
+		protoConnection.send(this.gameSeatPrompt.getCurrentTimerMessage());
+
+		/*if (gameSeatPrompt.gameSeat.tableSeat.connection == protoConnection)
+			c.send(gameSeatPrompt.buttonsMessage);
+
+		else
+		if (connectionGameSeat != null)
+			connectionGameSeat.sendPresets();*/
+	}
+}
+
+/**
+ * Set current game seat prompt
+ * @method setGameSeatPrompt
+ */
+Game.prototype.setGameSeatPrompt = function(gameSeatPrompt) {
+	this.gameSeatPrompt = gameSeatPrompt;
 }
 
 module.exports = Game;

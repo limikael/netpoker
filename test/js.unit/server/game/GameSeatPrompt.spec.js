@@ -8,7 +8,15 @@ describe("GameSeatPrompt", function() {
 
 	beforeEach(function() {
 		mockTableSeat = new EventDispatcher();
-		mockTableSeat.sitout=jasmine.createSpy();
+		mockTableSeat.sitout = jasmine.createSpy();
+
+		mockGame = {
+			prompt: null
+		};
+		mockGame.send = jasmine.createSpy();
+		mockGame.setGameSeatPrompt = function(prompt) {
+			this.gameSeatPrompt = prompt;
+		};
 
 		mockGameSeat = {};
 		mockGameSeat.send = jasmine.createSpy();
@@ -16,9 +24,13 @@ describe("GameSeatPrompt", function() {
 			return mockTableSeat;
 		};
 
-		mockGameSeat.getSeatIndex=function() {
+		mockGameSeat.getSeatIndex = function() {
 			return 5;
 		};
+
+		mockGameSeat.getGame = function() {
+			return mockGame;
+		}
 
 		jasmine.clock().install();
 	});
@@ -34,6 +46,8 @@ describe("GameSeatPrompt", function() {
 		gameSeatPrompt.setDefaultButton(ButtonData.FOLD);
 		gameSeatPrompt.ask();
 		expect(mockGameSeat.send).toHaveBeenCalled();
+		expect(mockGame.send).toHaveBeenCalled();
+		expect(mockGame.gameSeatPrompt).toBe(gameSeatPrompt);
 
 		var clickSpy = jasmine.createSpy();
 		gameSeatPrompt.on(GameSeatPrompt.COMPLETE, clickSpy);
@@ -44,6 +58,7 @@ describe("GameSeatPrompt", function() {
 		expect(gameSeatPrompt.getValue()).toBe(123);
 
 		expect(mockTableSeat.listenerMap).toEqual({});
+		expect(mockGame.gameSeatPrompt).toBe(null);
 	});
 
 	it("selects a default buttons on timeout", function() {
@@ -64,7 +79,7 @@ describe("GameSeatPrompt", function() {
 		expect(completeSpy).toHaveBeenCalled();
 	});
 
-	it("can create a TimerMessage",function() {
+	it("can create a TimerMessage", function() {
 		var gameSeatPrompt = new GameSeatPrompt(mockGameSeat);
 
 		gameSeatPrompt.addButton(new ButtonData(ButtonData.FOLD));
@@ -74,13 +89,15 @@ describe("GameSeatPrompt", function() {
 
 		gameSeatPrompt.ask();
 
-		var m=gameSeatPrompt.getCurrentTimerMessage();
-		m=JSON.parse(JSON.stringify(m));
+		var m = gameSeatPrompt.getCurrentTimerMessage();
+		m = JSON.parse(JSON.stringify(m));
 
 		expect(m).toEqual({
 			seatIndex: 5,
 			totalTime: 10,
 			timeLeft: 10
 		});
+
+		jasmine.clock().tick(5000);
 	});
 });

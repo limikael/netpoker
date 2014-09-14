@@ -62,7 +62,7 @@ ButtonsView.prototype.setButtons = function(buttonDatas) {
 		var buttonData = buttonDatas[i];
 
 		button.visible = true;
-		button.setLabel(buttonData.getButton());
+		button.setLabel(buttonData.getButtonString());
 		button.setValue(buttonData.getValue());
 	}
 

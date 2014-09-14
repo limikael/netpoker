@@ -62,10 +62,13 @@ GameSeatPrompt.prototype.ask = function() {
 	if (!this.defaultButton)
 		throw new Error("GameSeatPrompt doesn't have a default button");
 
+	this.gameSeat.getGame().setGameSeatPrompt(this);
+
 	this.started = Math.round(Date.now() / 1000);
 
 	this.gameSeat.getTableSeat().on(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
 	this.gameSeat.send(this.buttonsMessage);
+	this.gameSeat.getGame().send(this.getCurrentTimerMessage());
 	this.timeoutId = setTimeout(this.onTimeout.bind(this), this.responseTime * 1000);
 }
 
@@ -86,6 +89,7 @@ GameSeatPrompt.prototype.onButtonClickMessage = function(m) {
 	this.button = m.getButton();
 	this.value = m.getValue();
 
+	this.gameSeat.getGame().setGameSeatPrompt(null);
 	this.trigger(GameSeatPrompt.COMPLETE);
 }
 
@@ -131,6 +135,7 @@ GameSeatPrompt.prototype.onTimeout = function() {
 	if (this.defaultButton) {
 		console.log("chosing default button: " + this.defaultButton);
 		this.button = this.defaultButton;
+		this.gameSeat.getGame().setGameSeatPrompt(null);
 		this.trigger(GameSeatPrompt.COMPLETE);
 	}
 }
@@ -141,6 +146,8 @@ GameSeatPrompt.prototype.onTimeout = function() {
 GameSeatPrompt.prototype.getCurrentTimerMessage = function() {
 	var t = new TimerMessage();
 	var now = Math.round(Date.now() / 1000);
+
+	console.log("now: " + now);
 
 	t.setSeatIndex(this.gameSeat.getSeatIndex());
 	t.setTotalTime(this.responseTime);

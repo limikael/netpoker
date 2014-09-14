@@ -53,11 +53,12 @@ BigButton.prototype.setLabel = function(label) {
  * @method setValue
  */
 BigButton.prototype.setValue = function(value) {
-	if (!value)
-		this.valueField.visible=false;
-
-	else
-		this.valueField.visible=true;
+	if (!value) {
+		this.valueField.visible = false;
+		value = "";
+	} else {
+		this.valueField.visible = true;
+	}
 
 	this.valueField.setText(value);
 	this.valueField.updateTransform();

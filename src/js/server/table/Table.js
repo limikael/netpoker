@@ -123,13 +123,13 @@ Table.prototype.sendState = function(protoConnection) {
 	/*var b: DealerButtonMessage = new DealerButtonMessage(dealerButtonIndex);
 	c.send(b);
 */
-	for(var i = 0; i < this.chatLines.length; i++)
+	for (var i = 0; i < this.chatLines.length; i++)
 		protoConnection.send(new ChatMessage(this.chatLines[i]));
-/*
-	c.send(getHandInfoMessage());
 
-	if (currentGame != null)
-		currentGame.sendState(c);*/
+	//c.send(getHandInfoMessage());
+
+	if (this.currentGame != null)
+		this.currentGame.sendState(protoConnection);
 }
 
 /**
