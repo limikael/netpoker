@@ -42,7 +42,7 @@ InterfaceController.prototype.onShowDialogMessage = function(m) {
  * @method onChat
  */
 InterfaceController.prototype.onChat = function(m) {
-	this.view.chatView.addText(m.text);
+	this.view.chatView.addText(m.user, m.text);
 }
 
 module.exports = InterfaceController;

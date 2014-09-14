@@ -121,10 +121,10 @@ Table.prototype.sendState = function(protoConnection) {
 	protoConnection.send(new StateCompleteMessage());
 
 	/*var b: DealerButtonMessage = new DealerButtonMessage(dealerButtonIndex);
-	c.send(b);
-*/
-	for (var i = 0; i < this.chatLines.length; i++)
-		protoConnection.send(new ChatMessage(this.chatLines[i]));
+	c.send(b);*/
+
+	for(var i = 0; i < this.chatLines.length; i++)
+		protoConnection.send(new ChatMessage(this.chatLines[i].user, this.chatLines[i].text));
 
 	//c.send(getHandInfoMessage());
 

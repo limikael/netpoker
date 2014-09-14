@@ -102,7 +102,11 @@ BaseTable.prototype.getNextSeatIndexInGame = function(from) {
 BaseTable.prototype.chat = function(user, message) {
 	var nick;
 	var string;
-
+	if(user != null)
+		nick = user.name;
+	else
+		nick = "Dealer";
+/*
 	if((user == null) || (message == null)) {
 		string = "";
 	}
@@ -117,19 +121,22 @@ BaseTable.prototype.chat = function(user, message) {
 
 		string = "<b>" + nick + "</b> " + message;
 	}
-
-	this.rawChat(string);
+*/
+	this.rawChat(nick, message);
 }
 
 /**
  * Raw chat string.
  * @method rawChat
  */
-BaseTable.prototype.rawChat = function(string) {
-	var message = new ChatMessage(string);
+BaseTable.prototype.rawChat = function(user, string) {
+	var message = new ChatMessage(user, string);
 	this.send(message);
 
-	this.chatLines.push(string);
+
+	console.log("user = " + user + ", string = " + string);
+
+	this.chatLines.push({user: user, text: string});
 	while(this.chatLines.length > 10)
 		this.chatLines.shift();
 
