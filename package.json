@@ -1,7 +1,7 @@
 {
   "name": "netpoker",
   "subdomain": "limikael-netpoker",
-  "version": "0.0.1-22",
+  "version": "0.0.1-29",
   "dependencies": {
     "minimist": "^1.1.0",
     "q": "^1.0.1",
@@ -23,7 +23,7 @@
     "grunt-cli": "^0.1.13",
     "grunt-ftpush": "^0.3.3",
     "jasmine-node": "^2.0.0-beta4",
-    "jitsu": "^0.13.18",
+    "jitsu": "^0.14.0",
     "pixi.js": "git://github.com/GoodBoyDigital/pixi.js",
     "pixitextinput": "git://github.com/limikael/pixitextinput",
     "qsub": "0.0.3",

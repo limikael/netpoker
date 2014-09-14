@@ -35,6 +35,30 @@ TimerMessage.prototype.getTimeLeft = function() {
 }
 
 /**
+ * Setter.
+ * @method setSeatIndex
+ */
+TimerMessage.prototype.setSeatIndex = function(value) {
+	this.seatIndex = value;
+}
+
+/**
+ * Setter.
+ * @method setTotalTime
+ */
+TimerMessage.prototype.setTotalTime = function(value) {
+	this.totalTime = value;
+}
+
+/**
+ * Setter.
+ * @method setTimeLeft
+ */
+TimerMessage.prototype.setTimeLeft = function(value) {
+	this.timeLeft = value;
+}
+
+/**
  * Un-serialize.
  * @method unserialize
  */

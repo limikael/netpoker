@@ -30,13 +30,15 @@ module.exports = function(grunt) {
 				var job = qsub("curl");
 				job.arg("-s", "-X", "POST");
 				job.arg("--data-binary", "@doc.zip");
-				job.arg("http://netpokerdoc.altervista.org/netpoker/deployzip.php");
-				job.expect(0);
+				job.arg("http://limikael.site11.com/?target=netpokerdoc&key=qkv9eXL7");
+				job.expect(0).show();
 
 				job.run().then(
 					function() {
-						if (job.getOutput() != "OK")
+						if (job.output.substring(0,2) != "OK") {
+							console.log(job.output);
 							grunt.fail.fatal("Unexpected output from curl");
+						}
 
 						next();
 					},

@@ -13,8 +13,8 @@ var InitMessage = require("../../proto/messages/InitMessage");
  * Main entry point for client.
  * @class NetPokerClient
  */
-function NetPokerClient() {
-	PixiApp.call(this, 960, 720);
+function NetPokerClient(domId) {
+	PixiApp.call(this, domId, 960, 720);
 
 	this.loadingScreen = new LoadingScreen();
 	this.addChild(this.loadingScreen);

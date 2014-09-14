@@ -8,7 +8,7 @@ There is a mock server deployed at: http://limikael-netpoker.jit.su/
 Hacking
 -------
 
-There is internal class documentation at: http://netpokerdoc.altervista.org/netpoker/doc/
+There is internal class documentation generated at: http://limikael.site11.com/netpokerdoc/
 
 In order to hack on this, clone the repository, then run:
 
@@ -16,5 +16,3 @@ In order to hack on this, clone the repository, then run:
     grunt mockserver
 
 And then go to http://localhost:2222
-
-Does the travis cache work?

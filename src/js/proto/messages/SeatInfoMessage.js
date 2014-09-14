@@ -86,7 +86,7 @@ SeatInfoMessage.prototype.setChips = function(v) {
 
 /**
  * Un-serialize.
- * @method unserialize.
+ * @method unserialize
  */
 SeatInfoMessage.prototype.unserialize = function(data) {
 	this.seatIndex = data.seatIndex;

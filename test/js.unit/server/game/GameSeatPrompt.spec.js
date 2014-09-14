@@ -8,18 +8,30 @@ describe("GameSeatPrompt", function() {
 
 	beforeEach(function() {
 		mockTableSeat = new EventDispatcher();
+		mockTableSeat.sitout=jasmine.createSpy();
 
 		mockGameSeat = {};
 		mockGameSeat.send = jasmine.createSpy();
 		mockGameSeat.getTableSeat = function() {
 			return mockTableSeat;
-		}
+		};
+
+		mockGameSeat.getSeatIndex=function() {
+			return 5;
+		};
+
+		jasmine.clock().install();
+	});
+
+	afterEach(function() {
+		jasmine.clock().uninstall();
 	});
 
 	it("sends a button message", function() {
 		var gameSeatPrompt = new GameSeatPrompt(mockGameSeat);
 
 		gameSeatPrompt.addButton(new ButtonData(ButtonData.FOLD));
+		gameSeatPrompt.setDefaultButton(ButtonData.FOLD);
 		gameSeatPrompt.ask();
 		expect(mockGameSeat.send).toHaveBeenCalled();
 
@@ -32,5 +44,43 @@ describe("GameSeatPrompt", function() {
 		expect(gameSeatPrompt.getValue()).toBe(123);
 
 		expect(mockTableSeat.listenerMap).toEqual({});
+	});
+
+	it("selects a default buttons on timeout", function() {
+		var gameSeatPrompt = new GameSeatPrompt(mockGameSeat);
+
+		gameSeatPrompt.addButton(new ButtonData(ButtonData.FOLD));
+		gameSeatPrompt.addButton(new ButtonData(ButtonData.RAISE));
+		gameSeatPrompt.setDefaultButton(ButtonData.FOLD);
+		gameSeatPrompt.setResponseTime(10);
+
+		gameSeatPrompt.ask();
+
+		var completeSpy = jasmine.createSpy();
+		gameSeatPrompt.on(GameSeatPrompt.COMPLETE, completeSpy);
+
+		jasmine.clock().tick(11 * 1000);
+
+		expect(completeSpy).toHaveBeenCalled();
+	});
+
+	it("can create a TimerMessage",function() {
+		var gameSeatPrompt = new GameSeatPrompt(mockGameSeat);
+
+		gameSeatPrompt.addButton(new ButtonData(ButtonData.FOLD));
+		gameSeatPrompt.addButton(new ButtonData(ButtonData.RAISE));
+		gameSeatPrompt.setDefaultButton(ButtonData.FOLD);
+		gameSeatPrompt.setResponseTime(10);
+
+		gameSeatPrompt.ask();
+
+		var m=gameSeatPrompt.getCurrentTimerMessage();
+		m=JSON.parse(JSON.stringify(m));
+
+		expect(m).toEqual({
+			seatIndex: 5,
+			totalTime: 10,
+			timeLeft: 10
+		});
 	});
 });

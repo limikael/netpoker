@@ -1,0 +1,3 @@
+{"type":"seatInfo", "seatIndex": 0, "name": "olle", "chips": 463, "active": true}
+{"type":"timer", "seatIndex": 0, "timeLeft": 15, "totalTime": 15}
+{"type":"stateComplete"}

@@ -26,7 +26,8 @@ function NetPokerClientView() {
 	this.tableContainer = new PIXI.DisplayObjectContainer();
 	this.addChild(this.tableContainer);
 
-	this.tableContainer.addChild(Resources.getInstance().tableBackground);
+	this.tableBackground = new PIXI.Sprite(Resources.getInstance().tableBackground);
+	this.tableContainer.addChild(this.tableBackground);
 
 	this.setupSeats();
 	this.setupCommunityCards();
@@ -120,7 +121,7 @@ NetPokerClientView.prototype.setupSeats = function() {
  */
 NetPokerClientView.prototype.setupChips = function() {
 	var i;
-	for(i = 0; i < Resources.getInstance().betPositions.length; i++) {
+	for (i = 0; i < Resources.getInstance().betPositions.length; i++) {
 		var chipsView = new ChipsView();
 		this.seatViews[i].betChips = chipsView;
 
@@ -216,10 +217,10 @@ NetPokerClientView.prototype.getDealerButtonView = function() {
 NetPokerClientView.prototype.clear = function() {
 	var i;
 
-	for (i=0; i<this.communityCards.length; i++)
+	for (i = 0; i < this.communityCards.length; i++)
 		this.communityCards[i].hide();
 
-	for (i=0; i<this.seatViews.length; i++)
+	for (i = 0; i < this.seatViews.length; i++)
 		this.seatViews[i].clear();
 
 	this.timerView.hide();
