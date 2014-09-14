@@ -1,5 +1,6 @@
 var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
+var TimerMessage = require("../../proto/messages/TimerMessage");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var FunctionUtil = require("../../utils/FunctionUtil");
 
@@ -21,6 +22,7 @@ function GameSeatPrompt(gameSeat) {
 	this.responseTime = 30;
 	this.timeoutId = null;
 	this.defaultButton = null;
+	this.started = -1;
 }
 
 FunctionUtil.extend(GameSeatPrompt, EventDispatcher);
@@ -59,6 +61,8 @@ GameSeatPrompt.prototype.setDefaultButton = function(button) {
 GameSeatPrompt.prototype.ask = function() {
 	if (!this.defaultButton)
 		throw new Error("GameSeatPrompt doesn't have a default button");
+
+	this.started = Math.round(Date.now() / 1000);
 
 	this.gameSeat.getTableSeat().on(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
 	this.gameSeat.send(this.buttonsMessage);
@@ -125,10 +129,24 @@ GameSeatPrompt.prototype.onTimeout = function() {
 	this.timeoutId = null;
 
 	if (this.defaultButton) {
-		console.log("chosing default button: "+this.defaultButton);
+		console.log("chosing default button: " + this.defaultButton);
 		this.button = this.defaultButton;
 		this.trigger(GameSeatPrompt.COMPLETE);
 	}
+}
+
+/**
+ * Get current timer message.
+ */
+GameSeatPrompt.prototype.getCurrentTimerMessage = function() {
+	var t = new TimerMessage();
+	var now = Math.round(Date.now() / 1000);
+
+	t.setSeatIndex(this.gameSeat.getSeatIndex());
+	t.setTotalTime(this.responseTime);
+	t.setTimeLeft(this.responseTime - (now - this.started));
+
+	return t;
 }
 
 module.exports = GameSeatPrompt;
