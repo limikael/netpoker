@@ -133,7 +133,7 @@ Slider.prototype.show = function() {
 	this.visible = true;
 	if(this.fadeTween != null)
 		this.fadeTween.stop();
-	new TWEEN.Tween(this)
+	this.fadeTween = new TWEEN.Tween(this)
 			.to({alpha: 1}, 250)
 			.start();
 }
@@ -145,7 +145,7 @@ Slider.prototype.show = function() {
 Slider.prototype.hide = function() {
 	if(this.fadeTween != null)
 		this.fadeTween.stop();
-	new TWEEN.Tween(this)
+	this.fadeTween = new TWEEN.Tween(this)
 			.to({alpha: 0}, 250)
 			.onComplete(this.onHidden.bind(this))
 			.start();
