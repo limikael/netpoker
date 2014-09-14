@@ -124,7 +124,7 @@ Table.prototype.sendState = function(protoConnection) {
 	c.send(b);
 */
 	for(var i = 0; i < this.chatLines.length; i++)
-		protoConnection.send(new ChatMessage(this.chatLines[i]));
+		protoConnection.send(new ChatMessage(this.chatLines[i].user, this.chatLines[i].text));
 /*
 	c.send(getHandInfoMessage());
 

@@ -2,18 +2,27 @@
  * Received when something has occurred in the chat.
  * @class ChatMessage
  */
-function ChatMessage(text) {
+function ChatMessage(user, text) {
+	this.user = user;
 	this.text = text;
 }
 
 ChatMessage.TYPE = "chat";
 
 /**
- * Seat text.
+ * Get text.
  * @method getText
  */
 ChatMessage.prototype.getText = function() {
 	return this.text;
+}
+
+/**
+ * Get user.
+ * @method getUser
+ */
+ChatMessage.prototype.getUser = function() {
+	return this.user;
 }
 
 /**
@@ -22,6 +31,7 @@ ChatMessage.prototype.getText = function() {
  */
 ChatMessage.prototype.unserialize = function(data) {
 	this.text = data.text;
+	this.user = data.user;
 }
 
 /**
@@ -30,7 +40,8 @@ ChatMessage.prototype.unserialize = function(data) {
  */
 ChatMessage.prototype.serialize = function() {
 	return {
-		text: this.text
+		text: this.text,
+		user: this.user
 	};
 }
 

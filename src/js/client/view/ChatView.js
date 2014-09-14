@@ -130,8 +130,8 @@ ChatView.prototype.clear = function() {
  *  Add text.
  * @method clear
  */
-ChatView.prototype.addText = function(text) {
-	this.chatText.setText(this.chatText.text + text + "\n");
+ChatView.prototype.addText = function(user, text) {
+	this.chatText.setText(this.chatText.text + user + ": " + text + "\n");
 	//this.chatField.scrollV=_chatField.maxScrollV;
  	this.chatText.y = -Math.round(this.slider.getValue()*(this.chatText.height + this.margin - this.chatMask.height ));
 	this.slider.setValue(1);
