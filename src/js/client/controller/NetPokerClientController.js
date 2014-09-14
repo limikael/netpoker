@@ -8,6 +8,7 @@ var NetPokerClientView = require("../view/NetPokerClientView");
 var DialogView = require("../view/DialogView");
 var TableController = require("./TableController");
 var InterfaceController = require("./InterfaceController");
+var ChatMessage = require("../../proto/messages/ChatMessage");
 
 /**
  * Main controller
@@ -26,6 +27,11 @@ function NetPokerClientController(view) {
 	this.netPokerClientView.getButtonsView().on(ButtonsView.BUTTON_CLICK, this.onButtonClick, this);
 	this.netPokerClientView.getDialogView().on(DialogView.BUTTON_CLICK, this.onButtonClick, this);
 	this.netPokerClientView.on(NetPokerClientView.SEAT_CLICK, this.onSeatClick, this);
+
+	console.log("this.netPokerClientView.chatView = " + this.netPokerClientView.chatView);
+	console.log("this.netPokerClientView.chatView.addEventListener = " + this.netPokerClientView.chatView.addEventListener);
+	console.log("this.onViewChat = " + this.onViewChat);
+	this.netPokerClientView.chatView.addEventListener("chat", this.onViewChat, this);
 }
 
 
@@ -80,6 +86,17 @@ NetPokerClientController.prototype.onButtonClick = function(e) {
 NetPokerClientController.prototype.onSeatClick = function(e) {
 	var m = new SeatClickMessage(e.seatIndex);
 	this.protoConnection.send(m);
+}
+
+/**
+ * On send chat message.
+ * @method onViewChat
+ */
+NetPokerClientController.prototype.onViewChat = function(text) {
+	var message = new ChatMessage();
+	message.text = text;
+
+	this.protoConnection.send(message);
 }
 
 module.exports = NetPokerClientController;

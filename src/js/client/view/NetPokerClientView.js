@@ -222,6 +222,11 @@ NetPokerClientView.prototype.clear = function() {
 	for (i=0; i<this.seatViews.length; i++)
 		this.seatViews[i].clear();
 
+	this.timerView.hide();
+	this.potView.setValues(new Array());
+	this.dealerButtonView.hide();
+	this.chatView.clear();
+
 	this.dialogView.hide();
 	this.buttonsView.clear();
 }

@@ -1,5 +1,6 @@
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
+var ChatMessage = require("../../proto/messages/ChatMessage");
 
 /**
  * Base class for cash game and tournament tables.
@@ -10,6 +11,8 @@ function BaseTable() {
 
 	if (!this.tableSeats)
 		throw new Error("table seats needs to be set up for BaseTable");
+
+	this.chatLines = new Array();
 
 	this.dealerButtonIndex = -1;
 }
@@ -90,6 +93,46 @@ BaseTable.prototype.getNextSeatIndexInGame = function(from) {
 	}
 
 	return cand;
+}
+
+/**
+ * Send chat.
+ * @method chat
+ */
+BaseTable.prototype.chat = function(user, message) {
+	var nick;
+	var string;
+
+	if((user == null) || (message == null)) {
+		string = "";
+	}
+	else if((message == null) || (message.trim() == "")) {
+		return;
+	}
+	else {
+		if(user != null)
+			nick = user.name;
+		else
+			nick = "Dealer";
+
+		string = "<b>" + nick + "</b> " + message;
+	}
+
+	this.rawChat(string);
+}
+
+/**
+ * Raw chat string.
+ * @method rawChat
+ */
+BaseTable.prototype.rawChat = function(string) {
+	var message = new ChatMessage(string);
+	this.send(message);
+
+	this.chatLines.push(string);
+	while(this.chatLines.length > 10)
+		this.chatLines.shift();
+
 }
 
 /**

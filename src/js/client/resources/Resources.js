@@ -47,6 +47,8 @@ function Resources() {
 		Point(168, 266)
 	];
 
+	this.textScrollbarTrack = this.getComponentsPart(371,50,60,10);
+	this.textScrollbarThumb = this.getComponentsPart(371,32,60,10);
 
 	 this.Align = {
 	 	Left: "left",

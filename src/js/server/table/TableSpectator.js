@@ -2,6 +2,7 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var SeatClickMessage = require("../../proto/messages/SeatClickMessage");
+var ChatMessage = require("../../proto/messages/ChatMessage");
 
 /**
  * Someone watching a table.
@@ -15,7 +16,8 @@ function TableSpectator(table, connection, user) {
 	this.user = user;
 
 	this.connection.on(ProtoConnection.CLOSE, this.onConnectionClose, this);
-	this.connection.addMessageHandler(SeatClickMessage, this.onSeatClick, this);
+	this.connection.addMessageHandler(SeatClickMessage.TYPE, this.onSeatClick, this);
+	this.connection.addMessageHandler(ChatMessage.TYPE, this.onChat, this);
 }
 
 FunctionUtil.extend(TableSpectator, EventDispatcher);
@@ -49,7 +51,8 @@ TableSpectator.prototype.onSeatClick = function(m) {
 	console.log("seat click!!!");
 
 	this.connection.off(ProtoConnection.CLOSE, this.onConnectionClose, this);
-	this.connection.removeMessageHandler(SeatClickMessage, this.onSeatClick, this);
+	this.connection.removeMessageHandler(SeatClickMessage.TYPE, this.onSeatClick, this);
+	this.connection.removeMessageHandler(ChatMessage.TYPE, this.onChat, this);
 
 	this.trigger(TableSpectator.DONE);
 }
@@ -61,6 +64,16 @@ TableSpectator.prototype.onSeatClick = function(m) {
 TableSpectator.prototype.send = function(m) {
 	if (this.connection)
 		this.connection.send(m);
+}
+
+/**
+ * On chat.
+ * @method onChat
+ */
+TableSpectator.prototype.onChat = function(message) {
+	if(this.user == null)
+		return;
+	this.table.chat(this.user, message.text);
 }
 
 module.exports = TableSpectator;

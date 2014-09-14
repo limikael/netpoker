@@ -3,6 +3,7 @@ var EventDispatcher = require("../../utils/EventDispatcher");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var SeatInfoMessage = require("../../proto/messages/SeatInfoMessage");
+var ChatMessage = require("../../proto/messages/ChatMessage");
 
 /**
  * Base table seat.
@@ -45,6 +46,7 @@ BaseTableSeat.prototype.setProtoConnection = function(protoConnection) {
 	if (this.protoConnection) {
 		this.protoConnection.removeMessageHandler(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
 		this.protoConnection.off(ProtoConnection.CLOSE, this.onProtoConnectionClose, this);
+		this.protoConnection.removeMessageHandler(ChatMessage.TYPE, this.onChat, this);
 	}
 
 	this.protoConnection = protoConnection;
@@ -52,6 +54,7 @@ BaseTableSeat.prototype.setProtoConnection = function(protoConnection) {
 	if (this.protoConnection) {
 		this.protoConnection.addMessageHandler(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
 		this.protoConnection.on(ProtoConnection.CLOSE, this.onProtoConnectionClose, this);
+		this.protoConnection.addMessageHandler(ChatMessage.TYPE, this.onChat, this);
 	}
 }
 
@@ -69,6 +72,15 @@ BaseTableSeat.prototype.getUser = function() {
  */
 BaseTableSeat.prototype.getProtoConnection = function() {
 	return this.protoConnection;
+}
+
+/**
+ * Chat message.
+ * @method onChat
+ * @private
+ */
+BaseTableSeat.prototype.onChat = function(message) {
+	this.table.chat(this.getUser(), message.text);
 }
 
 /**
