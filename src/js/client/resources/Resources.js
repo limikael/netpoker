@@ -332,7 +332,7 @@ Resources.prototype.getTextureFromSkin = function(textureid) {
 			}
 		}
 	}
-	else {
+	if(textureObject == null) {
 		for(var i = 0; i < this.defaultSkin.textures.length; i++) {
 			if(this.defaultSkin.textures[i].id == textureid) {
 				textureObject = this.defaultSkin.textures[i];

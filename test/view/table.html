@@ -35,6 +35,22 @@
 				if (params["viewcase"])
 					netPokerClient.setViewCase(params["viewcase"]);
 
+				netPokerClient.setSkin({
+					textures: [
+						{
+							id: "componentsTexture2",
+							file: "components2.png"
+						},
+						{
+							id: "tableBackground2",
+							file: "table2.png"
+						}
+					],
+					tableBackground: "tableBackground2",
+					defaultTexture: "componentsTexture2",
+					seatPlate: [40, 116, 160, 70],
+				});
+
 				netPokerClient.run();
 			}
 		</script>

@@ -8,6 +8,7 @@ var ProtoConnection = require("../../proto/ProtoConnection");
 var LoadingScreen = require("../view/LoadingScreen");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 var InitMessage = require("../../proto/messages/InitMessage");
+var Resources = require("../resources/Resources");
 
 /**
  * Main entry point for client.
@@ -61,6 +62,14 @@ NetPokerClient.prototype.setToken = function(token) {
 }
 
 /**
+ * Set token.
+ * @method setSkin
+ */
+NetPokerClient.prototype.setSkin = function(skin) {
+	Resources.getInstance().skin = skin;
+}
+
+/**
  * Run.
  * @method run
  */
@@ -70,6 +79,12 @@ NetPokerClient.prototype.run = function() {
 		"table.png",
 		"components.png"
 	];
+	if((Resources.getInstance().skin != null) && (Resources.getInstance().skin.textures != null)) {
+		for(var i = 0; i < Resources.getInstance().skin.textures.length; i++) {
+			assets.push(Resources.getInstance().skin.textures[i].file);
+			console.log("add to load list: " + Resources.getInstance().skin.textures[i].file);
+		}
+	}
 
 	this.assetLoader = new PIXI.AssetLoader(assets);
 	this.assetLoader.addEventListener("onComplete", this.onAssetLoaderComplete.bind(this));
