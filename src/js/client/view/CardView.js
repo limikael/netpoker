@@ -12,10 +12,10 @@ function CardView() {
 	PIXI.DisplayObjectContainer.call(this);
 	this.targetPosition = null;
 
-	this.frame = new PIXI.Sprite(Resources.getInstance().cardFrame);
+	this.frame = new PIXI.Sprite(Resources.getInstance().getTexture("cardFrame"));
 	this.addChild(this.frame);
 
-	this.suit = new PIXI.Sprite(Resources.getInstance().suitSymbols[0]);
+	this.suit = new PIXI.Sprite(Resources.getInstance().getTextures("suitSymbols")[0]);
 	this.suit.position.x = 8;
 	this.suit.position.y = 25;
 	this.addChild(this.suit);
@@ -29,7 +29,7 @@ function CardView() {
 	this.valueField.position.y = 5;
 	this.addChild(this.valueField);
 
-	this.back = new PIXI.Sprite(Resources.getInstance().cardBack);
+	this.back = new PIXI.Sprite(Resources.getInstance().getTexture("cardBack"));
 	this.addChild(this.back);
 }
 
@@ -55,7 +55,7 @@ CardView.prototype.setCardData = function(cardData) {
 		this.valueField.updateTransform();
 		this.valueField.position.x = 17 - this.valueField.canvas.width / 2;
 
-		this.suit.setTexture(Resources.getInstance().suitSymbols[this.cardData.getSuitIndex()]);
+		this.suit.setTexture(Resources.getInstance().getTextures("suitSymbols")[this.cardData.getSuitIndex()]);
 	}
 	this.back.visible = true;
 	this.frame.visible = false;

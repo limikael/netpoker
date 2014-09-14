@@ -22,7 +22,7 @@ function DialogView() {
 	cover.hitArea = new PIXI.Rectangle(0, 0, 960, 720);
 	this.addChild(cover);
 
-	var b = new NineSlice(Resources.getInstance().framePlate, 10);
+	var b = new NineSlice(Resources.getInstance().getTexture("framePlate"), 10);
 	b.setLocalSize(480, 270);
 	b.position.x = 480 - 480 / 2;
 	b.position.y = 360 - 270 / 2;

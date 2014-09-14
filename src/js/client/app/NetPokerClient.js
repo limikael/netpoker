@@ -65,6 +65,7 @@ NetPokerClient.prototype.setToken = function(token) {
  * @method run
  */
 NetPokerClient.prototype.run = function() {
+
 	var assets = [
 		"table.png",
 		"components.png"

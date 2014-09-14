@@ -10,7 +10,7 @@ var Resources = require("../resources/Resources");
 function BigButton() {
 	Button.call(this);
 
-	this.bigButtonTexture = Resources.getInstance().bigButton;
+	this.bigButtonTexture = Resources.getInstance().getTexture("bigButton");
 
 	this.addChild(new PIXI.Sprite(this.bigButtonTexture));
 

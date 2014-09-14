@@ -76,6 +76,7 @@ ChipsView.prototype.setValue = function(value) {
 	var stackClip = null;
 	var stackPos = 0;
 	var chipPos = 0;
+	var textures = Resources.getInstance().getTextures("chips");
 
 	for (i = 0; i < this.denominations.length; i++) {
 		var denomination = this.denominations[i];
@@ -90,8 +91,7 @@ ChipsView.prototype.setValue = function(value) {
 				this.holder.addChild(stackClip);
 				this.stackClips.push(stackClip);
 			}
-
-		   	var texture = Resources.getInstance().chips[i%Resources.getInstance().chips.length];
+		   	var texture = textures[i%textures.length];
 			var chip = new PIXI.Sprite(texture);
 			chip.position.y = chipPos;
 			chipPos -= 5;
@@ -111,7 +111,7 @@ ChipsView.prototype.setValue = function(value) {
 				var textField = new PIXI.Text(denominationString, {
 					font: "bold 12px Arial",
 					align: "center",
-					fill: Resources.getInstance().chipsColors[i%Resources.getInstance().chipsColors.length]
+					fill: Resources.getInstance().getValue("chipsColors")[i%Resources.getInstance().getValue("chipsColors").length]
 				});
 				textField.position.x = (stackClip.width - textField.width)*0.5;
 				textField.position.y = chipPos + 11;
@@ -186,23 +186,23 @@ ChipsView.prototype.onShowComplete = function() {
  */
 ChipsView.prototype.animateIn = function() {
 	var o = {
-		y: Resources.getInstance().potPosition.y
+		y: Resources.getInstance().getPoint("potPosition").y
 	};
 
 	switch (this.align) {
 		case Resources.getInstance().Align.LEFT:
-			o.x = Resources.getInstance().potPosition.x-width/2;
+			o.x = Resources.getInstance().getPoint("potPosition").x-width/2;
 
 		case Resources.getInstance().Align.CENTER:
-			o.x = Resources.getInstance().potPosition.x;
+			o.x = Resources.getInstance().getPoint("potPosition").x;
 
 		case Resources.getInstance().Align.RIGHT:
-			o.x = Resources.getInstance().x+width/2;
+			o.x = Resources.getInstance().getPoint("potPosition").x+width/2;
 	}
 
 	var time = 500;
 	var tween = new TWEEN.Tween(this)
-					.to({ y: Resources.getInstance().potPosition.y }, time)
+					.to({ y: Resources.getInstance().getPoint("potPosition").y }, time)
 					.onComplete(this.onInAnimationComplete.bind(this))
 					.start();
 }

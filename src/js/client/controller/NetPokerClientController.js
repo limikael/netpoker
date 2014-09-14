@@ -28,9 +28,6 @@ function NetPokerClientController(view) {
 	this.netPokerClientView.getDialogView().on(DialogView.BUTTON_CLICK, this.onButtonClick, this);
 	this.netPokerClientView.on(NetPokerClientView.SEAT_CLICK, this.onSeatClick, this);
 
-	console.log("this.netPokerClientView.chatView = " + this.netPokerClientView.chatView);
-	console.log("this.netPokerClientView.chatView.addEventListener = " + this.netPokerClientView.chatView.addEventListener);
-	console.log("this.onViewChat = " + this.onViewChat);
 	this.netPokerClientView.chatView.addEventListener("chat", this.onViewChat, this);
 }
 

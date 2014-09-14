@@ -26,7 +26,7 @@ function NetPokerClientView() {
 	this.tableContainer = new PIXI.DisplayObjectContainer();
 	this.addChild(this.tableContainer);
 
-	this.tableBackground = new PIXI.Sprite(Resources.getInstance().tableBackground);
+	this.tableBackground = new PIXI.Sprite(Resources.getInstance().getTexture("tableBackground"));
 	this.tableContainer.addChild(this.tableBackground);
 
 	this.setupSeats();
@@ -49,8 +49,8 @@ function NetPokerClientView() {
 
 	this.potView = new PotView();
 	this.addChild(this.potView);
-	this.potView.position.x = Resources.getInstance().potPosition.x;
-	this.potView.position.y = Resources.getInstance().potPosition.y;
+	this.potView.position.x = Resources.getInstance().getPoint("potPosition").x;
+	this.potView.position.y = Resources.getInstance().getPoint("potPosition").y;
 
 	this.setupChips();
 }
@@ -76,12 +76,12 @@ NetPokerClientView.prototype.setupBackground = function() {
 	s.height = 720;
 	this.addChild(s);
 
-	var s = new PIXI.Sprite(Resources.getInstance().dividerLine);
+	var s = new PIXI.Sprite(Resources.getInstance().getTexture("dividerLine"));
 	s.x = 345;
 	s.y = 540;
 	this.addChild(s);
 
-	var s = new PIXI.Sprite(Resources.getInstance().dividerLine);
+	var s = new PIXI.Sprite(Resources.getInstance().getTexture("dividerLine"));
 	s.x = 693;
 	s.y = 540;
 	this.addChild(s);
@@ -97,7 +97,7 @@ NetPokerClientView.prototype.setupSeats = function() {
 
 	this.seatViews = [];
 
-	for (i = 0; i < Resources.getInstance().seatPositions.length; i++) {
+	for (i = 0; i < Resources.getInstance().getPoints("seatPositions").length; i++) {
 		var seatView = new SeatView(i);
 		var p = seatView.position;
 
@@ -121,12 +121,12 @@ NetPokerClientView.prototype.setupSeats = function() {
  */
 NetPokerClientView.prototype.setupChips = function() {
 	var i;
-	for (i = 0; i < Resources.getInstance().betPositions.length; i++) {
+	for (i = 0; i < Resources.getInstance().getPoints("betPositions").length; i++) {
 		var chipsView = new ChipsView();
 		this.seatViews[i].betChips = chipsView;
 
-		chipsView.setAlignment(Resources.getInstance().betAlign[i]);
-		chipsView.setTargetPosition(Resources.getInstance().betPositions[i]);
+		chipsView.setAlignment(Resources.getInstance().getValue("betAlign")[i]);
+		chipsView.setTargetPosition(Resources.getInstance().getPoints("betPositions")[i]);
 		this.tableContainer.addChild(chipsView);
 	}
 }
@@ -158,7 +158,7 @@ NetPokerClientView.prototype.onSeatClick = function(e) {
 NetPokerClientView.prototype.setupCommunityCards = function() {
 	this.communityCards = [];
 
-	var p = Resources.getInstance().communityCardsPosition;
+	var p = Resources.getInstance().getPoint("communityCardsPosition");
 
 	for (i = 0; i < 5; i++) {
 		var cardView = new CardView();

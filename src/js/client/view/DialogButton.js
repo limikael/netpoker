@@ -10,7 +10,7 @@ var Resources = require("../resources/Resources");
 function DialogButton() {
 	Button.call(this);
 
-	this.buttonTexture = Resources.getInstance().dialogButton;
+	this.buttonTexture = Resources.getInstance().getTexture("dialogButton");
 	this.addChild(new PIXI.Sprite(this.buttonTexture));
 
 	var style = {

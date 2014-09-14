@@ -12,7 +12,7 @@ function DealerButtonView() {
 	PIXI.DisplayObjectContainer.call(this);
 
 
-	var dealerButtonTexture = Resources.getInstance().dealerButton;
+	var dealerButtonTexture = Resources.getInstance().getTexture("dealerButton");
 	this.sprite = new PIXI.Sprite(dealerButtonTexture);
 	this.addChild(this.sprite);
 	this.hide();
@@ -26,8 +26,8 @@ EventDispatcher.init(DealerButtonView);
  * @method setSeatIndex
  */
 DealerButtonView.prototype.setSeatIndex = function(seatIndex) {
-	this.position.x = Resources.getInstance().dealerButtonPositions[seatIndex].x;
-	this.position.y = Resources.getInstance().dealerButtonPositions[seatIndex].y;
+	this.position.x = Resources.getInstance().getPoints("dealerButtonPositions")[seatIndex].x;
+	this.position.y = Resources.getInstance().getPoints("dealerButtonPositions")[seatIndex].y;
 	this.dispatchEvent("animationDone", this);
 };
 
@@ -42,7 +42,7 @@ DealerButtonView.prototype.animateToSeatIndex = function(seatIndex) {
 		this.dispatchEvent("animationDone", this);
 		return;
 	}
-	var destination = Resources.getInstance().dealerButtonPositions[seatIndex];
+	var destination = Resources.getInstance().getPoints("dealerButtonPositions")[seatIndex];
 	var diffX = this.position.x - destination.x;
 	var diffY = this.position.y - destination.y;
 	var diff = Math.sqrt(diffX*diffX + diffY*diffY);

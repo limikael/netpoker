@@ -13,7 +13,7 @@ function SeatView(seatIndex) {
 	this.pocketCards = [];
 	this.seatIndex = seatIndex;
 
-	var seatTexture = Resources.getInstance().seatPlate;
+	var seatTexture = Resources.getInstance().getTexture("seatPlate");
 	var seatSprite = new PIXI.Sprite(seatTexture);
 
 	seatSprite.position.x = -seatTexture.width / 2;
@@ -21,7 +21,7 @@ function SeatView(seatIndex) {
 
 	this.addChild(seatSprite);
 
-	var pos = Resources.getInstance().seatPositions[this.seatIndex];
+	var pos = Resources.getInstance().getPoints("seatPositions")[this.seatIndex];
 
 	this.position.x = pos.x;
 	this.position.y = pos.y;

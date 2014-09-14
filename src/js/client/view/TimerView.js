@@ -13,7 +13,7 @@ var EventDispatcher = require("../../utils/EventDispatcher");
 function TimerView() {
 	PIXI.DisplayObjectContainer.call(this);
 	
-	this.timerClip = new PIXI.Sprite(Resources.getInstance().timerBackground);
+	this.timerClip = new PIXI.Sprite(Resources.getInstance().getTexture("timerBackground"));
 	this.addChild(this.timerClip);
 
 
@@ -48,8 +48,8 @@ TimerView.prototype.hide = function() {
 TimerView.prototype.show = function(seatIndex) {
 	
 	this.timerClip.visible = true;
-	this.timerClip.x = Resources.getInstance().seatPositions[seatIndex].x + 55;
-	this.timerClip.y = Resources.getInstance().seatPositions[seatIndex].y - 30;
+	this.timerClip.x = Resources.getInstance().getPoints("seatPositions")[seatIndex].x + 55;
+	this.timerClip.y = Resources.getInstance().getPoints("seatPositions")[seatIndex].y - 30;
 
 	this.stop();
 
