@@ -60,7 +60,6 @@ ChipsView.prototype.setTargetPosition = function(position) {
  */
 ChipsView.prototype.setValue = function(value) {
 	this.value = value;
-	console.log("value = " + this.value);
 
 	var sprite;
 

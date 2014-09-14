@@ -58,7 +58,7 @@ function ChatView() {
 
 
 	var styleObject = {
-		font: "17px Arial",
+		font: "14px Arial",
 		width: 310,
 		height: 19,
 		border: true,
@@ -72,12 +72,19 @@ function ChatView() {
 	this.inputField.width = 310;
 	this.inputField.keydown = this.onKeyDown.bind(this);
 
-	this.inputFrame = new PIXI.Graphics();
-	this.inputFrame.beginFill(0x000000);
-	this.inputFrame.drawRect(-1, -1, 311, 20);
-	this.inputFrame.position.x = this.inputField.position.x;
-	this.inputFrame.position.y = this.inputField.position.y;
-	this.addChild(this.inputFrame);
+	var inputShadow = new PIXI.Graphics();
+	inputShadow.beginFill(0x000000);
+	inputShadow.drawRect(-1, -1, 311, 20);
+	inputShadow.position.x = this.inputField.position.x;
+	inputShadow.position.y = this.inputField.position.y;
+	this.addChild(inputShadow);
+
+	var inputBackground = new PIXI.Graphics();
+	inputBackground.beginFill(0xFFFFFF);
+	inputBackground.drawRect(0, 0, 310, 19);
+	inputBackground.position.x = this.inputField.position.x;
+	inputBackground.position.y = this.inputField.position.y;
+	this.addChild(inputBackground);
 
 	this.addChild(this.inputField);
 
@@ -132,7 +139,6 @@ ChatView.prototype.clear = function() {
  */
 ChatView.prototype.addText = function(user, text) {
 	this.chatText.setText(this.chatText.text + user + ": " + text + "\n");
-	//this.chatField.scrollV=_chatField.maxScrollV;
  	this.chatText.y = -Math.round(this.slider.getValue()*(this.chatText.height + this.margin - this.chatMask.height ));
 	this.slider.setValue(1);
 }
@@ -151,7 +157,6 @@ ChatView.prototype.addText = function(user, text) {
  * @method onChatFieldMouseOver
  */
  ChatView.prototype.onChatFieldMouseOver = function() {
-	console.log("chat field mouse over!!!");
 	this.slider.show();
  }
 
@@ -161,7 +166,6 @@ ChatView.prototype.addText = function(user, text) {
  * @method onChatFieldMouseOut
  */
  ChatView.prototype.onChatFieldMouseOut = function() {
-	console.log("chat field mouse out!!!");
 	this.slider.hide();
  }
 
@@ -171,10 +175,11 @@ ChatView.prototype.addText = function(user, text) {
  * @method onKeyDown
  */
  ChatView.prototype.onKeyDown = function(event) {
- 	console.log("onKeyDown event.keyCode = " + event.keyCode);
 	if(event.keyCode == 13) {
 		this.dispatchEvent("chat", this.inputField.text);
+		
 		this.inputField.setText("");
+		this.inputField.onBackgroundMouseDown();
 	}
  }
 

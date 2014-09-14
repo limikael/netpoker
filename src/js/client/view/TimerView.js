@@ -72,9 +72,6 @@ TimerView.prototype.stop = function(seatIndex) {
 TimerView.prototype.countdown = function(totalTime, timeLeft) {
 	this.stop();
 
-	console.log("total:"+totalTime);
-	console.log("left:"+timeLeft);
-
 	totalTime *= 1000;
 	timeLeft *= 1000;
 

@@ -169,8 +169,6 @@ Resources.prototype.getTexture = function(key, index) {
 	var frame = null;
 
 
-	console.log("this.defaultSkin[key] = " + this.defaultSkin[key]);
-
 	if((this.skin != null) && (this.skin[key] != null)) {
 		value = this.skin[key];
 	}
@@ -179,7 +177,6 @@ Resources.prototype.getTexture = function(key, index) {
 		isDefault = true;
 	}
 
-	console.log("typeof value = " + (typeof value));
 
 	if(value.texture != null) {
 		texture = value.texture;
@@ -201,9 +198,6 @@ Resources.prototype.getTexture = function(key, index) {
 		frame = value;
 	}
 
-	console.log("texture = " + texture);
-
-		console.log("frame = " + frame);
 	if(texture != null) {
 		if(frame != null)
 			return this.getComponentsPart(texture, frame[0], frame[1], frame[2], frame[3]);
@@ -237,7 +231,6 @@ Resources.prototype.getTextures = function(key) {
 		isDefault = true;
 	}
 
-	console.log("values.length ="  + values.length);
 
 	var frame = null;
 	var texture = null;
@@ -266,7 +259,6 @@ Resources.prototype.getTextures = function(key) {
 			frame = values[i];
 		}
 
-		console.log("frame = " + frame);
 		if(texture != null) {
 			if(frame != null)
 				textures.push(this.getComponentsPart(texture, frame[0], frame[1], frame[2], frame[3]));
@@ -294,7 +286,6 @@ Resources.prototype.getComponentsPart = function(textureid, x, y, w, h) {
 	var texture = this.getTextureFromSkin(textureid);
 
 	if(x === null) {
-		console.log("\n\nx === null\n\n");
 		frame = {
 			x: 0,
 			y: 0,
@@ -310,8 +301,6 @@ Resources.prototype.getComponentsPart = function(textureid, x, y, w, h) {
 			height: h
 		};
 	}
-
-	console.log(textureid + ", frame = " + frame.x + ", frame.y = " + frame.y + ", frame.width = " + frame.width);
 
 	return new PIXI.Texture(texture, frame);
 }
@@ -346,8 +335,6 @@ Resources.prototype.getTextureFromSkin = function(textureid) {
 
 	if(this.textures[textureObject.id] == null)
 		this.textures[textureObject.id] = new PIXI.Texture.fromImage(textureObject.file);
-
-	console.log("this.textures[textureObject.id] = " + this.textures[textureObject.id] + ", textureObject.file = " + textureObject.file);
 
 	return this.textures[textureObject.id];
 }
