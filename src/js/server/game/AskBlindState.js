@@ -5,6 +5,7 @@ var GameSeat = require("./GameSeat");
 var GameSeatPrompt = require("./GameSeatPrompt");
 var ButtonData = require("../../proto/data/ButtonData");
 var FinishedState = require("./FinishedState");
+var RoundState = require("./RoundState");
 
 /**
  * During this state, we ask each participating user if they want to pay
@@ -95,7 +96,7 @@ AskBlindState.prototype.askDone = function() {
 		console.log("ask complete!!!");
 
 		// Should be round state...
-		this.game.setGameState(new FinishedState());
+		this.game.setGameState(new RoundState()); //FinishedState());
 		return;
 	}
 
@@ -146,6 +147,15 @@ AskBlindState.prototype.getCurrentBlindAmount = function() {
 	}
 
 	return cand;
+}
+
+AskBlindState.prototype.close = function() {
+	console.log("hard close ask blind state, seatprompt=" + this.prompt);
+	if (this.prompt) {
+		this.prompt.close();
+		this.prompt = null;
+	}
+
 }
 
 module.exports = AskBlindState;

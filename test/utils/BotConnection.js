@@ -15,6 +15,7 @@ function BotConnection(connectionTarget, token) {
 	this.connectionTarget = connectionTarget;
 	this.token = token;
 	this.replies = {};
+	this.onceReplies = {};
 	this.messages = [];
 	this.connectThenable;
 	this.model = new BotModel();
@@ -90,6 +91,12 @@ BotConnection.prototype.onProtoConnectionMessage = function(e) {
 	if (this.replies[e.message.type])
 		this.send(this.replies[e.message.type]);
 
+	if (this.onceReplies[e.message.type]) {
+		var reply = this.onceReplies[e.message.type];
+		delete this.onceReplies[e.message.type];
+		this.send(reply);
+	}
+
 	if (this.waitingForType && e.message.type == this.waitingForType) {
 		var thenable = this.waitThenable;
 
@@ -114,12 +121,16 @@ BotConnection.prototype.reply = function(messageClass, message) {
 	this.replies[messageClass.TYPE] = message;
 }
 
+BotConnection.prototype.replyOnce = function(messageClass, message) {
+	this.onceReplies[messageClass.TYPE] = message;
+}
+
 BotConnection.prototype.sitIn = function(seatIndex, amount) {
 	this.reply(StateCompleteMessage, new SeatClickMessage(seatIndex));
 	this.reply(ShowDialogMessage, new ButtonClickMessage(ButtonData.SIT_IN, amount));
 }
 
-BotConnection.prototype.getSeatAt=function(seatIndex) {
+BotConnection.prototype.getSeatAt = function(seatIndex) {
 	return this.model.getSeatModelBySeatIndex(seatIndex);
 }
 

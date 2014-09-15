@@ -21,4 +21,10 @@ GameState.prototype.run = function() {
 	throw new Error("abstract");
 }
 
+/**
+ * Hard close.
+ * @method close
+ */
+GameState.prototype.close = function() {}
+
 module.exports = GameState;

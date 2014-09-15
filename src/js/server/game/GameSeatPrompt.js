@@ -67,9 +67,9 @@ GameSeatPrompt.prototype.ask = function() {
 	this.started = Math.round(Date.now() / 1000);
 
 	this.gameSeat.getTableSeat().on(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
+	this.timeoutId = setTimeout(this.onTimeout.bind(this), this.responseTime * 1000);
 	this.gameSeat.send(this.buttonsMessage);
 	this.gameSeat.getGame().send(this.getCurrentTimerMessage());
-	this.timeoutId = setTimeout(this.onTimeout.bind(this), this.responseTime * 1000);
 }
 
 /**
@@ -77,9 +77,10 @@ GameSeatPrompt.prototype.ask = function() {
  * @method onButtonClickMessage
  */
 GameSeatPrompt.prototype.onButtonClickMessage = function(m) {
-	//console.log("********** button click in GameSeatPrompt");
+	console.log("********** button click in GameSeatPrompt");
 
 	if (this.timeoutId) {
+		console.log("------- clearing timeout");
 		clearTimeout(this.timeoutId);
 		this.timeoutId = null;
 	}
@@ -154,6 +155,18 @@ GameSeatPrompt.prototype.getCurrentTimerMessage = function() {
 	t.setTimeLeft(this.responseTime - (now - this.started));
 
 	return t;
+}
+
+/**
+ * Hard close.
+ * @method close
+ */
+GameSeatPrompt.prototype.close = function() {
+	console.log("---- hard close GameSeatPrompt");
+	if (this.timeoutId) {
+		clearTimeout(this.timeoutId);
+		this.timeoutId = null;
+	}
 }
 
 module.exports = GameSeatPrompt;

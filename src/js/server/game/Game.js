@@ -214,4 +214,12 @@ Game.prototype.setGameSeatPrompt = function(gameSeatPrompt) {
 	this.gameSeatPrompt = gameSeatPrompt;
 }
 
+/**
+ * Hard close.
+ */
+Game.prototype.close = function() {
+	if (this.gameState)
+		this.gameState.close();
+}
+
 module.exports = Game;

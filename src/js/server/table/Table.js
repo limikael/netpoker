@@ -123,7 +123,7 @@ Table.prototype.sendState = function(protoConnection) {
 	/*var b: DealerButtonMessage = new DealerButtonMessage(dealerButtonIndex);
 	c.send(b);*/
 
-	for(var i = 0; i < this.chatLines.length; i++)
+	for (var i = 0; i < this.chatLines.length; i++)
 		protoConnection.send(new ChatMessage(this.chatLines[i].user, this.chatLines[i].text));
 
 	//c.send(getHandInfoMessage());
@@ -282,6 +282,18 @@ Table.prototype.send = function(m) {
  */
 Table.prototype.toString = function() {
 	return "[Table id=" + this.id + "]";
+}
+
+/**
+ * Hard close.
+ * @method stop
+ */
+Table.prototype.close = function() {
+	console.log("------------ hard close table, game=" + this.currentGame);
+	if (this.currentGame) {
+		this.currentGame.close();
+		this.currentGame = null;
+	}
 }
 
 module.exports = Table;
