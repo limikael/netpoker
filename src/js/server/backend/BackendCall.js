@@ -29,7 +29,10 @@ BackendCall.prototype.perform = function() {
 
 	console.log("Backend request: " + url);
 
-	request.get(url, this.onRequestComplete.bind(this));
+	//setTimeout(function() {
+		request.get(url, this.onRequestComplete.bind(this));
+	//}.bind(this), 0);
+
 	return this.thenable;
 }
 
@@ -54,12 +57,10 @@ BackendCall.prototype.onRequestComplete = function(e, r, body) {
 	var data;
 
 	try {
-		data=JSON.parse(body)
+		data = JSON.parse(body)
 		this.thenable.resolve(data);
-	}
-
-	catch (e) {
-		this.thenable.reject(e.toString()+"\n\nServer response:\n"+body);
+	} catch (e) {
+		this.thenable.reject(e.toString() + "\n\nServer response:\n" + body);
 	}
 }
 

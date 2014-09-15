@@ -3,6 +3,7 @@ var TableManager = require("../table/TableManager");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var Thenable = require("../../utils/Thenable");
+var Backend = require("../backend/Backend");
 
 /**
  * This is the main class for the server. The 'netpokerserver' command is pretty much a wrapper
@@ -67,12 +68,12 @@ NetPokerServer.prototype.onConnectionManagerConnection = function(e) {
  * We got a regular web request on one of the connections. By regular is ment
  * such a request that browsers usually send, such as GET or POST, i.e. not
  * a web socket request. These requests are normally not handled by this server
- * in production mode, but can be handled for debugging purposes by the 
+ * in production mode, but can be handled for debugging purposes by the
  * mocked server.
  * @method onConnectionManagerRequest
  * @private
  */
-NetPokerServer.prototype.onConnectionManagerRequest=function(e) {
+NetPokerServer.prototype.onConnectionManagerRequest = function(e) {
 	this.trigger(e);
 }
 
@@ -82,6 +83,14 @@ NetPokerServer.prototype.onConnectionManagerRequest=function(e) {
  */
 NetPokerServer.prototype.setBackend = function(backend) {
 	this.backend = backend;
+}
+
+/**
+ * Set backend url.
+ * @method setBackendUrl
+ */
+NetPokerServer.prototype.setBackendUrl = function(url) {
+	this.setBackend(new Backend(url));
 }
 
 /**
@@ -97,7 +106,7 @@ NetPokerServer.prototype.getBackend = function() {
  * @method serveViewCases
  */
 NetPokerServer.prototype.serveViewCases = function(dir) {
-	console.log("Serving view cases from: "+dir);
+	console.log("Serving view cases from: " + dir);
 	this.connectionManager.serveViewCases(dir);
 }
 
@@ -118,7 +127,7 @@ NetPokerServer.prototype.onTableManagerInitialized = function() {
  * Listen.
  * @method listen.
  */
-NetPokerServer.prototype.listen=function() {
+NetPokerServer.prototype.listen = function() {
 	this.connectionManager.listen(this.listenPort);
 }
 
