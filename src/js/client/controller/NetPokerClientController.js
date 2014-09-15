@@ -6,9 +6,11 @@ var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 var SeatClickMessage = require("../../proto/messages/SeatClickMessage");
 var NetPokerClientView = require("../view/NetPokerClientView");
 var DialogView = require("../view/DialogView");
+var SettingsView = require("../view/SettingsView");
 var TableController = require("./TableController");
 var InterfaceController = require("./InterfaceController");
 var ChatMessage = require("../../proto/messages/ChatMessage");
+var ButtonData = require("../../proto/data/ButtonData");
 
 /**
  * Main controller
@@ -29,6 +31,8 @@ function NetPokerClientController(view) {
 	this.netPokerClientView.on(NetPokerClientView.SEAT_CLICK, this.onSeatClick, this);
 
 	this.netPokerClientView.chatView.addEventListener("chat", this.onViewChat, this);
+
+	this.netPokerClientView.settingsView.addEventListener(SettingsView.BUY_CHIPS_CLICK, this.onBuyChipsButtonClick, this);
 }
 
 
@@ -95,6 +99,16 @@ NetPokerClientController.prototype.onViewChat = function(text) {
 	message.text = text;
 
 	this.protoConnection.send(message);
+}
+
+/**
+ * On buy chips button click.
+ * @method onBuyChipsButtonClick
+ */
+NetPokerClientController.prototype.onBuyChipsButtonClick = function() {
+	console.log("buy chips click");
+
+	this.protoConnection.send(new ButtonClickMessage(ButtonData.BUY_CHIPS));
 }
 
 module.exports = NetPokerClientController;

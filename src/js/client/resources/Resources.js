@@ -176,6 +176,7 @@ Resources.prototype.getTexture = function(key, index) {
 		value = this.defaultSkin[key];
 		isDefault = true;
 	}
+	console.log("value = " + value + ", key = " +key);
 
 
 	if(value.texture != null) {

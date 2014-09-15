@@ -9,6 +9,10 @@ function CheckboxMessage(id, checked) {
 
 CheckboxMessage.TYPE = "checkbox";
 
+CheckboxMessage.AUTO_POST_BLINDS = "autoPostBlinds";
+CheckboxMessage.AUTO_MUCK_LOSING = "autoMuckLosing";
+CheckboxMessage.SITOUT_NEXT = "sitoutNext";
+
 /**
  * Id of checkbox.
  * @method getId

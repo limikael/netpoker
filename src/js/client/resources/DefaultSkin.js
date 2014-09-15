@@ -74,5 +74,10 @@ module.exports = {
 		[190, 25, 40, 30]
 	],
 	chipsColors: [0x404040, 0x008000, 0x808000, 0x000080, 0xff0000],
-	potPosition: [485,315]
+	potPosition: [485,315],
+	wrenchIcon: [462,389,21,21],
+	chatBackground: [301,262,74,76],
+	checkboxBackground: [501,391,18,18],
+	checkboxTick: [528,392,21,16],
+	buttonBackground: [68,446,64,64]
 }

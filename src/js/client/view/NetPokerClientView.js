@@ -13,6 +13,7 @@ var DealerButtonView = require("./DealerButtonView");
 var ChipsView = require("./ChipsView");
 var PotView = require("./PotView");
 var TimerView = require("./TimerView");
+var SettingsView = require("../view/SettingsView");
 
 /**
  * Net poker client view.
@@ -51,6 +52,9 @@ function NetPokerClientView() {
 	this.addChild(this.potView);
 	this.potView.position.x = Resources.getInstance().getPoint("potPosition").x;
 	this.potView.position.y = Resources.getInstance().getPoint("potPosition").y;
+
+	this.settingsView = new SettingsView();
+	this.addChild(this.settingsView);
 
 	this.setupChips();
 }
