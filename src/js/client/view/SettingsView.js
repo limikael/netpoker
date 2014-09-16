@@ -33,9 +33,11 @@ var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
  	this.settingsButton = new Button(object);
  	this.settingsButton.position.x = 960 - 10 - this.settingsButton.width;
  	this.settingsButton.position.y = 543;
+ 	this.settingsButton.addEventListener(Button.CLICK, this.onSettingsButtonClick, this);
  	this.addChild(this.settingsButton);
 
  	this.settingsMenu = new PIXI.DisplayObjectContainer();
+ 	
  	var mbg = new NineSlice(Resources.getInstance().getTexture("chatBackground"), 10, 10, 10, 10);
  	mbg.width = 250;
  	mbg.height = 100;
@@ -48,6 +50,8 @@ var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
  		height: 20
  	};
  	var label = new PIXI.Text("Settings", styleObject);
+ 	label.position.x = 16;
+ 	label.position.y = 10;
 
  	this.settingsMenu.addChild(label);
  	this.settingsMenu.position.x = 960 - 10 - this.settingsMenu.width;
@@ -94,7 +98,7 @@ SettingsView.prototype.createMenuSetting = function(id, string, y, def) {
 	var setting = new SettingsCheckbox(id, string);
 
 	setting.y = y;
-	setting.x = 10;
+	setting.x = 16;
 	this.settingsMenu.addChild(setting);
 
 	setting.addEventListener("change", this.onCheckboxChange, this)
@@ -137,6 +141,7 @@ SettingsView.prototype.onCheckboxChange = function(checkbox) {
  * @method onSettingsButtonClick
  */
 SettingsView.prototype.onSettingsButtonClick = function(interaction_object) {
+	console.log("SettingsView.prototype.onSettingsButtonClick");
 	this.settingsMenu.visible = !this.settingsMenu.visible;
 
 	if(this.settingsMenu.visible) {
@@ -152,7 +157,8 @@ SettingsView.prototype.onSettingsButtonClick = function(interaction_object) {
  * @method onStageMouseDown
  */
 SettingsView.prototype.onStageMouseDown = function(interaction_object) {
-	if((this.hitTest(this.settingsMenu, interaction_object)) || (this.hitTest(this.settingsButton, interaction_object))) {
+	console.log("SettingsView.prototype.onStageMouseDown");
+	if((this.hitTest(this.settingsMenu, interaction_object)) || (this.hitTest(this.settingsButton, interaction_object))) {
 		return;
 	}
 

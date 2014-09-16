@@ -27,8 +27,8 @@ var Checkbox = require("../../utils/Checkbox");
  		color: "white"
  	};
 	this.label = new PIXI.Text("", styleObject);
-	this.label.position.x = 0;
-	this.label.position.y = 3;
+	this.label.position.x = 8;
+	this.label.position.y = 4;
 	this.addChild(this.label);
 }
 

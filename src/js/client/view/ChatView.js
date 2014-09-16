@@ -179,7 +179,7 @@ ChatView.prototype.addText = function(user, text) {
 		this.dispatchEvent("chat", this.inputField.text);
 		
 		this.inputField.setText("");
-		this.inputField.onBackgroundMouseDown();
+		
 	}
  }
 
