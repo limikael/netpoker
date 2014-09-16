@@ -55,6 +55,8 @@ RoundState.prototype.dealPocketCards = function() {
 
 /**
  * Have we dealt pocket cards?
+ * @method hasDealtPocketCards
+ * @private
  */
 RoundState.prototype.hasDealtPocketCards = function() {
 	dealt = false;

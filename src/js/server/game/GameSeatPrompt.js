@@ -143,6 +143,7 @@ GameSeatPrompt.prototype.onTimeout = function() {
 
 /**
  * Get current timer message.
+ * @method getCurrentTimerMessage
  */
 GameSeatPrompt.prototype.getCurrentTimerMessage = function() {
 	var t = new TimerMessage();

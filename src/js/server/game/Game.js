@@ -223,7 +223,9 @@ Game.prototype.setGameSeatPrompt = function(gameSeatPrompt) {
 }
 
 /**
- * Hard close.
+ * Close all connections and timeouts.
+ * This is used in exceptional cases.
+ * @method close
  */
 Game.prototype.close = function() {
 	if (this.gameState)
