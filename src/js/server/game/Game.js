@@ -190,6 +190,14 @@ Game.prototype.send = function(m) {
 }
 
 /**
+ * Send message to table except to the seat.
+ * @method send
+ */
+Game.prototype.sendExceptSeat = function(m, gameSeat) {
+	this.table.sendExceptSeat(m, gameSeat.getTableSeat());
+}
+
+/**
  * Send state to connection.
  * @method sendState
  */
@@ -220,6 +228,14 @@ Game.prototype.setGameSeatPrompt = function(gameSeatPrompt) {
 Game.prototype.close = function() {
 	if (this.gameState)
 		this.gameState.close();
+}
+
+/**
+ * Get game seats.
+ * @method getGameSeats
+ */
+Game.prototype.getGameSeats = function() {
+	return this.gameSeats;
 }
 
 module.exports = Game;

@@ -12,6 +12,7 @@ var AsyncSequence = require("../../../../src/js/utils/AsyncSequence");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
 var AskBlindState = require("../../../../src/js/server/game/AskBlindState");
 var RoundState = require("../../../../src/js/server/game/RoundState");
+var CardData = require("../../../../src/js/proto/data/CardData");
 
 describe("NetPokerServer - round", function() {
 	var mockBackendServer;
@@ -34,7 +35,7 @@ describe("NetPokerServer - round", function() {
 		netPokerServer.close();
 	});
 
-	it("can connect to a server", function(done) {
+	it("gets pocket cards", function(done) {
 		var bot1 = new BotConnection(netPokerServer, "user1");
 		var bot2 = new BotConnection(netPokerServer, "user2");
 
@@ -50,12 +51,15 @@ describe("NetPokerServer - round", function() {
 				bot2.sitIn(2, 10);
 				bot2.replyOnce(ButtonsMessage, new ButtonClickMessage(ButtonData.POST_BB));
 
-				TickLoopRunner.runTicks(100).then(next);
+				TickLoopRunner.runTicks(20).then(next);
 			},
 
 			function(next) {
 				expect(table.getCurrentGame().gameState).toEqual(jasmine.any(RoundState));
-				expect(table.getCurrentGame()).not.toBe(null);
+
+				expect(bot1.getSeatAt(1).getCardAt(0)).not.toBe(null);
+
+				bot1.getSeatAt(1).getCards()[0]=new CardData(10);
 
 				bot1.close();
 				bot2.close();

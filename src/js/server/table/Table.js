@@ -266,14 +266,29 @@ Table.prototype.stop = function() {
  * Send a message to all connections on the table.
  * @method send
  */
-Table.prototype.send = function(m) {
+Table.prototype.send = function(message) {
 	var i;
 
 	for (i = 0; i < this.tableSpectators.length; i++)
-		this.tableSpectators[i].send(m);
+		this.tableSpectators[i].send(message);
 
 	for (i = 0; i < this.tableSeats.length; i++)
-		this.tableSeats[i].send(m);
+		this.tableSeats[i].send(message);
+}
+
+/**
+ * Send message to all connections except specified seat.
+ * @method sendExceptSeat
+ */
+Table.prototype.sendExceptSeat = function(message, except) {
+	var i;
+
+	for (i = 0; i < this.tableSpectators.length; i++)
+		this.tableSpectators[i].send(message);
+
+	for (i = 0; i < this.tableSeats.length; i++)
+		if (this.tableSeats[i] != except)
+			this.tableSeats[i].send(message);
 }
 
 /**

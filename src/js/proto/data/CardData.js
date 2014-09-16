@@ -12,6 +12,8 @@ CardData.CARD_VALUE_STRINGS =
 CardData.SUIT_STRINGS =
 	["D", "C", "H", "S"];
 
+CardData.HIDDEN = -1;
+
 /**
  * Does this CardData represent a show card?
  * If not it should be rendered with its backside.
@@ -62,7 +64,18 @@ CardData.prototype.getColor = function() {
  * @method toString
  */
 CardData.prototype.toString = function() {
+	if (this.value < 0)
+		return "XX";
+
 	return this.getCardValueString() + this.getSuitString();
+}
+
+/**
+ * Get value of the card.
+ * @method getValue
+ */
+CardData.prototype.getValue = function() {
+	return this.value;
 }
 
 module.exports = CardData;

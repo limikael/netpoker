@@ -4,14 +4,30 @@ var CardData = require("../data/CardData");
  * Show pocket cards.
  * @class PocketCardsMessage
  */
-function PocketCardsMessage() {
+function PocketCardsMessage(seatIndex) {
 	this.animate = false;
 	this.cards = [];
 	this.firstIndex = 0;
-	this.seatIndex = 0;
+	this.seatIndex = seatIndex;
 }
 
 PocketCardsMessage.TYPE = "pocketCards";
+
+/**
+ * Animation?
+ * @method setAnimate
+ */
+PocketCardsMessage.prototype.setAnimate = function(value) {
+	this.animate = value;
+}
+
+/**
+ * Set first index.
+ * @method setFirstIndex
+ */
+PocketCardsMessage.prototype.setFirstIndex = function(index) {
+	this.firstIndex = index;
+}
 
 /**
  * Get array of CardData.
@@ -19,6 +35,14 @@ PocketCardsMessage.TYPE = "pocketCards";
  */
 PocketCardsMessage.prototype.getCards = function() {
 	return this.cards;
+}
+
+/**
+ * Add a card.
+ * @method addCard
+ */
+PocketCardsMessage.prototype.addCard = function(c) {
+	this.cards.push(c);
 }
 
 /**
@@ -64,7 +88,7 @@ PocketCardsMessage.prototype.serialize = function() {
 		cards.push(this.cards[i].getValue());
 
 	return {
-		animate: this.seatIndex,
+		animate: this.animate,
 		firstIndex: this.firstIndex,
 		cards: cards,
 		seatIndex: this.seatIndex

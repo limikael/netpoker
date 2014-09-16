@@ -36,12 +36,12 @@ var TournamentResultMessage = require("./messages/TournamentResultMessage");
 
 /**
  * A protocol connection with an underlying connection.
- * 
+ *
  * There are two ways to liten for connections, the first one and most straight
  * forward is the addMessageHandler, which registers a listener for a
  * particular network message. The first argument should be the message
  * class to listen for:
- * 
+ *
  *     function onSeatInfoMessage(m) {
  *         // Check if the seat is active.
  *         m.isActive();
@@ -166,6 +166,7 @@ ProtoConnection.prototype.onConnectionMessage = function(ev) {
 	var constructor;
 
 	console.log("incoming connection message: " + message.type);
+	console.log(message);
 
 	for (type in ProtoConnection.MESSAGE_TYPES) {
 		if (message.type == type)
@@ -215,9 +216,9 @@ ProtoConnection.prototype.send = function(message) {
 	}
 
 	if (!serialized.type)
-		throw new Error("Unknown message type for send, message="+message.constructor.name);
+		throw new Error("Unknown message type for send, message=" + message.constructor.name);
 
-//	console.log("sending: "+serialized);
+	//	console.log("sending: "+serialized);
 
 	this.connection.send(serialized);
 }
