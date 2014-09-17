@@ -117,11 +117,11 @@ describe("NetPokerServer - ask blinds", function() {
 				table = netPokerServer.tableManager.getTableById(123);
 
 				bot1.reply(StateCompleteMessage, new SeatClickMessage(3));
-				bot1.reply(ShowDialogMessage, new ButtonClickMessage(ButtonData.SIT_IN));
+				bot1.reply(ShowDialogMessage, new ButtonClickMessage(ButtonData.SIT_IN, 10));
 				bot2.reply(StateCompleteMessage, new SeatClickMessage(5));
-				bot2.reply(ShowDialogMessage, new ButtonClickMessage(ButtonData.SIT_IN));
+				bot2.reply(ShowDialogMessage, new ButtonClickMessage(ButtonData.SIT_IN, 10));
 				bot3.reply(StateCompleteMessage, new SeatClickMessage(7));
-				bot3.reply(ShowDialogMessage, new ButtonClickMessage(ButtonData.SIT_IN));
+				bot3.reply(ShowDialogMessage, new ButtonClickMessage(ButtonData.SIT_IN, 10));
 
 				bot1.connectToTable(123);
 				bot2.connectToTable(123);
@@ -161,7 +161,7 @@ describe("NetPokerServer - ask blinds", function() {
 				expect(table.getCurrentGame().getNumInGame()).toBe(3);
 
 				table.stop();
-				jasmine.clock().tick(FinishedState.FINISH_DELAY+1);
+				jasmine.clock().tick(FinishedState.FINISH_DELAY + 1);
 				next();
 			},
 

@@ -18,6 +18,7 @@ function Game(table) {
 	this.gameState = null;
 	this.gameSeats = [];
 	this.gameSeatPrompt = null;
+	this.communityCards = [];
 }
 
 FunctionUtil.extend(Game, EventDispatcher);
@@ -230,6 +231,9 @@ Game.prototype.setGameSeatPrompt = function(gameSeatPrompt) {
 Game.prototype.close = function() {
 	if (this.gameState)
 		this.gameState.close();
+
+	if (this.gameSeatPrompt)
+		this.gameSeatPrompt.close();
 }
 
 /**
@@ -240,4 +244,87 @@ Game.prototype.getGameSeats = function() {
 	return this.gameSeats;
 }
 
+/**
+ * Get community cards.
+ * @method getCommunityCards
+ */
+Game.prototype.getCommunityCards = function() {
+	return this.communityCards;
+}
+
+/**
+ * Number of players in the game.
+ * @method getNumPlayersRemaining
+ */
+Game.prototype.getNumPlayersRemaining = function() {
+	var remaining = 0;
+
+	for (var g = 0; g < this.gameSeats.length; g++) {
+		var gameSeat = this.gameSeats[g];
+
+		if (!gameSeat.isFolded())
+			remaining++;
+	}
+
+	return remaining;
+}
+
+/**
+ *
+ */
+Game.prototype.getPots = function() {
+	var last = 0;
+	var limits = this.getUnfoldedPotContribs();
+	var pots = [];
+
+	for (var l = 0; l < limits.length; l++) {
+		var limit = limits[l];
+
+		pots.push(this.getSplitPot(last, limit));
+		last = limit;
+	}
+
+	return pots;
+}
+
+/**
+ * Get unfoldet pot contribs.
+ * @method prototypegetUnfoldedPotContribs
+ */
+Game.prototype.getUnfoldedPotContribs = function() {
+	var contribs = [];
+
+	for (var g = 0; g < this.gameSeats.length; g++) {
+		var gameSeat = this.gameSeats[g];
+
+		if (!gameSeat.isFolded())
+			if (contribs.indexOf(gameSeat.getPotContrib()) < 0)
+				contribs.push(gameSeat.getPotContrib());
+	}
+
+	contribs.sort()
+
+	return contribs;
+}
+
+/**
+ * Get a split pot.
+ */
+Game.prototype.getSplitPot = function(from, to) {
+	var pot = 0;
+
+	for (var g = 0; g < this.gameSeats.length; g++) {
+		var gameSeat = this.gameSeats[g];
+
+		if (gameSeat.getPotContrib() > from) {
+			if (gameSeat.getPotContrib() > to)
+				pot += to - from;
+
+			else
+				pot += gameSeat.getPotContrib() - from;
+		}
+	}
+
+	return pot;
+}
 module.exports = Game;

@@ -51,7 +51,7 @@ TableSeat.prototype.getUser = function() {
 
 /**
  * Reserve seat for the specified user, connecting from the specified connection.
- * 
+ *
  * At this point, the TableSeat will assume responsibility and manage the
  * user as seated at this seat. The TableSeat may only have one seated user,
  * and needs to do a bit of clean up before switching user, therefore this function
@@ -59,7 +59,7 @@ TableSeat.prototype.getUser = function() {
  *
  * The TableSeat will manage the seated user until the associated TableSeatUser object
  * signals that it is complete, at which point a the associated user will be reset.
- * 
+ *
  * It is possible to request that this class relinquishes the associated user using
  * the `leaveTable` method, but this is an asynchronous operation.
  *
@@ -170,6 +170,22 @@ TableSeat.prototype.getSeatInfoMessage = function() {
 		m.setChips("SIT OUT");
 
 	return m;
+}
+
+/**
+ * Add or subtract chips.
+ * @method addChips
+ */
+TableSeat.prototype.addChips = function(value) {
+	if (!this.tableSeatUser)
+		throw new Error("no table seat user...");
+
+	console.log("adding chips: " + value);
+	console.log("before: " + this.tableSeatUser.getChips());
+
+	this.tableSeatUser.setChips(this.tableSeatUser.getChips() + value);
+
+	console.log("after: " + this.tableSeatUser.getChips());
 }
 
 /**

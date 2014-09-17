@@ -4,8 +4,10 @@
  * @class ButtonClickMessage
  */
 function ButtonClickMessage(button, value) {
-	this.button=button;
-	this.value=value;
+	this.button = button;
+	this.value = value;
+
+	console.log("Creating button click message, value=" + value);
 }
 
 ButtonClickMessage.TYPE = "buttonClick";
@@ -31,8 +33,8 @@ ButtonClickMessage.prototype.getValue = function() {
  * @method unserialize
  */
 ButtonClickMessage.prototype.unserialize = function(data) {
-	this.button=data.button;
-	this.value=data.value;
+	this.button = data.button;
+	this.value = data.value;
 }
 
 /**

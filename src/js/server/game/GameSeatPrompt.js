@@ -1,6 +1,7 @@
 var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 var TimerMessage = require("../../proto/messages/TimerMessage");
+var ButtonData = require("../../proto/data/ButtonData");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var FunctionUtil = require("../../utils/FunctionUtil");
 
@@ -47,10 +48,13 @@ GameSeatPrompt.prototype.addButton = function(buttonData) {
 }
 
 /**
- * Set default button
+ * Set default button. It should be a string!
  * @method setDefaultButton
  */
 GameSeatPrompt.prototype.setDefaultButton = function(button) {
+	if (typeof button != "string")
+		throw new Error("String expected for setDefaultButton");
+
 	this.defaultButton = button;
 }
 
@@ -171,6 +175,30 @@ GameSeatPrompt.prototype.close = function() {
 		clearTimeout(this.timeoutId);
 		this.timeoutId = null;
 	}
+}
+
+/**
+ * Is this a raise or bet?
+ * @method isRaiseBet
+ */
+GameSeatPrompt.prototype.isRaiseBet = function() {
+	if (this.getButton() == ButtonData.RAISE ||  this.getButton() == ButtonData.BET)
+		return true;
+
+	else
+		return false;
+}
+
+/**
+ * Is this a check or a call?
+ * @method isCheckCall
+ */
+GameSeatPrompt.prototype.isCheckCall = function() {
+	if (this.getButton() == ButtonData.CHECK ||  this.getButton() == ButtonData.CALL)
+		return true;
+
+	else
+		return false;
 }
 
 module.exports = GameSeatPrompt;

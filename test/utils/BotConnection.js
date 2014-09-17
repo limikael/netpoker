@@ -108,6 +108,9 @@ BotConnection.prototype.onProtoConnectionMessage = function(e) {
 }
 
 BotConnection.prototype.send = function(message) {
+	if (message instanceof ButtonClickMessage)
+		this.model.setButtons(null);
+
 	this.protoConnection.send(message);
 }
 
@@ -126,12 +129,28 @@ BotConnection.prototype.replyOnce = function(messageClass, message) {
 }
 
 BotConnection.prototype.sitIn = function(seatIndex, amount) {
+	console.log("sit in with: " + amount);
 	this.reply(StateCompleteMessage, new SeatClickMessage(seatIndex));
 	this.reply(ShowDialogMessage, new ButtonClickMessage(ButtonData.SIT_IN, amount));
 }
 
 BotConnection.prototype.getSeatAt = function(seatIndex) {
 	return this.model.getSeatModelBySeatIndex(seatIndex);
+}
+
+BotConnection.prototype.getButtons = function() {
+	return this.model.getButtons();
+}
+
+BotConnection.prototype.act = function(buttonId) {
+	if (!this.model.getButtons())
+		throw new Error("can't act, no buttons");
+
+	this.send(new ButtonClickMessage(buttonId));
+}
+
+BotConnection.prototype.getCommunityCards = function() {
+	return this.model.getCommunityCards();
 }
 
 module.exports = BotConnection;

@@ -76,6 +76,8 @@ AskBlindState.prototype.onPromptComplete = function() {
 	this.prompt = null;
 
 	if (button == ButtonData.POST_BB || button == ButtonData.POST_SB) {
+		gameSeat.makeBet(this.getCurrentBlindAmount());
+		//gameSeat.getTableSeat().notifyBigBlindPaid();
 		this.game.addGameSeat(gameSeat);
 	} else {
 		//gameSeat.getTableSeat().sitout();
@@ -155,7 +157,6 @@ AskBlindState.prototype.close = function() {
 		this.prompt.close();
 		this.prompt = null;
 	}
-
 }
 
 module.exports = AskBlindState;
