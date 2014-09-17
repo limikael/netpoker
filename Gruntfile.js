@@ -64,6 +64,7 @@ module.exports = function(grunt) {
 		job.show().expect(0);
 		job.run().then(done, function(e) {
 			console.log(e);
+			grunt.fail.fatal(e);
 		});
 	});
 
