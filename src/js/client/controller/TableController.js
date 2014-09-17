@@ -6,6 +6,7 @@ var BetMessage = require("../../proto/messages/BetMessage");
 var BetsToPotMessage = require("../../proto/messages/BetsToPotMessage");
 var PotMessage = require("../../proto/messages/PotMessage");
 var TimerMessage = require("../../proto/messages/TimerMessage");
+var ActionMessage = require("../../proto/messages/ActionMessage");
 
 /**
  * Control the table
@@ -23,6 +24,7 @@ function TableController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(BetsToPotMessage.TYPE, this.onBetsToPot, this);
 	this.messageSequencer.addMessageHandler(PotMessage.TYPE, this.onPot, this);
 	this.messageSequencer.addMessageHandler(TimerMessage.TYPE, this.onTimer, this);
+	this.messageSequencer.addMessageHandler(ActionMessage.TYPE, this.onAction, this);
 }
 
 /**
@@ -131,5 +133,16 @@ TableController.prototype.onTimer = function(m) {
 		this.view.timerView.countdown(m.totalTime, m.timeLeft);
 	}
 };
+
+/**
+ * Action message.
+ * @method onAction
+ */
+ TableController.prototype.onAction = function(m) {
+	if (m.seatIndex == null)
+		m.seatIndex = 0;
+
+	this.view.seatViews[m.seatIndex].action(m.action);
+ };
 
 module.exports = TableController;

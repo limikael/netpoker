@@ -1,4 +1,5 @@
 var PIXI = require("pixi.js");
+var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("../resources/Resources");
 var Button = require("../../utils/Button");
@@ -43,6 +44,15 @@ function SeatView(seatIndex) {
 	this.chipsField = new PIXI.Text("[name]", style);
 	this.chipsField.position.y = 5;
 	this.addChild(this.chipsField);
+
+	style = {
+		font: "bold 20px Arial"
+	};
+
+	this.actionField = new PIXI.Text("action", style);
+	this.actionField.position.y = -13;
+	this.addChild(this.actionField);
+	this.actionField.alpha = 0;
 
 	this.setName("");
 	this.setChips("");
@@ -106,6 +116,39 @@ SeatView.prototype.addPocketCard = function(cardView) {
  */
 SeatView.prototype.getPocketCards = function() {
 	return this.pocketCards;
+}
+
+/**
+ * Show user action.
+ * @method action
+ */
+SeatView.prototype.action = function(action) {
+	this.actionField.setText(action);
+	this.actionField.position.x = -this.actionField.canvas.width / 2;
+
+	this.actionField.alpha = 1;
+	this.nameField.alpha = 0;
+	this.chipsField.alpha = 0;
+
+	setTimeout(this.onTimer.bind(this), 1000);
+}
+
+/**
+ * Show user action.
+ * @method action
+ */
+SeatView.prototype.onTimer = function(action) {
+
+	var t1 = new TWEEN.Tween(this.actionField)
+							.to({alpha: 0}, 1000)
+							.start();
+	var t2 = new TWEEN.Tween(this.nameField)
+							.to({alpha: 1}, 1000)
+							.start();
+	var t3 = new TWEEN.Tween(this.chipsField)
+							.to({alpha: 1}, 1000)
+							.start();
+
 }
 
 /**
