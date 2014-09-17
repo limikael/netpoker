@@ -2,7 +2,7 @@
  * @class DelayMessage
  */
 function DelayMessage(delay) {
-	this.delay=delay;
+	this.delay = delay;
 }
 
 DelayMessage.TYPE = "delay";
@@ -20,7 +20,7 @@ DelayMessage.prototype.getDelay = function() {
  * @method unserialize
  */
 DelayMessage.prototype.unserialize = function(data) {
-	this.delay=data.delay;
+	this.delay = data.delay;
 }
 
 /**

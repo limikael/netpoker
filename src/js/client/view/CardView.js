@@ -12,6 +12,9 @@ function CardView() {
 	PIXI.DisplayObjectContainer.call(this);
 	this.targetPosition = null;
 
+
+
+
 	this.frame = new PIXI.Sprite(Resources.getInstance().getTexture("cardFrame"));
 	this.addChild(this.frame);
 
@@ -31,6 +34,15 @@ function CardView() {
 
 	this.back = new PIXI.Sprite(Resources.getInstance().getTexture("cardBack"));
 	this.addChild(this.back);
+
+
+	this.maskGraphics = new PIXI.Graphics();
+	this.maskGraphics.beginFill(0x000000);
+	this.maskGraphics.drawRect(0, 0, 87, this.height);
+	this.maskGraphics.endFill();
+	this.addChild(this.maskGraphics);
+
+	this.mask = this.maskGraphics;
 }
 
 FunctionUtil.extend(CardView, PIXI.DisplayObjectContainer);
@@ -86,6 +98,7 @@ CardView.prototype.hide = function() {
  */
 CardView.prototype.show = function() {
 	this.visible = true;
+	this.mask.height = this.height;
 
 	var destination = {x: this.position.x, y: this.position.y};
 	this.position.x = (this.parent.width - this.width)*0.5;
@@ -112,6 +125,41 @@ CardView.prototype.onShowComplete = function() {
 		this.frame.visible = true;
 	}
 	this.dispatchEvent("animationDone", this);
+}
+
+/**
+ * Fold.
+ * @method fold
+ */
+CardView.prototype.fold = function() {
+	var o = {
+		x: this.targetPosition.x,
+		y: this.targetPosition.y+80
+	};
+
+	var time = 500;// Settings.instance.scaleAnimationTime(500);
+	this.t0 = new TWEEN.Tween(this.position)
+			.to(o, time)
+			.easing(TWEEN.Easing.Quadratic.Out)
+			.onUpdate(this.onFoldUpdate.bind(this))
+			.onComplete(this.onFoldComplete.bind(this))
+			.start();
+}
+
+/**
+ * Fold animation update.
+ * @method onFoldUpdate
+ */
+CardView.prototype.onFoldUpdate = function(progress) {
+	this.maskGraphics.scale.y = 1 - progress;
+}
+
+/**
+ * Fold animation complete.
+ * @method onFoldComplete
+ */
+CardView.prototype.onFoldComplete = function() {
+	this.dispatchEvent("animationDone");
 }
 
 module.exports = CardView;

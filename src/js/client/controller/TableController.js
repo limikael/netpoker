@@ -7,6 +7,9 @@ var BetsToPotMessage = require("../../proto/messages/BetsToPotMessage");
 var PotMessage = require("../../proto/messages/PotMessage");
 var TimerMessage = require("../../proto/messages/TimerMessage");
 var ActionMessage = require("../../proto/messages/ActionMessage");
+var FoldCardsMessage = require("../../proto/messages/FoldCardsMessage");
+var DelayMessage = require("../../proto/messages/DelayMessage");
+var EventDispatcher = require("../../utils/EventDispatcher");
 
 /**
  * Control the table
@@ -25,7 +28,10 @@ function TableController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(PotMessage.TYPE, this.onPot, this);
 	this.messageSequencer.addMessageHandler(TimerMessage.TYPE, this.onTimer, this);
 	this.messageSequencer.addMessageHandler(ActionMessage.TYPE, this.onAction, this);
+	this.messageSequencer.addMessageHandler(FoldCardsMessage.TYPE, this.onFoldCards, this);
+	this.messageSequencer.addMessageHandler(DelayMessage.TYPE, this.onDelay, this);
 }
+EventDispatcher.init(TableController);
 
 /**
  * Seat info message.
@@ -143,6 +149,29 @@ TableController.prototype.onTimer = function(m) {
 		m.seatIndex = 0;
 
 	this.view.seatViews[m.seatIndex].action(m.action);
+ };
+
+/**
+ * Fold cards message.
+ * @method onFoldCards
+ */
+ TableController.prototype.onFoldCards = function(m) {
+	this.view.seatViews[m.seatIndex].foldCards();
+
+	this.messageSequencer.waitFor(this.view.seatViews[m.seatIndex], "animationDone");
+ };
+
+/**
+ * Delay message.
+ * @method onDelay
+ */
+ TableController.prototype.onDelay = function(m) {
+ 	console.log("delay for  = "+m.delay);
+
+
+	this.messageSequencer.waitFor(this, "timerDone");
+	setTimeout(this.dispatchEvent.bind(this, "timerDone"), m.delay);
+
  };
 
 module.exports = TableController;

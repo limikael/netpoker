@@ -119,6 +119,26 @@ SeatView.prototype.getPocketCards = function() {
 }
 
 /**
+ * Fold cards.
+ * @method foldCards
+ */
+SeatView.prototype.foldCards = function() {
+	this.pocketCards[0].addEventListener("animationDone", this.onFoldComplete, this);
+	for(var i = 0; i < this.pocketCards.length; i++) {
+		this.pocketCards[i].fold();
+	}
+}
+
+/**
+ * Fold complete.
+ * @method onFoldComplete
+ */
+SeatView.prototype.onFoldComplete = function() {
+	this.pocketCards[0].removeEventListener("animationDone", this.onFoldComplete, this);
+	this.dispatchEvent("animationDone");
+}
+
+/**
  * Show user action.
  * @method action
  */

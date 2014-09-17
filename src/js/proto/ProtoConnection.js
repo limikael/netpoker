@@ -33,6 +33,7 @@ var TableInfoMessage = require("./messages/TableInfoMessage");
 var TestCaseRequestMessage = require("./messages/TestCaseRequestMessage");
 var TimerMessage = require("./messages/TimerMessage");
 var TournamentResultMessage = require("./messages/TournamentResultMessage");
+var FoldCardsMessage = require("./messages/FoldCardsMessage");
 
 /**
  * A protocol connection with an underlying connection.
@@ -133,6 +134,7 @@ ProtoConnection.MESSAGE_TYPES[TableInfoMessage.TYPE] = TableInfoMessage;
 ProtoConnection.MESSAGE_TYPES[TestCaseRequestMessage.TYPE] = TestCaseRequestMessage;
 ProtoConnection.MESSAGE_TYPES[TimerMessage.TYPE] = TimerMessage;
 ProtoConnection.MESSAGE_TYPES[TournamentResultMessage.TYPE] = TournamentResultMessage;
+ProtoConnection.MESSAGE_TYPES[FoldCardsMessage.TYPE] = FoldCardsMessage;
 
 /**
  * Add message handler.
