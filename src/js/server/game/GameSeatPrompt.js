@@ -90,6 +90,7 @@ GameSeatPrompt.prototype.onButtonClickMessage = function(m) {
 	this.button = m.getButton();
 	this.value = m.getValue();
 
+	this.gameSeat.getGame().send(new TimerMessage());
 	this.gameSeat.getGame().setGameSeatPrompt(null);
 	this.trigger(GameSeatPrompt.COMPLETE);
 }
@@ -136,6 +137,8 @@ GameSeatPrompt.prototype.onTimeout = function() {
 	if (this.defaultButton) {
 		console.log("chosing default button: " + this.defaultButton);
 		this.button = this.defaultButton;
+
+		this.gameSeat.getGame().send(new TimerMessage());
 		this.gameSeat.getGame().setGameSeatPrompt(null);
 		this.trigger(GameSeatPrompt.COMPLETE);
 	}
