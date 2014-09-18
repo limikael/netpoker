@@ -72,7 +72,7 @@ GameSeat.prototype.makeBet = function(value) {
 	if (value == 0)
 		return;
 
-	console.log("********** making bet");
+	//console.log("********** making bet");
 
 	this.bet += value;
 	this.tableSeat.addChips(-value);

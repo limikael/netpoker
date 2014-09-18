@@ -40,7 +40,7 @@ AskBlindState.prototype.run = function() {
  * @private
  */
 AskBlindState.prototype.askNextBlind = function() {
-	console.log("********** ask next blind, ask index=" + this.askTableSeatIndex);
+	//console.log("********** ask next blind, ask index=" + this.askTableSeatIndex);
 
 	var gameSeat = this.game.getGameSeatForSeatIndex(this.askTableSeatIndex);
 
@@ -95,10 +95,7 @@ AskBlindState.prototype.askDone = function() {
 	var table = this.game.getTable();
 
 	if (this.askTableSeatIndex == table.getDealerButtonIndex()) {
-		console.log("ask complete!!!");
-
-		// Should be round state...
-		this.game.setGameState(new RoundState()); //FinishedState());
+		this.game.setGameState(new RoundState());
 		return;
 	}
 

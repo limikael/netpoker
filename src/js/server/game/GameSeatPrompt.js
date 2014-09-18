@@ -81,10 +81,10 @@ GameSeatPrompt.prototype.ask = function() {
  * @method onButtonClickMessage
  */
 GameSeatPrompt.prototype.onButtonClickMessage = function(m) {
-	console.log("********** button click in GameSeatPrompt");
+	//console.log("********** button click in GameSeatPrompt");
 
 	if (this.timeoutId) {
-		console.log("------- clearing timeout");
+		//console.log("------- clearing timeout");
 		clearTimeout(this.timeoutId);
 		this.timeoutId = null;
 	}
@@ -156,7 +156,7 @@ GameSeatPrompt.prototype.getCurrentTimerMessage = function() {
 	var t = new TimerMessage();
 	var now = Math.round(Date.now() / 1000);
 
-	console.log("now: " + now);
+	//console.log("now: " + now);
 
 	t.setSeatIndex(this.gameSeat.getSeatIndex());
 	t.setTotalTime(this.responseTime);

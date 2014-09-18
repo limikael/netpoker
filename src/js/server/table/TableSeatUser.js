@@ -110,7 +110,7 @@ TableSeatUser.prototype.getChips = function() {
  * @method setChips
  */
 TableSeatUser.prototype.setChips = function(value) {
-	console.log("setting chips: " + value);
+	//console.log("setting chips: " + value);
 	this.chips = value;
 }
 

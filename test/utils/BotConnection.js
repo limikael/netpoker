@@ -84,7 +84,7 @@ BotConnection.prototype.waitForMessage = function(messageClass) {
 }
 
 BotConnection.prototype.onProtoConnectionMessage = function(e) {
-	console.log("** BOT message: " + e.message.type + " replying: " + this.replies[e.message.type]);
+	//console.log("** BOT message: " + e.message.type + " replying: " + this.replies[e.message.type]);
 
 	this.messages.push(e.message);
 

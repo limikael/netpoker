@@ -180,12 +180,7 @@ TableSeat.prototype.addChips = function(value) {
 	if (!this.tableSeatUser)
 		throw new Error("no table seat user...");
 
-	console.log("adding chips: " + value);
-	console.log("before: " + this.tableSeatUser.getChips());
-
 	this.tableSeatUser.setChips(this.tableSeatUser.getChips() + value);
-
-	console.log("after: " + this.tableSeatUser.getChips());
 }
 
 /**

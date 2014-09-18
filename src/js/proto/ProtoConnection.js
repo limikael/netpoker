@@ -80,6 +80,7 @@ var FoldCardsMessage = require("./messages/FoldCardsMessage");
 function ProtoConnection(connection) {
 	EventDispatcher.call(this);
 
+	this.logMessages = false;
 	this.messageDispatcher = new EventDispatcher();
 	this.connection = connection;
 	this.connection.addEventListener("message", this.onConnectionMessage, this);
@@ -167,8 +168,8 @@ ProtoConnection.prototype.onConnectionMessage = function(ev) {
 	var message = ev.message;
 	var constructor;
 
-	console.log("incoming connection message: " + message.type);
-	console.log(message);
+	if (this.logMessages)
+		console.log("==> " + JSON.stringify(message));
 
 	for (type in ProtoConnection.MESSAGE_TYPES) {
 		if (message.type == type)
@@ -223,6 +224,14 @@ ProtoConnection.prototype.send = function(message) {
 	//	console.log("sending: "+serialized);
 
 	this.connection.send(serialized);
+}
+
+/**
+ * Should messages be logged to console?
+ * @method setLogMessages
+ */
+ProtoConnection.prototype.setLogMessages = function(value) {
+	this.logMessages = value;
 }
 
 /**

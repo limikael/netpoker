@@ -7,7 +7,7 @@ function ButtonClickMessage(button, value) {
 	this.button = button;
 	this.value = value;
 
-	console.log("Creating button click message, value=" + value);
+//	console.log("Creating button click message, value=" + value);
 }
 
 ButtonClickMessage.TYPE = "buttonClick";

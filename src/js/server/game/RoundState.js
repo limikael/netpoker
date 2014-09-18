@@ -25,6 +25,8 @@ function RoundState() {
 	this.raiseTimes = 0;
 
 	console.log("********* entering round state...");
+
+	this.hasRun = false;
 }
 
 FunctionUtil.extend(RoundState, GameState);
@@ -34,20 +36,27 @@ FunctionUtil.extend(RoundState, GameState);
  * @method run
  */
 RoundState.prototype.run = function() {
-	if (!this.hasDealtPocketCards())
-		this.dealPocketCards();
+	if (this.hasRun)
+		throw new Exception("can only run each state once");
 
-	else
+	this.hasRun = true;
+
+	if (!this.hasDealtPocketCards()) {
+		this.dealPocketCards();
+	} else {
 		this.dealCommunityCards();
+	}
+
+	//console.log("number of players with chips: " + this.getNumberOfPlayersWithChips());
 
 	if (this.getNumberOfPlayersWithChips() < 2) {
-		if (this.game.getCommunityCards().length == 5)
+		/*if (this.game.getCommunityCards().length == 5)
 			this.game.setGameState(new ShowMuckState());
 
 		else
 			this.game.setGameState(new RoundState());
 
-		return;
+		return;*/
 	}
 
 	this.ensureGameSeatIndexToSpeakNotFolded();
@@ -57,7 +66,9 @@ RoundState.prototype.run = function() {
 		gameSeat.ensureCurrentPresetIsValid();
 	}*/
 
+	//console.log("asking.....");
 	this.ask();
+	//console.log("returning from roundstate.run");
 }
 
 /**
@@ -93,6 +104,8 @@ RoundState.prototype.ask = function() {
 	//this.updateAndSendPresets();
 
 	this.prompt.on(GameSeatPrompt.COMPLETE, this.onPromptComplete, this);
+
+	//console.log("calling prompt.ask");
 	this.prompt.ask();
 }
 
@@ -113,7 +126,7 @@ RoundState.prototype.onPromptComplete = function() {
 
 	}*/
 
-	console.log("************* prompt complete..");
+	//console.log("************* prompt complete..");
 
 	if (prompt.isCheckCall()) {
 		this.spokenAtCurrentBet.push(gameSeat);
@@ -143,13 +156,9 @@ RoundState.prototype.getNumberOfPlayersWithChips = function() {
 	for (var g = 0; g < this.game.getGameSeats().length; g++) {
 		var gameSeat = this.game.getGameSeats()[g];
 
-		console.log("chips: " + gameSeat.getChips());
-
 		if (!gameSeat.isFolded() && gameSeat.getChips() > 0)
 			cnt++;
 	}
-
-	console.log("with chips: " + cnt);
 
 	return cnt;
 }
@@ -159,7 +168,7 @@ RoundState.prototype.getNumberOfPlayersWithChips = function() {
  * @method dealPocketCards
  */
 RoundState.prototype.dealPocketCards = function() {
-	console.log("dealing pocket cards......");
+	console.log("dealing pocket cards");
 
 	for (var i = 0; i < 2; i++) {
 		for (var g = 0; g < this.game.getGameSeats().length; g++) {
@@ -190,13 +199,15 @@ RoundState.prototype.dealPocketCards = function() {
  * @method dealCommunityCards
  */
 RoundState.prototype.dealCommunityCards = function() {
+	console.log("dealing community cards");
+
 	var numCards = 0;
 
-	if (this.game.getCommunityCards().length == 0)
+	if (this.game.getCommunityCards().length == 0) {
 		numCards = 3;
-
-	else
+	} else {
 		numCards = 1;
+	}
 
 	for (var i = 0; i < numCards; i++) {
 		var c = this.game.getNextCard();
@@ -284,8 +295,6 @@ RoundState.prototype.getCostToCall = function(gameSeat) {
 	if (cand > gameSeat.getChips())
 		cand = gameSeat.getChips();
 
-	console.log("get cost to call: " + cand + "highest: " + this.getHighestBet());
-
 	return cand;
 }
 
@@ -310,8 +319,6 @@ RoundState.prototype.advanceSpeaker = function() {
  * @private
  */
 RoundState.prototype.askDone = function() {
-	console.log("ask done...");
-
 	if (this.game.getNumPlayersRemaining() == 1) {
 		/*for (gameSeat in game.gameSeats) {
 			gameSeat.disableAllPresets();
@@ -328,18 +335,18 @@ RoundState.prototype.askDone = function() {
 			/*gameSeat.disableAllPresets();
 			gameSeat.ensureCurrentPresetIsValid();
 			gameSeat.sendPresets();*/
+		}
 
-			this.returnExcessiveBets();
-			this.betsToPot();
+		this.returnExcessiveBets();
+		this.betsToPot();
 
-			if (this.game.getCommunityCards().length == 5)
-				this.game.setGameState(new ShowMuckState());
+		if (this.game.getCommunityCards().length == 5)
+			this.game.setGameState(new ShowMuckState());
 
-/*			else
-				this.game.setGameState(new RoundState());*/
+		else {
+			this.game.setGameState(new RoundState());
 		}
 	} else {
-		console.log("asking againg...");
 		this.advanceSpeaker();
 		this.ask();
 	}
