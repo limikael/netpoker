@@ -79,5 +79,9 @@ module.exports = {
 	chatBackground: [301,262,74,76],
 	checkboxBackground: [501,391,18,18],
 	checkboxTick: [528,392,21,16],
-	buttonBackground: [68,446,64,64]
+	buttonBackground: [68,446,64,64],
+	sliderBackground: [313,407,120,30],
+	sliderKnob: [318,377,28,28],
+	bigButtonPosition: [366,575],
+	upArrow: [483,64,12,8]
 }
