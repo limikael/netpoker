@@ -26,17 +26,19 @@ MessageServerConnection.CLOSE = "close";
  * @private
  */
 MessageServerConnection.prototype.onWebSocketMessage = function(event) {
+	var message;
 	try {
-		var message = JSON.parse(event.data);
-
-		this.trigger({
-			type: MessageServerConnection.MESSAGE,
-			message: message
-		});
+		message = JSON.parse(event.data);
 	} catch (err) {
 		console.log(err.stack);
 		console.log("MessageServerConnection received non JSON data: " + event.data);
+		return;
 	}
+
+	this.trigger({
+		type: MessageServerConnection.MESSAGE,
+		message: message
+	});
 }
 
 /**

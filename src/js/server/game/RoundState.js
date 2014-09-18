@@ -369,7 +369,8 @@ RoundState.prototype.allHasSpoken = function() {
 }
 
 /**
- * Bets to pot.
+ * Send bets to the pot.
+ * @method betsToPot
  */
 RoundState.prototype.betsToPot = function() {
 	for (var g = 0; g < this.game.getGameSeats().length; g++) {

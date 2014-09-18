@@ -270,7 +270,8 @@ Game.prototype.getNumPlayersRemaining = function() {
 }
 
 /**
- *
+ * Get pots.
+ * @method getPots
  */
 Game.prototype.getPots = function() {
 	var last = 0;
@@ -288,7 +289,7 @@ Game.prototype.getPots = function() {
 }
 
 /**
- * Get unfoldet pot contribs.
+ * Get unique unfolded pot contribs.
  * @method prototypegetUnfoldedPotContribs
  */
 Game.prototype.getUnfoldedPotContribs = function() {
@@ -308,7 +309,13 @@ Game.prototype.getUnfoldedPotContribs = function() {
 }
 
 /**
- * Get a split pot.
+ * Get the size of a split pot, with pot contributions between
+ * from and to. E. g. if we have three players, and their
+ * pot contributions are 3, 5 and 6. If this function would be
+ * called with 3 and 5 then this function would return 4. The first
+ * player, with pot contribution 3, does not contribute to this number,
+ * the two other players contribute 2 each.
+ * @method getSplitPot
  */
 Game.prototype.getSplitPot = function(from, to) {
 	var pot = 0;
