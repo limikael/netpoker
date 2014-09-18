@@ -7,6 +7,9 @@ var ButtonData = require("../data/ButtonData");
  */
 function ButtonsMessage() {
 	this.buttons = [];
+	this.sliderButtonIndex = 0;
+	this.min = -1;
+	this.max = -1;
 }
 
 ButtonsMessage.TYPE = "buttons";
@@ -39,6 +42,9 @@ ButtonsMessage.prototype.unserialize = function(data) {
 		var buttonData = new ButtonData(button.button, button.value);
 		this.addButton(buttonData);
 	}
+	this.sliderButtonIndex = data.sliderButtonIndex;
+	this.min = data.min;
+	this.max = data.max;
 }
 
 /**
@@ -56,7 +62,10 @@ ButtonsMessage.prototype.serialize = function() {
 	}
 
 	return {
-		buttons: buttons
+		buttons: buttons,
+		sliderButtonIndex: this.sliderButtonIndex,
+		min: this.min,
+		max: this.max
 	};
 }
 

@@ -59,7 +59,7 @@ function ButtonsView() {
 	this.raiseMenuButton.visible = false;
 	this.createRaiseAmountMenu();
 
-	this.setButtons([]);
+	this.setButtons([], 0, -1, -1);
 
 	this.buttonsDatas = [];
 }
@@ -191,14 +191,14 @@ ButtonsView.prototype.showSlider = function(index, min, max) {
  * @method clear
  */
 ButtonsView.prototype.clear = function(buttonDatas) {
-	this.setButtons([]);
+	this.setButtons([], 0, -1, -1);
 }
 
 /**
  * Set button datas.
  * @method setButtons
  */
-ButtonsView.prototype.setButtons = function(buttonDatas) {
+ButtonsView.prototype.setButtons = function(buttonDatas, sliderButtonIndex, min, max) {
 	this.buttonDatas = buttonDatas;
 
 	for (var i = 0; i < this.buttons.length; i++) {
@@ -214,10 +214,10 @@ ButtonsView.prototype.setButtons = function(buttonDatas) {
 		button.setLabel(buttonData.getButtonString());
 		button.setValue(buttonData.getValue());
 
-
-		if((buttonData.min >= 0) && (buttonData.max >= 0))
-			this.showSlider(i, buttonData.min, buttonData.max);
 	}
+
+	if((min >= 0) && (max >= 0))
+		this.showSlider(sliderButtonIndex, min, max);
 
 	this.buttonHolder.position.x = 366;
 
