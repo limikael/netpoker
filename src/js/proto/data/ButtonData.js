@@ -135,4 +135,8 @@ ButtonData.getButtonStringForId = function(b) {
 	return this.max;
 }*/
 
+ButtonData.prototype.toString = function() {
+	return "<ButtonData button=" + this.button + ">";
+}
+
 module.exports = ButtonData;

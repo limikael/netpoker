@@ -3,6 +3,7 @@ function BotSeatModel(seatIndex) {
 	this.name = "";
 	this.chips = "";
 	this.cards = [null, null];
+	this.bet = 0;
 }
 
 BotSeatModel.prototype.setName = function(value) {
@@ -27,6 +28,14 @@ BotSeatModel.prototype.getCards = function() {
 
 BotSeatModel.prototype.getCardAt = function(i) {
 	return this.cards[i];
+}
+
+BotSeatModel.prototype.getBet = function() {
+	return this.bet;
+}
+
+BotSeatModel.prototype.setBet = function(bet) {
+	this.bet = bet;
 }
 
 module.exports = BotSeatModel;

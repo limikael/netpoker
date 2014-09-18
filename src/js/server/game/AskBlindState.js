@@ -40,7 +40,7 @@ AskBlindState.prototype.run = function() {
  * @private
  */
 AskBlindState.prototype.askNextBlind = function() {
-	console.log("********** ask next blind, ask index=" + this.askTableSeatIndex);
+	//console.log("********** ask next blind, ask index=" + this.askTableSeatIndex);
 
 	var gameSeat = this.game.getGameSeatForSeatIndex(this.askTableSeatIndex);
 
@@ -76,6 +76,8 @@ AskBlindState.prototype.onPromptComplete = function() {
 	this.prompt = null;
 
 	if (button == ButtonData.POST_BB || button == ButtonData.POST_SB) {
+		gameSeat.makeBet(this.getCurrentBlindAmount());
+		//gameSeat.getTableSeat().notifyBigBlindPaid();
 		this.game.addGameSeat(gameSeat);
 	} else {
 		//gameSeat.getTableSeat().sitout();
@@ -93,10 +95,7 @@ AskBlindState.prototype.askDone = function() {
 	var table = this.game.getTable();
 
 	if (this.askTableSeatIndex == table.getDealerButtonIndex()) {
-		console.log("ask complete!!!");
-
-		// Should be round state...
-		this.game.setGameState(new RoundState()); //FinishedState());
+		this.game.setGameState(new RoundState());
 		return;
 	}
 
@@ -155,7 +154,6 @@ AskBlindState.prototype.close = function() {
 		this.prompt.close();
 		this.prompt = null;
 	}
-
 }
 
 module.exports = AskBlindState;

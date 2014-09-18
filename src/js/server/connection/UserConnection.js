@@ -16,6 +16,8 @@ var fs = require("fs");
 function UserConnection(services, connection) {
 	ProtoConnection.call(this, connection);
 
+	this.setLogMessages(true);
+
 	this.connection = connection;
 	this.services = services;
 	this.viewCaseDir = null;
@@ -79,7 +81,7 @@ UserConnection.prototype.handleViewCase = function(viewCase) {
 		}
 	}
 
-	this.connection.on("message",function(e) {
+	this.connection.on("message", function(e) {
 		console.log(JSON.stringify(e.message));
 	});
 }

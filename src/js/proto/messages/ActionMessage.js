@@ -9,6 +9,14 @@ function ActionMessage(seatIndex, action) {
 
 ActionMessage.TYPE = "action";
 
+ActionMessage.FOLD = "fold";
+ActionMessage.CALL = "call";
+ActionMessage.RAISE = "raise";
+ActionMessage.CHECK = "check";
+ActionMessage.BET = "bet";
+ActionMessage.MUCK = "muck";
+ActionMessage.ANTE = "ante";
+
 /**
  * Seat index.
  * @method getSeatIndex

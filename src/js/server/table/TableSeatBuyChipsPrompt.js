@@ -114,6 +114,9 @@ TableSeatBuyChipsPrompt.prototype.onConnectionClose = function() {
  * @private
  */
 TableSeatBuyChipsPrompt.prototype.onButtonClick = function(e) {
+	//console.log("TableSeatBuyChipsPrompt complete");
+	//console.log(e);
+
 	if (e.getButton() == ButtonData.SIT_IN) {
 		this.chips = e.getValue();
 
@@ -168,7 +171,9 @@ TableSeatBuyChipsPrompt.prototype.onSitInCallError = function(e) {
  * @method getChips
  */
 TableSeatBuyChipsPrompt.prototype.getChips = function() {
-	return this.chips;
+	console.log("chips: " + this.chips);
+
+	return parseInt(this.chips);
 }
 
 module.exports = TableSeatBuyChipsPrompt;

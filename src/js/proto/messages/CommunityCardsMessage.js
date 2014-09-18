@@ -1,4 +1,4 @@
-var CardData=require("../data/CardData");
+var CardData = require("../data/CardData");
 
 /**
  * Show community cards.
@@ -11,6 +11,30 @@ function CommunityCardsMessage() {
 }
 
 CommunityCardsMessage.TYPE = "communityCards";
+
+/**
+ * Animation or not?
+ * @method setAnimate
+ */
+CommunityCardsMessage.prototype.setAnimate = function(value) {
+	return this.animate = value;
+}
+
+/**
+ * Set first index.
+ * @method setFirstIndex
+ */
+CommunityCardsMessage.prototype.setFirstIndex = function(value) {
+	return this.firstIndex = value;
+}
+
+/**
+ * Add card.
+ * @method addCard
+ */
+CommunityCardsMessage.prototype.addCard = function(c) {
+	this.cards.push(c);
+}
 
 /**
  * Get card data.
@@ -37,9 +61,9 @@ CommunityCardsMessage.prototype.unserialize = function(data) {
 
 	this.animate = data.animate;
 	this.firstIndex = parseInt(data.firstIndex);
-	this.cards=[];
+	this.cards = [];
 
-	for (i=0; i<data.cards.length; i++)
+	for (i = 0; i < data.cards.length; i++)
 		this.cards.push(new CardData(data.cards[i]));
 }
 
@@ -48,9 +72,9 @@ CommunityCardsMessage.prototype.unserialize = function(data) {
  * @method serialize
  */
 CommunityCardsMessage.prototype.serialize = function() {
-	var cards=[];
+	var cards = [];
 
-	for (i=0; i<this.cards.length; i++)
+	for (i = 0; i < this.cards.length; i++)
 		cards.push(this.cards[i].getValue());
 
 	return {

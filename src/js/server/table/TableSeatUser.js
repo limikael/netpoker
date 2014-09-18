@@ -59,6 +59,8 @@ TableSeatUser.prototype.onBuyChipsPromptComplete = function() {
 
 	this.sitInCompleted = true;
 	this.chips = this.buyChipsPrompt.getChips();
+	this.getChips();
+
 	this.buyChipsPrompt = null;
 
 	if (this.leaving) {
@@ -96,7 +98,20 @@ TableSeatUser.prototype.isInGame = function() {
  * @method getChips
  */
 TableSeatUser.prototype.getChips = function() {
+	if (isNaN(this.chips))
+		throw new Error("chips is NaN");
+
+	//console.log("get chisp: " + this.chips);
 	return this.chips;
+}
+
+/**
+ * Set chips.
+ * @method setChips
+ */
+TableSeatUser.prototype.setChips = function(value) {
+	//console.log("setting chips: " + value);
+	this.chips = value;
 }
 
 /**
