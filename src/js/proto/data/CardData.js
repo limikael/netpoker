@@ -94,7 +94,7 @@ CardData.prototype.getValue = function() {
  * @static
  */
 CardData.compareValue = function(a, b) {
-	if (!(a instanceof CardData) ||  !(b instanceof CardData))
+	if (!(a instanceof CardData) || !(b instanceof CardData))
 		throw new Error("Not comparing card data");
 
 	if (a.getValue() > b.getValue())
@@ -112,7 +112,7 @@ CardData.compareValue = function(a, b) {
  * @static
  */
 CardData.compareCardValue = function(a, b) {
-	if (!(a instanceof CardData) ||  !(b instanceof CardData))
+	if (!(a instanceof CardData) || !(b instanceof CardData))
 		throw new Error("Not comparing card data");
 
 	if (a.getCardValue() > b.getCardValue())
@@ -130,7 +130,7 @@ CardData.compareCardValue = function(a, b) {
  * @static
  */
 CardData.compareSuitIndex = function(a, b) {
-	if (!(a instanceof CardData) ||  !(b instanceof CardData))
+	if (!(a instanceof CardData) || !(b instanceof CardData))
 		throw new Error("Not comparing card data");
 
 	if (a.getSuitIndex() > b.getSuitIndex())
