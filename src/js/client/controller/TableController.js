@@ -58,7 +58,7 @@ TableController.prototype.onCommunityCardsMessage = function(m) {
 		var cardView = this.view.getCommunityCards()[m.getFirstIndex() + i];
 
 		cardView.setCardData(cardData);
-		cardView.show();
+		cardView.show(m.getFirstIndex()*500);
 	}
 }
 
@@ -76,7 +76,7 @@ TableController.prototype.onPocketCardsMessage = function(m) {
 
 		this.messageSequencer.waitFor(cardView, "animationDone");
 		cardView.setCardData(cardData);
-		cardView.show();
+		cardView.show(10);
 	}
 }
 

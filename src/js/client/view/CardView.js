@@ -96,8 +96,10 @@ CardView.prototype.hide = function() {
  * Show.
  * @method show
  */
-CardView.prototype.show = function() {
-	this.visible = true;
+CardView.prototype.show = function(delay) {
+	/*if(delay == undefined)
+		delay = 1;
+	*/
 	this.mask.height = this.height;
 
 	var destination = {x: this.position.x, y: this.position.y};
@@ -109,10 +111,20 @@ CardView.prototype.show = function() {
 	var diff = Math.sqrt(diffX*diffX + diffY*diffY);
 
 	var tween = new TWEEN.Tween( this.position )
+            .delay(delay)
             .to( { x: destination.x, y: destination.y }, 3*diff )
             .easing( TWEEN.Easing.Quadratic.Out )
+            .onStart(this.onShowStart.bind(this))
             .onComplete(this.onShowComplete.bind(this))
             .start();
+}
+
+/**
+ * Show complete.
+ * @method onShowComplete
+ */
+CardView.prototype.onShowStart = function() {
+	this.visible = true;
 }
 
 /**
