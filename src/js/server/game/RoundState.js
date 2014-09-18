@@ -8,6 +8,7 @@ var ActionMessage = require("../../proto/messages/ActionMessage");
 var BetsToPotMessage = require("../../proto/messages/BetsToPotMessage");
 var PotMessage = require("../../proto/messages/PotMessage");
 var CommunityCardsMessage = require("../../proto/messages/CommunityCardsMessage");
+var ShowMuckState = require("./ShowMuckState");
 
 /**
  * Manage a round of beting.
