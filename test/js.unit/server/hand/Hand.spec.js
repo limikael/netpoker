@@ -103,4 +103,15 @@ describe("Hand", function() {
 		expect(hand.getCategory()).toBe(Hand.STRAIGHT_FLUSH);
 		expect(hand.getScore()).toEqual([Hand.STRAIGHT_FLUSH, 5]);
 	});
+
+	it("can compare two hands",function() {
+		// three of a kind
+		var a = new Hand(createCardDataArray(["2C", "3C", "3D", "10S", "AD", "3S", "7H"]));
+
+		// straight
+		var b = new Hand(createCardDataArray(["2H", "3H", "7C", "4H", "4S", "5S", "6H"]));
+
+		expect(Hand.compare(a,b)).toEqual(-1);
+		expect(Hand.compare(b,a)).toEqual(1);
+	});
 });

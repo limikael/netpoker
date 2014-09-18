@@ -1,9 +1,14 @@
 var CardData = require("../../proto/data/CardData");
+var ArrayUtil = require("../../utils/ArrayUtil");
 
 /**
  * Texas Holdem hand evaluator. It only works for 7 cards at the moment, but can
- * be changed.
+ * be changed to work with partial hands without too much difficulty.
+ *
+ * The constructor takes an array of 7 cards that constitutes the hand.
  * @class Hand
+ * @constructor
+ * @param cards {CardData[]} Array of CardData.
  */
 function Hand(cards) {
 	if (cards.length != 7)
@@ -93,14 +98,14 @@ Hand.prototype.getScore = function() {
 Hand.prototype.checkStraightFlush = function() {
 	var i;
 
-	var checkCards=this.cards.concat();
+	var checkCards = this.cards.concat();
 	checkCards.sort(CardData.compareValue);
 	checkCards.reverse();
 
 	for (i = 0; i < checkCards.length - 5 + 1; i++) {
 		var c = checkCards.slice(i, i + 5);
 
-		console.log("chekcing, "+c);
+		console.log("chekcing, " + c);
 
 		if (Hand.isStraight(c) && Hand.isFlush(c)) {
 			this.score.push(Hand.STRAIGHT_FLUSH);
@@ -121,12 +126,12 @@ Hand.prototype.checkStraight = function() {
 	var c = [];
 	var i;
 
-	for (i=0; i<this.cards.length; i++) {
-		if (i==0 || this.cards[i].getCardValue()!=this.cards[i-1].getCardValue())
+	for (i = 0; i < this.cards.length; i++) {
+		if (i == 0 || this.cards[i].getCardValue() != this.cards[i - 1].getCardValue())
 			c.push(this.cards[i]);
 	}
 
-	if (c.length<5)
+	if (c.length < 5)
 		return;
 
 	//console.log("checking: "+c);
@@ -348,6 +353,7 @@ Hand.prototype.findRun = function(length, dontCheckFor) {
  * Find kickers.
  * dontCheckFor is an array of card values to not include in the check.
  * @method findKickers
+ * @private
  */
 Hand.prototype.findKickers = function(cnt, dontCheckFor) {
 	if (!dontCheckFor)
@@ -368,7 +374,7 @@ Hand.prototype.findKickers = function(cnt, dontCheckFor) {
 }
 
 /**
- * Get score scring.
+ * Get score scring, such as "one pair, twos" or "straight, jack high".
  * @method getScoreString
  */
 Hand.prototype.getScoreString = function() {
@@ -412,6 +418,38 @@ Hand.prototype.getScoreString = function() {
  */
 Hand.prototype.getCategory = function() {
 	return this.score[0];
+}
+
+/**
+ * Compare two hands.
+ * @method compare
+ * @static
+ * @param {Hand} a
+ * @param {Hand} b
+ * @return Number -1 if a>b, 1 if a<b, 0 otherwise
+ */
+Hand.compare = function(a, b) {
+	if (!a && !b)
+		return 0;
+
+	if (!a && b)
+		return 1;
+
+	if (a && !b)
+		return -1;
+
+	var aScore = a.getScore();
+	var bScore = b.getScore();
+
+	for (var i = 0; i < Math.min(aScore.length, bScore.length); i++) {
+		if (aScore[i] > bScore[i])
+			return 1;
+
+		if (aScore[i] < bScore[i])
+			return -1;
+	}
+
+	return 0;
 }
 
 module.exports = Hand;
