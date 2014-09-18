@@ -1,6 +1,7 @@
 var BetMessage = require("../../proto/messages/BetMessage");
 var FoldCardsMessage = require("../../proto/messages/FoldCardsMessage");
 var ActionMessage = require("../../proto/messages/ActionMessage");
+var Hand = require("../hand/Hand");
 
 /**
  * A seat at a game.
@@ -133,6 +134,14 @@ GameSeat.prototype.fold = function() {
 
 	this.game.send(new ActionMessage(this.getSeatIndex(), ActionMessage.FOLD));
 	this.game.send(new FoldCardsMessage(this.getSeatIndex()));
+}
+
+/**
+ * Get hand.
+ * @method getHand
+ */
+GameSeat.prototype.getHand = function() {
+	return new Hand(this.game.getCommunityCards().concat(this.pocketCards));
 }
 
 module.exports = GameSeat;

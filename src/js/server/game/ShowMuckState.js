@@ -3,6 +3,7 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var GameSeatPrompt = require("./GameSeatPrompt");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var ButtonData = require("../../proto/data/ButtonData");
+var Hand = require("../hand/Hand");
 
 /**
  * Show or muck cards.
@@ -51,9 +52,38 @@ ShowMuckState.prototype.askOrShow = function() {
 		this.prompt.addButton(ButtonData.MUCK);
 		this.prompt.addButton(ButtonData.SHOW);
 		this.prompt.setDefaultButton(ButtonData.MUCK);
+
+		this.prompt.on(GameSeatPrompt.COMPLETE, this.onPromptComplete, this);
+
+		/*	if (game.communityCards.length==5)
+				prompt.usePref(CheckboxMessage.AUTO_MUCK_LOSING,ButtonData.MUCK);*/
+
+		this.prompt.ask();
 	}
+}
 
+/**
+ * Show muck prompt complete.
+ * @method onPromptComplete
+ * @private
+ */
+ShowMuckState.prototype.onPromptComplete = function() {
+	var prompt=this.prompt;
 
+	this.prompt.off(GameSeatPrompt.COMPLETE, this.onPromptComplete, this);
+	this.prompt = null;
+
+	var gameSeat = this.game.getGameSeats()[this.gameSeatIndexToSpeak];
+
+	// the place that needs work...
+
+	/*if (prompt.getButton()==ButtonData.SHOW)
+		gameSeat.show();
+
+	else
+		gameSeat.muck();
+
+	this.askDone();*/
 }
 
 /**
