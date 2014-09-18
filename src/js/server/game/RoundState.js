@@ -88,14 +88,14 @@ RoundState.prototype.ask = function() {
 
 	this.prompt = new GameSeatPrompt(gameSeat);
 
-	this.prompt.addButton(new ButtonData(ButtonData.FOLD));
+	this.prompt.addButton(ButtonData.FOLD);
 
 	if (this.canCheck(gameSeat)) {
 		this.prompt.setDefaultButton(ButtonData.CHECK);
-		this.prompt.addButton(new ButtonData(ButtonData.CHECK));
+		this.prompt.addButton(ButtonData.CHECK);
 	} else {
 		this.prompt.setDefaultButton(ButtonData.FOLD);
-		this.prompt.addButton(new ButtonData(ButtonData.CALL, this.getCostToCall(gameSeat)));
+		this.prompt.addButton(ButtonData.CALL, this.getCostToCall(gameSeat));
 	}
 
 	/*if (this.canRaise(gameSeat)) {

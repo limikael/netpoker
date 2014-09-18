@@ -43,8 +43,8 @@ GameSeatPrompt.prototype.setResponseTime = function(secs) {
  * Add button.
  * @method addButton
  */
-GameSeatPrompt.prototype.addButton = function(buttonData) {
-	this.buttonsMessage.addButton(buttonData);
+GameSeatPrompt.prototype.addButton = function(buttonId, value) {
+	this.buttonsMessage.addButton(new ButtonData(buttonId, value));
 }
 
 /**

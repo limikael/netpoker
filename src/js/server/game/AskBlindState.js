@@ -55,9 +55,8 @@ AskBlindState.prototype.askNextBlind = function() {
 
 	this.prompt = new GameSeatPrompt(gameSeat);
 
-	var b = new ButtonData(this.getCurrentBlind(), this.getCurrentBlindAmount());
-	this.prompt.addButton(b);
-	this.prompt.addButton(new ButtonData(ButtonData.SIT_OUT));
+	this.prompt.addButton(this.getCurrentBlind(), this.getCurrentBlindAmount());
+	this.prompt.addButton(ButtonData.SIT_OUT);
 	this.prompt.setDefaultButton(ButtonData.SIT_OUT);
 	this.prompt.on(GameSeatPrompt.COMPLETE, this.onPromptComplete, this);
 	this.prompt.ask();
