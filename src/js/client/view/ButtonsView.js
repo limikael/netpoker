@@ -169,7 +169,7 @@ ButtonsView.prototype.onRaiseMenuButtonClick = function() {
  * @method onSliderChange
  */
 ButtonsView.prototype.onSliderChange = function() {
-	buttons[this.sliderIndex].value = Math.round(_sliderMin + _slider.value*(_sliderMax - _sliderMin));
+	this.buttons[this.sliderIndex].value = Math.round(this.sliderMin + this.slider.value*(this.sliderMax - this.sliderMin));
 	//this.raiseAmountMenuInput.setText(buttons[_sliderIndex].value.toString());
 }
 
@@ -182,7 +182,7 @@ ButtonsView.prototype.showSlider = function(index, min, max) {
 	this.sliderMin = min;
 	this.sliderMax = max;
 
-	this.slider.value = (buttons[index].value - min)/(max - min);
+	this.slider.value = (this.buttons[index].value - min)/(max - min);
 	this.slider.visible=true;
 }
 

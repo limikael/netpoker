@@ -59,6 +59,24 @@ GameSeatPrompt.prototype.setDefaultButton = function(button) {
 }
 
 /**
+ * Get last button index.
+ * @method getLastButtonIndex
+ */
+GameSeatPrompt.prototype.getLastButtonIndex = function() {
+	return this.buttonsMessage.buttons.length - 1;
+}
+
+/**
+ * Set slider button index and min and max values.
+ * @method setSliderValues
+ */
+GameSeatPrompt.prototype.setSliderValues = function(buttonIndex, min, max) {
+	this.buttonsMessage.sliderButtonIndex = buttonIndex;
+	this.buttonsMessage.min = min;
+	this.buttonsMessage.max = max;
+}
+
+/**
  * Send question and wait for reply.
  * @method ask
  */

@@ -60,6 +60,11 @@ TableController.prototype.onCommunityCardsMessage = function(m) {
 		cardView.setCardData(cardData);
 		cardView.show(m.getFirstIndex()*500);
 	}
+	if(m.getCards().length > 0) {
+		var cardData = m.getCards()[m.getCards().length - 1];
+		var cardView = this.view.getCommunityCards()[m.getFirstIndex() + m.getCards().length - 1];
+		this.messageSequencer.waitFor(cardView, "animationDone");
+	}
 }
 
 /**

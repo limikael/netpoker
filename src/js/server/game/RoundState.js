@@ -98,9 +98,38 @@ RoundState.prototype.ask = function() {
 		this.prompt.addButton(ButtonData.CALL, this.getCostToCall(gameSeat));
 	}
 
-	/*if (this.canRaise(gameSeat)) {
+	
 
-	}*/
+	if(this.canRaise(gameSeat)) {
+		var minRaise = this.getMinRaiseTo(gameSeat);
+		var maxRaise = this.getMaxRaiseTo(gameSeat);
+
+		if (this.getHighestBet() == 0)
+			this.prompt.addButton(ButtonData.BET, minRaise);
+		else 
+			this.prompt.addButton(ButtonData.RAISE, minRaise);
+
+		if (minRaise != maxRaise) {
+			this.prompt.setSliderValues(this.prompt.getLastButtonIndex(), minRaise, maxRaise);
+/*
+			b.amountPresets.push(new PresetButtonData("MINIMUM",minRaise));
+
+			var total:Int=game.getTotalOnTable();
+
+			if (Math.round(total/3)>minRaise && Math.round(total/3)<maxRaise)
+				b.amountPresets.push(new PresetButtonData("1/3 POT",Math.round(total/3)));
+
+			if (Math.round(total/2)>minRaise && Math.round(total/2)<maxRaise)
+				b.amountPresets.push(new PresetButtonData("1/2 POT",Math.round(total/2)));
+
+			if (Math.round(total)>minRaise && Math.round(total)<maxRaise)
+				b.amountPresets.push(new PresetButtonData("POT",Math.round(total)));
+
+			b.amountPresets.push(new PresetButtonData("ALL IN",maxRaise));
+			*/
+		}
+
+	}
 
 	//this.updateAndSendPresets();
 
@@ -144,6 +173,54 @@ RoundState.prototype.onPromptComplete = function() {
 		gameSeat.fold();
 		this.askDone();
 	}
+}
+
+/**
+ * Get max raise.
+ * @method getMaxRaiseTo
+ * @private
+ */
+RoundState.prototype.getMaxRaiseTo = function(gameSeat) {
+	var cand = gameSeat.getTableSeat().getChips() + gameSeat.getBet();
+
+	return cand;
+}
+
+/**
+ * Get min raise.
+ * @method getMinRaiseTo
+ * @private
+ */
+RoundState.prototype.getMinRaiseTo = function(gameSeat) {
+	var cand = this.getHighestBet() + this.game.getTable().getStake();
+
+	if (cand > gameSeat.getTableSeat().getChips() + gameSeat.getBet())
+		cand = gameSeat.getTableSeat().getChips() + gameSeat.getBet();
+
+	return cand;
+}
+
+/**
+ * Get min raise.
+ * @method getMinRaiseTo
+ * @private
+ */
+RoundState.prototype.canRaise = function(gameSeat) {
+	if (this.raiseTimes >= 4)
+		return false;
+
+	if (gameSeat.getTableSeat().getChips() <= this.getCostToCall(gameSeat))
+		return false;
+
+	for(var i = 0; i < this.game.getGameSeats().length; i++) {
+		var gs = this.game.getGameSeats()[i];
+		if (!gs.isFolded())
+			if (gs.getTableSeat().getChips() > 0)
+				if (gs != gameSeat)
+					return true;
+	}
+
+	return false;
 }
 
 /**
