@@ -28,7 +28,15 @@ ShowMuckState.prototype.run = function() {
 }
 
 /**
- * Ensure game seat index in game.
+ * Ensure the current game seat, as indicated by `gameSeatIndexToSpeak` 
+ * is in the game, i.e. not folded. If `gameSeatIndexToSpeak` indicates
+ * a seat that is folded, we advance it until it points to a gameSeat
+ * that is still in the game. If `gameSeatIndexToSpeak` advances past
+ * all participating players, it does not wrap around, but will stay
+ * pointing past the last player. We can use this state as an indication
+ * that we have asked all players what they want to do.
+ * @method ensureGameSeatIndexInGame
+ * @private
  */
 ShowMuckState.prototype.ensureGameSeatIndexInGame = function() {
 	while (this.gameSeatIndexToSpeak < this.game.getGameSeats().length &&
@@ -37,7 +45,13 @@ ShowMuckState.prototype.ensureGameSeatIndexInGame = function() {
 }
 
 /**
- * Ask or show.
+ * Check if the current player, as indicated by `gameSeatIndexToSpeak`
+ * must show his/her cards. If so, make the player show the cards and call
+ * `askDone` to check what the next player needs to do. If the game 
+ * condition does not mandate that the player must show his/her cards,
+ * send a prompt to the player to ask what do to.
+ * @method askOrShow
+ * @private
  */
 ShowMuckState.prototype.askOrShow = function() {
 	var gameSeat = this.game.getGameSeats()[this.gameSeatIndexToSpeak];
