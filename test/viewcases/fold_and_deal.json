@@ -7,6 +7,6 @@
 {"type":"chat","user":"debug","text":"folding cards"}
 {"type":"foldCards", "seatIndex": 5}
 {"type":"delay", "delay": 2000}
-{"type":"chat","user":"debug","text":"dealing cards again test"}
+{"type":"chat","user":"debug","text":"dealing cards again testar"}
 {"type":"pocketCards", "seatIndex": 5, "firstIndex": 0, "cards": [4], "animate": true}
 {"type":"pocketCards", "seatIndex": 5, "firstIndex": 1, "cards": [5], "animate": true}
