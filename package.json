@@ -1,7 +1,7 @@
 {
   "name": "netpoker",
   "subdomain": "limikael-netpoker",
-  "version": "0.0.1-46",
+  "version": "0.0.1-47",
   "dependencies": {
     "minimist": "^1.1.0",
     "q": "^1.0.1",
