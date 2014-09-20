@@ -78,7 +78,7 @@ module.exports = function(grunt) {
 	grunt.registerTask("deploy", function() {
 		var done = this.async();
 		var job = qsub("./node_modules/.bin/jitsu");
-		job.arg("deploy", "-c");
+		job.arg("deploy", "-c", "-j", ".jitsuconf");
 		job.show().expect(0);
 		job.run().then(done);
 	});
