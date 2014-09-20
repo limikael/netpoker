@@ -35,7 +35,7 @@ module.exports = function(grunt) {
 
 				job.run().then(
 					function() {
-						if (job.output.substring(0,2) != "OK") {
+						if (job.output.substring(0, 2) != "OK") {
 							console.log(job.output);
 							grunt.fail.fatal("Unexpected output from curl");
 						}
@@ -77,10 +77,33 @@ module.exports = function(grunt) {
 
 	grunt.registerTask("deploy", function() {
 		var done = this.async();
-		var job = qsub("./node_modules/.bin/jitsu");
-		job.arg("deploy", "-c", "-j", ".jitsuconf");
-		job.show().expect(0);
-		job.run().then(done);
+		var job;
+
+		AsyncSequence.run(
+			function(next) {
+				var job = qsub("./node_modules/.bin/jitsu");
+				job.arg("config", "set", "apiTokenName", "netpoker");
+				job.show().expect(0).run().then(next, grunt.fail.fatal);
+			},
+
+			function(next) {
+				var job = qsub("./node_modules/.bin/jitsu");
+				job.arg("config", "set", "apiToken", "a54ed51b-a7e4-4571-b929-71f447550c1a");
+				job.show().expect(0).run().then(next, grunt.fail.fatal);
+			},
+
+			function(next) {
+				var job = qsub("./node_modules/.bin/jitsu");
+				job.arg("config", "set", "username", "limikael");
+				job.show().expect(0).run().then(next, grunt.fail.fatal);
+			},
+
+			function(next) {
+				var job = qsub("./node_modules/.bin/jitsu");
+				job.arg("deploy", "-c");
+				job.show().expect(0).run().then(next, grunt.fail.fatal);
+			}
+		).then(done);
 	});
 
 	grunt.registerTask("js-unit-test", function() {
@@ -164,6 +187,7 @@ module.exports = function(grunt) {
 		console.log("  mockserver   - Start mock server.");
 		console.log("  deploy       - Deploy to nodejitsu.");
 		console.log("  js-unit-test - Run server tests.");
-		console.log("  doc          - Create project docs and push to http://netpokerdoc.altervista.org/")
+		console.log("  doc          - Create project docs.")
+		console.log("  publish-doc  - Publish doc to http://limikael.site11.com/netpokerdoc")
 	});
 }
