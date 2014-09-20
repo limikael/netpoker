@@ -108,6 +108,8 @@ ShowMuckState.prototype.onPromptComplete = function() {
 /**
  * Ask done. If there are more players to ask, ask them. If all
  * player have been asked, pay out.
+ * @method askDone
+ * @private
  */
 ShowMuckState.prototype.askDone = function() {
 	this.gameSeatIndexToSpeak++;
@@ -123,6 +125,8 @@ ShowMuckState.prototype.askDone = function() {
 /**
  * Must this seat show the cards?
  * @method mustShow
+ * @param {GameSeat} thisSeat 
+ * @private
  */
 ShowMuckState.prototype.mustShow = function(thisSeat) {
 	if (!thisSeat)
