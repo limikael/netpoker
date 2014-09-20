@@ -276,7 +276,7 @@ Hand.prototype.checkHighCard = function() {
 	this.score.push(Hand.HIGH_CARD);
 
 	for (var i = 0; i < 5; i++)
-		this.score.push(cards[i].getCardValue());
+		this.score.push(this.cards[i].getCardValue());
 
 	return true;
 }

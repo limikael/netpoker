@@ -125,7 +125,7 @@ ShowMuckState.prototype.askDone = function() {
 /**
  * Must this seat show the cards?
  * @method mustShow
- * @param {GameSeat} thisSeat 
+ * @param {GameSeat} thisSeat
  * @private
  */
 ShowMuckState.prototype.mustShow = function(thisSeat) {

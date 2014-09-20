@@ -104,14 +104,23 @@ describe("Hand", function() {
 		expect(hand.getScore()).toEqual([Hand.STRAIGHT_FLUSH, 5]);
 	});
 
-	it("can compare two hands",function() {
+	it("can compare two hands", function() {
 		// three of a kind
 		var a = new Hand(createCardDataArray(["2C", "3C", "3D", "10S", "AD", "3S", "7H"]));
 
 		// straight
 		var b = new Hand(createCardDataArray(["2H", "3H", "7C", "4H", "4S", "5S", "6H"]));
 
-		expect(Hand.compare(a,b)).toEqual(-1);
-		expect(Hand.compare(b,a)).toEqual(1);
+		expect(Hand.compare(a, b)).toEqual(-1);
+		expect(Hand.compare(b, a)).toEqual(1);
+	});
+
+	it("can check for high card", function() {
+		// three of a kind
+		var hand = new Hand(createCardDataArray(["2C", "3C", "5D", "10S", "AD", "8S", "7H"]));
+
+		expect(hand.getCategory()).toBe(Hand.HIGH_CARD);
+		expect(hand.getScoreString()).toBe("high card ace");
+		expect(hand.getScore()).toEqual([Hand.HIGH_CARD, 12, 8, 6, 5, 3]);
 	});
 });
