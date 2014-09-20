@@ -19,6 +19,7 @@ function Game(table) {
 	this.gameSeats = [];
 	this.gameSeatPrompt = null;
 	this.communityCards = [];
+	this.rake = 0;
 }
 
 FunctionUtil.extend(Game, EventDispatcher);
@@ -334,4 +335,13 @@ Game.prototype.getSplitPot = function(from, to) {
 
 	return pot;
 }
+
+/**
+ * Set rake.
+ * @method setRake
+ */
+Game.prototype.setRake = function(rake) {
+	this.rake = rake;
+}
+
 module.exports = Game;

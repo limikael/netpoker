@@ -153,4 +153,8 @@ BotConnection.prototype.getCommunityCards = function() {
 	return this.model.getCommunityCards();
 }
 
+BotConnection.prototype.getTotalSeatChips=function() {
+	return this.model.getTotalSeatChips();
+}
+
 module.exports = BotConnection;

@@ -32,6 +32,12 @@ function Table(services, config) {
 	this.minSitInAmount = config.minSitInAmount;
 	this.maxSitInAmount = config.maxSitInAmount;
 
+	if (config.rakePercent)
+		this.rakePercent = config.rakePercent;
+
+	else
+		this.rakePercent = 0;
+
 	this.setupSeats(config.numseats);
 
 	BaseTable.call(this);
@@ -309,6 +315,14 @@ Table.prototype.close = function() {
 		this.currentGame.close();
 		this.currentGame = null;
 	}
+}
+
+/**
+ * Get rake percent.
+ * @method getRakePercent
+ */
+Table.prototype.getRakePercent = function() {
+	return this.rakePercent;
 }
 
 module.exports = Table;

@@ -38,4 +38,8 @@ BotSeatModel.prototype.setBet = function(bet) {
 	this.bet = bet;
 }
 
+BotSeatModel.prototype.clearCards = function() {
+	this.cards = [null, null];
+}
+
 module.exports = BotSeatModel;

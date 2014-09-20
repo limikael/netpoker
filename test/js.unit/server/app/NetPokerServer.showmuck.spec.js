@@ -13,6 +13,7 @@ var TickLoopRunner = require("../../../utils/TickLoopRunner");
 var AskBlindState = require("../../../../src/js/server/game/AskBlindState");
 var RoundState = require("../../../../src/js/server/game/RoundState");
 var ShowMuckState = require("../../../../src/js/server/game/ShowMuckState");
+var FinishedState = require("../../../../src/js/server/game/FinishedState");
 var CardData = require("../../../../src/js/proto/data/CardData");
 
 describe("NetPokerServer - show muck", function() {
@@ -34,7 +35,7 @@ describe("NetPokerServer - show muck", function() {
 		netPokerServer.close();
 	});
 
-	it("asks if we want to show or muck cards", function(done) {
+	it("can handle muck", function(done) {
 		var bot1 = new BotConnection(netPokerServer, "user1");
 		var bot2 = new BotConnection(netPokerServer, "user2");
 
@@ -63,28 +64,98 @@ describe("NetPokerServer - show muck", function() {
 				expect(table.getCurrentGame().gameState).toEqual(jasmine.any(RoundState));
 				expect(bot1.getSeatAt(1).getCardAt(0)).not.toBe(null);
 
-				//console.log("user1 buttons: "+bot1.getButtons());
-				//console.log("user2 buttons: "+bot2.getButtons());
-
 				expect(bot2.getButtons()).not.toBe(null);
-				bot2.act(ButtonData.CALL);
+				bot2.act(ButtonData.FOLD);
 
 				TickLoopRunner.runTicks(20).then(next);
 			},
 
 			function(next) {
-				expect(bot1.getButtons()).not.toBe(null);
-				bot1.act(ButtonData.FOLD);
-
-				TickLoopRunner.runTicks(20).then(next);
-			},
-
-			function(next) {
-				var state=table.getCurrentGame().getGameState();
+				var state = table.getCurrentGame().getGameState();
 				expect(state instanceof ShowMuckState).toBe(true);
 
-				//should be expected!!!
-				//expect(bot1.getButtons()).not.toBe(null);
+				expect(bot1.getButtons()).not.toBe(null);
+				bot1.act(ButtonData.MUCK);
+
+				TickLoopRunner.runTicks(20).then(next);
+			},
+
+			function(next) {
+				expect(bot1.getTotalSeatChips()).toBe(20);
+				expect(bot1.getSeatAt(1).getChips()).toBe(11);
+				expect(bot1.getSeatAt(2).getChips()).toBe(9);
+
+				expect(bot1.getSeatAt(1).getCardAt(0)).toBe(null);
+
+				var state = table.getCurrentGame().getGameState();
+				expect(state instanceof FinishedState).toBe(true);
+
+				bot1.close();
+				bot2.close();
+				table.close();
+				next();
+			}
+		).then(done);
+	});
+
+	it("can handle show", function(done) {
+		var bot1 = new BotConnection(netPokerServer, "user1");
+		var bot2 = new BotConnection(netPokerServer, "user2");
+
+		var table = netPokerServer.tableManager.getTableById(123);
+
+		AsyncSequence.run(
+			function(next) {
+				bot1.connectToTable(123);
+				console.log("calling sit in");
+				bot1.sitIn(1, 10);
+				bot1.replyOnce(ButtonsMessage, new ButtonClickMessage(ButtonData.POST_SB));
+
+				bot2.connectToTable(123);
+				bot2.sitIn(2, 10);
+				bot2.replyOnce(ButtonsMessage, new ButtonClickMessage(ButtonData.POST_BB));
+
+				TickLoopRunner.runTicks(20).then(next);
+			},
+
+			function(next) {
+				expect(bot1.getSeatAt(1).getBet()).toBe(2);
+				expect(bot1.getSeatAt(1).getChips()).toBe(8);
+				expect(bot1.getSeatAt(2).getBet()).toBe(1);
+				expect(bot1.getSeatAt(2).getChips()).toBe(9);
+
+				expect(table.getCurrentGame().gameState).toEqual(jasmine.any(RoundState));
+				expect(bot1.getSeatAt(1).getCardAt(0)).not.toBe(null);
+
+				expect(bot2.getButtons()).not.toBe(null);
+				bot2.act(ButtonData.FOLD);
+
+				TickLoopRunner.runTicks(20).then(next);
+			},
+
+			function(next) {
+				var state = table.getCurrentGame().getGameState();
+				expect(state instanceof ShowMuckState).toBe(true);
+
+				expect(bot1.getSeatAt(1).getCardAt(0).isShown()).toBe(true);
+				expect(bot2.getSeatAt(1).getCardAt(0).isShown()).toBe(false);
+
+				expect(bot1.getButtons()).not.toBe(null);
+				bot1.act(ButtonData.SHOW);
+
+				TickLoopRunner.runTicks(20).then(next);
+			},
+
+			function(next) {
+				expect(bot1.getTotalSeatChips()).toBe(20);
+				expect(bot1.getSeatAt(1).getChips()).toBe(11);
+				expect(bot1.getSeatAt(2).getChips()).toBe(9);
+
+				expect(bot1.getSeatAt(1).getCardAt(0).isShown()).toBe(true);
+				expect(bot2.getSeatAt(1).getCardAt(0).isShown()).toBe(true);
+
+				var state = table.getCurrentGame().getGameState();
+				expect(state instanceof FinishedState).toBe(true);
 
 				bot1.close();
 				bot2.close();

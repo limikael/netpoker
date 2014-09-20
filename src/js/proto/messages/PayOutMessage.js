@@ -17,11 +17,19 @@ PayOutMessage.prototype.getValues = function() {
 }
 
 /**
+ * Set value at.
+ * @method setValueAt
+ */
+PayOutMessage.prototype.setValueAt = function(seatIndex, value) {
+	this.values[seatIndex] = value;
+}
+
+/**
  * Un-serialize.
  * @method unserialize
  */
 PayOutMessage.prototype.unserialize = function(data) {
-	for(var i = 0; i < data.values.length; i++) {
+	for (var i = 0; i < data.values.length; i++) {
 		this.values.push(data.values[i]);
 	}
 }

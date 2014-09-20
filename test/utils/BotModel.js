@@ -30,4 +30,18 @@ BotModel.prototype.getCommunityCards = function() {
 	return this.communityCards;
 }
 
+BotModel.prototype.getTotalSeatChips = function() {
+	var total=0;
+
+	for (var i = 0; i < 10; i++) {
+		var c=this.seatModels[i].getChips();
+		var v=parseInt(c);
+
+		if (!isNaN(v))
+			total+=v;
+	}
+
+	return total;
+}
+
 module.exports = BotModel;

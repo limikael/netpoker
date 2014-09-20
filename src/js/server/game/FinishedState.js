@@ -24,7 +24,7 @@ FinishedState.FINISH_DELAY = 3000;
 FinishedState.prototype.run = function() {
 	console.log("**** finished state");
 	this.game.getTable().send(new DelayMessage(FinishedState.FINISH_DELAY));
-	setTimeout(this.onTimout.bind(this), FinishedState.FINISH_DELAY);
+	this.timeoutId = setTimeout(this.onTimout.bind(this), FinishedState.FINISH_DELAY);
 }
 
 /**
@@ -33,6 +33,8 @@ FinishedState.prototype.run = function() {
  * @private
  */
 FinishedState.prototype.onTimout = function() {
+	this.timeoutId = null;
+
 	var clear = [
 		ClearMessage.BETS,
 		ClearMessage.POT,
@@ -41,6 +43,17 @@ FinishedState.prototype.onTimout = function() {
 
 	this.game.getTable().send(new ClearMessage(clear));
 	this.game.notifyFinished();
+}
+
+/**
+ * Hard close.
+ * @method close
+ */
+FinishedState.prototype.close = function() {
+	if (this.timeoutId) {
+		clearTimeout(this.timeoutId);
+		this.timeoutId = null;
+	}
 }
 
 module.exports = FinishedState;

@@ -1,6 +1,7 @@
 var BetMessage = require("../../proto/messages/BetMessage");
 var FoldCardsMessage = require("../../proto/messages/FoldCardsMessage");
 var ActionMessage = require("../../proto/messages/ActionMessage");
+var PocketCardsMessage = require("../../proto/messages/PocketCardsMessage");
 var Hand = require("../hand/Hand");
 
 /**
@@ -14,9 +15,12 @@ function GameSeat(game, seatIndex) {
 		throw new Error("Didn't find table seat for index: " + seatIndex);
 
 	this.pocketCards = [];
-	this.folded = false;
 	this.bet = 0;
 	this.potContrib = 0;
+
+	this.folded = false;
+	this.showing = false;
+	this.mucked = false;
 }
 
 /**
@@ -133,6 +137,35 @@ GameSeat.prototype.fold = function() {
 	this.folded = true;
 
 	this.game.send(new ActionMessage(this.getSeatIndex(), ActionMessage.FOLD));
+	this.game.send(new FoldCardsMessage(this.getSeatIndex()));
+}
+
+/**
+ * Show cards.
+ * @method show
+ */
+GameSeat.prototype.show = function() {
+	this.showing = true;
+
+	var p = new PocketCardsMessage(this.getSeatIndex());
+	for (var i = 0; i < this.pocketCards.length; i++)
+		p.addCard(this.pocketCards[i]);
+
+	this.game.send(p);
+
+	if (this.game.getCommunityCards().length == 5)
+		game.getTable().chat(null,
+			this.tableSeat.getUser().getName() + " shows " +
+			this.getHand().getScoreString());
+}
+
+/**
+ * Muck cards.
+ * @method muck
+ */
+GameSeat.prototype.muck = function() {
+	this.mucked = true;
+	this.game.send(new ActionMessage(this.getSeatIndex(), ActionMessage.MUCK));
 	this.game.send(new FoldCardsMessage(this.getSeatIndex()));
 }
 
