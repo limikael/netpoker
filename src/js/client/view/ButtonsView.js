@@ -169,7 +169,11 @@ ButtonsView.prototype.onRaiseMenuButtonClick = function() {
  * @method onSliderChange
  */
 ButtonsView.prototype.onSliderChange = function() {
-	this.buttons[this.sliderIndex].value = Math.round(this.sliderMin + this.slider.value*(this.sliderMax - this.sliderMin));
+	var newValue = Math.round(this.sliderMin + this.slider.getValue()*(this.sliderMax - this.sliderMin));
+	this.buttons[this.sliderIndex].setValue(newValue);
+	this.buttonDatas[this.sliderIndex].value = newValue;
+	console.log("newValue = " + newValue);
+
 	//this.raiseAmountMenuInput.setText(buttons[_sliderIndex].value.toString());
 }
 
@@ -178,12 +182,16 @@ ButtonsView.prototype.onSliderChange = function() {
  * @method showSlider
  */
 ButtonsView.prototype.showSlider = function(index, min, max) {
+	console.log("showSlider");
 	this.sliderIndex = index;
 	this.sliderMin = min;
 	this.sliderMax = max;
 
-	this.slider.value = (this.buttons[index].value - min)/(max - min);
-	this.slider.visible=true;
+	console.log("this.buttonDatas["+index+"] = " + this.buttonDatas[index].getValue() + ", min = " + min + ", max = " + max);
+	this.slider.setValue((this.buttonDatas[index].getValue() - min)/(max - min));
+	console.log("this.slider.getValue() = " + this.slider.getValue());
+	this.slider.visible = true;
+	this.slider.show();
 }
 
 /**

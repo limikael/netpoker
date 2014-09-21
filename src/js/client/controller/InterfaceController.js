@@ -23,7 +23,7 @@ function InterfaceController(messageSequencer, view) {
 InterfaceController.prototype.onButtonsMessage = function(m) {
 	var buttonsView = this.view.getButtonsView();
 
-	buttonsView.setButtons(m.getButtons(), m.sliderButtonIndex, m.min, m.max);
+	buttonsView.setButtons(m.getButtons(), m.sliderButtonIndex, parseInt(m.min, 10), parseInt(m.max, 10));
 }
 
 /**
