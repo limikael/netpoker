@@ -58,7 +58,7 @@ TableController.prototype.onCommunityCardsMessage = function(m) {
 		var cardView = this.view.getCommunityCards()[m.getFirstIndex() + i];
 
 		cardView.setCardData(cardData);
-		cardView.show(m.animate, m.getFirstIndex() * 500);
+		cardView.show(m.animate, i * 500);
 	}
 	if (m.getCards().length > 0) {
 		var cardData = m.getCards()[m.getCards().length - 1];
