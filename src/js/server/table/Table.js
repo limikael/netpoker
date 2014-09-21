@@ -6,6 +6,7 @@ var TableSeat = require("./TableSeat");
 var TableSpectator = require("./TableSpectator");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 var ChatMessage = require("../../proto/messages/ChatMessage");
+var DealerButtonMessage = require("../../proto/messages/DealerButtonMessage");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var ArrayUtil = require("../../utils/ArrayUtil");
 var Game = require("../game/Game");
@@ -126,8 +127,8 @@ Table.prototype.sendState = function(protoConnection) {
 
 	protoConnection.send(new StateCompleteMessage());
 
-	/*var b: DealerButtonMessage = new DealerButtonMessage(dealerButtonIndex);
-	c.send(b);*/
+	var b = new DealerButtonMessage(this.dealerButtonIndex);
+	protoConnection.send(b);
 
 	for (var i = 0; i < this.chatLines.length; i++)
 		protoConnection.send(new ChatMessage(this.chatLines[i].user, this.chatLines[i].text));

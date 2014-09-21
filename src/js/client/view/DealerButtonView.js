@@ -45,13 +45,16 @@ DealerButtonView.prototype.animateToSeatIndex = function(seatIndex) {
 	var destination = Resources.getInstance().getPoints("dealerButtonPositions")[seatIndex];
 	var diffX = this.position.x - destination.x;
 	var diffY = this.position.y - destination.y;
-	var diff = Math.sqrt(diffX*diffX + diffY*diffY);
+	var diff = Math.sqrt(diffX * diffX + diffY * diffY);
 
-	var tween = new TWEEN.Tween( this.position )
-            .to( { x: destination.x, y: destination.y }, 5*diff )
-            .easing( TWEEN.Easing.Quadratic.Out )
-            .onComplete(this.onShowComplete.bind(this))
-            .start();
+	var tween = new TWEEN.Tween(this.position)
+		.to({
+			x: destination.x,
+			y: destination.y
+		}, 5 * diff)
+		.easing(TWEEN.Easing.Quadratic.Out)
+		.onComplete(this.onShowComplete.bind(this))
+		.start();
 };
 
 /**
@@ -75,11 +78,10 @@ DealerButtonView.prototype.hide = function() {
  * @method show
  */
 DealerButtonView.prototype.show = function(seatIndex, animate) {
-	this.visible = true;
-	if(animate) {
+	if (this.visible && animate) {
 		this.animateToSeatIndex(seatIndex);
-	}
-	else {
+	} else {
+		this.visible = true;
 		this.setSeatIndex(seatIndex);
 	}
 }

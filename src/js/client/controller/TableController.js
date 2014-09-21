@@ -58,9 +58,9 @@ TableController.prototype.onCommunityCardsMessage = function(m) {
 		var cardView = this.view.getCommunityCards()[m.getFirstIndex() + i];
 
 		cardView.setCardData(cardData);
-		cardView.show(m.getFirstIndex()*500);
+		cardView.show(m.getFirstIndex() * 500);
 	}
-	if(m.getCards().length > 0) {
+	if (m.getCards().length > 0) {
 		var cardData = m.getCards()[m.getCards().length - 1];
 		var cardView = this.view.getCommunityCards()[m.getFirstIndex() + m.getCards().length - 1];
 		this.messageSequencer.waitFor(cardView, "animationDone");
@@ -91,8 +91,13 @@ TableController.prototype.onPocketCardsMessage = function(m) {
  */
 TableController.prototype.onDealerButtonMessage = function(m) {
 	var dealerButtonView = this.view.getDealerButtonView();
-	this.messageSequencer.waitFor(dealerButtonView, "animationDone");
-	dealerButtonView.show(m.getSeatIndex(), m.getAnimate());
+
+	if (m.seatIndex < 0) {
+		dealerButtonView.hide();
+	} else {
+		this.messageSequencer.waitFor(dealerButtonView, "animationDone");
+		dealerButtonView.show(m.getSeatIndex(), m.getAnimate());
+	}
 };
 
 /**
@@ -110,14 +115,14 @@ TableController.prototype.onBetMessage = function(m) {
 TableController.prototype.onBetsToPot = function(m) {
 	var haveChips = false;
 
-	for(var i = 0; i < this.view.seatViews.length; i++)
-		if(this.view.seatViews[i].betChips.value > 0)
+	for (var i = 0; i < this.view.seatViews.length; i++)
+		if (this.view.seatViews[i].betChips.value > 0)
 			haveChips = true;
 
 	if (!haveChips)
 		return;
 
-	for(var i = 0; i < this.view.seatViews.length; i++)
+	for (var i = 0; i < this.view.seatViews.length; i++)
 		this.view.seatViews[i].betChips.animateIn();
 
 	this.messageSequencer.waitFor(this.view.seatViews[0].betChips, "animationDone");
@@ -149,34 +154,34 @@ TableController.prototype.onTimer = function(m) {
  * Action message.
  * @method onAction
  */
- TableController.prototype.onAction = function(m) {
+TableController.prototype.onAction = function(m) {
 	if (m.seatIndex == null)
 		m.seatIndex = 0;
 
 	this.view.seatViews[m.seatIndex].action(m.action);
- };
+};
 
 /**
  * Fold cards message.
  * @method onFoldCards
  */
- TableController.prototype.onFoldCards = function(m) {
+TableController.prototype.onFoldCards = function(m) {
 	this.view.seatViews[m.seatIndex].foldCards();
 
 	this.messageSequencer.waitFor(this.view.seatViews[m.seatIndex], "animationDone");
- };
+};
 
 /**
  * Delay message.
  * @method onDelay
  */
- TableController.prototype.onDelay = function(m) {
- 	console.log("delay for  = "+m.delay);
+TableController.prototype.onDelay = function(m) {
+	console.log("delay for  = " + m.delay);
 
 
 	this.messageSequencer.waitFor(this, "timerDone");
 	setTimeout(this.dispatchEvent.bind(this, "timerDone"), m.delay);
 
- };
+};
 
 module.exports = TableController;

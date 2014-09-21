@@ -1,6 +1,7 @@
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var ChatMessage = require("../../proto/messages/ChatMessage");
+var DealerButtonMessage = require("../../proto/messages/DealerButtonMessage");
 
 /**
  * Base class for cash game and tournament tables.
@@ -52,7 +53,7 @@ BaseTable.prototype.getNumInGame = function() {
 /**
  * Get parent id. This id is what should be used for the
  * start game call for backend. For cashgames, this will
- * represent the table id, for tournamets, it will 
+ * represent the table id, for tournamets, it will
  * represent the tournament id.
  * @method getStartGameParentId
  */
@@ -102,11 +103,11 @@ BaseTable.prototype.getNextSeatIndexInGame = function(from) {
 BaseTable.prototype.chat = function(user, message) {
 	var nick;
 	var string;
-	if(user != null)
+	if (user != null)
 		nick = user.name;
 	else
 		nick = "Dealer";
-/*
+	/*
 	if((user == null) || (message == null)) {
 		string = "";
 	}
@@ -133,13 +134,15 @@ BaseTable.prototype.rawChat = function(user, string) {
 	var message = new ChatMessage(user, string);
 	this.send(message);
 
-
 	console.log("user = " + user + ", string = " + string);
 
-	this.chatLines.push({user: user, text: string});
-	while(this.chatLines.length > 10)
-		this.chatLines.shift();
+	this.chatLines.push({
+		user: user,
+		text: string
+	});
 
+	while (this.chatLines.length > 10)
+		this.chatLines.shift();
 }
 
 /**
@@ -149,7 +152,7 @@ BaseTable.prototype.rawChat = function(user, string) {
 BaseTable.prototype.advanceDealer = function() {
 	this.dealerButtonIndex = this.getNextSeatIndexInGame(this.dealerButtonIndex);
 
-	// send
+	this.send(new DealerButtonMessage(this.dealerButtonIndex, true));
 }
 
 /**
