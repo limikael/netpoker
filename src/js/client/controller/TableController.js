@@ -58,12 +58,13 @@ TableController.prototype.onCommunityCardsMessage = function(m) {
 		var cardView = this.view.getCommunityCards()[m.getFirstIndex() + i];
 
 		cardView.setCardData(cardData);
-		cardView.show(m.getFirstIndex() * 500);
+		cardView.show(m.animate, m.getFirstIndex() * 500);
 	}
 	if (m.getCards().length > 0) {
 		var cardData = m.getCards()[m.getCards().length - 1];
 		var cardView = this.view.getCommunityCards()[m.getFirstIndex() + m.getCards().length - 1];
-		this.messageSequencer.waitFor(cardView, "animationDone");
+		if(m.animate)
+			this.messageSequencer.waitFor(cardView, "animationDone");
 	}
 }
 
@@ -79,9 +80,10 @@ TableController.prototype.onPocketCardsMessage = function(m) {
 		var cardData = m.getCards()[i];
 		var cardView = seatView.getPocketCards()[m.getFirstIndex() + i];
 
-		this.messageSequencer.waitFor(cardView, "animationDone");
+		if(m.animate)
+			this.messageSequencer.waitFor(cardView, "animationDone");
 		cardView.setCardData(cardData);
-		cardView.show(10);
+		cardView.show(m.animate, 10);
 	}
 }
 

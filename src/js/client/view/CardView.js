@@ -96,10 +96,14 @@ CardView.prototype.hide = function() {
  * Show.
  * @method show
  */
-CardView.prototype.show = function(delay) {
+CardView.prototype.show = function(animate, delay) {
 	/*if(delay == undefined)
 		delay = 1;
 	*/
+	if(!animate) {
+		this.onShowComplete();
+		return;
+	}
 	this.mask.height = this.height;
 
 	var destination = {x: this.position.x, y: this.position.y};
