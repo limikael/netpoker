@@ -100,6 +100,9 @@ CardView.prototype.show = function(animate, delay) {
 	/*if(delay == undefined)
 		delay = 1;
 	*/
+	this.maskGraphics.scale.y = 1;
+	this.position.x = this.targetPosition.x;
+	this.position.y = this.targetPosition.y;
 	if(!animate) {
 		this.onShowComplete();
 		return;
