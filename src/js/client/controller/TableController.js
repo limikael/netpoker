@@ -10,6 +10,7 @@ var ActionMessage = require("../../proto/messages/ActionMessage");
 var FoldCardsMessage = require("../../proto/messages/FoldCardsMessage");
 var DelayMessage = require("../../proto/messages/DelayMessage");
 var EventDispatcher = require("../../utils/EventDispatcher");
+var ClearMessage = require("../../proto/messages/ClearMessage");
 
 /**
  * Control the table
@@ -30,6 +31,7 @@ function TableController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(ActionMessage.TYPE, this.onAction, this);
 	this.messageSequencer.addMessageHandler(FoldCardsMessage.TYPE, this.onFoldCards, this);
 	this.messageSequencer.addMessageHandler(DelayMessage.TYPE, this.onDelay, this);
+	this.messageSequencer.addMessageHandler(ClearMessage.TYPE, this.onClear, this);
 }
 EventDispatcher.init(TableController);
 
@@ -185,5 +187,46 @@ TableController.prototype.onDelay = function(m) {
 	setTimeout(this.dispatchEvent.bind(this, "timerDone"), m.delay);
 
 };
+
+/**
+ * Clear message.
+ * @method onClea
+ */
+TableController.prototype.onClear = function(m) {
+
+	var components = m.getComponents();
+
+	for(var i = 0; i < components.length; i++) {
+		switch(components[i]) {
+			case ClearMessage.POT: {
+				this.view.potView.setValues([]);
+				break;
+			}
+			case ClearMessage.BETS: {
+				for(var s = 0; s < this.view.seatViews.length; s++) {
+					this.view.seatViews[s].betChips.setValue(0);
+				}
+				break;
+			}
+			case ClearMessage.CARDS: {
+				for(var s = 0; s < this.view.seatViews.length; s++) {
+					for(var c = 0; c < this.view.seatViews[s].pocketCards.length; c++) {
+						this.view.seatViews[s].pocketCards[c].hide();
+					}
+				}
+
+				for(var c = 0; c < this.view.communityCards.length; c++) {
+					this.view.communityCards[c].hide();
+				}
+				break;
+			}
+			case ClearMessage.CHAT: {
+				this.view.chatView.clear();
+				break;
+			}
+		}
+	}
+}
+
 
 module.exports = TableController;
