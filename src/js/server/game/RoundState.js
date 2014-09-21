@@ -162,10 +162,10 @@ RoundState.prototype.onPromptComplete = function() {
 		this.spokenAtCurrentBet.push(gameSeat);
 
 		if (this.canCheck(gameSeat))
-			this.game.send(new ActionMessage(gameSeat.getSeatIndex, ActionMessage.CHECK));
+			this.game.send(new ActionMessage(gameSeat.getSeatIndex(), ActionMessage.CHECK));
 
 		else
-			this.game.send(new ActionMessage(gameSeat.getSeatIndex, ActionMessage.CALL));
+			this.game.send(new ActionMessage(gameSeat.getSeatIndex(), ActionMessage.CALL));
 
 		gameSeat.makeBet(this.getCostToCall(gameSeat));
 		this.askDone();
