@@ -219,4 +219,63 @@ ChipsView.prototype.onInAnimationComplete = function() {
 	this.dispatchEvent("animationDone", this);
 }
 
+/**
+ * Animate out.
+ * @method animateOut
+ */
+ChipsView.prototype.animateOut = function() {
+	this.position.y = Resources.getInstance().getPoint("potPosition").y;
+
+	switch (this.align) {
+		case Resources.getInstance().Align.LEFT:
+			this.position.x = Resources.getInstance().getPoint("potPosition").x - width/2;
+
+		case Resources.getInstance().Align.CENTER:
+			this.position.x = Resources.getInstance().getPoint("potPosition").x;
+
+		case Resources.getInstance().Align.RIGHT:
+			this.position.x = Resources.getInstance().getPoint("potPosition").x + width/2;
+	}
+
+	var o = {
+		x: this.targetPosition.x,
+		y: this.targetPosition.y
+	};
+
+	var time = 500;
+	var tween = new TWEEN.Tween(this)
+					.to(o, time)
+					.onComplete(this.onOutAnimationComplete.bind(this))
+					.start();
+	
+}
+
+/**
+ * Out animation complete.
+ * @method onOutAnimationComplete
+ */
+ChipsView.prototype.onOutAnimationComplete = function() {
+
+	var time = 500;
+	var tween = new TWEEN.Tween({x:0})
+					.to({x:10}, time)
+					.onComplete(this.onOutWaitAnimationComplete.bind(this))
+					.start();
+
+	x = this.targetPosition.x;
+	y = this.targetPosition.y;
+
+}
+
+/**
+ * Out wait animation complete.
+ * @method onOutWaitAnimationComplete
+ */
+ChipsView.prototype.onOutWaitAnimationComplete = function() {
+
+	this.setValue(0);
+
+	this.dispatchEvent("animationDone", this);
+}
+
 module.exports = ChipsView;

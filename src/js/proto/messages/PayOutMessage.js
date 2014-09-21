@@ -30,7 +30,7 @@ PayOutMessage.prototype.setValueAt = function(seatIndex, value) {
  */
 PayOutMessage.prototype.unserialize = function(data) {
 	for (var i = 0; i < data.values.length; i++) {
-		this.values.push(data.values[i]);
+		this.values[i] = data.values[i];
 	}
 }
 

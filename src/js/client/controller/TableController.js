@@ -11,6 +11,7 @@ var FoldCardsMessage = require("../../proto/messages/FoldCardsMessage");
 var DelayMessage = require("../../proto/messages/DelayMessage");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var ClearMessage = require("../../proto/messages/ClearMessage");
+var PayOutMessage = require("../../proto/messages/PayOutMessage");
 
 /**
  * Control the table
@@ -32,6 +33,7 @@ function TableController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(FoldCardsMessage.TYPE, this.onFoldCards, this);
 	this.messageSequencer.addMessageHandler(DelayMessage.TYPE, this.onDelay, this);
 	this.messageSequencer.addMessageHandler(ClearMessage.TYPE, this.onClear, this);
+	this.messageSequencer.addMessageHandler(PayOutMessage.TYPE, this.onPayOut, this);
 }
 EventDispatcher.init(TableController);
 
@@ -190,7 +192,7 @@ TableController.prototype.onDelay = function(m) {
 
 /**
  * Clear message.
- * @method onClea
+ * @method onClear
  */
 TableController.prototype.onClear = function(m) {
 
@@ -227,6 +229,20 @@ TableController.prototype.onClear = function(m) {
 		}
 	}
 }
+
+/**
+ * Pay out message.
+ * @method onPayOut
+ */
+TableController.prototype.onPayOut = function(m) {
+	for (var i = 0; i < m.values.length; i++)
+		this.view.seatViews[i].betChips.setValue(m.values[i]);
+
+	for (var i = 0; i < this.view.seatViews.length; i++)
+		this.view.seatViews[i].betChips.animateOut();
+
+	this.messageSequencer.waitFor(this.view.seatViews[0].betChips, "animationDone");
+};
 
 
 module.exports = TableController;
