@@ -55,8 +55,8 @@ AskBlindState.prototype.askNextBlind = function() {
 
 	this.prompt = new GameSeatPrompt(gameSeat);
 
-	this.prompt.addButton(this.getCurrentBlind(), this.getCurrentBlindAmount());
 	this.prompt.addButton(ButtonData.SIT_OUT);
+	this.prompt.addButton(this.getCurrentBlind(), this.getCurrentBlindAmount());
 	this.prompt.setDefaultButton(ButtonData.SIT_OUT);
 	this.prompt.on(GameSeatPrompt.COMPLETE, this.onPromptComplete, this);
 	this.prompt.ask();
@@ -79,7 +79,7 @@ AskBlindState.prototype.onPromptComplete = function() {
 		//gameSeat.getTableSeat().notifyBigBlindPaid();
 		this.game.addGameSeat(gameSeat);
 	} else {
-		//gameSeat.getTableSeat().sitout();
+		gameSeat.getTableSeat().sitout();
 	}
 
 	this.askDone();

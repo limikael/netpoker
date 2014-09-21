@@ -1,5 +1,7 @@
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
+var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
+var ButtonData = require("../../proto/data/ButtonData");
 var TableSeatBuyChipsPrompt = require("./TableSeatBuyChipsPrompt");
 var Backend = require("../backend/Backend");
 
@@ -13,7 +15,7 @@ function TableSeatUser(tableSeat, user) {
 	this.sitInCompleted = false;
 	this.leaving = false;
 	this.chips = 0;
-	this.sitout = false;
+	this.sittingout = false;
 }
 
 FunctionUtil.extend(TableSeatUser, EventDispatcher);
@@ -178,7 +180,22 @@ TableSeatUser.prototype.isReserved = function() {
  * @method isSitout
  */
 TableSeatUser.prototype.isSitout = function() {
-	return this.sitout;
+	return this.sittingout;
+}
+
+/**
+ * Sit out the table seat user.
+ * @method sitout
+ */
+TableSeatUser.prototype.sitout=function() {
+	var b=new ButtonsMessage();
+	b.addButton(new ButtonData(ButtonData.LEAVE));
+	b.addButton(new ButtonData(ButtonData.IM_BACK));
+	this.tableSeat.send(b);
+
+	this.sittingout=true;
+
+	this.tableSeat.getTable().send(this.tableSeat.getSeatInfoMessage());
 }
 
 module.exports = TableSeatUser;

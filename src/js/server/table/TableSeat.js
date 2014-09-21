@@ -194,4 +194,15 @@ TableSeat.prototype.isSitout = function() {
 	return this.tableSeatUser.isSitout();
 }
 
+/**
+ * Sit out the seated user.
+ * @method sitout
+ */
+TableSeat.prototype.sitout=function() {
+	if (!this.tableSeatUser)
+		throw new Error("trying to sit out a null user");
+
+	this.tableSeatUser.sitout();
+}
+
 module.exports = TableSeat;
