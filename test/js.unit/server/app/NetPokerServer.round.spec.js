@@ -50,7 +50,7 @@ describe("NetPokerServer - round", function() {
 				bot2.sitIn(2, 10);
 				bot2.replyOnce(ButtonsMessage, new ButtonClickMessage(ButtonData.POST_BB));
 
-				TickLoopRunner.runTicks(20).then(next);
+				TickLoopRunner.runTicks(50).then(next);
 			},
 
 			function(next) {
