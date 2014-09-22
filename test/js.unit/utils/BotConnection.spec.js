@@ -27,6 +27,7 @@ describe("BotConnection", function() {
 
 	afterEach(function() {
 		mockBackendServer.close();
+		netPokerServer.close();
 	});
 
 	it("can connect to a server", function(done) {
@@ -36,9 +37,6 @@ describe("BotConnection", function() {
 			function(next) {
 				b.connectToTable(123);
 				b.runStrategy(new BotSitInStrategy(1,10)).then(next);
-
-				/*b.sitIn(1, 10);
-				TickLoopRunner.runTicks().then(next);*/
 			},
 
 			function(next) {
@@ -49,6 +47,5 @@ describe("BotConnection", function() {
 				next();
 			}
 		).then(done);
-
 	});
 });
