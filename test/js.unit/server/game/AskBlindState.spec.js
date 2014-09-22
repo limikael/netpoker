@@ -37,13 +37,17 @@ describe("AskBlindState", function() {
 			function(next) {
 				bot1 = new BotConnection(netPokerServer, "user1");
 				bot1.connectToTable(123);
-				bot1.runStrategy(new BotSitInStrategy(1, 10)).then(next);
+				var t1=bot1.runStrategy(new BotSitInStrategy(1, 10));
+
+				bot2 = new BotConnection(netPokerServer, "user2");
+				bot2.connectToTable(123);
+				var t2=bot2.runStrategy(new BotSitInStrategy(2, 10));
+
+				ThenableBarrier.wait(t1,t2).then(next);
 			},
 
 			function(next) {
-				bot2 = new BotConnection(netPokerServer, "user2");
-				bot2.connectToTable(123);
-				bot2.runStrategy(new BotSitInStrategy(2, 10)).then(next);
+				TickLoopRunner.runTicks().then(next);
 			},
 
 			function(next) {
