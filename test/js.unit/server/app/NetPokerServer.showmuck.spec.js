@@ -113,15 +113,18 @@ describe("NetPokerServer - show muck", function() {
 		AsyncSequence.run(
 			function(next) {
 				bot1.connectToTable(123);
-				console.log("calling sit in");
-				bot1.sitIn(1, 10);
 				bot1.replyOnce(ButtonsMessage, new ButtonClickMessage(ButtonData.POST_SB));
+				var t1=bot1.runStrategy(new BotSitInStrategy(1, 10));
 
 				bot2.connectToTable(123);
-				bot2.sitIn(2, 10);
 				bot2.replyOnce(ButtonsMessage, new ButtonClickMessage(ButtonData.POST_BB));
+				var t2=bot2.runStrategy(new BotSitInStrategy(2, 10));
 
-				TickLoopRunner.runTicks(20).then(next);
+				ThenableBarrier.wait(t1,t2).then(next);
+			},
+
+			function(next) {
+				TickLoopRunner.runTicks().then(next);
 			},
 
 			function(next) {
