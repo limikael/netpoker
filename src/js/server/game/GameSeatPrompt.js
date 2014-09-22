@@ -92,6 +92,8 @@ GameSeatPrompt.prototype.ask = function() {
 	this.timeoutId = setTimeout(this.onTimeout.bind(this), this.responseTime * 1000);
 	this.gameSeat.send(this.buttonsMessage);
 	this.gameSeat.getGame().send(this.getCurrentTimerMessage());
+
+	console.log("######## ask!!");
 }
 
 /**

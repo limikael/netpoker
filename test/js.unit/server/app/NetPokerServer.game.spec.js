@@ -127,7 +127,7 @@ describe("NetPokerServer - ask blinds", function() {
 				bot2.connectToTable(123);
 				bot3.connectToTable(123);
 
-				TickLoopRunner.runTicks().then(next);
+				TickLoopRunner.runTicks(20).then(next);
 			},
 
 			function(next) {
@@ -157,7 +157,10 @@ describe("NetPokerServer - ask blinds", function() {
 				expect(bot3.getLastMessageOfType(ButtonsMessage)).not.toBe(null);
 
 				bot3.send(new ButtonClickMessage(ButtonData.POST_BB));
+				TickLoopRunner.runTicks().then(next);
+			},
 
+			function(next) {
 				expect(table.getCurrentGame().getNumInGame()).toBe(3);
 
 				table.stop();

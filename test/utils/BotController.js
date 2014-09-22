@@ -4,6 +4,7 @@ var PocketCardsMessage = require("../../src/js/proto/messages/PocketCardsMessage
 var BetMessage = require("../../src/js/proto/messages/BetMessage");
 var CommunityCardsMessage = require("../../src/js/proto/messages/CommunityCardsMessage");
 var FoldCardsMessage = require("../../src/js/proto/messages/FoldCardsMessage");
+var DealerButtonMessage = require("../../src/js/proto/messages/DealerButtonMessage");
 
 function BotController(model) {
 	this.model = model;
@@ -17,6 +18,7 @@ BotController.prototype.setProtoConnection = function(protoConnection) {
 	this.protoConnection.addMessageHandler(BetMessage, this.onBetMessage, this);
 	this.protoConnection.addMessageHandler(CommunityCardsMessage, this.onCommunityCardsMessage, this);
 	this.protoConnection.addMessageHandler(FoldCardsMessage, this.onFoldCardsMessage, this);
+	this.protoConnection.addMessageHandler(DealerButtonMessage, this.onDealerButtonMessage, this);
 }
 
 BotController.prototype.onSeatInfoMessage = function(m) {
@@ -60,6 +62,10 @@ BotController.prototype.onFoldCardsMessage=function(m) {
 	var seatModel = this.model.getSeatModelBySeatIndex(m.getSeatIndex());
 
 	seatModel.clearCards();
+}
+
+BotController.prototype.onDealerButtonMessage=function(m) {
+	this.model.setDealerButtonPosition(m.getSeatIndex());
 }
 
 module.exports = BotController;

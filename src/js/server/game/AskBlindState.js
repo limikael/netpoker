@@ -147,12 +147,27 @@ AskBlindState.prototype.getCurrentBlindAmount = function() {
 	return cand;
 }
 
+/**
+ * Hard close the state. Only for debugging.
+ * @method close
+ */
 AskBlindState.prototype.close = function() {
 	console.log("hard close ask blind state, seatprompt=" + this.prompt);
 	if (this.prompt) {
 		this.prompt.close();
 		this.prompt = null;
 	}
+}
+
+/**
+ * Return bets and cancel the game.
+ * @method cancel
+ * @private
+ */
+AskBlindState.prototype.cancel = function() {
+	this.game.setGameState(new FinishedState());
+
+	//this.game.getTable().sendTableInfoMessages();
 }
 
 module.exports = AskBlindState;

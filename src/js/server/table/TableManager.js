@@ -68,4 +68,13 @@ TableManager.prototype.getTableById = function(id) {
 	return null;
 }
 
+/**
+ * Hard close.
+ * @method close
+ */
+TableManager.prototype.close = function() {
+	for (var i = 0; i < this.tables.length; i++)
+		this.tables[i].close();
+}
+
 module.exports = TableManager;

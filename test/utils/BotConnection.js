@@ -212,4 +212,8 @@ BotConnection.prototype.getTotalSeatChips=function() {
 	return this.model.getTotalSeatChips();
 }
 
+BotConnection.prototype.getDealerButtonPosition=function() {
+	return this.model.getDealerButtonPosition();
+}
+
 module.exports = BotConnection;

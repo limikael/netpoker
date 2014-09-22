@@ -1,30 +1,43 @@
- var MessagePipeConnection = require("../../utils/MessagePipeConnection");
+var MessagePipeConnection = require("../../utils/MessagePipeConnection");
+var TickLoopRunner = require("../../utils/TickLoopRunner");
+var AsyncSequence = require("../../../src/js/utils/AsyncSequence");
 
- describe("MessagePipeConnection", function() {
+describe("MessagePipeConnection", function() {
 
- 	it("can be send and recv", function() {
- 		c1 = new MessagePipeConnection();
- 		c2 = c1.createConnection();
+	it("can be send and recv", function(done) {
+		c1 = new MessagePipeConnection();
+		c2 = c1.createConnection();
 
- 		var recv;
+		var recv;
 
- 		function listener(m) {
- 			recv = m.message;
- 		}
+		function listener(m) {
+			recv = m.message;
+		}
 
- 		c2.on(MessagePipeConnection.MESSAGE, listener);
- 		c1.send({
- 			hello: "world"
- 		});
+		c2.on(MessagePipeConnection.MESSAGE, listener);
 
- 		expect(recv).toEqual({
- 			hello: "world"
- 		});
+		var closeSpy = jasmine.createSpy();
 
- 		var closeSpy = jasmine.createSpy();
- 		c2.on(MessagePipeConnection.CLOSE, closeSpy);
+		AsyncSequence.run(
+			function(next) {
+				c1.send({
+					hello: "world"
+				});
+				TickLoopRunner.runTicks().then(next);
+			},
 
- 		c1.close();
- 		expect(closeSpy).toHaveBeenCalled();
- 	});
- });
+			function(next) {
+				expect(recv).toEqual({
+					hello: "world"
+				});
+
+				c2.on(MessagePipeConnection.CLOSE, closeSpy);
+
+				c1.close();
+				expect(closeSpy).toHaveBeenCalled();
+
+				done();
+			}
+		);
+	});
+});

@@ -7,8 +7,8 @@ function BotModel() {
 		this.seatModels.push(new BotSeatModel(i));
 
 	this.buttons = null;
-
 	this.communityCards = [];
+	this.dealerButtonPosition = -1;
 }
 
 BotModel.prototype.getSeatModelBySeatIndex = function(i) {
@@ -31,17 +31,25 @@ BotModel.prototype.getCommunityCards = function() {
 }
 
 BotModel.prototype.getTotalSeatChips = function() {
-	var total=0;
+	var total = 0;
 
 	for (var i = 0; i < 10; i++) {
-		var c=this.seatModels[i].getChips();
-		var v=parseInt(c);
+		var c = this.seatModels[i].getChips();
+		var v = parseInt(c);
 
 		if (!isNaN(v))
-			total+=v;
+			total += v;
 	}
 
 	return total;
+}
+
+BotModel.prototype.setDealerButtonPosition = function(seatIndex) {
+	this.dealerButtonPosition=seatIndex;
+}
+
+BotModel.prototype.getDealerButtonPosition = function() {
+	return this.dealerButtonPosition;
 }
 
 module.exports = BotModel;

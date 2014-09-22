@@ -25,7 +25,9 @@ BotStrategy.prototype.setBotConnection=function(botConnection) {
  * @method notifyComplete
  */
 BotStrategy.prototype.notifyComplete=function() {
-	this.trigger("complete");
+	setTimeout(function() {
+		this.trigger("complete");
+	}.bind(this),0);
 }
 
 module.exports=BotStrategy;

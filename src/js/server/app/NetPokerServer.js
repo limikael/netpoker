@@ -158,11 +158,13 @@ NetPokerServer.prototype.run = function() {
 }
 
 /**
- * Close.
+ * Hard close.
  * @method close
  */
 NetPokerServer.prototype.close = function() {
 	this.connectionManager.close();
+
+	this.tableManager.close();
 }
 
 module.exports = NetPokerServer;

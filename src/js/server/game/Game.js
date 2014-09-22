@@ -230,6 +230,8 @@ Game.prototype.setGameSeatPrompt = function(gameSeatPrompt) {
  * @method close
  */
 Game.prototype.close = function() {
+	console.log("hard close game, gameSeatPrompt="+this.gameSeatPrompt);
+
 	if (this.gameState)
 		this.gameState.close();
 
