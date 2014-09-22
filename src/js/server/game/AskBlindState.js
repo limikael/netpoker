@@ -94,12 +94,24 @@ AskBlindState.prototype.askDone = function() {
 	var table = this.game.getTable();
 
 	if (this.askTableSeatIndex == table.getDealerButtonIndex()) {
-		this.game.setGameState(new RoundState());
-		return;
+		if (this.game.getGameSeats().length>=2) {
+			this.game.setGameState(new RoundState());
+			//this.game.getTable().sendTableInfoMessages();
+		}
+
+		else {
+			this.cancel();
+		}
 	}
 
-	this.askTableSeatIndex = table.getNextSeatIndexInGame(this.askTableSeatIndex);
-	this.askNextBlind();
+	else if (table.getNumInGame()<2) {
+		this.cancel();
+	}
+
+	else {
+		this.askTableSeatIndex = table.getNextSeatIndexInGame(this.askTableSeatIndex);
+		this.askNextBlind();
+	}
 }
 
 /**
@@ -165,6 +177,12 @@ AskBlindState.prototype.close = function() {
  * @private
  */
 AskBlindState.prototype.cancel = function() {
+	console.log("************ canceling game");
+	this.game.getTable().chat(null, "Not enough players to start the hand.");
+
+	/*for (gameSeat in game.gameSeats)
+		gameSeat.returnBet(gameSeat.bet);*/
+
 	this.game.setGameState(new FinishedState());
 
 	//this.game.getTable().sendTableInfoMessages();

@@ -62,7 +62,7 @@ describe("AskBlindState", function() {
 
 			function(next) {
 				//this is actually the test we want to do.
-				//expect(table.getCurrentGame().getGameState() instanceof FinishedState).toBe(true);
+				expect(table.getCurrentGame().getGameState() instanceof FinishedState).toBe(true);
 
 				bot1.close();
 				bot2.close();

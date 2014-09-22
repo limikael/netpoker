@@ -225,7 +225,7 @@ Table.prototype.onCurrentGameFinished = function() {
 	if (this.stopped)
 		return;
 
-	if (this.getNumInGame())
+	if (this.getNumInGame()>=2)
 		this.startGame();
 }
 

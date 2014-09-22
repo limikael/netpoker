@@ -92,7 +92,7 @@ TableSeatUser.prototype.onBuyChipsPromptCancel = function() {
  * @method isInGame
  */
 TableSeatUser.prototype.isInGame = function() {
-	return this.sitInCompleted;
+	return this.sitInCompleted && !this.sittingout;
 }
 
 /**

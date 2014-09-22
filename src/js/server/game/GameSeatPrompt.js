@@ -93,7 +93,7 @@ GameSeatPrompt.prototype.ask = function() {
 	this.gameSeat.send(this.buttonsMessage);
 	this.gameSeat.getGame().send(this.getCurrentTimerMessage());
 
-	console.log("######## ask!!");
+	//console.log("######## ask!!");
 }
 
 /**
