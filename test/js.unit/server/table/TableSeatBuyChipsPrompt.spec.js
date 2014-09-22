@@ -241,16 +241,24 @@ describe("TableSeatBuyChipsPrompt", function() {
 			return thenable;
 		};
 
-		var cancelSpy = jasmine.createSpy();
-
 		var prompt = new TableSeatBuyChipsPrompt(mockTableSeat);
+
+		prompt.on(TableSeatBuyChipsPrompt.CANCEL, function() {
+			expect(mockTableSeat.send).toHaveBeenCalled();
+			done();
+		});
+
 		prompt.ask();
-		prompt.on(TableSeatBuyChipsPrompt.CANCEL, cancelSpy);
+		
+
+		/*var cancelSpy = jasmine.createSpy();
+		prompt.on(TableSeatBuyChipsPrompt.CANCEL,cancelSpy);
+		prompt.ask();
 
 		setTimeout(function() {
 			expect(mockTableSeat.send).toHaveBeenCalled();
 			expect(cancelSpy).toHaveBeenCalled();
 			done();
-		}, 10);
-	})
+		}, 100);*/
+	});
 });

@@ -10,6 +10,7 @@ var SeatClickMessage = require("../../src/js/proto/messages/SeatClickMessage");
 var ButtonData = require("../../src/js/proto/data/ButtonData");
 var BotModel = require("./BotModel");
 var BotController = require("./BotController");
+var EventDispatcher = require("../../src/js/utils/EventDispatcher");
 
 function BotConnection(connectionTarget, token) {
 	this.connectionTarget = connectionTarget;
@@ -20,6 +21,58 @@ function BotConnection(connectionTarget, token) {
 	this.connectThenable;
 	this.model = new BotModel();
 	this.controller = new BotController(this.model);
+
+	this.runningStrategy=null;
+	this.strategyCompleteThenable=null;
+	this.messageDispatcher=new EventDispatcher();
+}
+
+/**
+ * Add message handler.
+ * @method addMessageHandler
+ */
+BotConnection.prototype.addMessageHandler = function(messageType, handler, scope) {
+	if (messageType.hasOwnProperty("TYPE"))
+		messageType = messageType.TYPE;
+
+	this.messageDispatcher.on(messageType, handler, scope);
+}
+
+/**
+ * Remove message handler.
+ * @method removeMessageHandler
+ */
+BotConnection.prototype.removeMessageHandler = function(messageType, handler, scope) {
+	if (messageType.hasOwnProperty("TYPE"))
+		messageType = messageType.TYPE;
+
+	this.messageDispatcher.off(messageType, handler, scope);
+}
+
+BotConnection.prototype.runStrategy=function(strategy) {
+	if (this.runningStrategy)
+		throw new Error("Already running a stragety");
+
+	this.strategyCompleteThenable=new Thenable();
+
+	//console.log("strategy: "+strategy);
+
+	this.runningStrategy=strategy;
+	this.runningStrategy.setBotConnection(this);
+	this.runningStrategy.on("complete",this.onStrategyComplete,this);
+	this.runningStrategy.run();
+
+	return this.strategyCompleteThenable;
+}
+
+BotConnection.prototype.onStrategyComplete=function() {
+	var thenable=this.strategyCompleteThenable;
+
+	this.runningStrategy.off("complete",this.onStrategyComplete,this);
+	this.runningStrategy=null;
+	this.strategyCompleteThenable=null;
+
+	thenable.resolve();
 }
 
 BotConnection.prototype.connectToTable = function(tableId) {
@@ -87,6 +140,8 @@ BotConnection.prototype.onProtoConnectionMessage = function(e) {
 	//console.log("** BOT message: " + e.message.type + " replying: " + this.replies[e.message.type]);
 
 	this.messages.push(e.message);
+
+	this.messageDispatcher.trigger(e.message);
 
 	if (this.replies[e.message.type])
 		this.send(this.replies[e.message.type]);
