@@ -63,7 +63,7 @@ describe("NetPokerServer - round", function() {
 				expect(bot1.getSeatAt(1).getCardAt(0)).not.toBe(null);
 
 				//console.log("user1 buttons: "+bot1.getButtons());
-				//console.log("user2 buttons: "+bot2.getButtons());
+				console.log("***** user2 buttons: "+bot2.getButtons());
 
 				expect(bot2.getButtons()).not.toBe(null);
 				bot2.act(ButtonData.CALL);
@@ -73,6 +73,7 @@ describe("NetPokerServer - round", function() {
 
 			function(next) {
 				expect(bot1.getButtons()).not.toBe(null);
+
 				bot1.act(ButtonData.CHECK);
 
 				TickLoopRunner.runTicks(20).then(next);

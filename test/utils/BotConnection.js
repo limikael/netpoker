@@ -198,8 +198,10 @@ BotConnection.prototype.getButtons = function() {
 }
 
 BotConnection.prototype.act = function(buttonId) {
-	if (!this.model.getButtons())
+	if (!this.model.getButtons()) {
+		console.log("**************************** no buttons!!");
 		throw new Error("can't act, no buttons");
+	}
 
 	this.send(new ButtonClickMessage(buttonId));
 }
