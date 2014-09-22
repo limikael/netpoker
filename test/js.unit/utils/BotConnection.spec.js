@@ -9,6 +9,7 @@ var SeatInfoMessage = require("../../../src/js/proto/messages/SeatInfoMessage");
 var ButtonData = require("../../../src/js/proto/data/ButtonData");
 var AsyncSequence = require("../../../src/js/utils/AsyncSequence");
 var TickLoopRunner = require("../../utils/TickLoopRunner");
+var BotSitInStrategy = require("../../utils/BotSitInStrategy");
 
 describe("BotConnection", function() {
 	var mockBackendServer;
@@ -34,8 +35,10 @@ describe("BotConnection", function() {
 		AsyncSequence.run(
 			function(next) {
 				b.connectToTable(123);
-				b.sitIn(1, 10);
-				TickLoopRunner.runTicks().then(next);
+				b.runStrategy(new BotSitInStrategy(1,10)).then(next);
+
+				/*b.sitIn(1, 10);
+				TickLoopRunner.runTicks().then(next);*/
 			},
 
 			function(next) {
