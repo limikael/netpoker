@@ -104,6 +104,7 @@ CardView.prototype.show = function(animate, delay) {
 	this.position.x = this.targetPosition.x;
 	this.position.y = this.targetPosition.y;
 	if(!animate) {
+		this.visible = true;
 		this.onShowComplete();
 		return;
 	}
