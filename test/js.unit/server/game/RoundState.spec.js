@@ -79,6 +79,7 @@ describe("RoundState", function() {
 			},
 
 			function(next) {
+
 				/*expect(bot1.getSeatAt(2).getBet()).toBe(5);
 				expect(bot1.getSeatAt(2).getChips()).toBe(5);*/
 
