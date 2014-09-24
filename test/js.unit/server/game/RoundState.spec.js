@@ -84,6 +84,8 @@ describe("RoundState", function() {
 				expect(bot1.getSeatAt(2).getBet()).toBe(5);
 				expect(bot1.getSeatAt(2).getChips()).toBe(5);
 
+				expect(bot1.isActionAvailable(ButtonData.CALL)).toBe(true);
+
 				expect(bot1.getButtons()).not.toBe(null);
 
 				bot1.close();

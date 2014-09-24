@@ -22,9 +22,9 @@ function BotConnection(connectionTarget, token) {
 	this.model = new BotModel();
 	this.controller = new BotController(this.model);
 
-	this.runningStrategy=null;
-	this.strategyCompleteThenable=null;
-	this.messageDispatcher=new EventDispatcher();
+	this.runningStrategy = null;
+	this.strategyCompleteThenable = null;
+	this.messageDispatcher = new EventDispatcher();
 }
 
 /**
@@ -49,28 +49,28 @@ BotConnection.prototype.removeMessageHandler = function(messageType, handler, sc
 	this.messageDispatcher.off(messageType, handler, scope);
 }
 
-BotConnection.prototype.runStrategy=function(strategy) {
+BotConnection.prototype.runStrategy = function(strategy) {
 	if (this.runningStrategy)
 		throw new Error("Already running a stragety");
 
-	this.strategyCompleteThenable=new Thenable();
+	this.strategyCompleteThenable = new Thenable();
 
 	//console.log("strategy: "+strategy);
 
-	this.runningStrategy=strategy;
+	this.runningStrategy = strategy;
 	this.runningStrategy.setBotConnection(this);
-	this.runningStrategy.on("complete",this.onStrategyComplete,this);
+	this.runningStrategy.on("complete", this.onStrategyComplete, this);
 	this.runningStrategy.run();
 
 	return this.strategyCompleteThenable;
 }
 
-BotConnection.prototype.onStrategyComplete=function() {
-	var thenable=this.strategyCompleteThenable;
+BotConnection.prototype.onStrategyComplete = function() {
+	var thenable = this.strategyCompleteThenable;
 
-	this.runningStrategy.off("complete",this.onStrategyComplete,this);
-	this.runningStrategy=null;
-	this.strategyCompleteThenable=null;
+	this.runningStrategy.off("complete", this.onStrategyComplete, this);
+	this.runningStrategy = null;
+	this.strategyCompleteThenable = null;
 
 	thenable.resolve();
 }
@@ -210,12 +210,26 @@ BotConnection.prototype.getCommunityCards = function() {
 	return this.model.getCommunityCards();
 }
 
-BotConnection.prototype.getTotalSeatChips=function() {
+BotConnection.prototype.getTotalSeatChips = function() {
 	return this.model.getTotalSeatChips();
 }
 
-BotConnection.prototype.getDealerButtonPosition=function() {
+BotConnection.prototype.getDealerButtonPosition = function() {
 	return this.model.getDealerButtonPosition();
+}
+
+BotConnection.prototype.isActionAvailable = function(action) {
+	if (!action)
+		throw new Error("what action is that?");
+
+	if (!this.model.getButtons())
+		return false;
+
+	for (var i = 0; i < this.model.getButtons().length; i++)
+		if (this.model.getButtons()[i].getButton() == action)
+			return true;
+
+	return false;
 }
 
 module.exports = BotConnection;
