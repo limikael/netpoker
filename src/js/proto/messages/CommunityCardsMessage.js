@@ -78,7 +78,7 @@ CommunityCardsMessage.prototype.serialize = function() {
 		cards.push(this.cards[i].getValue());
 
 	return {
-		animate: this.seatIndex,
+		animate: this.animate,
 		firstIndex: this.firstIndex,
 		cards: cards
 	};

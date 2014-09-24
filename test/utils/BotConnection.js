@@ -197,13 +197,13 @@ BotConnection.prototype.getButtons = function() {
 	return this.model.getButtons();
 }
 
-BotConnection.prototype.act = function(buttonId) {
+BotConnection.prototype.act = function(buttonId, value) {
 	if (!this.model.getButtons()) {
 		console.log("**************************** no buttons!!");
 		throw new Error("can't act, no buttons");
 	}
 
-	this.send(new ButtonClickMessage(buttonId));
+	this.send(new ButtonClickMessage(buttonId, value));
 }
 
 BotConnection.prototype.getCommunityCards = function() {

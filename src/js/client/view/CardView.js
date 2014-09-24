@@ -118,7 +118,7 @@ CardView.prototype.show = function(animate, delay) {
 	var diff = Math.sqrt(diffX*diffX + diffY*diffY);
 
 	var tween = new TWEEN.Tween( this.position )
-            .delay(delay)
+//            .delay(delay)
             .to( { x: destination.x, y: destination.y }, 3*diff )
             .easing( TWEEN.Easing.Quadratic.Out )
             .onStart(this.onShowStart.bind(this))

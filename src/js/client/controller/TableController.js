@@ -57,6 +57,9 @@ TableController.prototype.onSeatInfoMessage = function(m) {
 TableController.prototype.onCommunityCardsMessage = function(m) {
 	var i;
 
+	console.log("got community cards!");
+	console.log(m);
+
 	for (i = 0; i < m.getCards().length; i++) {
 		var cardData = m.getCards()[i];
 		var cardView = this.view.getCommunityCards()[m.getFirstIndex() + i];
