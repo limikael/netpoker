@@ -30,7 +30,7 @@ module.exports = function(grunt) {
 				var job = qsub("curl");
 				job.arg("-s", "-X", "POST");
 				job.arg("--data-binary", "@doc.zip");
-				//job.arg("http://limikael.site11.com/?target=netpokerdoc&key=qkv9eXL7");
+				//job.arg("http://limikael.site11.com/?target=netpokerdoc&key=qkv9eXL7"); //test
 				job.arg("http://limikael.altervista.org/?target=netpokerdoc&key=CTYWtAbc");
 				job.expect(0).show();
 
