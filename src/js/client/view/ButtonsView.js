@@ -247,6 +247,8 @@ ButtonsView.prototype.onButtonClick = function(e) {
 			buttonIndex = i;
 	}
 
+	this.slider.visible = false;
+
 	//console.log("button click: " + buttonIndex);
 	var buttonData = this.buttonDatas[buttonIndex];
 
