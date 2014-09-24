@@ -4,7 +4,7 @@ var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("./FunctionUtil");
 var ContentScaler = require("./ContentScaler");
-var FrameTimer = require("./FrameTimer");
+//var FrameTimer = require("./FrameTimer");
 
 /**
  * Pixi full window app.
@@ -53,7 +53,9 @@ function PixiApp(domId, width, height) {
 	else
 		this.useScaling(width, height);
 
-	FrameTimer.getInstance().addEventListener(FrameTimer.RENDER, this.onAnimationFrame, this);
+//	FrameTimer.getInstance().addEventListener(FrameTimer.RENDER, this.onAnimationFrame, this);
+
+	window.requestAnimationFrame(this.onAnimationFrame.bind(this));
 }
 
 FunctionUtil.extend(PixiApp, PIXI.DisplayObjectContainer);
@@ -114,9 +116,11 @@ PixiApp.prototype.onWindowResize = function() {
  * @method onAnimationFrame
  * @private
  */
-PixiApp.prototype.onAnimationFrame = function() {
+PixiApp.prototype.onAnimationFrame = function(time) {
 	this.renderer.render(this.appStage);
-	TWEEN.update();
+	TWEEN.update(time);
+
+	window.requestAnimationFrame(this.onAnimationFrame.bind(this));
 }
 
 /**
