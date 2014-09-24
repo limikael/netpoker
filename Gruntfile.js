@@ -190,4 +190,4 @@ module.exports = function(grunt) {
 		console.log("  doc          - Create project docs.")
 		console.log("  publish-doc  - Publish doc to http://limikael.site11.com/netpokerdoc")
 	});
-}
+};
