@@ -21,16 +21,17 @@ module.exports = function(grunt) {
 				var job = qsub("zip");
 				job.arg("-r", "doc.zip", "doc");
 				job.expect(0);
-				job.run().then(next, function(e) {
-					throw e
-				});
+				job.run().then(next, grunt.fail.fatal);
 			},
 
 			function(next) {
+				console.log("running...");
+
 				var job = qsub("curl");
 				job.arg("-s", "-X", "POST");
 				job.arg("--data-binary", "@doc.zip");
-				job.arg("http://limikael.site11.com/?target=netpokerdoc&key=qkv9eXL7");
+				//job.arg("http://limikael.site11.com/?target=netpokerdoc&key=qkv9eXL7");
+				job.arg("http://limikael.altervista.org/?target=netpokerdoc&key=CTYWtAbc");
 				job.expect(0).show();
 
 				job.run().then(
