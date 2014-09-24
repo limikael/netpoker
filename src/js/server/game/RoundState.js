@@ -50,15 +50,16 @@ RoundState.prototype.run = function() {
 
 	//console.log("number of players with chips: " + this.getNumberOfPlayersWithChips());
 
-	if (this.getNumberOfPlayersWithChips() < 2) {
-		/*if (this.game.getCommunityCards().length == 5)
+	// Why is this needed? For all in, enable when we can test...
+	/*if (this.getNumberOfPlayersWithChips() < 2) {
+		if (this.game.getCommunityCards().length == 5)
 			this.game.setGameState(new ShowMuckState());
 
 		else
 			this.game.setGameState(new RoundState());
 
-		return;*/
-	}
+		return;
+	}*/
 
 	this.ensureGameSeatIndexToSpeakNotFolded();
 
@@ -98,20 +99,20 @@ RoundState.prototype.ask = function() {
 		this.prompt.addButton(ButtonData.CALL, this.getCostToCall(gameSeat));
 	}
 
-	
 
-	if(this.canRaise(gameSeat)) {
+
+	if (this.canRaise(gameSeat)) {
 		var minRaise = this.getMinRaiseTo(gameSeat);
 		var maxRaise = this.getMaxRaiseTo(gameSeat);
 
 		if (this.getHighestBet() == 0)
 			this.prompt.addButton(ButtonData.BET, minRaise);
-		else 
+		else
 			this.prompt.addButton(ButtonData.RAISE, minRaise);
 
 		if (minRaise != maxRaise) {
 			this.prompt.setSliderValues(this.prompt.getLastButtonIndex(), minRaise, maxRaise);
-/*
+			/*
 			b.amountPresets.push(new PresetButtonData("MINIMUM",minRaise));
 
 			var total:Int=game.getTotalOnTable();
@@ -152,13 +153,27 @@ RoundState.prototype.onPromptComplete = function() {
 
 	var gameSeat = this.game.getGameSeats()[this.gameSeatIndexToSpeak];
 
-	/*if (prompt.isRaiseBet() && this.canRaise(gameSeat)) {
+	if (prompt.isRaiseBet() && this.canRaise(gameSeat)) {
+		this.spokenAtCurrentBet = [];
 
-	}*/
+		var value = prompt.getValue();
+		if (value < this.getMinRaiseTo(gameSeat))
+			value = this.getMinRaiseTo(gameSeat);
 
-	//console.log("************* prompt complete..");
+		if (value > this.getMaxRaiseTo(gameSeat))
+			value = this.getMaxRaiseTo(gameSeat);
 
-	if (prompt.isCheckCall()) {
+		if (prompt.getButton() == ButtonData.RAISE)
+			this.game.send(new ActionMessage(gameSeat.getSeatIndex(), ActionMessage.RAISE));
+
+		else
+			this.game.send(new ActionMessage(gameSeat.getSeatIndex(), ActionMessage.BET));
+
+		gameSeat.makeBet(value - gameSeat.getBet());
+		this.raiseTimes++;
+
+		this.askDone();
+	} else if (prompt.isCheckCall()) {
 		this.spokenAtCurrentBet.push(gameSeat);
 
 		if (this.canCheck(gameSeat))
@@ -212,7 +227,7 @@ RoundState.prototype.canRaise = function(gameSeat) {
 	if (gameSeat.getTableSeat().getChips() <= this.getCostToCall(gameSeat))
 		return false;
 
-	for(var i = 0; i < this.game.getGameSeats().length; i++) {
+	for (var i = 0; i < this.game.getGameSeats().length; i++) {
 		var gs = this.game.getGameSeats()[i];
 		if (!gs.isFolded())
 			if (gs.getTableSeat().getChips() > 0)

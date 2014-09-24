@@ -73,18 +73,21 @@ describe("RoundState", function() {
 				console.log("***** user2 buttons: " + bot2.getButtons());
 
 				expect(bot2.getButtons()).not.toBe(null);
+
+				console.log("acting in spec...");
 				bot2.act(ButtonData.RAISE, 5);
 
 				TickLoopRunner.runTicks(20).then(next);
 			},
 
 			function(next) {
-
-				/*expect(bot1.getSeatAt(2).getBet()).toBe(5);
-				expect(bot1.getSeatAt(2).getChips()).toBe(5);*/
+				expect(bot1.getSeatAt(2).getBet()).toBe(5);
+				expect(bot1.getSeatAt(2).getChips()).toBe(5);
 
 				expect(bot1.getButtons()).not.toBe(null);
 
+				bot1.close();
+				bot2.close();
 				next();
 			}
 		).then(done);

@@ -221,6 +221,9 @@ Game.prototype.sendState = function(protoConnection) {
  * @method setGameSeatPrompt
  */
 Game.prototype.setGameSeatPrompt = function(gameSeatPrompt) {
+	if (gameSeatPrompt && this.gameSeatPrompt)
+		throw new Error("There is already a game seat prompt!");
+
 	this.gameSeatPrompt = gameSeatPrompt;
 }
 

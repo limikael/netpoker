@@ -93,7 +93,7 @@ GameSeatPrompt.prototype.ask = function() {
 	this.gameSeat.send(this.buttonsMessage);
 	this.gameSeat.getGame().send(this.getCurrentTimerMessage());
 
-	//console.log("######## ask!!");
+	console.log("######## +++ ask, setting timeout");
 }
 
 /**
@@ -107,6 +107,7 @@ GameSeatPrompt.prototype.onButtonClickMessage = function(m) {
 		//console.log("------- clearing timeout");
 		clearTimeout(this.timeoutId);
 		this.timeoutId = null;
+		console.log("######## --- clear timeout");
 	}
 
 	this.gameSeat.getTableSeat().off(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
@@ -194,6 +195,7 @@ GameSeatPrompt.prototype.close = function() {
 	if (this.timeoutId) {
 		clearTimeout(this.timeoutId);
 		this.timeoutId = null;
+		console.log("######## --- clear timeout");
 	}
 }
 
