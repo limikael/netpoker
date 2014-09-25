@@ -154,7 +154,7 @@ GameSeat.prototype.show = function() {
 	this.game.send(p);
 
 	if (this.game.getCommunityCards().length == 5)
-		game.getTable().chat(null,
+		this.game.getTable().chat(null,
 			this.tableSeat.getUser().getName() + " shows " +
 			this.getHand().getScoreString());
 }

@@ -99,8 +99,6 @@ RoundState.prototype.ask = function() {
 		this.prompt.addButton(ButtonData.CALL, this.getCostToCall(gameSeat));
 	}
 
-
-
 	if (this.canRaise(gameSeat)) {
 		var minRaise = this.getMinRaiseTo(gameSeat);
 		var maxRaise = this.getMaxRaiseTo(gameSeat);
@@ -154,7 +152,7 @@ RoundState.prototype.onPromptComplete = function() {
 	var gameSeat = this.game.getGameSeats()[this.gameSeatIndexToSpeak];
 
 	if (prompt.isRaiseBet() && this.canRaise(gameSeat)) {
-		this.spokenAtCurrentBet = [];
+		this.spokenAtCurrentBet = [gameSeat];
 
 		var value = prompt.getValue();
 		if (value < this.getMinRaiseTo(gameSeat))

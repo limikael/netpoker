@@ -81,12 +81,19 @@ describe("RoundState", function() {
 			},
 
 			function(next) {
+				expect(table.getCurrentGame().getCommunityCards().length).toBe(0);
+
 				expect(bot1.getSeatAt(2).getBet()).toBe(5);
 				expect(bot1.getSeatAt(2).getChips()).toBe(5);
 
 				expect(bot1.isActionAvailable(ButtonData.CALL)).toBe(true);
+				bot1.act(ButtonData.CALL);
 
-				expect(bot1.getButtons()).not.toBe(null);
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				expect(table.getCurrentGame().getCommunityCards().length).toBe(3);
 
 				bot1.close();
 				bot2.close();

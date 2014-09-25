@@ -203,6 +203,9 @@ BotConnection.prototype.act = function(buttonId, value) {
 		throw new Error("can't act, no buttons");
 	}
 
+	if (!this.isActionAvailable(buttonId))
+		throw new Error("Action not available: "+buttonId);
+
 	this.send(new ButtonClickMessage(buttonId, value));
 }
 
