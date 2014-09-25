@@ -82,8 +82,7 @@ describe("ShowMuckState", function() {
 				var b1show=table.getCurrentGame().getGameSeatForSeatIndex(1).isShowing();
 				var b2show=table.getCurrentGame().getGameSeatForSeatIndex(2).isShowing();
 
-				//actual test, failing...
-				//expect(b1show || b2show).toBe(true);
+				expect(b1show || b2show).toBe(true);
 				next();
 			}
 		).then(done);

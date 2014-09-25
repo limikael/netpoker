@@ -134,6 +134,8 @@ ShowMuckState.prototype.mustShow = function(thisSeat) {
 
 	var bestSoFar = null;
 
+	console.log("must show, remaining: "+this.game.getNumPlayersRemaining());
+
 	if (this.game.getNumPlayersRemaining() < 2)
 		return false;
 
