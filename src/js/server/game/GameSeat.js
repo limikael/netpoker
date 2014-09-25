@@ -179,7 +179,7 @@ GameSeat.prototype.getHand = function() {
 
 /**
  * Is this player showing the cards?
- * @isShowing
+ * @method isShowing
  */
 GameSeat.prototype.isShowing = function() {
 	return this.showing;

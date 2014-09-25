@@ -7,6 +7,25 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 
 /**
  * Game seat prompt.
+ *
+ * Ask a user about an action in a game, in order to do this the sequence is
+ * as follows. First, instanciate this class. Add a number of options using the 
+ * `addButton` method. Set a default action using the `setDefaultButton` method.
+ * After this, call the `ask` mathod, and the corresponding messages will
+ * be sent to the user. The instance of this class will then be in a waiting
+ * state, and dispatch a `GameSeatPrompt.COMPLETE` message when either the
+ * user selects an action, of if the operation times out. After the event
+ * that signals completion has been sent, the selected button can be retreived
+ * using the `getButton` method, and the value for the action, if any, can
+ * be retreived using the `getValue` method.
+ * 
+ * Each `GameSeatPrompt` object is only intended to be used once, i.e. to
+ * ask one user about one action.
+ *
+ * When the `ask` method is called, this instance will be made the current
+ * one for the accociated game. Only one GameSeatPrompt can be current
+ * at any one time, if there is already a GameSeatPrompt that is current
+ * when the `ask` method is called, an exception will be thrown.
  * @class GameSeatPrompt
  */
 function GameSeatPrompt(gameSeat) {
@@ -28,6 +47,10 @@ function GameSeatPrompt(gameSeat) {
 
 FunctionUtil.extend(GameSeatPrompt, EventDispatcher);
 
+/**
+ * Triggered when we receiv an action from the user, or the prompt timed out.
+ * @event GameSeatPrompt.COMPLETE
+ */
 GameSeatPrompt.COMPLETE = "complete";
 
 /**
@@ -42,6 +65,8 @@ GameSeatPrompt.prototype.setResponseTime = function(secs) {
 /**
  * Add button.
  * @method addButton
+ * @param {String} buttonId The button id for the action to add.
+ * @param {Number} value The default value for the selected action.
  */
 GameSeatPrompt.prototype.addButton = function(buttonId, value) {
 	this.buttonsMessage.addButton(new ButtonData(buttonId, value));
@@ -50,6 +75,7 @@ GameSeatPrompt.prototype.addButton = function(buttonId, value) {
 /**
  * Set default button. It should be a string!
  * @method setDefaultButton
+ * @param {String} button The button corresponding to the default action.
  */
 GameSeatPrompt.prototype.setDefaultButton = function(button) {
 	if (typeof button != "string")
@@ -69,6 +95,9 @@ GameSeatPrompt.prototype.getLastButtonIndex = function() {
 /**
  * Set slider button index and min and max values.
  * @method setSliderValues
+ * @param {Number} buttonIndex The button index that should be affected by the slider.
+ * @param {Number} min The minimum value accepted by the action.
+ * @param {Number} max The maximum value accepted by the action.
  */
 GameSeatPrompt.prototype.setSliderValues = function(buttonIndex, min, max) {
 	this.buttonsMessage.sliderButtonIndex = buttonIndex;
@@ -99,6 +128,7 @@ GameSeatPrompt.prototype.ask = function() {
 /**
  * Button click message.
  * @method onButtonClickMessage
+ * @private
  */
 GameSeatPrompt.prototype.onButtonClickMessage = function(m) {
 	//console.log("********** button click in GameSeatPrompt");
@@ -121,7 +151,7 @@ GameSeatPrompt.prototype.onButtonClickMessage = function(m) {
 }
 
 /**
- * Get button.
+ * Get the selected button after completion.
  * @method getButton
  */
 GameSeatPrompt.prototype.getButton = function() {
@@ -132,7 +162,7 @@ GameSeatPrompt.prototype.getButton = function() {
 }
 
 /**
- * Get value.
+ * Get the selected value after completion.
  * @method getValue
  */
 GameSeatPrompt.prototype.getValue = function() {
@@ -140,7 +170,7 @@ GameSeatPrompt.prototype.getValue = function() {
 }
 
 /**
- * Get game seat.
+ * Get associated game seat.
  * @method getGameSeat
  */
 GameSeatPrompt.prototype.getGameSeat = function() {
@@ -150,6 +180,7 @@ GameSeatPrompt.prototype.getGameSeat = function() {
 /**
  * Timeout.
  * @method onTimeout
+ * @private
  */
 GameSeatPrompt.prototype.onTimeout = function() {
 	if (!this.timeoutId) {
@@ -170,7 +201,8 @@ GameSeatPrompt.prototype.onTimeout = function() {
 }
 
 /**
- * Get current timer message.
+ * Get a TimerMessage to indicate which game seat we are asking,
+ * and how long time is left.
  * @method getCurrentTimerMessage
  */
 GameSeatPrompt.prototype.getCurrentTimerMessage = function() {
@@ -200,11 +232,11 @@ GameSeatPrompt.prototype.close = function() {
 }
 
 /**
- * Is this a raise or bet?
+ * Is the selected button either a raise or bet?
  * @method isRaiseBet
  */
 GameSeatPrompt.prototype.isRaiseBet = function() {
-	if (this.getButton() == ButtonData.RAISE ||  this.getButton() == ButtonData.BET)
+	if (this.getButton() == ButtonData.RAISE || this.getButton() == ButtonData.BET)
 		return true;
 
 	else
@@ -212,11 +244,11 @@ GameSeatPrompt.prototype.isRaiseBet = function() {
 }
 
 /**
- * Is this a check or a call?
+ * Is the selected button either a check or a call?
  * @method isCheckCall
  */
 GameSeatPrompt.prototype.isCheckCall = function() {
-	if (this.getButton() == ButtonData.CHECK ||  this.getButton() == ButtonData.CALL)
+	if (this.getButton() == ButtonData.CHECK || this.getButton() == ButtonData.CALL)
 		return true;
 
 	else
