@@ -8,6 +8,7 @@ var FunctionUtil=require("../../src/js/utils/FunctionUtil");
  */
 function BotStrategy() {
 	this.botConnection=null;
+	this.stopped=false;
 }
 
 FunctionUtil.extend(BotStrategy,EventDispatcher);
@@ -25,9 +26,20 @@ BotStrategy.prototype.setBotConnection=function(botConnection) {
  * @method notifyComplete
  */
 BotStrategy.prototype.notifyComplete=function() {
+	if (this.stopped)
+		return;
+
 	setTimeout(function() {
 		this.trigger("complete");
 	}.bind(this),0);
+}
+
+/**
+ * Stop the strategy.
+ * @method stop
+ */
+BotStrategy.prototype.stop=function() {
+	this.stopped=true;
 }
 
 module.exports=BotStrategy;

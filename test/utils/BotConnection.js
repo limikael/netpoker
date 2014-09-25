@@ -65,6 +65,15 @@ BotConnection.prototype.runStrategy = function(strategy) {
 	return this.strategyCompleteThenable;
 }
 
+BotConnection.prototype.clearStrategy = function() {
+	if (this.runningStrategy) {
+		this.runningStrategy.stop();
+		this.runningStrategy.off("complete", this.onStrategyComplete, this);
+		this.runningStrategy = null;
+	}
+	this.strategyCompleteThenable = null;
+}
+
 BotConnection.prototype.onStrategyComplete = function() {
 	var thenable = this.strategyCompleteThenable;
 
@@ -204,7 +213,7 @@ BotConnection.prototype.act = function(buttonId, value) {
 	}
 
 	if (!this.isActionAvailable(buttonId))
-		throw new Error("Action not available: "+buttonId);
+		throw new Error("Action not available: " + buttonId);
 
 	this.send(new ButtonClickMessage(buttonId, value));
 }

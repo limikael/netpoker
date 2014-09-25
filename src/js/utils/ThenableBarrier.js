@@ -1,5 +1,5 @@
-var Thenable=require("./Thenable");
-var FunctionUtil=require("../utils/FunctionUtil");
+var Thenable = require("./Thenable");
+var FunctionUtil = require("../utils/FunctionUtil");
 
 /**
  * Listen to several promises that all must be fulfilled.
@@ -8,17 +8,20 @@ var FunctionUtil=require("../utils/FunctionUtil");
 function ThenableBarrier() {
 	Thenable.call(this);
 
-	this.thenables=[];
-	this.successCount=0;
+	this.thenables = [];
+	this.successCount = 0;
+
+	this.waitAny = false;
+	this.done=false;
 }
 
-FunctionUtil.extend(ThenableBarrier,Thenable);
+FunctionUtil.extend(ThenableBarrier, Thenable);
 
 /**
  * @method addThenable
  * Add a thenable to listen to.
  */
-ThenableBarrier.prototype.addThenable=function(t) {
+ThenableBarrier.prototype.addThenable = function(t) {
 	if (this.handlersCalled)
 		throw new Error("Already fired");
 
@@ -35,12 +38,19 @@ ThenableBarrier.prototype.addThenable=function(t) {
  * @method onThenableSuccess
  * @private
  */
-ThenableBarrier.prototype.onThenableSuccess=function() {
+ThenableBarrier.prototype.onThenableSuccess = function() {
+	if (this.waitAny) {
+		if (!this.done)
+			this.notifySuccess();
+		this.done = true;
+		return;
+	}
+
 	this.successCount++;
 
 	//console.log("success, count="+this.successCount+" t="+this.thenables.length);
 
-	if (this.successCount==this.thenables.length) {
+	if (this.successCount == this.thenables.length) {
 		//console.log("notifying success");
 		this.notifySuccess();
 	}
@@ -51,7 +61,7 @@ ThenableBarrier.prototype.onThenableSuccess=function() {
  * @method onThenableError
  * @private
  */
-ThenableBarrier.prototype.onThenableError=function(e) {
+ThenableBarrier.prototype.onThenableError = function(e) {
 	if (!this.handlersCalled)
 		this.notifyError(e);
 }
@@ -60,13 +70,28 @@ ThenableBarrier.prototype.onThenableError=function(e) {
  * Create a thenable barrier
  * @method wait
  */
-ThenableBarrier.wait=function(/* thenables */) {
-	var t=new ThenableBarrier();
+ThenableBarrier.wait = function( /* thenables */ ) {
+	var t = new ThenableBarrier();
 
-	for (var i=0; i<arguments.length; i++)
+	for (var i = 0; i < arguments.length; i++)
 		t.addThenable(arguments[i]);
 
 	return t;
 }
 
-module.exports=ThenableBarrier;
+/**
+ * Create a thenable barrier
+ * @method wait
+ */
+ThenableBarrier.waitAny = function( /* thenables */ ) {
+	var t = new ThenableBarrier();
+
+	t.waitAny = true;
+
+	for (var i = 0; i < arguments.length; i++)
+		t.addThenable(arguments[i]);
+
+	return t;
+}
+
+module.exports = ThenableBarrier;

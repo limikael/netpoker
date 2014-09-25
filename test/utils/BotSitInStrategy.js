@@ -24,7 +24,7 @@ FunctionUtil.extend(BotSitInStrategy,BotStrategy);
  * Run the strategy.
  * @method run
  */
-BotStrategy.prototype.run=function() {
+BotSitInStrategy.prototype.run=function() {
 	this.botConnection.addMessageHandler(StateCompleteMessage,this.onStateCompleteMessage,this);
 	this.botConnection.addMessageHandler(ShowDialogMessage,this.onShowDialogMessage,this);
 	this.botConnection.addMessageHandler(SeatInfoMessage,this.onSeatInfoMessage,this);
@@ -35,7 +35,7 @@ BotStrategy.prototype.run=function() {
  * @method onStateCompleteMessage
  * @private
  */
-BotStrategy.prototype.onStateCompleteMessage=function() {
+BotSitInStrategy.prototype.onStateCompleteMessage=function() {
 	console.log("state complete in bot sit in strategy");
 	this.botConnection.send(new SeatClickMessage(this.seatIndex));
 }
@@ -45,7 +45,7 @@ BotStrategy.prototype.onStateCompleteMessage=function() {
  * @method onShowDialogMessage
  * @private
  */
-BotStrategy.prototype.onShowDialogMessage=function() {
+BotSitInStrategy.prototype.onShowDialogMessage=function() {
 	console.log("show dialog message in strategy");
 	this.botConnection.send(new ButtonClickMessage(ButtonData.SIT_IN, this.sitInAmount));
 }
@@ -55,7 +55,7 @@ BotStrategy.prototype.onShowDialogMessage=function() {
  * @method onSeatInfoMessage
  * @private
  */
-BotStrategy.prototype.onSeatInfoMessage=function() {
+BotSitInStrategy.prototype.onSeatInfoMessage=function() {
 	var seat=this.botConnection.getSeatAt(this.seatIndex);
 
 	if (seat && seat.getChips()==this.sitInAmount)

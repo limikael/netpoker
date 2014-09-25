@@ -177,4 +177,12 @@ GameSeat.prototype.getHand = function() {
 	return new Hand(this.game.getCommunityCards().concat(this.pocketCards));
 }
 
+/**
+ * Is this player showing the cards?
+ * @isShowing
+ */
+GameSeat.prototype.isShowing = function() {
+	return this.showing;
+}
+
 module.exports = GameSeat;
