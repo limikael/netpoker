@@ -153,6 +153,8 @@ Game.prototype.getGameSeatForSeatIndex = function(seatIndex) {
 			return gameSeat;
 	}
 
+	//throw new Error("no one is sitting on: "+seatIndex);
+
 	return null;
 }
 
