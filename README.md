@@ -8,7 +8,7 @@ There is a mock server deployed at: http://limikael-netpoker.jit.su/
 Hacking
 -------
 
-There is internal class documentation generated at: http://limikael.site11.com/netpokerdoc/
+There is internal class documentation generated at: http://limikael.altervista.org/netpokerdoc
 
 In order to hack on this, clone the repository, then run:
 
