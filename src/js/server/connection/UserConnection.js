@@ -74,7 +74,7 @@ UserConnection.prototype.handleViewCase = function(viewCase) {
 	var lines = f.toString().split("\n");
 
 	for (var i = 0; i < lines.length; i++) {
-		var line = lines[i];
+		var line = lines[i].trim();
 
 		if (line.length && line[0] != "/") {
 			this.connection.send(JSON.parse(line));
