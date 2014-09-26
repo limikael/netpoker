@@ -140,9 +140,6 @@ AskBlindState.prototype.getCurrentBlind = function() {
 AskBlindState.prototype.getCurrentBlindAmount = function() {
 	var cand;
 
-	/*	if (!this.game.getTable().getStake())
-		throw new Error("Table doens't have a stake");*/
-
 	switch (this.getCurrentBlind()) {
 		case ButtonData.POST_SB:
 			cand = this.game.getTable().getStake() / 2;
@@ -164,7 +161,6 @@ AskBlindState.prototype.getCurrentBlindAmount = function() {
  * @method close
  */
 AskBlindState.prototype.close = function() {
-	console.log("hard close ask blind state, seatprompt=" + this.prompt);
 	if (this.prompt) {
 		this.prompt.close();
 		this.prompt = null;
@@ -177,7 +173,7 @@ AskBlindState.prototype.close = function() {
  * @private
  */
 AskBlindState.prototype.cancel = function() {
-	console.log("************ canceling game");
+	console.log("Canceling game");
 	this.game.getTable().chat(null, "Not enough players to start the hand.");
 
 	/*for (gameSeat in game.gameSeats)

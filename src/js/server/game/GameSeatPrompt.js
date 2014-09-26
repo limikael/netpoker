@@ -9,7 +9,7 @@ var FunctionUtil = require("../../utils/FunctionUtil");
  * Game seat prompt.
  *
  * Ask a user about an action in a game, in order to do this the sequence is
- * as follows. First, instanciate this class. Add a number of options using the 
+ * as follows. First, instanciate this class. Add a number of options using the
  * `addButton` method. Set a default action using the `setDefaultButton` method.
  * After this, call the `ask` mathod, and the corresponding messages will
  * be sent to the user. The instance of this class will then be in a waiting
@@ -18,7 +18,7 @@ var FunctionUtil = require("../../utils/FunctionUtil");
  * that signals completion has been sent, the selected button can be retreived
  * using the `getButton` method, and the value for the action, if any, can
  * be retreived using the `getValue` method.
- * 
+ *
  * Each `GameSeatPrompt` object is only intended to be used once, i.e. to
  * ask one user about one action.
  *
@@ -121,8 +121,6 @@ GameSeatPrompt.prototype.ask = function() {
 	this.timeoutId = setTimeout(this.onTimeout.bind(this), this.responseTime * 1000);
 	this.gameSeat.send(this.buttonsMessage);
 	this.gameSeat.getGame().send(this.getCurrentTimerMessage());
-
-	console.log("######## +++ ask, setting timeout");
 }
 
 /**
@@ -131,13 +129,9 @@ GameSeatPrompt.prototype.ask = function() {
  * @private
  */
 GameSeatPrompt.prototype.onButtonClickMessage = function(m) {
-	//console.log("********** button click in GameSeatPrompt");
-
 	if (this.timeoutId) {
-		//console.log("------- clearing timeout");
 		clearTimeout(this.timeoutId);
 		this.timeoutId = null;
-		console.log("######## --- clear timeout");
 	}
 
 	this.gameSeat.getTableSeat().off(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
@@ -191,7 +185,6 @@ GameSeatPrompt.prototype.onTimeout = function() {
 	this.timeoutId = null;
 
 	if (this.defaultButton) {
-		console.log("chosing default button: " + this.defaultButton);
 		this.button = this.defaultButton;
 
 		this.gameSeat.getGame().send(new TimerMessage());
@@ -209,8 +202,6 @@ GameSeatPrompt.prototype.getCurrentTimerMessage = function() {
 	var t = new TimerMessage();
 	var now = Math.round(Date.now() / 1000);
 
-	//console.log("now: " + now);
-
 	t.setSeatIndex(this.gameSeat.getSeatIndex());
 	t.setTotalTime(this.responseTime);
 	t.setTimeLeft(this.responseTime - (now - this.started));
@@ -223,11 +214,9 @@ GameSeatPrompt.prototype.getCurrentTimerMessage = function() {
  * @method close
  */
 GameSeatPrompt.prototype.close = function() {
-	console.log("---- hard close GameSeatPrompt");
 	if (this.timeoutId) {
 		clearTimeout(this.timeoutId);
 		this.timeoutId = null;
-		console.log("######## --- clear timeout");
 	}
 }
 

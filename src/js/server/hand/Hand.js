@@ -105,8 +105,6 @@ Hand.prototype.checkStraightFlush = function() {
 	for (i = 0; i < checkCards.length - 5 + 1; i++) {
 		var c = checkCards.slice(i, i + 5);
 
-		console.log("chekcing, " + c);
-
 		if (Hand.isStraight(c) && Hand.isFlush(c)) {
 			this.score.push(Hand.STRAIGHT_FLUSH);
 			this.score.push(checkCards[i].getCardValue());
