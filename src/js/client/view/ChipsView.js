@@ -155,7 +155,7 @@ ChipsView.prototype.hide = function() {
 ChipsView.prototype.show = function() {
 	this.visible = true;
 
-	var destination = {x: this.position.x, y: this.position.y};
+	var destination = {x: this.targetPosition.x, y: this.targetPosition.y};
 	this.position.x = (this.parent.width - this.width)*0.5;
 	this.position.y = -this.height;
 
@@ -213,8 +213,8 @@ ChipsView.prototype.animateIn = function() {
 ChipsView.prototype.onInAnimationComplete = function() {
 	this.setValue(0);
 
-	x = this.targetPosition.x;
-	y = this.targetPosition.y;
+	this.position.x = this.targetPosition.x;
+	this.position.y = this.targetPosition.y;
 
 	this.dispatchEvent("animationDone", this);
 }
@@ -262,8 +262,8 @@ ChipsView.prototype.onOutAnimationComplete = function() {
 					.onComplete(this.onOutWaitAnimationComplete.bind(this))
 					.start();
 
-	x = this.targetPosition.x;
-	y = this.targetPosition.y;
+	this.position.x = this.targetPosition.x;
+	this.position.y = this.targetPosition.y;
 
 }
 
