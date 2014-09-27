@@ -23,6 +23,7 @@ function NetPokerServer() {
 	this.backend = null;
 
 	this.mockNetwork = false;
+	this.fixedDeck=null;
 }
 
 FunctionUtil.extend(NetPokerServer, EventDispatcher);
@@ -35,6 +36,19 @@ NetPokerServer.STARTED = "started";
  */
 NetPokerServer.prototype.setListenPort = function(port) {
 	this.listenPort = port;
+}
+
+/**
+ * Use fixed deck for debugging.
+ * @method useFixedDeck
+ */
+NetPokerServer.prototype.useFixedDeck = function(deck) {
+	console.log("NetPokerServer: using fixed deck");
+
+	this.fixedDeck = deck;
+
+	if (this.tableManager)
+		this.tableManager.useFixedDeck(this.fixedDeck);
 }
 
 /**
@@ -151,6 +165,10 @@ NetPokerServer.prototype.run = function() {
 	this.runThenable = new Thenable();
 
 	this.tableManager = new TableManager(this);
+
+	if (this.fixedDeck)
+		this.tableManager.useFixedDeck(this.fixedDeck);
+
 	this.tableManager.on(TableManager.INITIALIZED, this.onTableManagerInitialized, this);
 	this.tableManager.initialize();
 

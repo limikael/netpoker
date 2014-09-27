@@ -210,6 +210,10 @@ Table.prototype.startGame = function() {
 		throw "There is already a game started";
 
 	this.currentGame = new Game(this);
+
+	if (this.fixedDeck)
+		this.currentGame.useFixedDeck(this.fixedDeck);
+
 	this.currentGame.on(Game.FINISHED, this.onCurrentGameFinished, this);
 	this.currentGame.start();
 }
@@ -225,7 +229,7 @@ Table.prototype.onCurrentGameFinished = function() {
 	if (this.stopped)
 		return;
 
-	if (this.getNumInGame()>=2)
+	if (this.getNumInGame() >= 2)
 		this.startGame();
 }
 

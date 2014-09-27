@@ -154,7 +154,7 @@ CardData.fromString = function(s) {
 	for (i = 0; i < CardData.CARD_VALUE_STRINGS.length; i++) {
 		var cand = CardData.CARD_VALUE_STRINGS[i];
 
-		if (s.substring(0, cand.length) == cand)
+		if (s.substring(0, cand.length).toUpperCase() == cand)
 			cardValue = i;
 	}
 
@@ -167,7 +167,7 @@ CardData.fromString = function(s) {
 	for (i = 0; i < CardData.SUIT_STRINGS.length; i++) {
 		var cand = CardData.SUIT_STRINGS[i];
 
-		if (suitString == cand)
+		if (suitString.toUpperCase() == cand)
 			suitIndex = i;
 	}
 

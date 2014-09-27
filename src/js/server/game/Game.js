@@ -20,6 +20,7 @@ function Game(table) {
 	this.gameSeatPrompt = null;
 	this.communityCards = [];
 	this.rake = 0;
+	this.fixedDeck = null;
 }
 
 FunctionUtil.extend(Game, EventDispatcher);
@@ -47,6 +48,14 @@ Game.prototype.start = function() {
 }
 
 /**
+ * Set fixed deck for debugging.
+ * @method setFixedDeck
+ */
+Game.prototype.useFixedDeck = function(deck) {
+	this.fixedDeck = deck;
+}
+
+/**
  * Start game call complete.
  * @method onStartCallComplete
  * @private
@@ -56,10 +65,17 @@ Game.prototype.onStartCallComplete = function(result) {
 
 	this.table.advanceDealer();
 	this.deck = [];
-	for (var i = 0; i < 52; i++)
-		this.deck.push(new CardData(i));
 
-	ArrayUtil.shuffle(this.deck);
+	if (this.fixedDeck) {
+		for (var i = 0; i < this.fixedDeck.length; i++)
+			this.deck.push(new CardData.fromString(this.fixedDeck[i]));
+	} else {
+		for (var i = 0; i < 52; i++)
+			this.deck.push(new CardData(i));
+
+		ArrayUtil.shuffle(this.deck);
+	}
+
 	this.setGameState(new AskBlindState());
 }
 
@@ -103,6 +119,9 @@ Game.prototype.getId = function() {
  * @method getNextCard
  */
 Game.prototype.getNextCard = function() {
+	if (!this.deck.length)
+		throw new Error("no cards left!");
+
 	return this.deck.shift();
 }
 
@@ -235,7 +254,7 @@ Game.prototype.setGameSeatPrompt = function(gameSeatPrompt) {
  * @method close
  */
 Game.prototype.close = function() {
-	console.log("hard close game, gameSeatPrompt="+this.gameSeatPrompt);
+	console.log("hard close game, gameSeatPrompt=" + this.gameSeatPrompt);
 
 	if (this.gameState)
 		this.gameState.close();

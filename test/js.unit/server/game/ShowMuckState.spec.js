@@ -17,6 +17,7 @@ var BotSitInStrategy = require("../../../utils/BotSitInStrategy");
 var BotCheckUntilEndStrategy = require("../../../utils/BotCheckUntilEndStrategy");
 var ThenableBarrier = require("../../../../src/js/utils/ThenableBarrier");
 var ShowMuckState = require("../../../../src/js/server/game/ShowMuckState");
+var Hand = require("../../../../src/js/server/hand/Hand");
 
 describe("ShowMuckState", function() {
 	var mockBackendServer;
@@ -38,6 +39,8 @@ describe("ShowMuckState", function() {
 	});
 
 	it("first player has to show automatically", function(done) {
+		netPokerServer.useFixedDeck(["ah", "3d", "ad", "5d", "8s", "9d", "kh", "10s", "as"]);
+
 		var bot1 = new BotConnection(netPokerServer, "user1");
 		var bot2 = new BotConnection(netPokerServer, "user2");
 
@@ -77,14 +80,14 @@ describe("ShowMuckState", function() {
 				bot1.clearStrategy();
 				bot2.clearStrategy();
 
-				// fix
-				/*expect(table.getCurrentGame().getGameState() instanceof ShowMuckState).toBe(true);
+				expect(table.getCurrentGame().getGameState() instanceof ShowMuckState).toBe(true);
 
-				var b1show = table.getCurrentGame().getGameSeatForSeatIndex(1).isShowing();
-				var b2show = table.getCurrentGame().getGameSeatForSeatIndex(2).isShowing();
-
-				expect(b1show || b2show).toBe(true);*/
-
+				expect(table.getCurrentGame().getGameSeatForSeatIndex(2).getHand().getCategory()).toBe(Hand.THREE_OF_A_KIND);
+				expect(table.getCurrentGame().getGameSeatForSeatIndex(2).isShowing()).toBe(true);
+				expect(table.getCurrentGame().getGameSeatForSeatIndex(1).isShowing()).toBe(false);
+				expect(bot1.getButtons()).not.toBe(null);
+				expect(bot1.isActionAvailable(ButtonData.SHOW)).toBe(true);
+				expect(bot1.isActionAvailable(ButtonData.MUCK)).toBe(true);
 				next();
 			}
 		).then(done);

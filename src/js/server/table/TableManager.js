@@ -13,6 +13,8 @@ function TableManager(services) {
 	this.services = services;
 
 	this.tables = [];
+
+	this.fixedDeck = null;
 }
 
 FunctionUtil.extend(TableManager, EventDispatcher);
@@ -31,6 +33,17 @@ TableManager.prototype.initialize = function() {
 }
 
 /**
+ * Use fixed deck for debugging.
+ * @method useFixedDeck
+ */
+TableManager.prototype.useFixedDeck = function(deck) {
+	this.fixedDeck = deck;
+
+	for (var i=0; i<this.tables.length; i++)
+		this.tables[i].useFixedDeck(deck);
+}
+
+/**
  * Initial table fetch success.
  * @method onInitializeTableListSuccess
  * @private
@@ -41,6 +54,10 @@ TableManager.prototype.onInitializeTableListSuccess = function(result) {
 	for (i = 0; i < result.tables.length; i++) {
 		var tableData = result.tables[i];
 		var table = new Table(this.services, tableData);
+
+		if (this.fixedDeck)
+			table.useFixedDeck(this.fixedDeck);
+
 		this.tables.push(table);
 	}
 

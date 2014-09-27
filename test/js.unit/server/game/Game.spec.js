@@ -51,10 +51,10 @@ describe("Game", function() {
 		mockTable.getTableSeatBySeatIndex = function(seatIndex) {
 			return mockTableSeats[seatIndex];
 		};
-		mockTable.getStake=function() {
+		mockTable.getStake = function() {
 			return 2;
 		};
-		mockTable.send=jasmine.createSpy();
+		mockTable.send = jasmine.createSpy();
 	});
 
 	afterEach(function() {
@@ -117,6 +117,27 @@ describe("Game", function() {
 		});
 
 		jasmine.clock().tick(10);
+	});
+
+	it("can use a fixed deck", function(done) {
+		mockBackend.call = function(functionName, params) {
+			var t = new Thenable();
+			t.notifySuccess({
+				gameId: 789
+			});
+			return t;
+		}
+
+		var g = new Game(mockTable);
+
+		g.useFixedDeck(["2c", "3d", "4c", "5d"]);
+		g.start();
+
+		TickLoopRunner.runTicks().then(function() {
+			expect(g.getNextCard().toString()).toBe("2C");
+			expect(g.getNextCard().toString()).toBe("3D");
+			done();
+		});
 	});
 
 	it("can get a seat index", function() {

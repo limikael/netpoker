@@ -5,6 +5,7 @@ var ShowDialogMessage = require("../../src/js/proto/messages/ShowDialogMessage")
 var SeatClickMessage = require("../../src/js/proto/messages/SeatClickMessage");
 var SeatInfoMessage = require("../../src/js/proto/messages/SeatInfoMessage");
 var ButtonClickMessage = require("../../src/js/proto/messages/ButtonClickMessage");
+var PayOutMessage = require("../../src/js/proto/messages/PayOutMessage");
 var ButtonsMessage = require("../../src/js/proto/messages/ButtonsMessage");
 var ButtonData = require("../../src/js/proto/data/ButtonData");
 
@@ -24,6 +25,7 @@ FunctionUtil.extend(BotCheckUntilEndStrategy, BotStrategy);
  */
 BotCheckUntilEndStrategy.prototype.run = function() {
 	this.botConnection.addMessageHandler(ButtonsMessage, this.onButtonsMessage, this);
+	this.botConnection.addMessageHandler(PayOutMessage, this.onPayOutMessage, this);
 
 	if (this.botConnection.getButtons()) {
 		if (!this.botConnection.isActionAvailable(ButtonData.CHECK) &&
@@ -32,6 +34,16 @@ BotCheckUntilEndStrategy.prototype.run = function() {
 		}
 		this.act();
 	}
+}
+
+/**
+ * Pay out message.
+ * @method onPayOutMessage
+ * @private
+ */
+BotCheckUntilEndStrategy.prototype.onPayOutMessage = function() {
+	console.log("********** check strategy complete, pay out");
+	this.notifyComplete();
 }
 
 /**

@@ -16,9 +16,18 @@ function BaseTable() {
 	this.chatLines = new Array();
 
 	this.dealerButtonIndex = -1;
+	this.fixedDeck = null;
 }
 
 FunctionUtil.extend(BaseTable, EventDispatcher);
+
+/**
+ * Use fixed deck for debugging.
+ * @method useFixedDeck
+ */
+BaseTable.prototype.useFixedDeck = function(deck) {
+	this.fixedDeck = deck;
+}
 
 /**
  * Get table seats.
