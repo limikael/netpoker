@@ -201,7 +201,7 @@ TableSeatUser.prototype.sitout = function() {
 
 /**
  * Get TableInfoMessage
- * @prototype getTableInfoMessage
+ * @method getTableInfoMessage
  */
 TableSeatUser.prototype.getTableInfoMessage = function() {
 	if (!this.tableSeat.isInGame())
