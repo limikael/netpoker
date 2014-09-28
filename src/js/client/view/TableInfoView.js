@@ -16,7 +16,9 @@ function TableInfoView() {
 		dropShadowColor: "#000000",
 		dropShadowDistance: 2,
 		stroke: "#000000",
-		strokeThickness: 2
+		strokeThickness: 2,
+		wordWrap: true,
+		wordWrapWidth: 300
 	};
 
 	this.tableInfoText = new PIXI.Text("<TableInfoText>", style);
@@ -33,6 +35,9 @@ EventDispatcher.init(TableInfoView);
  * @method setTableInfoText
  */
 TableInfoView.prototype.setTableInfoText = function(s) {
+	if (!s)
+		s="";
+
 	this.tableInfoText.setText(s);
 	console.log("setting table info text: " + s);
 }

@@ -370,4 +370,28 @@ Game.prototype.setRake = function(rake) {
 	this.rake = rake;
 }
 
+/**
+ * Is this table seat in the game?
+ * @method isTableSeatInGame
+ */
+Game.prototype.isTableSeatInGame=function(tableSeat) {
+	for (var g=0; g<this.gameSeats.length; g++) {
+		var gameSeat=this.gameSeats[g];
+
+		if (gameSeat.getTableSeat()==tableSeat)
+			return true;
+	}
+
+	return false;
+}
+
+/**
+ * Is join complete for the game?
+ * @method isJoinComplete
+ */
+Game.prototype.isJoinComplete=function() {
+	if (!this.gameState || this.gameState instanceof AskBlindState)
+		return false;
+}
+
 module.exports = Game;

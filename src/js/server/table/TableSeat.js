@@ -2,6 +2,7 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var BaseTableSeat = require("./BaseTableSeat");
 var TableSeatUser = require("./TableSeatUser");
+var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 
 /**
  * A table seat. This class represents a seat in a cash game.
@@ -106,6 +107,8 @@ TableSeat.prototype.onTableSeatUserDone = function() {
 	if (protoConnection) {
 		this.table.notifyNewConnection(protoConnection, user);
 	}
+
+	this.table.sendTableInfoMessages();
 }
 
 /**
@@ -198,11 +201,22 @@ TableSeat.prototype.isSitout = function() {
  * Sit out the seated user.
  * @method sitout
  */
-TableSeat.prototype.sitout=function() {
+TableSeat.prototype.sitout = function() {
 	if (!this.tableSeatUser)
 		throw new Error("trying to sit out a null user");
 
 	this.tableSeatUser.sitout();
+}
+
+/**
+ * Get table info message.
+ * @method getTableInfoMessage
+ */
+TableSeat.prototype.getTableInfoMessage = function() {
+	if (!this.tableSeatUser)
+		return new TableInfoMessage();
+
+	return this.tableSeatUser.getTableInfoMessage();
 }
 
 module.exports = TableSeat;

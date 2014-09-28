@@ -48,9 +48,24 @@ function Table(services, config) {
 
 	this.currentGame = null;
 	this.stopped = false;
+
+	this.previousHandId=null;
 }
 
 FunctionUtil.extend(Table, BaseTable);
+
+/**
+ * Full?
+ * @method isFull
+ */
+Table.prototype.isFull = function() {
+	for (var i = 0; i < this.tableSeats.length; i++) {
+		if (this.tableSeats[i].isAvailable())
+			return false;
+	}
+
+	return true;
+}
 
 /**
  * Setup seats.
@@ -216,6 +231,8 @@ Table.prototype.startGame = function() {
 
 	this.currentGame.on(Game.FINISHED, this.onCurrentGameFinished, this);
 	this.currentGame.start();
+
+	this.sendTableInfoMessages();
 }
 
 /**
@@ -223,14 +240,38 @@ Table.prototype.startGame = function() {
  * @method onCurrentGameFinished
  */
 Table.prototype.onCurrentGameFinished = function() {
+	if (this.currentGame.getId())
+		this.previousHandId=this.currentGame.getId();
+
 	this.currentGame.off(Game.FINISHED, this.onCurrentGameFinished, this);
 	this.currentGame = null;
+
+	for (var t=0; t<this.tableSeats.length; t++) {
+		var tableSeat=this.tableSeats[t];
+
+		//tableSeat.actualizeRebuy();
+
+		if (tableSeat.isInGame()) {
+			if (!tableSeat.getProtoConnection())
+				tableSeat.leaveTable();
+
+			else if (!tableSeat.getChips())
+				tableSeat.leaveTable();
+		}
+	}
 
 	if (this.stopped)
 		return;
 
 	if (this.getNumInGame() >= 2)
 		this.startGame();
+
+	else {
+		this.dealerButtonIndex=-1;
+		this.send(new DealerButtonMessage(this.dealerButtonIndex));
+
+		this.sendTableInfoMessages();
+	}
 }
 
 /**
@@ -247,6 +288,26 @@ Table.prototype.getCurrentGame = function() {
  */
 Table.prototype.getStartGameParentId = function() {
 	return this.id;
+}
+
+/**
+ * Send TableInfoMessages to all seats.
+ * @method sendTableInfoMessages
+ */
+Table.prototype.sendTableInfoMessages = function() {
+	var i;
+
+	for (i = 0; i < this.tableSpectators.length; i++) {
+		var tableSpectator = this.tableSpectators[i];
+
+		tableSpectator.send(tableSpectator.getTableInfoMessage());
+	}
+
+	for (i = 0; i < this.tableSeats.length; i++) {
+		var tableSeat = this.tableSeats[i];
+
+		tableSeat.send(tableSeat.getTableInfoMessage());
+	}
 }
 
 /**

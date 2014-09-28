@@ -96,7 +96,7 @@ AskBlindState.prototype.askDone = function() {
 	if (this.askTableSeatIndex == table.getDealerButtonIndex()) {
 		if (this.game.getGameSeats().length>=2) {
 			this.game.setGameState(new RoundState());
-			//this.game.getTable().sendTableInfoMessages();
+			this.game.getTable().sendTableInfoMessages();
 		}
 
 		else {
@@ -181,7 +181,7 @@ AskBlindState.prototype.cancel = function() {
 
 	this.game.setGameState(new FinishedState());
 
-	//this.game.getTable().sendTableInfoMessages();
+	this.game.getTable().sendTableInfoMessages();
 }
 
 module.exports = AskBlindState;

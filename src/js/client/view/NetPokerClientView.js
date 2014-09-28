@@ -43,9 +43,6 @@ function NetPokerClientView() {
 	this.buttonsView = new ButtonsView();
 	this.addChild(this.buttonsView);
 
-	this.dialogView = new DialogView();
-	this.addChild(this.dialogView);
-
 	this.dealerButtonView = new DealerButtonView();
 	this.addChild(this.dealerButtonView);
 
@@ -59,6 +56,9 @@ function NetPokerClientView() {
 
 	this.settingsView = new SettingsView();
 	this.addChild(this.settingsView);
+
+	this.dialogView = new DialogView();
+	this.addChild(this.dialogView);
 
 	this.setupChips();
 }

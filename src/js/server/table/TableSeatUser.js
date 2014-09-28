@@ -1,6 +1,7 @@
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
+var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 var ButtonData = require("../../proto/data/ButtonData");
 var TableSeatBuyChipsPrompt = require("./TableSeatBuyChipsPrompt");
 var Backend = require("../backend/Backend");
@@ -73,7 +74,7 @@ TableSeatUser.prototype.onBuyChipsPromptComplete = function() {
 		this.trigger(TableSeatUser.READY);
 	}
 
-	//this.tableSeat.send(getTableInfoMessage());
+	this.tableSeat.send(this.getTableInfoMessage());
 }
 
 /**
@@ -92,7 +93,7 @@ TableSeatUser.prototype.onBuyChipsPromptCancel = function() {
  * @method isInGame
  */
 TableSeatUser.prototype.isInGame = function() {
-	return this.sitInCompleted && !this.sittingout;
+	return this.sitInCompleted && !this.sittingout && !this.leaving;
 }
 
 /**
@@ -187,15 +188,34 @@ TableSeatUser.prototype.isSitout = function() {
  * Sit out the table seat user.
  * @method sitout
  */
-TableSeatUser.prototype.sitout=function() {
-	var b=new ButtonsMessage();
+TableSeatUser.prototype.sitout = function() {
+	var b = new ButtonsMessage();
 	b.addButton(new ButtonData(ButtonData.LEAVE));
 	b.addButton(new ButtonData(ButtonData.IM_BACK));
 	this.tableSeat.send(b);
 
-	this.sittingout=true;
+	this.sittingout = true;
 
 	this.tableSeat.getTable().send(this.tableSeat.getSeatInfoMessage());
+}
+
+/**
+ * Get TableInfoMessage
+ * @prototype getTableInfoMessage
+ */
+TableSeatUser.prototype.getTableInfoMessage = function() {
+	if (!this.tableSeat.isInGame())
+		return new TableInfoMessage();
+
+	if (!this.tableSeat.getTable().getCurrentGame())
+		return new TableInfoMessage("Please wait for another player to join the table.");
+
+	var currentGame = this.tableSeat.getTable().getCurrentGame();
+
+	if (!currentGame.isTableSeatInGame(this.tableSeat) && currentGame.isJoinComplete())
+		return new TableInfoMessage("Please wait for the next hand.");
+
+	return new TableInfoMessage();
 }
 
 module.exports = TableSeatUser;
