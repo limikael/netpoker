@@ -14,6 +14,7 @@ var ChipsView = require("./ChipsView");
 var PotView = require("./PotView");
 var TimerView = require("./TimerView");
 var SettingsView = require("../view/SettingsView");
+var TableInfoView = require("../view/TableInfoView");
 
 /**
  * Net poker client view.
@@ -47,6 +48,9 @@ function NetPokerClientView() {
 
 	this.dealerButtonView = new DealerButtonView();
 	this.addChild(this.dealerButtonView);
+
+	this.tableInfoView = new TableInfoView();
+	this.addChild(this.tableInfoView);
 
 	this.potView = new PotView();
 	this.addChild(this.potView);
@@ -215,6 +219,14 @@ NetPokerClientView.prototype.getDealerButtonView = function() {
 }
 
 /**
+ * Get table info view.
+ * @method getTableInfoView
+ */
+NetPokerClientView.prototype.getTableInfoView = function() {
+	return this.tableInfoView;
+}
+
+/**
  * Clear everything to an empty state.
  * @method clear
  */
@@ -234,6 +246,8 @@ NetPokerClientView.prototype.clear = function() {
 
 	this.dialogView.hide();
 	this.buttonsView.clear();
+
+	this.tableInfoView.clear();
 }
 
 module.exports = NetPokerClientView;

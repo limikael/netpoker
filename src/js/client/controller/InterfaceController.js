@@ -1,6 +1,7 @@
 var ShowDialogMessage = require("../../proto/messages/ShowDialogMessage");
 var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 var ChatMessage = require("../../proto/messages/ChatMessage");
+var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 
 /**
  * Control user interface.
@@ -13,7 +14,7 @@ function InterfaceController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(ButtonsMessage.TYPE, this.onButtonsMessage, this);
 	this.messageSequencer.addMessageHandler(ShowDialogMessage.TYPE, this.onShowDialogMessage, this);
 	this.messageSequencer.addMessageHandler(ChatMessage.TYPE, this.onChat, this);
-
+	this.messageSequencer.addMessageHandler(TableInfoMessage.TYPE, this.onTableInfoMessage, this);
 }
 
 /**
@@ -43,6 +44,16 @@ InterfaceController.prototype.onShowDialogMessage = function(m) {
  */
 InterfaceController.prototype.onChat = function(m) {
 	this.view.chatView.addText(m.user, m.text);
+}
+
+/**
+ * Handle table info message.
+ * @method onTableInfoMessage
+ */
+InterfaceController.prototype.onTableInfoMessage = function(m) {
+	var tableInfoView=this.view.getTableInfoView();
+
+	tableInfoView.setTableInfoText(m.getText());
 }
 
 module.exports = InterfaceController;
