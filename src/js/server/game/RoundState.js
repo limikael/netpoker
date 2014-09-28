@@ -50,8 +50,9 @@ RoundState.prototype.run = function() {
 
 	//console.log("number of players with chips: " + this.getNumberOfPlayersWithChips());
 
-	// Why is this needed? For all in, enable when we can test...
-	/*if (this.getNumberOfPlayersWithChips() < 2) {
+	// In case there is only one player left with chips, i.e. all others
+	// are all in, just go to the next state.
+	if (this.getNumberOfPlayersWithChips() < 2) {
 		if (this.game.getCommunityCards().length == 5)
 			this.game.setGameState(new ShowMuckState());
 
@@ -59,7 +60,7 @@ RoundState.prototype.run = function() {
 			this.game.setGameState(new RoundState());
 
 		return;
-	}*/
+	}
 
 	this.ensureGameSeatIndexToSpeakNotFolded();
 
@@ -68,9 +69,7 @@ RoundState.prototype.run = function() {
 		gameSeat.ensureCurrentPresetIsValid();
 	}*/
 
-	//console.log("asking.....");
 	this.ask();
-	//console.log("returning from roundstate.run");
 }
 
 /**
@@ -81,7 +80,6 @@ RoundState.prototype.ask = function() {
 	var gameSeat = this.game.getGameSeats()[this.gameSeatIndexToSpeak];
 
 	if (!gameSeat.getChips()) {
-		throw new Error("not implemented");
 		this.spokenAtCurrentBet.push(gameSeat);
 		this.askDone();
 		return;
@@ -133,8 +131,6 @@ RoundState.prototype.ask = function() {
 	//this.updateAndSendPresets();
 
 	this.prompt.on(GameSeatPrompt.COMPLETE, this.onPromptComplete, this);
-
-	//console.log("calling prompt.ask");
 	this.prompt.ask();
 }
 
