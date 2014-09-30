@@ -23,8 +23,10 @@ describe("Game", function() {
 
 			mockTableSeat.getSeatIndex = function() {
 				return this.seatIndex;
-			}
+			};
 
+			mockTableSeat.addChips = function() {};
+			mockTableSeat.getSeatInfoMessage = function() {};
 			mockTableSeat.send = function() {};
 
 			mockTableSeats.push(mockTableSeat);
@@ -155,5 +157,26 @@ describe("Game", function() {
 		expect(function() {
 			g.addGameSeat(gameSeat);
 		}).toThrow();
+	});
+
+	it("can get split pots", function() {
+		var g = new Game(mockTable);
+
+		g.addGameSeat(new GameSeat(g, 1));
+		g.addGameSeat(new GameSeat(g, 2));
+		g.addGameSeat(new GameSeat(g, 3));
+		g.addGameSeat(new GameSeat(g, 4));
+
+		g.getGameSeatForSeatIndex(1).makeBet(10);
+		g.getGameSeatForSeatIndex(2).makeBet(10);
+		g.getGameSeatForSeatIndex(3).makeBet(20);
+		g.getGameSeatForSeatIndex(4).makeBet(21);
+
+		g.getGameSeatForSeatIndex(1).betToPot();
+		g.getGameSeatForSeatIndex(2).betToPot();
+		g.getGameSeatForSeatIndex(3).betToPot();
+		g.getGameSeatForSeatIndex(4).betToPot();
+
+		console.log("pots:"+g.getPots());
 	});
 });

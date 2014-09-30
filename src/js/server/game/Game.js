@@ -330,7 +330,7 @@ Game.prototype.getUnfoldedPotContribs = function() {
 				contribs.push(gameSeat.getPotContrib());
 	}
 
-	contribs.sort()
+	contribs.sort();
 
 	return contribs;
 }
