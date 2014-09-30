@@ -1,6 +1,7 @@
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
+var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 var ButtonData = require("../../proto/data/ButtonData");
 var TableSeatBuyChipsPrompt = require("./TableSeatBuyChipsPrompt");
@@ -17,6 +18,8 @@ function TableSeatUser(tableSeat, user) {
 	this.leaving = false;
 	this.chips = 0;
 	this.sittingout = false;
+
+	this.tableSeat.on(ButtonClickMessage.TYPE, this.onTableSeatButtonClick, this);
 }
 
 FunctionUtil.extend(TableSeatUser, EventDispatcher);
@@ -122,13 +125,16 @@ TableSeatUser.prototype.setChips = function(value) {
  * @method leave
  */
 TableSeatUser.prototype.leave = function() {
+	if (this.leaving)
+		return;
+
 	this.leaving = true;
 
 	if (this.buyChipsPrompt)
 		return;
 
 	if (!this.sitInCompleted) {
-		this.trigger(TableSeatUser.DONE);
+		this.cleanupAndNotifyDone();
 		return;
 	}
 
@@ -151,6 +157,17 @@ TableSeatUser.prototype.leave = function() {
  * @private
  */
 TableSeatUser.prototype.onSitoutCallComplete = function() {
+	this.cleanupAndNotifyDone();
+}
+
+/**
+ * Clean up listeners and notify that we are done.
+ * This instance should be considered disposed of after this.
+ * @method cleanupAndNotifyDone
+ * @private
+ */
+TableSeatUser.prototype.cleanupAndNotifyDone = function() {
+	this.tableSeat.on(ButtonClickMessage.TYPE, this.onTableSeatButtonClick, this);
 	this.trigger(TableSeatUser.DONE);
 }
 
@@ -216,6 +233,38 @@ TableSeatUser.prototype.getTableInfoMessage = function() {
 		return new TableInfoMessage("Please wait for the next hand.");
 
 	return new TableInfoMessage();
+}
+
+/**
+ * Handle table seat button click.
+ * @method onTableSeatButtonClick
+ * @private
+ */
+TableSeatUser.prototype.onTableSeatButtonClick = function(m) {
+	if (this.leaving)
+		return;
+
+	if (this.sittingout && m.getButton() == ButtonData.IM_BACK)
+		this.sitBackIn();
+
+	if (this.sittingout && m.getButton() == ButtonData.LEAVE)
+		this.leave();
+}
+
+/**
+ * Sit the user back in after sitout.
+ * @method sitBackIn
+ * @private
+ */
+TableSeatUser.prototype.sitBackIn = function() {
+	if (!this.sittingout)
+		throw new Error("not sitting out");
+
+	this.sittingout = false;
+	this.tableSeat.getTable().send(this.tableSeat.getSeatInfoMessage());
+	this.tableSeat.send(this.getTableInfoMessage());
+
+	this.trigger(TableSeatUser.READY);
 }
 
 module.exports = TableSeatUser;
