@@ -49,7 +49,7 @@ PotView.prototype.setValues = function(values) {
 		var textField = new PIXI.Text(values[i], {
 			font: "bold 12px Arial",
 			align: "center",
-			fill: 0xffffff
+			fill: "#ffffff"
 		});
 
 		textField.position.x = (chips.width - textField.width)*0.5;

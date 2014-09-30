@@ -3,6 +3,7 @@ var EventDispatcher = require("../../utils/EventDispatcher");
 var CardData = require("../../proto/data/CardData");
 var ArrayUtil = require("../../utils/ArrayUtil");
 var AskBlindState = require("./AskBlindState");
+var ArrayUtil = require("../../utils/ArrayUtil");
 
 /**
  * Represents one game of poker.
@@ -316,8 +317,8 @@ Game.prototype.getPots = function() {
 }
 
 /**
- * Get unique unfolded pot contribs.
- * @method prototypegetUnfoldedPotContribs
+ * Get unique unfolded pot contribs. Sorted from lowest to highest.
+ * @method getUnfoldedPotContribs
  */
 Game.prototype.getUnfoldedPotContribs = function() {
 	var contribs = [];
@@ -330,7 +331,9 @@ Game.prototype.getUnfoldedPotContribs = function() {
 				contribs.push(gameSeat.getPotContrib());
 	}
 
-	contribs.sort();
+	//console.log("contribs are: "+contribs);
+
+	contribs.sort(ArrayUtil.compareNumbers);
 
 	return contribs;
 }
@@ -346,6 +349,8 @@ Game.prototype.getUnfoldedPotContribs = function() {
  */
 Game.prototype.getSplitPot = function(from, to) {
 	var pot = 0;
+
+	//console.log("getting split pot "+from+" -> "+to);
 
 	for (var g = 0; g < this.gameSeats.length; g++) {
 		var gameSeat = this.gameSeats[g];

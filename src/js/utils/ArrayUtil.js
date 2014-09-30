@@ -53,4 +53,12 @@ ArrayUtil.equals = function(a, b) {
 	return true;
 }
 
+/**
+ * Comparision function for numeric sort.
+ * @method compareNumbers
+ */
+ArrayUtil.compareNumbers = function(a, b) {
+	return a - b;
+}
+
 module.exports = ArrayUtil;
