@@ -104,4 +104,27 @@ describe("Table", function() {
 		t.advanceDealer();
 		expect(t.getDealerButtonIndex()).toBe(3);
 	});
+
+	it("reestablishes user connections", function() {
+		var t = new Table(mockServices, config);
+
+		var mockConnection = new EventDispatcher();
+		mockConnection.send = jasmine.createSpy();
+
+		var protoConnection = new ProtoConnection(mockConnection);
+		var user = new User({
+			id: 123,
+			name: "hello"
+		});
+
+		var mockTableSeatUser = {};
+		mockTableSeatUser.isInGame = function() {
+			return true;
+		}
+
+		t.getTableSeatBySeatIndex(3).tableSeatUser = mockTableSeatUser;
+
+		// work on this!!!
+		//t.notifyNewConnection(mockConnection, user);
+	});
 })

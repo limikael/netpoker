@@ -38,7 +38,7 @@ function handleWebRequest(e) {
 }
 
 var port = 2222;
-var mockBackendPort = 2223;
+var mockBackendPort = 9999;
 
 var mockBackendServer = new MockBackendServer();
 mockBackendServer.setListenPort(mockBackendPort);
@@ -49,12 +49,12 @@ netPokerServer.serveViewCases(__dirname + "/../viewcases");
 netPokerServer.setBackend(new Backend("http://localhost:" + mockBackendPort));
 netPokerServer.on("request", handleWebRequest);
 
+mockBackendServer.start();
 netPokerServer.listen();
 
-setTimeout(function() {
-	mockBackendServer.start();
+//setTimeout(function() {
 	netPokerServer.run().then(function() {
 		console.log("");
 		console.log("Mockserver started on port " + port + ", visit: http://localhost:2222/");
 	});
-}, 0);
+//}, 1000);
