@@ -124,6 +124,14 @@ GameSeatPrompt.prototype.ask = function() {
 }
 
 /**
+ * Get currenctly associated proto connection.
+ * @method getProtoConnection
+ */
+GameSeatPrompt.prototype.getProtoConnection = function() {
+	return this.gameSeat.getTableSeat().getProtoConnection();
+}
+
+/**
  * Button click message.
  * @method onButtonClickMessage
  * @private
@@ -207,6 +215,14 @@ GameSeatPrompt.prototype.getCurrentTimerMessage = function() {
 	t.setTimeLeft(this.responseTime - (now - this.started));
 
 	return t;
+}
+
+/**
+ * Get buttons message.
+ * @method getButtonsMessage
+ */
+GameSeatPrompt.prototype.getButtonsMessage = function() {
+	return this.buttonsMessage;
 }
 
 /**

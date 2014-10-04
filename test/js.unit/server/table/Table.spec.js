@@ -108,11 +108,11 @@ describe("Table", function() {
 	it("reestablishes user connections", function() {
 		var t = new Table(mockServices, config);
 
-		var mockConnection = new EventDispatcher();
-		mockConnection.send = jasmine.createSpy();
+		var oldMockConnection = new EventDispatcher();
+		oldMockConnection.send = jasmine.createSpy();
 
-		var protoConnection = new ProtoConnection(mockConnection);
-		var user = new User({
+		var oldProtoConnection = new ProtoConnection(oldMockConnection);
+		var oldUser = new User({
 			id: 123,
 			name: "hello"
 		});
@@ -120,11 +120,40 @@ describe("Table", function() {
 		var mockTableSeatUser = {};
 		mockTableSeatUser.isInGame = function() {
 			return true;
+		};
+		mockTableSeatUser.getUser = function() {
+			return oldUser;
+		};
+		mockTableSeatUser.isSitout = function() {
+			return false;
+		}
+		mockTableSeatUser.getChips = function() {
+			return 10;
+		}
+		mockTableSeatUser.isReserved = function() {
+			return false;
 		}
 
 		t.getTableSeatBySeatIndex(3).tableSeatUser = mockTableSeatUser;
+		t.getTableSeatBySeatIndex(3).setProtoConnection(oldProtoConnection);
 
-		// work on this!!!
-		//t.notifyNewConnection(mockConnection, user);
+		// Now, connect again with an equal user.
+		var newMockConnection = new EventDispatcher();
+		newMockConnection.send = jasmine.createSpy();
+
+		var newProtoConnection = new ProtoConnection(newMockConnection);
+		var newUser = new User({
+			id: 123,
+			name: "hello"
+		});
+
+		t.notifyNewConnection(newProtoConnection, newUser);
+
+		/*console.log("--------- con is:");
+		console.log(newProtoConnection.toString());*/
+
+		expect(t.getTableSeatBySeatIndex(3).getProtoConnection()).toBe(newProtoConnection);
+		expect(t.tableSpectators.length).toBe(1);
+		expect(t.tableSpectators[0].getProtoConnection()).toBe(oldProtoConnection);
 	});
 })

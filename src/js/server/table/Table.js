@@ -49,7 +49,7 @@ function Table(services, config) {
 	this.currentGame = null;
 	this.stopped = false;
 
-	this.previousHandId=null;
+	this.previousHandId = null;
 }
 
 FunctionUtil.extend(Table, BaseTable);
@@ -111,10 +111,32 @@ Table.prototype.onTableSeatReady = function() {
  * @method notifyNewConnection
  */
 Table.prototype.notifyNewConnection = function(protoConnection, user) {
-	var ts = new TableSpectator(this, protoConnection, user);
-	ts.on(TableSpectator.DONE, this.onTableSpectatorDone, this);
+	var alreadySeated = false;
 
-	this.tableSpectators.push(ts);
+	if (user) {
+		for (var t = 0; t < this.tableSeats.length; t++) {
+			var tableSeat = this.tableSeats[t];
+
+			if (tableSeat.getUser() && tableSeat.getUser().getId() == user.getId()) {
+				if (tableSeat.getProtoConnection()) {
+					console.log("**** re seating...");
+
+					var ts = new TableSpectator(this, tableSeat.getProtoConnection(), user);
+					ts.on(TableSpectator.DONE, this.onTableSpectatorDone, this);
+					this.tableSpectators.push(ts);
+				}
+
+				tableSeat.setProtoConnection(protoConnection);
+				alreadySeated = true;
+			}
+		}
+	}
+
+	if (!alreadySeated) {
+		var ts = new TableSpectator(this, protoConnection, user);
+		ts.on(TableSpectator.DONE, this.onTableSpectatorDone, this);
+		this.tableSpectators.push(ts);
+	}
 
 	this.sendState(protoConnection);
 }
@@ -241,13 +263,13 @@ Table.prototype.startGame = function() {
  */
 Table.prototype.onCurrentGameFinished = function() {
 	if (this.currentGame.getId())
-		this.previousHandId=this.currentGame.getId();
+		this.previousHandId = this.currentGame.getId();
 
 	this.currentGame.off(Game.FINISHED, this.onCurrentGameFinished, this);
 	this.currentGame = null;
 
-	for (var t=0; t<this.tableSeats.length; t++) {
-		var tableSeat=this.tableSeats[t];
+	for (var t = 0; t < this.tableSeats.length; t++) {
+		var tableSeat = this.tableSeats[t];
 
 		//tableSeat.actualizeRebuy();
 
@@ -267,7 +289,7 @@ Table.prototype.onCurrentGameFinished = function() {
 		this.startGame();
 
 	else {
-		this.dealerButtonIndex=-1;
+		this.dealerButtonIndex = -1;
 		this.send(new DealerButtonMessage(this.dealerButtonIndex));
 
 		this.sendTableInfoMessages();

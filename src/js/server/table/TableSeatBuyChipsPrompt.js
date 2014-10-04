@@ -74,8 +74,8 @@ TableSeatBuyChipsPrompt.prototype.onGetBalanceCallComplete = function(result) {
 	);
 
 	d.setDefaultValue(this.tableSeat.getTable().getMinSitInAmount());
-	d.addButton(ButtonData.SIT_IN);
 	d.addButton(ButtonData.CANCEL);
+	d.addButton(ButtonData.SIT_IN);
 
 	this.tableSeat.on(ProtoConnection.CLOSE, this.onConnectionClose, this);
 	this.tableSeat.on(ButtonClickMessage.TYPE, this.onButtonClick, this);

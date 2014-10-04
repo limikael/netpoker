@@ -95,7 +95,7 @@ TableSpectator.prototype.getTableInfoMessage = function() {
 
 	if (this.table.isUserSeated(this.user)) {
 		var s = "You are currently logged in from another computer.\n\n" +
-			"This connection is passive, or reload the page to make this your active connection.";
+			"This connection is passive.";
 
 		return new TableInfoMessage(s);
 	} else if (this.table.isFull()) {
@@ -103,6 +103,14 @@ TableSpectator.prototype.getTableInfoMessage = function() {
 	} else {
 		return new TableInfoMessage("Welcome!\n\nPlease click on an empty seat to join the game!");
 	}
+}
+
+/**
+ * Get connection.
+ * @method getProtoConnection
+ */
+TableSpectator.prototype.getProtoConnection = function() {
+	return this.connection;
 }
 
 module.exports = TableSpectator;

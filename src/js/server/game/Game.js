@@ -229,12 +229,13 @@ Game.prototype.sendState = function(protoConnection) {
 	if (this.gameSeatPrompt != null) {
 		protoConnection.send(this.gameSeatPrompt.getCurrentTimerMessage());
 
-		/*if (gameSeatPrompt.gameSeat.tableSeat.connection == protoConnection)
-			c.send(gameSeatPrompt.buttonsMessage);
+		if (this.gameSeatPrompt.getProtoConnection() == protoConnection) {
+			protoConnection.send(this.gameSeatPrompt.getButtonsMessage());
+		}
 
-		else
-		if (connectionGameSeat != null)
-			connectionGameSeat.sendPresets();*/
+		/*else
+			if (connectionGameSeat != null)
+				connectionGameSeat.sendPresets();*/
 	}
 }
 
@@ -251,7 +252,7 @@ Game.prototype.setGameSeatPrompt = function(gameSeatPrompt) {
 
 /**
  * Close all connections and timeouts.
- * This is used in exceptional cases.
+ * This is used in exceptional cases, debugging etc.
  * @method close
  */
 Game.prototype.close = function() {
@@ -317,7 +318,7 @@ Game.prototype.getPots = function() {
 }
 
 /**
- * Get unique unfolded pot contribs. Sorted from lowest to highest.
+ * Get unique unfolded pot contribs.Sorted from lowest to highest.
  * @method getUnfoldedPotContribs
  */
 Game.prototype.getUnfoldedPotContribs = function() {
@@ -331,7 +332,8 @@ Game.prototype.getUnfoldedPotContribs = function() {
 				contribs.push(gameSeat.getPotContrib());
 	}
 
-	//console.log("contribs are: "+contribs);
+	//
+	console.log("contribs are: " + contribs);
 
 	contribs.sort(ArrayUtil.compareNumbers);
 
@@ -379,11 +381,11 @@ Game.prototype.setRake = function(rake) {
  * Is this table seat in the game?
  * @method isTableSeatInGame
  */
-Game.prototype.isTableSeatInGame=function(tableSeat) {
-	for (var g=0; g<this.gameSeats.length; g++) {
-		var gameSeat=this.gameSeats[g];
+Game.prototype.isTableSeatInGame = function(tableSeat) {
+	for (var g = 0; g < this.gameSeats.length; g++) {
+		var gameSeat = this.gameSeats[g];
 
-		if (gameSeat.getTableSeat()==tableSeat)
+		if (gameSeat.getTableSeat() == tableSeat)
 			return true;
 	}
 
@@ -394,7 +396,7 @@ Game.prototype.isTableSeatInGame=function(tableSeat) {
  * Is join complete for the game?
  * @method isJoinComplete
  */
-Game.prototype.isJoinComplete=function() {
+Game.prototype.isJoinComplete = function() {
 	if (!this.gameState || this.gameState instanceof AskBlindState)
 		return false;
 }

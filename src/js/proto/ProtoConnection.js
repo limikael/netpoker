@@ -242,4 +242,12 @@ ProtoConnection.prototype.close = function() {
 	this.connection.close();
 }
 
+/**
+ * Get string representation.
+ * @method toString
+ */
+ProtoConnection.prototype.toString = function() {
+	return "<ProtoConnection>";
+}
+
 module.exports = ProtoConnection;
