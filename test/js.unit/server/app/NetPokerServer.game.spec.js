@@ -144,15 +144,31 @@ describe("NetPokerServer - game", function() {
 			},
 
 			function(next) {
-				TickLoopRunner.runTicks().then(next);
-			},
-
-			function(next) {
 				expect(bot1.getCommunityCards().length).toBe(3);
 				expect(bot1.getPot()).toBe(4);
 				expect(bot1.getSeatAt(2).getBet()).toBe(3);
 				expect(bot1.getSeatAt(1).getBet()).toBe(0);
+				expect(bot1.getSeatAt(1).getChips()).toBe(8);
+				expect(bot1.getSeatAt(2).getChips()).toBe(5);
 				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				bot1re=new BotConnection(netPokerServer, "user1");
+				bot1re.connectToTable(123);
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				expect(bot1re.getSeatAt(1).getName()).toBe("olle");
+				expect(bot1re.getSeatAt(1).getChips()).toBe(8);
+
+				expect(bot1re.getSeatAt(2).getName()).toBe("kalle");
+				expect(bot1re.getSeatAt(2).getChips()).toBe(5);
+				//expect(bot1re.getSeatAt(2).getBet()).toBe(3);
+
+				expect(bot1re.getPot()).toBe(4);
+				next();
 			}
 		).then(done);
 	});

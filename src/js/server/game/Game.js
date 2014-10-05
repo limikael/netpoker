@@ -1,6 +1,7 @@
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var CardData = require("../../proto/data/CardData");
+var PotMessage = require("../../proto/messages/PotMessage");
 var ArrayUtil = require("../../utils/ArrayUtil");
 var AskBlindState = require("./AskBlindState");
 var ArrayUtil = require("../../utils/ArrayUtil");
@@ -237,6 +238,8 @@ Game.prototype.sendState = function(protoConnection) {
 			if (connectionGameSeat != null)
 				connectionGameSeat.sendPresets();*/
 	}
+
+	protoConnection.send(new PotMessage(this.getPots()));
 }
 
 /**
