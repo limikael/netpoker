@@ -116,6 +116,8 @@ TableSeat.prototype.setProtoConnection = function(protoConnection) {
  * @private
  */
 TableSeat.prototype.onTableSeatUserDone = function() {
+	console.log("*********** table seat user done!");
+
 	var protoConnection = this.getProtoConnection();
 	var user = this.tableSeatUser.getUser();
 

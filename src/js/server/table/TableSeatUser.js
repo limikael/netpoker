@@ -85,6 +85,7 @@ TableSeatUser.prototype.onBuyChipsPromptComplete = function() {
  * @method onBuyChipsPromptCancel
  */
 TableSeatUser.prototype.onBuyChipsPromptCancel = function() {
+	//console.log("buy chips cancel..........");
 	this.buyChipsPrompt.off(TableSeatBuyChipsPrompt.COMPLETE, this.onBuyChipsPromptComplete, this);
 	this.buyChipsPrompt.off(TableSeatBuyChipsPrompt.CANCEL, this.onBuyChipsPromptCancel, this);
 	this.buyChipsPrompt = null;
@@ -125,13 +126,15 @@ TableSeatUser.prototype.setChips = function(value) {
  * @method leave
  */
 TableSeatUser.prototype.leave = function() {
+	//console.log("****************** TableSeatUser::leave, leaving="+this.leaving);
+
 	if (this.leaving)
 		return;
 
-	this.leaving = true;
-
 	if (this.buyChipsPrompt)
 		return;
+
+	this.leaving = true;
 
 	if (!this.sitInCompleted) {
 		this.cleanupAndNotifyDone();
@@ -167,6 +170,8 @@ TableSeatUser.prototype.onSitoutCallComplete = function() {
  * @private
  */
 TableSeatUser.prototype.cleanupAndNotifyDone = function() {
+	//console.log("********** notifying done in table seat user");
+
 	this.tableSeat.on(ButtonClickMessage.TYPE, this.onTableSeatButtonClick, this);
 	this.trigger(TableSeatUser.DONE);
 }

@@ -102,6 +102,8 @@ TableSeatBuyChipsPrompt.prototype.onGetBalanceCallError = function(e) {
  * @method onConnectionClose
  */
 TableSeatBuyChipsPrompt.prototype.onConnectionClose = function() {
+	console.log("************ connection closed in buy chips prompt");
+
 	this.tableSeat.off(ProtoConnection.CLOSE, this.onConnectionClose, this);
 	this.tableSeat.off(ButtonClickMessage.TYPE, this.onButtonClick, this);
 

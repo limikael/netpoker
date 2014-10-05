@@ -64,16 +64,16 @@ BaseTableSeat.prototype.getSeatIndex = function() {
  */
 BaseTableSeat.prototype.setProtoConnection = function(protoConnection) {
 	if (this.protoConnection) {
-		this.protoConnection.removeMessageHandler(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
 		this.protoConnection.off(ProtoConnection.CLOSE, this.onProtoConnectionClose, this);
+		this.protoConnection.removeMessageHandler(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
 		this.protoConnection.removeMessageHandler(ChatMessage.TYPE, this.onChat, this);
 	}
 
 	this.protoConnection = protoConnection;
 
 	if (this.protoConnection) {
-		this.protoConnection.addMessageHandler(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
 		this.protoConnection.on(ProtoConnection.CLOSE, this.onProtoConnectionClose, this);
+		this.protoConnection.addMessageHandler(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
 		this.protoConnection.addMessageHandler(ChatMessage.TYPE, this.onChat, this);
 	}
 }
@@ -117,7 +117,7 @@ BaseTableSeat.prototype.onButtonClickMessage = function(message) {
 }
 
 /**
- * Button click message.
+ * Connection was closed.
  * @method onProtoConnectionClose
  * @private
  */
