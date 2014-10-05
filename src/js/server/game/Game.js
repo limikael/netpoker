@@ -1,7 +1,10 @@
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var CardData = require("../../proto/data/CardData");
+var BetMessage = require("../../proto/messages/BetMessage");
 var PotMessage = require("../../proto/messages/PotMessage");
+var CommunityCardsMessage = require("../../proto/messages/CommunityCardsMessage");
+var PocketCardsMessage = require("../../proto/messages/PocketCardsMessage");
 var ArrayUtil = require("../../utils/ArrayUtil");
 var AskBlindState = require("./AskBlindState");
 var ArrayUtil = require("../../utils/ArrayUtil");
@@ -239,7 +242,32 @@ Game.prototype.sendState = function(protoConnection) {
 				connectionGameSeat.sendPresets();*/
 	}
 
+	for (var g = 0; g < this.gameSeats.length; g++) {
+		var gameSeat = this.gameSeats[g];
+
+		protoConnection.send(new BetMessage(gameSeat.getSeatIndex(), gameSeat.getBet()));
+
+		if (gameSeat.hasCards()) {
+			var m = new PocketCardsMessage(gameSeat.getSeatIndex());
+
+			for (var c = 0; c < gameSeat.getPocketCards().length; c++) {
+				var cardData = gameSeat.getPocketCards()[c];
+
+				if (gameSeat.getProtoConnection() == protoConnection || gameSeat.isShowing())
+					m.addCard(cardData);
+
+				else
+					m.addCard(new CardData(CardData.HIDDEN));
+			}
+
+			console.log("sending pocket cards: "+JSON.stringify(m.serialize()));
+
+			protoConnection.send(m);
+		}
+	}
+
 	protoConnection.send(new PotMessage(this.getPots()));
+	protoConnection.send(new CommunityCardsMessage(this.communityCards));
 }
 
 /**

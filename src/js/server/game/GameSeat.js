@@ -185,4 +185,24 @@ GameSeat.prototype.isShowing = function() {
 	return this.showing;
 }
 
+/**
+ * Does the game seat still have cards?
+ * I.e. not folded or mucked.
+ */
+GameSeat.prototype.hasCards = function() {
+	if (this.folded || this.mucked)
+		return false;
+
+	return true;
+}
+
+/**
+ * Get the connection that is currently controlling this
+ * GameSeat.
+ * @method getProtoConnection
+ */
+GameSeat.prototype.getProtoConnection = function() {
+	return this.tableSeat.getProtoConnection();
+}
+
 module.exports = GameSeat;

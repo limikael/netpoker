@@ -36,7 +36,7 @@ describe("NetPokerServer - game", function() {
 		netPokerServer.close();
 	})
 
-	/*it("starts a game when two users connect", function(done) {
+	it("starts a game when two users connect", function(done) {
 		var bot1 = new BotConnection(netPokerServer, "user1");
 		var bot2 = new BotConnection(netPokerServer, "user2");
 		var bot3 = new BotConnection(netPokerServer, "user3");
@@ -97,9 +97,11 @@ describe("NetPokerServer - game", function() {
 				next();
 			}
 		).then(done);
-	});*/
+	});
 
 	it("restores the state on reconnection", function(done) {
+		netPokerServer.useFixedDeck(["2c", "3c", "2h", "3h", "7d", "9d", "kd"]);
+
 		var table = netPokerServer.tableManager.getTableById(123);
 
 		var bot1 = new BotConnection(netPokerServer, "user1");
@@ -150,11 +152,14 @@ describe("NetPokerServer - game", function() {
 				expect(bot1.getSeatAt(1).getBet()).toBe(0);
 				expect(bot1.getSeatAt(1).getChips()).toBe(8);
 				expect(bot1.getSeatAt(2).getChips()).toBe(5);
+
+				expect(bot1.getSeatAt(2).getCardAt(0).toString()).toBe("XX");
+				expect(bot1.getSeatAt(1).getCardAt(0).toString()).toBe("3C");
 				TickLoopRunner.runTicks().then(next);
 			},
 
 			function(next) {
-				bot1re=new BotConnection(netPokerServer, "user1");
+				bot1re = new BotConnection(netPokerServer, "user1");
 				bot1re.connectToTable(123);
 				TickLoopRunner.runTicks().then(next);
 			},
@@ -165,9 +170,14 @@ describe("NetPokerServer - game", function() {
 
 				expect(bot1re.getSeatAt(2).getName()).toBe("kalle");
 				expect(bot1re.getSeatAt(2).getChips()).toBe(5);
-				//expect(bot1re.getSeatAt(2).getBet()).toBe(3);
+				expect(bot1re.getSeatAt(2).getBet()).toBe(3);
 
 				expect(bot1re.getPot()).toBe(4);
+				expect(bot1re.getCommunityCards().length).toBe(3);
+
+				expect(bot1re.getSeatAt(2).getCardAt(0).toString()).toBe("XX");
+				expect(bot1re.getSeatAt(1).getCardAt(0).toString()).toBe("3C");
+				expect(bot1re.getSeatAt(1).getCards().length).toBe(2);
 				next();
 			}
 		).then(done);

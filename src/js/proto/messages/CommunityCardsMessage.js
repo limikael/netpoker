@@ -4,9 +4,12 @@ var CardData = require("../data/CardData");
  * Show community cards.
  * @class CommunityCardsMessage
  */
-function CommunityCardsMessage() {
+function CommunityCardsMessage(cards) {
+	if (!cards)
+		cards = [];
+
 	this.animate = false;
-	this.cards = [];
+	this.cards = cards;
 	this.firstIndex = 0;
 }
 
