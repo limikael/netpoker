@@ -1,6 +1,7 @@
 /**
  * Array utilities.
  * @class ArrayUtil
+ * @module utils
  */
 function ArrayUtil() {}
 

@@ -6,6 +6,7 @@ var Resources = require("../resources/Resources");
 /**
  * Big button.
  * @class BigButton
+ * @module client
  */
 function BigButton() {
 	Button.call(this);

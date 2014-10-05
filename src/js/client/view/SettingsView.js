@@ -10,13 +10,12 @@ var SettingsCheckbox = require("./SettingsCheckbox");
 var RaiseShortcutButton = require("./RaiseShortcutButton");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 
-
-
 /**
  * A settings view
  * @class SettingsView
+ * @module client
  */
- function SettingsView() {
+function SettingsView() {
  	PIXI.DisplayObjectContainer.call(this);
 
  	var object = new PIXI.DisplayObjectContainer();

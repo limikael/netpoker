@@ -6,6 +6,7 @@ var Button = require("./Button");
 /**
  * Checkbox.
  * @class Checkbox
+ * @module utils
  */
 function Checkbox(background, tick) {
 	PIXI.DisplayObjectContainer.call(this);

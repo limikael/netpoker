@@ -6,6 +6,7 @@ var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 /**
  * Control user interface.
  * @class InterfaceController
+ * @module client
  */
 function InterfaceController(messageSequencer, view) {
 	this.messageSequencer = messageSequencer;

@@ -16,6 +16,7 @@ var PayOutMessage = require("../../proto/messages/PayOutMessage");
 /**
  * Control the table
  * @class TableController
+ * @module client
  */
 function TableController(messageSequencer, view) {
 	this.messageSequencer = messageSequencer;

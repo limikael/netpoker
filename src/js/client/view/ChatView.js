@@ -10,6 +10,7 @@ var EventDispatcher = require("../../utils/EventDispatcher");
 /**
  * Chat view.
  * @class ChatView
+ * @module client
  */
 function ChatView() {
 	PIXI.DisplayObjectContainer.call(this);

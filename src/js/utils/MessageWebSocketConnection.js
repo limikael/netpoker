@@ -5,6 +5,7 @@ var Thenable = require("./Thenable");
 /**
  * Message connection in a browser.
  * @class MessageWebSocketConnection
+ * @module utils
  */
 function MessageWebSocketConnection() {
 	EventDispatcher.call(this);

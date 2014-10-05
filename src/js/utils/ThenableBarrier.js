@@ -4,6 +4,7 @@ var FunctionUtil = require("../utils/FunctionUtil");
 /**
  * Listen to several promises that all must be fulfilled.
  * @class ThenableBarrier
+ * @module utils
  */
 function ThenableBarrier() {
 	Thenable.call(this);

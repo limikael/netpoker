@@ -5,11 +5,10 @@ var Resources = require("../resources/Resources");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var ChipsView = require("./ChipsView");
 
-
-
 /**
  * A pot view
  * @class PotView
+ * @module client
  */
 function PotView() {
 	PIXI.DisplayObjectContainer.call(this);

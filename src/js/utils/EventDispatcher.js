@@ -22,6 +22,7 @@
  *     object.off("event", listener, this);
  *
  * @class EventDispatcher
+ * @module utils
  */
 function EventDispatcher() {
 	this.listenerMap = {};

@@ -9,6 +9,7 @@ var querystring = require("querystring");
 /**
  * Server that manages connections where each message is a JSON document.
  * @class MessageServer
+ * @module utils
  */
 function MessageServer() {
 	EventDispatcher.call(this);

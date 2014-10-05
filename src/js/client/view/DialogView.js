@@ -6,9 +6,11 @@ var DialogButton = require("./DialogButton");
 var ButtonData = require("../../proto/data/ButtonData");
 var PixiTextInput = require("PixiTextInput");
 var EventDispatcher = require("../../utils/EventDispatcher");
+
 /**
  * Dialog view.
  * @class DialogView
+ * @module client
  */
 function DialogView() {
 	PIXI.DisplayObjectContainer.call(this);

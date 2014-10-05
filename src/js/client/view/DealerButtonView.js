@@ -7,6 +7,7 @@ var EventDispatcher = require("../../utils/EventDispatcher");
 /**
  * Dialog view.
  * @class DealerButtonView
+ * @module client
  */
 function DealerButtonView() {
 	PIXI.DisplayObjectContainer.call(this);

@@ -6,6 +6,7 @@ var EventDispatcher = require("./EventDispatcher");
 /**
  * Slider. This is the class for the slider.
  * @class Slider
+ * @module utils
  */
 function Slider(background, knob) {
 	PIXI.DisplayObjectContainer.call(this);

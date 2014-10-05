@@ -15,6 +15,7 @@ var ButtonData = require("../../proto/data/ButtonData");
 /**
  * Main controller
  * @class NetPokerClientController
+ * @module client
  */
 function NetPokerClientController(view) {
 	this.netPokerClientView = view;

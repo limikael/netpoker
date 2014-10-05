@@ -5,6 +5,7 @@ var Gradient = require("../../utils/Gradient");
 /**
  * Loading screen.
  * @class LoadingScreen
+ * @module client
  */
 function LoadingScreen() {
 	PIXI.DisplayObjectContainer.call(this);

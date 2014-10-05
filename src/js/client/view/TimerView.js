@@ -4,11 +4,10 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("../resources/Resources");
 var EventDispatcher = require("../../utils/EventDispatcher");
 
-
-
 /**
  * A timer view
  * @class TimerView
+ * @module client
  */
 function TimerView() {
 	PIXI.DisplayObjectContainer.call(this);

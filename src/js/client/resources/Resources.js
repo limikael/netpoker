@@ -7,6 +7,7 @@ var DefaultSkin = require("./DefaultSkin");
 /**
  * Client resources
  * @class Resources.
+ * @module client
  */
 function Resources() {
 	var i;

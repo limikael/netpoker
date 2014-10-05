@@ -4,11 +4,10 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("../resources/Resources");
 var EventDispatcher = require("../../utils/EventDispatcher");
 
-
-
 /**
  * A chips view.
  * @class ChipsView
+ * @module client
  */
 function ChipsView(showToolTip) {
 	PIXI.DisplayObjectContainer.call(this);

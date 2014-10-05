@@ -7,6 +7,7 @@ var EventDispatcher = require("../../utils/EventDispatcher");
 /**
  * A card view.
  * @class CardView
+ * @module client
  */
 function CardView() {
 	PIXI.DisplayObjectContainer.call(this);

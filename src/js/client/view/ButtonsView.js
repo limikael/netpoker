@@ -11,6 +11,7 @@ var RaiseShortcutButton = require("./RaiseShortcutButton");
 /**
  * Buttons
  * @class ButtonsView
+ * @module client
  */
 function ButtonsView() {
 	PIXI.DisplayObjectContainer.call(this);

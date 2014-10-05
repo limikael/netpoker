@@ -1,6 +1,7 @@
 /**
  * Function utils.
  * @class FunctionUtil
+ * @module utils
  */
 function FunctionUtil() {
 }

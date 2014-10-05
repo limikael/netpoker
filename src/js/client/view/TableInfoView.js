@@ -5,6 +5,7 @@ var EventDispatcher = require("../../utils/EventDispatcher");
 /**
  * Show table info.
  * @class TableInfoView
+ * @module client
  */
 function TableInfoView() {
 	PIXI.DisplayObjectContainer.call(this);

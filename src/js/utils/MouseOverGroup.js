@@ -5,6 +5,7 @@ var EventDispatcher = require("./EventDispatcher");
 /**
  * MouseOverGroup. This is the class for the MouseOverGroup.
  * @class MouseOverGroup
+ * @module utils
  */
 function MouseOverGroup() {
 	this.objects = new Array();

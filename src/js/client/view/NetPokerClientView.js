@@ -19,6 +19,7 @@ var TableInfoView = require("../view/TableInfoView");
 /**
  * Net poker client view.
  * @class NetPokerClientView
+ * @module client
  */
 function NetPokerClientView() {
 	PIXI.DisplayObjectContainer.call(this);

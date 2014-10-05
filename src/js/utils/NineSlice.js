@@ -5,6 +5,7 @@ var FunctionUtil = require("./FunctionUtil");
  * Nine slice. This is a sprite that is a grid, and only the
  * middle part stretches when scaling.
  * @class NineSlice
+ * @module utils
  */
 function NineSlice(texture, left, top, right, bottom) {
 	PIXI.DisplayObjectContainer.call(this);

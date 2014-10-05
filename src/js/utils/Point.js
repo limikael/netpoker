@@ -1,6 +1,7 @@
 /**
  * Represents a point.
  * @class Point
+ * @module utils
  */
 function Point(x, y) {
 	if (!(this instanceof Point))

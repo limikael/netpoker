@@ -12,6 +12,7 @@ var ArrayUtil = require("../../utils/ArrayUtil");
 /**
  * Represents one game of poker.
  * @class Game
+ * @module server
  */
 function Game(table) {
 	EventDispatcher.call(this);

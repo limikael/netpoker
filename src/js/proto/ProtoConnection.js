@@ -1,3 +1,8 @@
+/**
+ * Protocol related stuff.
+ * @module proto
+ */
+
 var EventDispatcher = require("../utils/EventDispatcher");
 var FunctionUtil = require("../utils/FunctionUtil");
 

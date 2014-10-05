@@ -5,6 +5,7 @@ var WebSocket = require("faye-websocket");
 /**
  * Send and receive websocket messages.
  * @class MessageClientConnection
+ * @module utils
  */
 function MessageClientConnection() {
 	Thenable.call(this);

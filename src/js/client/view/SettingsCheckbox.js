@@ -8,13 +8,12 @@ var Settings = require("../app/Settings");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var Checkbox = require("../../utils/Checkbox");
 
-
-
 /**
  * Checkboxes view
  * @class SettingsCheckbox
+ * @module client
  */
- function SettingsCheckbox(id, string) {
+function SettingsCheckbox(id, string) {
  	PIXI.DisplayObjectContainer.call(this);
 
  	this.id = id;

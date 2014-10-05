@@ -5,6 +5,7 @@ var EventDispatcher = require("./EventDispatcher");
 /**
  * Button.
  * @class Button
+ * @module utils
  */
 function Button(content) {
 	PIXI.DisplayObjectContainer.call(this);

@@ -6,6 +6,7 @@ var Resources = require("../resources/Resources");
 /**
  * Dialog button.
  * @class DialogButton
+ * @module client
  */
 function DialogButton() {
 	Button.call(this);

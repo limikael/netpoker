@@ -7,6 +7,7 @@ var Button = require("../../utils/Button");
 /**
  * A seat view.
  * @class SeatView
+ * @module client
  */
 function SeatView(seatIndex) {
 	Button.call(this);

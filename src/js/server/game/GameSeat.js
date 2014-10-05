@@ -7,6 +7,7 @@ var Hand = require("../hand/Hand");
 /**
  * A seat at a game.
  * @class GameSeat
+ * @module server
  */
 function GameSeat(game, seatIndex) {
 	this.game = game;

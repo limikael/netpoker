@@ -8,11 +8,10 @@ var Settings = require("../app/Settings");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var Checkbox = require("../../utils/Checkbox");
 
-
-
 /**
  * Raise shortcut button
  * @class RaiseShortcutButton
+ * @module client
  */
  function RaiseShortcutButton() {
  	var background = new NineSlice(Resources.getInstance().getTexture("buttonBackground"), 10, 5, 10, 5);

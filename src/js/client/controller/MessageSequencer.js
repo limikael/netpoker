@@ -5,6 +5,7 @@ var MessageSequenceItem = require("./MessageSequenceItem");
 /**
  * Sequences messages.
  * @class MessageSequencer
+ * @module client
  */
 function MessageSequencer() {
 	this.sequencer = new Sequencer();
