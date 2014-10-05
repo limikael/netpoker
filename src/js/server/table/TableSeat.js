@@ -3,6 +3,8 @@ var EventDispatcher = require("../../utils/EventDispatcher");
 var BaseTableSeat = require("./BaseTableSeat");
 var TableSeatUser = require("./TableSeatUser");
 var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
+var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
+var ButtonData = require("../../proto/data/ButtonData");
 
 /**
  * A table seat. This class represents a seat in a cash game.
@@ -85,6 +87,27 @@ TableSeat.prototype.reserve = function(user, protoConnection) {
 	this.tableSeatUser.on(TableSeatUser.READY, this.onTableSeatUserReady, this);
 	this.tableSeatUser.on(TableSeatUser.DONE, this.onTableSeatUserDone, this);
 	this.tableSeatUser.sitIn();
+}
+
+/**
+ * Set proto connection.
+ * @method setProtoConnection
+ */
+TableSeat.prototype.setProtoConnection = function(protoConnection) {
+	BaseTableSeat.prototype.setProtoConnection.call(this, protoConnection);
+
+	if (this.protoConnection) {
+		if (this.tableSeatUser) {
+			if (this.tableSeatUser.isSitout()) {
+				var bm = new ButtonsMessage();
+				bm.addButton(new ButtonData(ButtonData.LEAVE));
+				bm.addButton(new ButtonData(ButtonData.IM_BACK));
+				this.send(bm);
+			}
+		}
+
+		this.protoConnection.send(this.getTableInfoMessage());
+	}
 }
 
 /**

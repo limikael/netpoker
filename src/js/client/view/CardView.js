@@ -120,7 +120,7 @@ CardView.prototype.show = function(animate, delay) {
 
 	var tween = new TWEEN.Tween( this.position )
 //            .delay(delay)
-            .to( { x: destination.x, y: destination.y }, 3*diff )
+            .to( { x: destination.x, y: destination.y }, 500 )
             .easing( TWEEN.Easing.Quadratic.Out )
             .onStart(this.onShowStart.bind(this))
             .onComplete(this.onShowComplete.bind(this))
