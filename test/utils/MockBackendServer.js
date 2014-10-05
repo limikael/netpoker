@@ -99,7 +99,7 @@ MockBackendServer.prototype.onRequest = function(request, response) {
  * Start.
  */
 MockBackendServer.prototype.start = function() {
-	//console.log("start...");
+	console.log("start mock backend...");
 	this.server = http.createServer();
 	this.server.listen(this.listenPort, "127.0.0.1");
 	this.server.on("request", this.onRequest.bind(this));
