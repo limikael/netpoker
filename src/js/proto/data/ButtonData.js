@@ -5,8 +5,6 @@
 function ButtonData(button, value) {
 	this.button = button;
 	this.value = value;
-	/*	this.min = -1;
-	this.max = -1;*/
 }
 
 ButtonData.RAISE = "raise";
@@ -127,16 +125,8 @@ ButtonData.getButtonStringForId = function(b) {
 	return "";
 }
 
-/*ButtonData.prototype.getMin = function() {
-	return this.min;
-}*/
-
-/*ButtonData.prototype.getMax = function() {
-	return this.max;
-}*/
-
 ButtonData.prototype.toString = function() {
-	return "<ButtonData button=" + this.button + ">";
+	return "<ButtonData button=" + this.button + ", value=" + this.value + ">";
 }
 
 module.exports = ButtonData;

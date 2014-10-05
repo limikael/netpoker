@@ -9,6 +9,7 @@ function BotModel() {
 	this.buttons = null;
 	this.communityCards = [];
 	this.dealerButtonPosition = -1;
+	this.pots = [];
 }
 
 BotModel.prototype.getSeatModelBySeatIndex = function(i) {
@@ -45,11 +46,28 @@ BotModel.prototype.getTotalSeatChips = function() {
 }
 
 BotModel.prototype.setDealerButtonPosition = function(seatIndex) {
-	this.dealerButtonPosition=seatIndex;
+	this.dealerButtonPosition = seatIndex;
 }
 
 BotModel.prototype.getDealerButtonPosition = function() {
 	return this.dealerButtonPosition;
+}
+
+BotModel.prototype.setPots = function(pots) {
+	this.pots = pots;
+}
+
+BotModel.prototype.getPots = function() {
+	return this.pots;
+}
+
+BotModel.prototype.getPot = function() {
+	var total = 0;
+
+	for (var i = 0; i < this.pots.length; i++)
+		total += this.pots[i];
+
+	return total;
 }
 
 module.exports = BotModel;

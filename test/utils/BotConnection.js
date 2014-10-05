@@ -207,6 +207,11 @@ BotConnection.prototype.getButtons = function() {
 }
 
 BotConnection.prototype.act = function(buttonId, value) {
+	if (buttonId instanceof ButtonData) {
+		value = buttonId.getValue();
+		buttonId = buttonId.getButton();
+	}
+
 	if (!this.model.getButtons()) {
 		console.log("**************************** no buttons!!");
 		throw new Error("can't act, no buttons");
@@ -231,6 +236,9 @@ BotConnection.prototype.getDealerButtonPosition = function() {
 }
 
 BotConnection.prototype.isActionAvailable = function(action) {
+	if (action instanceof ButtonData)
+		action = action.getButton();
+
 	if (!action)
 		throw new Error("what action is that?");
 
@@ -242,6 +250,10 @@ BotConnection.prototype.isActionAvailable = function(action) {
 			return true;
 
 	return false;
+}
+
+BotConnection.prototype.getPot = function() {
+	return this.model.getPot();
 }
 
 module.exports = BotConnection;

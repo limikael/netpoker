@@ -4,6 +4,7 @@ var Thenable = require("../../../../src/js/utils/Thenable");
 var ThenableBarrier = require("../../../../src/js/utils/ThenableBarrier");
 var BotConnection = require("../../../utils/BotConnection");
 var BotSitInStrategy = require("../../../utils/BotSitInStrategy");
+var BotActSequenceStrategy = require("../../../utils/BotActSequenceStrategy");
 var AsyncSequence = require("../../../../src/js/utils/AsyncSequence");
 var StateCompleteMessage = require("../../../../src/js/proto/messages/StateCompleteMessage");
 var SeatClickMessage = require("../../../../src/js/proto/messages/SeatClickMessage");
@@ -16,7 +17,7 @@ var TickLoopRunner = require("../../../utils/TickLoopRunner");
 var AskBlindState = require("../../../../src/js/server/game/AskBlindState");
 var MockBackendServer = require("../../../utils/MockBackendServer");
 
-describe("NetPokerServer - ask blinds", function() {
+describe("NetPokerServer - game", function() {
 	var netPokerServer;
 	var mockBackendServer;
 
@@ -35,7 +36,7 @@ describe("NetPokerServer - ask blinds", function() {
 		netPokerServer.close();
 	})
 
-	it("starts a game when two users connect", function(done) {
+	/*it("starts a game when two users connect", function(done) {
 		var bot1 = new BotConnection(netPokerServer, "user1");
 		var bot2 = new BotConnection(netPokerServer, "user2");
 		var bot3 = new BotConnection(netPokerServer, "user3");
@@ -94,6 +95,64 @@ describe("NetPokerServer - ask blinds", function() {
 			function(next) {
 				expect(table.getCurrentGame().getNumInGame()).toBe(3);
 				next();
+			}
+		).then(done);
+	});*/
+
+	it("restores the state on reconnection", function(done) {
+		var table = netPokerServer.tableManager.getTableById(123);
+
+		var bot1 = new BotConnection(netPokerServer, "user1");
+		var bot2 = new BotConnection(netPokerServer, "user2");
+		bot1.connectToTable(123);
+		bot2.connectToTable(123);
+
+		var bot1re;
+
+		AsyncSequence.run(
+			function(next) {
+				bot1.runStrategy(new BotSitInStrategy(1, 10)).then(next);
+				TickLoopRunner.runTicks();
+			},
+
+			function(next) {
+				bot2.runStrategy(new BotSitInStrategy(2, 10)).then(next);
+				TickLoopRunner.runTicks();
+			},
+
+			function(next) {
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				expect(table.getNumInGame()).toBe(2);
+				expect(table.getCurrentGame()).not.toBe(null);
+				expect(bot2.getButtons()).not.toBe(null);
+
+				var s1 = bot1.runStrategy(new BotActSequenceStrategy([
+					ButtonData.POST_BB,
+					ButtonData.CHECK,
+				]));
+
+				var s2 = bot2.runStrategy(new BotActSequenceStrategy([
+					ButtonData.POST_SB,
+					ButtonData.CALL,
+					new ButtonData(ButtonData.BET, 3)
+				]));
+
+				ThenableBarrier.wait(s1, s2).then(next);
+			},
+
+			function(next) {
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				expect(bot1.getCommunityCards().length).toBe(3);
+				expect(bot1.getPot()).toBe(4);
+				expect(bot1.getSeatAt(2).getBet()).toBe(3);
+				expect(bot1.getSeatAt(1).getBet()).toBe(0);
+				TickLoopRunner.runTicks().then(next);
 			}
 		).then(done);
 	});
