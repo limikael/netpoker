@@ -107,7 +107,7 @@ module.exports = function(grunt) {
 		).then(done);
 	});
 
-	grunt.registerTask("js-unit-test", function() {
+	grunt.registerTask("test", function() {
 		var done = this.async();
 		var que = Q();
 

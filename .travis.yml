@@ -2,4 +2,4 @@ language: node_js
 node_js:
   - "0.10"
 
-script: "./node_modules/.bin/grunt js-unit-test doc publish-doc deploy"
+script: "./node_modules/.bin/grunt test doc publish-doc deploy"

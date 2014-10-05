@@ -19,8 +19,6 @@ describe("NetPokerServer - ask blinds", function() {
 	var mockBackendServer;
 
 	beforeEach(function(done) {
-		//jasmine.clock().install();
-
 		mockBackendServer = new MockBackendServer();
 		mockBackendServer.setListenPort(9999);
 		mockBackendServer.start();
@@ -28,110 +26,23 @@ describe("NetPokerServer - ask blinds", function() {
 		netPokerServer = new PipeNetPokerServer();
 		netPokerServer.setBackendUrl("http://localhost:9999");
 		netPokerServer.run().then(done);
-
-/*		mockBackend.call = function(method, params) {
-			console.log("#### backend call: " + method);
-			var thenable = new Thenable();
-
-			switch (method) {
-				case Backend.GET_TABLE_LIST:
-					thenable.notifySuccess({
-						tables: [{
-							id: 123,
-							numseats: 4,
-							currency: "PLY",
-							name: "Test Table",
-							minSitInAmount: 10,
-							maxSitInAmount: 100,
-							stake: 2
-						}]
-					});
-					break;
-
-				case Backend.GET_USER_INFO_BY_TOKEN:
-					switch (params.token) {
-						case "user1":
-							thenable.notifySuccess({
-								id: 999,
-								name: "testson_one"
-							});
-							break;
-
-						case "user2":
-							thenable.notifySuccess({
-								id: 888,
-								name: "testson_two"
-							});
-							break;
-
-						case "user3":
-							thenable.notifySuccess({
-								id: 777,
-								name: "testson_three"
-							});
-							break;
-
-						default:
-							thenable.notifyError();
-							break;
-					}
-					break;
-
-				case Backend.GET_USER_BALANCE:
-					thenable.notifySuccess({
-						balance: 123
-					});
-					break;
-
-				case Backend.SIT_IN:
-					thenable.notifySuccess();
-					break;
-
-				case Backend.START_CASH_GAME:
-					thenable.notifySuccess({
-						gameId: 111
-					});
-					break;
-
-				default:
-					thenable.notifyError();
-					break;
-			}
-
-			return thenable;
-		}*/
-
-		//jasmine.clock().tick(10);
 	});
 
 	afterEach(function() {
 		mockBackendServer.close();
 		netPokerServer.close();
-
-		//jasmine.clock().uninstall();
 	})
 
 	it("starts a game when two users connect", function(done) {
-		//var netPokerServer = new PipeNetPokerServer();
-		//netPokerServer.setBackend(mockBackend);
-
 		var bot1 = new BotConnection(netPokerServer, "user1");
 		var bot2 = new BotConnection(netPokerServer, "user2");
 		var bot3 = new BotConnection(netPokerServer, "user3");
-
 		var table;
 
-		console.log("******** starting");
-
 		AsyncSequence.run(
-			//function(next) {
-			//	netPokerServer.run().then(next);
-			//	jasmine.clock().tick(10);
-			//},
-
 			function(next) {
 				table = netPokerServer.tableManager.getTableById(123);
-				console.log("got table: "+table);
+				console.log("got table: " + table);
 
 				bot1.reply(StateCompleteMessage, new SeatClickMessage(3));
 				bot1.reply(ShowDialogMessage, new ButtonClickMessage(ButtonData.SIT_IN, 10));
@@ -145,13 +56,9 @@ describe("NetPokerServer - ask blinds", function() {
 				bot3.connectToTable(123);
 
 				TickLoopRunner.runTicks(20).then(next);
-				//jasmine.clock().tick(10);
+			},
 
-				//done();
-			}
-
-/*			function(next) {
-				console.log("***** here");
+			function(next) {
 				expect(table.getNumInGame()).toBe(3);
 
 				expect(table.getTableSeatBySeatIndex(3).isInGame()).toBe(true);
@@ -183,17 +90,8 @@ describe("NetPokerServer - ask blinds", function() {
 
 			function(next) {
 				expect(table.getCurrentGame().getNumInGame()).toBe(3);
-
-				table.stop();
-				jasmine.clock().tick(FinishedState.FINISH_DELAY + 1);
 				next();
-			},
-
-			function() {
-				//expect(table.getCurrentGame()).toBe(null);
-				netPokerServer.close();
-				done();
-			}*/
+			}
 		).then(done);
 	});
 });
