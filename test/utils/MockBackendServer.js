@@ -1,4 +1,5 @@
 var Backend = require("../../src/js/server/backend/Backend");
+var Thenable = require("../../src/js/utils/Thenable");
 var http = require("http");
 var url = require("url");
 
@@ -110,6 +111,22 @@ MockBackendServer.prototype.start = function() {
  */
 MockBackendServer.prototype.close = function() {
 	this.server.close();
+}
+
+/**
+ * Make a call.
+ */
+MockBackendServer.prototype.call = function(method, params) {
+	var thenable=new Thenable();
+	var result = this.handleMethod(method, params);
+
+	if (result)
+		thenable.resolve(result);
+
+	else
+		thenable.reject();
+
+	return thenable;
 }
 
 module.exports = MockBackendServer;

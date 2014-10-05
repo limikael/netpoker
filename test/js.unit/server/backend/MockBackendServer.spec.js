@@ -19,7 +19,7 @@ describe("MockBackendServer", function() {
 		});
 	});
 
-	/*it("can be used as a backend", function(done) {
+	it("can be used as a backend", function(done) {
 		var mockBackendServer=new MockBackendServer();
 
 		var params = {
@@ -34,5 +34,5 @@ describe("MockBackendServer", function() {
 				});
 				done();
 			});
-	});*/
+	});
 });
