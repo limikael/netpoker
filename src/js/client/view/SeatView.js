@@ -56,9 +56,19 @@ function SeatView(seatIndex) {
 
 	this.setName("");
 	this.setChips("");
+
+	this.betChips = null;
 }
 
 FunctionUtil.extend(SeatView, Button);
+
+/**
+ * Set reference to bet chips.
+ * @method setBetChipsView
+ */
+SeatView.prototype.setBetChipsView = function(value) {
+	this.betChips = value;
+}
 
 /**
  * Set name.
@@ -124,7 +134,7 @@ SeatView.prototype.getPocketCards = function() {
  */
 SeatView.prototype.foldCards = function() {
 	this.pocketCards[0].addEventListener("animationDone", this.onFoldComplete, this);
-	for(var i = 0; i < this.pocketCards.length; i++) {
+	for (var i = 0; i < this.pocketCards.length; i++) {
 		this.pocketCards[i].fold();
 	}
 }
@@ -160,14 +170,20 @@ SeatView.prototype.action = function(action) {
 SeatView.prototype.onTimer = function(action) {
 
 	var t1 = new TWEEN.Tween(this.actionField)
-							.to({alpha: 0}, 1000)
-							.start();
+		.to({
+			alpha: 0
+		}, 1000)
+		.start();
 	var t2 = new TWEEN.Tween(this.nameField)
-							.to({alpha: 1}, 1000)
-							.start();
+		.to({
+			alpha: 1
+		}, 1000)
+		.start();
 	var t3 = new TWEEN.Tween(this.chipsField)
-							.to({alpha: 1}, 1000)
-							.start();
+		.to({
+			alpha: 1
+		}, 1000)
+		.start();
 
 }
 
@@ -180,11 +196,11 @@ SeatView.prototype.clear = function() {
 
 	this.visible = true;
 	this.sitout = false;
-	//seat.betChips.setValue(0);
+	this.betChips.setValue(0);
 	this.setName("");
 	this.setChips("");
 
-	for (i=0; i<this.pocketCards.length; i++)
+	for (i = 0; i < this.pocketCards.length; i++)
 		this.pocketCards[i].hide();
 }
 

@@ -131,7 +131,7 @@ NetPokerClientView.prototype.setupChips = function() {
 	var i;
 	for (i = 0; i < Resources.getInstance().getPoints("betPositions").length; i++) {
 		var chipsView = new ChipsView();
-		this.seatViews[i].betChips = chipsView;
+		this.seatViews[i].setBetChipsView(chipsView);
 
 		chipsView.setAlignment(Resources.getInstance().getValue("betAlign")[i]);
 		chipsView.setTargetPosition(Resources.getInstance().getPoints("betPositions")[i]);
