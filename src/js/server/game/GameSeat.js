@@ -188,6 +188,7 @@ GameSeat.prototype.isShowing = function() {
 /**
  * Does the game seat still have cards?
  * I.e. not folded or mucked.
+ * @method hasCards
  */
 GameSeat.prototype.hasCards = function() {
 	if (this.folded || this.mucked)
