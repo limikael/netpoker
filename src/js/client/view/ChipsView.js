@@ -18,7 +18,7 @@ function ChipsView(showToolTip) {
 
 	this.value = 0;
 
-	this.denominations = [500000,100000,25000,5000,1000,500,100,25,5,1];
+	this.denominations = [500000, 100000, 25000, 5000, 1000, 500, 100, 25, 5, 1];
 
 	this.stackClips = new Array();
 	this.holder = new PIXI.DisplayObjectContainer();
@@ -26,7 +26,7 @@ function ChipsView(showToolTip) {
 
 	this.toolTip = null;
 
-	if(showToolTip) {
+	if (showToolTip) {
 		this.toolTip = new ToolTip();
 		this.addChild(this.toolTip);
 	}
@@ -41,6 +41,9 @@ EventDispatcher.init(ChipsView);
  * @method setCardData
  */
 ChipsView.prototype.setAlignment = function(align) {
+	if (!align)
+		throw new Error("unknown alignment: " + align);
+
 	this.align = align;
 }
 
@@ -63,13 +66,13 @@ ChipsView.prototype.setValue = function(value) {
 
 	var sprite;
 
-	for(var i = 0; i < this.stackClips.length; i++)
+	for (var i = 0; i < this.stackClips.length; i++)
 		this.holder.removeChild(this.stackClips[i]);
 
 	this.stackClips = new Array();
 
-	if (this.toolTip!=null)
-		this.toolTip.text = "Bet: "+ this.value.toString();
+	if (this.toolTip != null)
+		this.toolTip.text = "Bet: " + this.value.toString();
 
 	var i;
 	var stackClip = null;
@@ -80,9 +83,9 @@ ChipsView.prototype.setValue = function(value) {
 	for (i = 0; i < this.denominations.length; i++) {
 		var denomination = this.denominations[i];
 
-		chipPos=0;
-		stackClip=null;
-		while(value >= denomination) {
+		chipPos = 0;
+		stackClip = null;
+		while (value >= denomination) {
 			if (stackClip == null) {
 				stackClip = new PIXI.DisplayObjectContainer();
 				stackClip.x = stackPos;
@@ -90,7 +93,7 @@ ChipsView.prototype.setValue = function(value) {
 				this.holder.addChild(stackClip);
 				this.stackClips.push(stackClip);
 			}
-		   	var texture = textures[i%textures.length];
+			var texture = textures[i % textures.length];
 			var chip = new PIXI.Sprite(texture);
 			chip.position.y = chipPos;
 			chipPos -= 5;
@@ -99,20 +102,20 @@ ChipsView.prototype.setValue = function(value) {
 
 			var denominationString;
 
-			if(denomination >= 1000)
+			if (denomination >= 1000)
 				denominationString = Math.round(denomination / 1000) + "K";
 
 			else
 				denominationString = denomination;
 
-			if((stackClip != null) && (value < denomination)) {
+			if ((stackClip != null) && (value < denomination)) {
 
 				var textField = new PIXI.Text(denominationString, {
 					font: "bold 12px Arial",
 					align: "center",
-					fill: Resources.getInstance().getValue("chipsColors")[i%Resources.getInstance().getValue("chipsColors").length]
+					fill: Resources.getInstance().getValue("chipsColors")[i % Resources.getInstance().getValue("chipsColors").length]
 				});
-				textField.position.x = (stackClip.width - textField.width)*0.5;
+				textField.position.x = (stackClip.width - textField.width) * 0.5;
 				textField.position.y = chipPos + 11;
 				textField.alpha = 0.5;
 				/*
@@ -125,17 +128,19 @@ ChipsView.prototype.setValue = function(value) {
 	}
 
 	switch (this.align) {
-		case Resources.getInstance().Align.LEFT: {
-			this.holder.x = 0;
-			break;
-		}
+		case Resources.getInstance().Align.Left:
+			{
+				this.holder.x = 0;
+				break;
+			}
 
-		case Resources.getInstance().Align.CENTER: {
-			this.holder.x = -this.holder.width / 2;
-			break;
-		}
+		case Resources.getInstance().Align.Center:
+			{
+				this.holder.x = -this.holder.width / 2;
+				break;
+			}
 
-		case Resources.getInstance().Align.RIGHT:
+		case Resources.getInstance().Align.Right:
 			this.holder.x = -this.holder.width;
 	}
 }
@@ -155,19 +160,25 @@ ChipsView.prototype.hide = function() {
 ChipsView.prototype.show = function() {
 	this.visible = true;
 
-	var destination = {x: this.targetPosition.x, y: this.targetPosition.y};
-	this.position.x = (this.parent.width - this.width)*0.5;
+	var destination = {
+		x: this.targetPosition.x,
+		y: this.targetPosition.y
+	};
+	this.position.x = (this.parent.width - this.width) * 0.5;
 	this.position.y = -this.height;
 
 	var diffX = this.position.x - destination.x;
 	var diffY = this.position.y - destination.y;
-	var diff = Math.sqrt(diffX*diffX + diffY*diffY);
+	var diff = Math.sqrt(diffX * diffX + diffY * diffY);
 
-	var tween = new TWEEN.Tween( this.position )
-            .to( { x: destination.x, y: destination.y }, 3*diff )
-            .easing( TWEEN.Easing.Quadratic.Out )
-            .onComplete(this.onShowComplete.bind(this))
-            .start();
+	var tween = new TWEEN.Tween(this.position)
+		.to({
+			x: destination.x,
+			y: destination.y
+		}, 3 * diff)
+		.easing(TWEEN.Easing.Quadratic.Out)
+		.onComplete(this.onShowComplete.bind(this))
+		.start();
 }
 
 /**
@@ -175,7 +186,7 @@ ChipsView.prototype.show = function() {
  * @method onShowComplete
  */
 ChipsView.prototype.onShowComplete = function() {
-	
+
 	this.dispatchEvent("animationDone", this);
 }
 
@@ -189,21 +200,24 @@ ChipsView.prototype.animateIn = function() {
 	};
 
 	switch (this.align) {
-		case Resources.getInstance().Align.LEFT:
-			o.x = Resources.getInstance().getPoint("potPosition").x-width/2;
+		case Resources.getInstance().Align.Left:
+			o.x = Resources.getInstance().getPoint("potPosition").x - this.width / 2;
 
-		case Resources.getInstance().Align.CENTER:
+		case Resources.getInstance().Align.Center:
 			o.x = Resources.getInstance().getPoint("potPosition").x;
 
-		case Resources.getInstance().Align.RIGHT:
-			o.x = Resources.getInstance().getPoint("potPosition").x+width/2;
+		case Resources.getInstance().Align.Right:
+			o.x = Resources.getInstance().getPoint("potPosition").x + this.width / 2;
 	}
 
 	var time = 500;
 	var tween = new TWEEN.Tween(this)
-					.to({ y: Resources.getInstance().getPoint("potPosition").y }, time)
-					.onComplete(this.onInAnimationComplete.bind(this))
-					.start();
+		.to({
+			y: Resources.getInstance().getPoint("potPosition").y,
+			x: o.x
+		}, time)
+		.onComplete(this.onInAnimationComplete.bind(this))
+		.start();
 }
 
 /**
@@ -227,14 +241,14 @@ ChipsView.prototype.animateOut = function() {
 	this.position.y = Resources.getInstance().getPoint("potPosition").y;
 
 	switch (this.align) {
-		case Resources.getInstance().Align.LEFT:
-			this.position.x = Resources.getInstance().getPoint("potPosition").x - width/2;
+		case Resources.getInstance().Align.Left:
+			this.position.x = Resources.getInstance().getPoint("potPosition").x - this.width / 2;
 
-		case Resources.getInstance().Align.CENTER:
+		case Resources.getInstance().Align.Center:
 			this.position.x = Resources.getInstance().getPoint("potPosition").x;
 
-		case Resources.getInstance().Align.RIGHT:
-			this.position.x = Resources.getInstance().getPoint("potPosition").x + width/2;
+		case Resources.getInstance().Align.Right:
+			this.position.x = Resources.getInstance().getPoint("potPosition").x + this.width / 2;
 	}
 
 	var o = {
@@ -244,10 +258,10 @@ ChipsView.prototype.animateOut = function() {
 
 	var time = 500;
 	var tween = new TWEEN.Tween(this)
-					.to(o, time)
-					.onComplete(this.onOutAnimationComplete.bind(this))
-					.start();
-	
+		.to(o, time)
+		.onComplete(this.onOutAnimationComplete.bind(this))
+		.start();
+
 }
 
 /**
@@ -257,10 +271,14 @@ ChipsView.prototype.animateOut = function() {
 ChipsView.prototype.onOutAnimationComplete = function() {
 
 	var time = 500;
-	var tween = new TWEEN.Tween({x:0})
-					.to({x:10}, time)
-					.onComplete(this.onOutWaitAnimationComplete.bind(this))
-					.start();
+	var tween = new TWEEN.Tween({
+			x: 0
+		})
+		.to({
+			x: 10
+		}, time)
+		.onComplete(this.onOutWaitAnimationComplete.bind(this))
+		.start();
 
 	this.position.x = this.targetPosition.x;
 	this.position.y = this.targetPosition.y;
