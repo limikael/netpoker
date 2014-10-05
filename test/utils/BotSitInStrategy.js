@@ -28,6 +28,11 @@ BotSitInStrategy.prototype.run=function() {
 	this.botConnection.addMessageHandler(StateCompleteMessage,this.onStateCompleteMessage,this);
 	this.botConnection.addMessageHandler(ShowDialogMessage,this.onShowDialogMessage,this);
 	this.botConnection.addMessageHandler(SeatInfoMessage,this.onSeatInfoMessage,this);
+
+	if (this.botConnection.getLastMessageOfType(StateCompleteMessage)) {
+		console.log("there is a state complete message already!!!");
+		this.onStateCompleteMessage();
+	}
 }
 
 /**

@@ -1,7 +1,9 @@
 var PipeNetPokerServer = require("../../../utils/PipeNetPokerServer");
 var Backend = require("../../../../src/js/server/backend/Backend");
 var Thenable = require("../../../../src/js/utils/Thenable");
+var ThenableBarrier = require("../../../../src/js/utils/ThenableBarrier");
 var BotConnection = require("../../../utils/BotConnection");
+var BotSitInStrategy = require("../../../utils/BotSitInStrategy");
 var AsyncSequence = require("../../../../src/js/utils/AsyncSequence");
 var StateCompleteMessage = require("../../../../src/js/proto/messages/StateCompleteMessage");
 var SeatClickMessage = require("../../../../src/js/proto/messages/SeatClickMessage");
@@ -37,25 +39,26 @@ describe("NetPokerServer - ask blinds", function() {
 		var bot1 = new BotConnection(netPokerServer, "user1");
 		var bot2 = new BotConnection(netPokerServer, "user2");
 		var bot3 = new BotConnection(netPokerServer, "user3");
-		var table;
+		var table = netPokerServer.tableManager.getTableById(123);
+
+		bot1.connectToTable(123);
+		bot2.connectToTable(123);
+		bot3.connectToTable(123);
 
 		AsyncSequence.run(
 			function(next) {
-				table = netPokerServer.tableManager.getTableById(123);
-				console.log("got table: " + table);
+				bot1.runStrategy(new BotSitInStrategy(3, 10)).then(next);
+				TickLoopRunner.runTicks();
+			},
 
-				bot1.reply(StateCompleteMessage, new SeatClickMessage(3));
-				bot1.reply(ShowDialogMessage, new ButtonClickMessage(ButtonData.SIT_IN, 10));
-				bot2.reply(StateCompleteMessage, new SeatClickMessage(5));
-				bot2.reply(ShowDialogMessage, new ButtonClickMessage(ButtonData.SIT_IN, 10));
-				bot3.reply(StateCompleteMessage, new SeatClickMessage(7));
-				bot3.reply(ShowDialogMessage, new ButtonClickMessage(ButtonData.SIT_IN, 10));
+			function(next) {
+				bot2.runStrategy(new BotSitInStrategy(5, 10)).then(next);
+				TickLoopRunner.runTicks();
+			},
 
-				bot1.connectToTable(123);
-				bot2.connectToTable(123);
-				bot3.connectToTable(123);
-
-				TickLoopRunner.runTicks(20).then(next);
+			function(next) {
+				bot3.runStrategy(new BotSitInStrategy(7, 10)).then(next);
+				TickLoopRunner.runTicks();
 			},
 
 			function(next) {
@@ -74,7 +77,7 @@ describe("NetPokerServer - ask blinds", function() {
 				bot2.clearMessages();
 
 				bot2.send(new ButtonClickMessage(ButtonData.POST_SB));
-				TickLoopRunner.runTicks().then(next);
+				TickLoopRunner.runTicks(20).then(next);
 			},
 
 			function(next) {
