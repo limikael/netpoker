@@ -2,6 +2,7 @@ var Table = require("../../../../src/js/server/table/Table");
 var User = require("../../../../src/js/server/user/User");
 var EventDispatcher = require("../../../../src/js/utils/EventDispatcher");
 var ProtoConnection = require("../../../../src/js/proto/ProtoConnection");
+var TableInfoMessage = require("../../../../src/js/proto/messages/TableInfoMessage");
 
 describe("Table", function() {
 	var mockServices;
@@ -132,6 +133,9 @@ describe("Table", function() {
 		}
 		mockTableSeatUser.isReserved = function() {
 			return false;
+		}
+		mockTableSeatUser.getTableInfoMessage = function() {
+			return new TableInfoMessage("hello world");
 		}
 
 		t.getTableSeatBySeatIndex(3).tableSeatUser = mockTableSeatUser;

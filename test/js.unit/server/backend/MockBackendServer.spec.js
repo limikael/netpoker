@@ -3,7 +3,6 @@ var Backend = require("../../../../src/js/server/backend/Backend");
 var request = require("request");
 
 describe("MockBackendServer", function() {
-
 	it("works", function(done) {
 		var mockBackendServer = new MockBackendServer();
 
@@ -19,4 +18,21 @@ describe("MockBackendServer", function() {
 			done();
 		});
 	});
+
+	/*it("can be used as a backend", function(done) {
+		var mockBackendServer=new MockBackendServer();
+
+		var params = {
+			token: "user1"
+		};
+
+		mockBackendServer.call(Backend.GET_USER_INFO_BY_TOKEN, params)
+			.then(function(res) {
+				expect(res).toEqual({
+					"id": "101",
+					"name": "olle"
+				});
+				done();
+			});
+	});*/
 });
