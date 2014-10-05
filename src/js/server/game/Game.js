@@ -260,13 +260,15 @@ Game.prototype.sendState = function(protoConnection) {
 					m.addCard(new CardData(CardData.HIDDEN));
 			}
 
-			console.log("sending pocket cards: "+JSON.stringify(m.serialize()));
+			//console.log("sending pocket cards: " + JSON.stringify(m.serialize()));
 
 			protoConnection.send(m);
 		}
 	}
 
-	protoConnection.send(new PotMessage(this.getPots()));
+	if (this.getTotalPot())
+		protoConnection.send(new PotMessage(this.getPots()));
+
 	protoConnection.send(new CommunityCardsMessage(this.communityCards));
 }
 
@@ -349,6 +351,22 @@ Game.prototype.getPots = function() {
 }
 
 /**
+ * Get total pot.
+ * @method getTotalPot
+ */
+Game.prototype.getTotalPot = function() {
+	var total = 0;
+
+	for (var g = 0; g < this.gameSeats.length; g++) {
+		var gameSeat = this.gameSeats[g];
+
+		total += gameSeat.getPotContrib();
+	}
+
+	return total;
+}
+
+/**
  * Get unique unfolded pot contribs.Sorted from lowest to highest.
  * @method getUnfoldedPotContribs
  */
@@ -363,8 +381,7 @@ Game.prototype.getUnfoldedPotContribs = function() {
 				contribs.push(gameSeat.getPotContrib());
 	}
 
-	//
-	console.log("contribs are: " + contribs);
+	//console.log("contribs are: " + contribs);
 
 	contribs.sort(ArrayUtil.compareNumbers);
 
