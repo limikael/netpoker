@@ -8,7 +8,6 @@ describe("Game", function() {
 	var mockTable;
 
 	beforeEach(function() {
-		jasmine.clock().install();
 		mockBackend = {};
 
 		mockServices = {};
@@ -60,10 +59,10 @@ describe("Game", function() {
 	});
 
 	afterEach(function() {
-		jasmine.clock().uninstall();
 	});
 
 	it("can detect errors on start game call", function() {
+		jasmine.clock().install();
 		mockBackend.call = function(functionName, params) {
 			var t = new Thenable();
 			t.notifyError();
@@ -83,6 +82,7 @@ describe("Game", function() {
 		expect(finishSpy).not.toHaveBeenCalled();
 		jasmine.clock().tick(Game.ERROR_WAIT + 1);
 		expect(finishSpy).toHaveBeenCalled();
+		jasmine.clock().uninstall();
 	});
 
 	it("can start", function(done) {
@@ -115,10 +115,11 @@ describe("Game", function() {
 			expect(g.getDeck().length).toBe(42);
 
 			expect(g.getGameState()).not.toBe(null);
+			g.close();
 			done();
 		});
 
-		jasmine.clock().tick(10);
+		//jasmine.clock().tick(10);
 	});
 
 	it("can use a fixed deck", function(done) {
@@ -138,6 +139,7 @@ describe("Game", function() {
 		TickLoopRunner.runTicks().then(function() {
 			expect(g.getNextCard().toString()).toBe("2C");
 			expect(g.getNextCard().toString()).toBe("3D");
+			g.close();
 			done();
 		});
 	});
