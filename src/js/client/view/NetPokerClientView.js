@@ -74,15 +74,29 @@ NetPokerClientView.SEAT_CLICK = "seatClick";
  * @method setupBackground
  */
 NetPokerClientView.prototype.setupBackground = function() {
+	var g=new PIXI.Graphics();
+	g.beginFill(0x05391d,1);
+	g.drawRect(-1000,0,960+2000,720);
+	g.endFill();
+	this.addChild(g);
+
+	var g=new PIXI.Graphics();
+	g.beginFill(0x909090,1);
+	g.drawRect(-1000,720,960+2000,1000);
+	g.endFill();
+	this.addChild(g);
+
 	var gradient = new Gradient();
 	gradient.setSize(100, 100);
 	gradient.addColorStop(0, "#606060");
-	gradient.addColorStop(.5, "#a0a0a0");
+	gradient.addColorStop(.05, "#a0a0a0");
 	gradient.addColorStop(1, "#909090");
 
 	var s = gradient.createSprite();
-	s.width = 960;
-	s.height = 720;
+	s.position.y=530;
+	s.position.x=-1000;
+	s.width = 960+2000;
+	s.height = 190;
 	this.addChild(s);
 
 	var s = new PIXI.Sprite(Resources.getInstance().getTexture("dividerLine"));

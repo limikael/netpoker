@@ -1,6 +1,7 @@
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var PixiApp = require("../../utils/PixiApp");
+var ContentScaler = require("../../utils/ContentScaler");
 var NetPokerClientView = require("../view/NetPokerClientView");
 var NetPokerClientController = require("../controller/NetPokerClientController");
 var MessageWebSocketConnection = require("../../utils/MessageWebSocketConnection");
@@ -17,6 +18,8 @@ var Resources = require("../resources/Resources");
  */
 function NetPokerClient(domId) {
 	PixiApp.call(this, domId, 960, 720);
+
+	this.setContentAlign(ContentScaler.TOP);
 
 	this.loadingScreen = new LoadingScreen();
 	this.addChild(this.loadingScreen);

@@ -15,6 +15,8 @@ var ContentScaler = require("./ContentScaler");
 function PixiApp(domId, width, height) {
 	PIXI.DisplayObjectContainer.call(this);
 
+	this.contentAlign=ContentScaler.MIDDLE;
+
 	var view;
 
 	if (navigator.isCocoonJS)
@@ -69,9 +71,21 @@ PixiApp.prototype.useScaling = function(w, h) {
 	this.removeContent();
 
 	this.contentScaler = new ContentScaler(this);
+	this.contentScaler.setAlign(this.contentAlign);
 	this.contentScaler.setContentSize(w, h);
 	this.contentScaler.setScreenSize(this.containerEl.clientWidth, this.containerEl.clientHeight);
 	this.appStage.addChild(this.contentScaler);
+}
+
+/**
+ * Set content alignment.
+ * @method setContentAlign
+ */
+PixiApp.prototype.setContentAlign = function(align) {
+	this.contentAlign=align;
+
+	if (this.contentScaler)
+		this.contentScaler.setAlign(this.contentAlign);
 }
 
 /**

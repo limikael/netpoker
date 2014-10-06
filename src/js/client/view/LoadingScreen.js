@@ -16,8 +16,10 @@ function LoadingScreen() {
 	gradient.addColorStop(1, "#c0c0c0");
 
 	var s = gradient.createSprite();
-	s.width = 960;
-	s.height = 720;
+	s.position.x=-1000;
+	s.position.y=-1000;
+	s.width = 960+2000;
+	s.height = 720+2000;
 	this.addChild(s);
 
 	var style = {
