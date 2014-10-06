@@ -5,11 +5,13 @@ var url = require("url");
 
 /**
  * Backend with static data.
+ * @class MockBackendServer
  */
 function MockBackendServer() {}
 
 /**
  * Set listen port.
+ * @method setListenPort
  */
 MockBackendServer.prototype.setListenPort = function(port) {
 	this.listenPort = port;
@@ -17,6 +19,7 @@ MockBackendServer.prototype.setListenPort = function(port) {
 
 /**
  * Handle method.
+ * @method handleMethod
  */
 MockBackendServer.prototype.handleMethod = function(method, params) {
 	switch (method) {
@@ -77,6 +80,7 @@ MockBackendServer.prototype.handleMethod = function(method, params) {
 
 /**
  * Handle get.
+ * @method onRequest
  */
 MockBackendServer.prototype.onRequest = function(request, response) {
 	console.log("MockBackend request: " + request.url);
@@ -98,6 +102,7 @@ MockBackendServer.prototype.onRequest = function(request, response) {
 
 /**
  * Start.
+ * @method start
  */
 MockBackendServer.prototype.start = function() {
 	console.log("start mock backend...");
@@ -108,6 +113,7 @@ MockBackendServer.prototype.start = function() {
 
 /**
  * Close.
+ * @method close
  */
 MockBackendServer.prototype.close = function() {
 	this.server.close();
@@ -115,6 +121,7 @@ MockBackendServer.prototype.close = function() {
 
 /**
  * Make a call.
+ * @method call
  */
 MockBackendServer.prototype.call = function(method, params) {
 	var thenable=new Thenable();
