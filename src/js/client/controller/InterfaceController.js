@@ -2,6 +2,7 @@ var ShowDialogMessage = require("../../proto/messages/ShowDialogMessage");
 var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 var ChatMessage = require("../../proto/messages/ChatMessage");
 var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
+var PresetButtonsMessage = require("../../proto/messages/PresetButtonsMessage");
 
 /**
  * Control user interface.
@@ -16,6 +17,8 @@ function InterfaceController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(ShowDialogMessage.TYPE, this.onShowDialogMessage, this);
 	this.messageSequencer.addMessageHandler(ChatMessage.TYPE, this.onChat, this);
 	this.messageSequencer.addMessageHandler(TableInfoMessage.TYPE, this.onTableInfoMessage, this);
+
+	this.messageSequencer.addMessageHandler(PresetButtonsMessage.TYPE, this.onPresetButtons, this);
 }
 
 /**
@@ -26,6 +29,33 @@ InterfaceController.prototype.onButtonsMessage = function(m) {
 	var buttonsView = this.view.getButtonsView();
 
 	buttonsView.setButtons(m.getButtons(), m.sliderButtonIndex, parseInt(m.min, 10), parseInt(m.max, 10));
+}
+
+/**
+ * PresetButtons message.
+ * @method onPresetButtons
+ */
+InterfaceController.prototype.onPresetButtons = function(m) {
+	var presetButtonsView = this.view.getPresetButtonsView();
+
+	var buttons = presetButtonsView.getButtons();
+	for(var i = 0; i < buttons.length; i++) {
+		if(i > m.buttons.length) {
+			buttons[i].hide();
+		}
+		else {
+			var data = m.buttons[i];
+
+			if(data == null) {
+				buttons[i].hide();
+			}
+			else {
+				buttons[i].show(data.button, data.value);
+			}
+		}
+	}
+
+	presetButtonsView.setCurrent(m.current);
 }
 
 /**

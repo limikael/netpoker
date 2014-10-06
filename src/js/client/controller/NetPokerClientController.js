@@ -4,6 +4,7 @@ var ProtoConnection = require("../../proto/ProtoConnection");
 var ButtonsView = require("../view/ButtonsView");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 var SeatClickMessage = require("../../proto/messages/SeatClickMessage");
+var PresetButtonClickMessage = require("../../proto/messages/PresetButtonClickMessage");
 var NetPokerClientView = require("../view/NetPokerClientView");
 var DialogView = require("../view/DialogView");
 var SettingsView = require("../view/SettingsView");
@@ -11,6 +12,7 @@ var TableController = require("./TableController");
 var InterfaceController = require("./InterfaceController");
 var ChatMessage = require("../../proto/messages/ChatMessage");
 var ButtonData = require("../../proto/data/ButtonData");
+var PresetButtonsView = require("../view/PresetButtonsView");
 
 /**
  * Main controller
@@ -34,6 +36,10 @@ function NetPokerClientController(view) {
 	this.netPokerClientView.chatView.addEventListener("chat", this.onViewChat, this);
 
 	this.netPokerClientView.settingsView.addEventListener(SettingsView.BUY_CHIPS_CLICK, this.onBuyChipsButtonClick, this);
+	
+	this.netPokerClientView.settingsView.addEventListener(SettingsView.BUY_CHIPS_CLICK, this.onBuyChipsButtonClick, this);
+
+	this.netPokerClientView.getPresetButtonsView().addEventListener(PresetButtonsView.CHANGE, this.onPresetButtonsChange, this);
 }
 
 
@@ -110,6 +116,23 @@ NetPokerClientController.prototype.onBuyChipsButtonClick = function() {
 	console.log("buy chips click");
 
 	this.protoConnection.send(new ButtonClickMessage(ButtonData.BUY_CHIPS));
+}
+
+/**
+ * PresetButtons change message.
+ * @method onPresetButtonsChange
+ */
+NetPokerClientController.prototype.onPresetButtonsChange = function() {
+	var presetButtonsView = this.netPokerClientView.getPresetButtonsView();
+	var message = new PresetButtonClickMessage();
+
+	var c = presetButtonsView.getCurrent();
+	if(c != null) {
+		message.button = c.id;
+		message.value = c.value;
+	}
+
+	this.protoConnection.send(message);
 }
 
 module.exports = NetPokerClientController;

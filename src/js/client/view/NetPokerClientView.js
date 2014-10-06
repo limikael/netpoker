@@ -15,6 +15,7 @@ var PotView = require("./PotView");
 var TimerView = require("./TimerView");
 var SettingsView = require("../view/SettingsView");
 var TableInfoView = require("../view/TableInfoView");
+var PresetButtonsView = require("../view/PresetButtonsView");
 
 /**
  * Net poker client view.
@@ -60,6 +61,9 @@ function NetPokerClientView() {
 
 	this.dialogView = new DialogView();
 	this.addChild(this.dialogView);
+
+	this.presetButtonsView = new PresetButtonsView();
+	this.addChild(this.presetButtonsView);
 
 	this.setupChips();
 }
@@ -202,8 +206,8 @@ NetPokerClientView.prototype.getSeatViewByIndex = function(index) {
 }
 
 /**
- * Get seat view by index.
- * @method getSeatViewByIndex
+ * Get community cards.
+ * @method getCommunityCards
  */
 NetPokerClientView.prototype.getCommunityCards = function() {
 	return this.communityCards;
@@ -211,10 +215,18 @@ NetPokerClientView.prototype.getCommunityCards = function() {
 
 /**
  * Get buttons view.
- * @method getSeatViewByIndex
+ * @method getButtonsView
  */
 NetPokerClientView.prototype.getButtonsView = function() {
 	return this.buttonsView;
+}
+
+/**
+ * Get preset buttons view.
+ * @method presetButtonsView
+ */
+NetPokerClientView.prototype.getPresetButtonsView = function() {
+	return this.presetButtonsView;
 }
 
 /**
@@ -259,6 +271,8 @@ NetPokerClientView.prototype.clear = function() {
 	this.dealerButtonView.hide();
 	this.chatView.clear();
 
+	this.presetButtonsView.hide();
+	
 	this.dialogView.hide();
 	this.buttonsView.clear();
 
