@@ -35,7 +35,10 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "start": "node test/tools/mockserver.js",
-    "test": "./node_modules/.bin/grunt js-unit-test"
+    "start": "node src/js/server/netpokerserver.js --mock --clientport 2222",
+    "test": "./node_modules/.bin/grunt test"
+  },
+  "bin": {
+    "netpokerserver": "./src/js/server/netpokerserver.js"
   }
 }
