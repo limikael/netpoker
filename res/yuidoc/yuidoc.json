@@ -5,6 +5,6 @@
 	"options": {
 		"outdir": "doc",
 		"paths": "src/js",
-		"preprocessor": "res/yuidoc_die_on_warnings.js"
+		"preprocessor": "res/yuidoc/yuidoc_die_on_warnings.js"
 	}
 }

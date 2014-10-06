@@ -30,7 +30,6 @@ module.exports = function(grunt) {
 				var job = qsub("curl");
 				job.arg("-s", "-X", "POST");
 				job.arg("--data-binary", "@doc.zip");
-				//job.arg("http://limikael.site11.com/?target=netpokerdoc&key=qkv9eXL7"); //test
 				job.arg("http://limikael.altervista.org/?target=netpokerdoc&key=CTYWtAbc");
 				job.expect(0).show();
 
@@ -61,7 +60,7 @@ module.exports = function(grunt) {
 	grunt.registerTask("doc", function() {
 		var done = this.async();
 		var job = qsub("./node_modules/.bin/yuidoc");
-		job.arg("--configfile", "res/yuidoc.json");
+		job.arg("--configfile", "res/yuidoc/yuidoc.json");
 		job.show().expect(0);
 		job.run().then(done, function(e) {
 			console.log(e);
@@ -187,8 +186,8 @@ module.exports = function(grunt) {
 		console.log("  browserify   - Build client bundle.");
 		console.log("  mockserver   - Start mock server.");
 		console.log("  deploy       - Deploy to nodejitsu.");
-		console.log("  js-unit-test - Run server tests.");
+		console.log("  test         - Run server tests.");
 		console.log("  doc          - Create project docs.")
-		console.log("  publish-doc  - Publish doc to http://limikael.site11.com/netpokerdoc")
+		console.log("  publish-doc  - Publish doc to http://limikael.altervista.org/netpokerdoc")
 	});
 };
