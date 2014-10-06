@@ -51,7 +51,7 @@ MessageRequestConnection.prototype.onRequestComplete=function(e, r, body) {
 		//console.log("line: "+line);
 
 		if (line.length && line[0] != "/") {
-			//console.log("trigger message");
+			console.log("trigger message: "+line);
 			this.trigger({
 				type: MessageRequestConnection.MESSAGE,
 				message: JSON.parse(line)

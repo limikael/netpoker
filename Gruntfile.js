@@ -158,18 +158,18 @@ module.exports = function(grunt) {
 
 		que = que.then(function() {
 			var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
-			job.arg("test/view/netpokerclient.bundle.js", "src/js/client/netpokerclient.js");
+			job.arg("res/mocksite/netpokerclient.bundle.js", "src/js/client/netpokerclient.js");
 			job.show().expect(0);
 			return job.run();
 		});
 
 		que = que.then(function() {
-			var job = qsub("cp").arg("gfx/components.png", "test/view");
+			var job = qsub("cp").arg("gfx/components.png", "res/mocksite");
 			return job.run();
 		});
 
 		que = que.then(function() {
-			var job = qsub("cp").arg("gfx/table.png", "test/view");
+			var job = qsub("cp").arg("gfx/table.png", "res/mocksite");
 			return job.run();
 		});
 

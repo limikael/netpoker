@@ -13,11 +13,11 @@ function handleWebRequest(e) {
 	var urlParts = url.parse(e.request.url);
 	var path = urlParts.pathname;
 
-	var fileName = __dirname + "/../view/" + path;
+	var fileName = __dirname + "/../../res/mocksite/" + path;
 
 	if (path == "/") {
 		var caseListContent = "";
-		var dir = fs.readdirSync(__dirname + "/../viewcases");
+		var dir = fs.readdirSync(__dirname + "/../../res/viewcases");
 		for (var i = 0; i < dir.length; i++) {
 			var viewCase = dir[i].replace(".json", "");
 
@@ -26,7 +26,7 @@ function handleWebRequest(e) {
 			caseListContent += "</li>"
 		}
 
-		var content = fs.readFileSync(__dirname + "/../view/index.html");
+		var content = fs.readFileSync(__dirname + "/../../res/mocksite/index.html");
 		content = content.toString().replace("{caseListContent}", caseListContent);
 
 		e.response.write(content);
@@ -45,7 +45,7 @@ mockBackendServer.setListenPort(mockBackendPort);
 
 var netPokerServer = new NetPokerServer();
 netPokerServer.setListenPort(port);
-netPokerServer.serveViewCases(__dirname + "/../viewcases");
+netPokerServer.serveViewCases(__dirname + "/../../res/viewcases");
 netPokerServer.setBackend(new Backend("http://localhost:" + mockBackendPort));
 netPokerServer.on("request", handleWebRequest);
 

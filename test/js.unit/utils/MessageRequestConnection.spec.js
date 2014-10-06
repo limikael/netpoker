@@ -5,7 +5,7 @@ var serveStatic = require("serve-static");
 describe("MessageRequestConnection", function() {
 	it("can load messages", function(done) {
 		var app = connect();
-		app.use(serveStatic(__dirname + "/../../viewcases"));
+		app.use(serveStatic(__dirname + "/../../../res/viewcases"));
 		var server = app.listen(9876);
 
 		var m = new MessageRequestConnection();
