@@ -16,63 +16,72 @@ var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
  * @module client
  */
 function SettingsView() {
- 	PIXI.DisplayObjectContainer.call(this);
+	PIXI.DisplayObjectContainer.call(this);
 
- 	var object = new PIXI.DisplayObjectContainer();
- 	var bg = new NineSlice(Resources.getInstance().getTexture("chatBackground"), 10, 10, 10, 10);
- 	bg.width = 30;
- 	bg.height = 30;
- 	object.addChild(bg);
+	var object = new PIXI.DisplayObjectContainer();
+	var bg = new NineSlice(Resources.getInstance().getTexture("chatBackground"), 10, 10, 10, 10);
+	bg.setLocalSize(30, 30);
+	object.addChild(bg);
 
- 	var sprite = new PIXI.Sprite(Resources.getInstance().getTexture("wrenchIcon"));
- 	sprite.x = 5;
- 	sprite.y = 5;
- 	object.addChild(sprite);
+	var sprite = new PIXI.Sprite(Resources.getInstance().getTexture("wrenchIcon"));
+	sprite.x = 5;
+	sprite.y = 5;
+	object.addChild(sprite);
 
- 	this.settingsButton = new Button(object);
- 	this.settingsButton.position.x = 960 - 10 - this.settingsButton.width;
- 	this.settingsButton.position.y = 543;
- 	this.settingsButton.addEventListener(Button.CLICK, this.onSettingsButtonClick, this);
- 	this.addChild(this.settingsButton);
+	this.settingsButton = new Button(object);
+	this.settingsButton.position.x = 960 - 10 - this.settingsButton.width;
+	this.settingsButton.position.y = 543;
+	this.settingsButton.addEventListener(Button.CLICK, this.onSettingsButtonClick, this);
+	this.addChild(this.settingsButton);
 
- 	this.settingsMenu = new PIXI.DisplayObjectContainer();
- 	
- 	var mbg = new NineSlice(Resources.getInstance().getTexture("chatBackground"), 10, 10, 10, 10);
- 	mbg.width = 250;
- 	mbg.height = 100;
- 	this.settingsMenu.addChild(mbg);
+	this.settingsMenu = new PIXI.DisplayObjectContainer();
 
- 	var styleObject = {
- 		font: "bold 14px Arial",
- 		color: "#FFFFFF",
- 		width: 200,
- 		height: 20
- 	};
- 	var label = new PIXI.Text("Settings", styleObject);
- 	label.position.x = 16;
- 	label.position.y = 10;
+	var mbg = new NineSlice(Resources.getInstance().getTexture("chatBackground"), 10, 10, 10, 10);
+	mbg.setLocalSize(250, 100);
+	this.settingsMenu.addChild(mbg);
 
- 	this.settingsMenu.addChild(label);
- 	this.settingsMenu.position.x = 960 - 10 - this.settingsMenu.width;
- 	this.settingsMenu.position.y = 538 - this.settingsMenu.height;
- 	this.addChild(this.settingsMenu);
+	var styleObject = {
+		font: "bold 14px Arial",
+		color: "#FFFFFF",
+		width: 200,
+		height: 20
+	};
+	var label = new PIXI.Text("Settings", styleObject);
+	label.position.x = 16;
+	label.position.y = 10;
 
- 	this.settings = {};
+	this.settingsMenu.addChild(label);
+	this.settingsMenu.position.x = 960 - 10 - this.settingsMenu.width;
+	this.settingsMenu.position.y = 538 - this.settingsMenu.height;
+	this.addChild(this.settingsMenu);
 
- 	this.createMenuSetting("playAnimations", "Play animations", 40, Settings.getInstance().playAnimations);
- 	this.createMenuSetting(CheckboxMessage.AUTO_MUCK_LOSING, "Muck losing hands", 65);
+	this.settings = {};
 
- 	this.createSetting(CheckboxMessage.AUTO_POST_BLINDS, "Post blinds", 0);
- 	this.createSetting(CheckboxMessage.SITOUT_NEXT, "Sit out", 25);
+	this.createMenuSetting("playAnimations", "Play animations", 40, Settings.getInstance().playAnimations);
+	this.createMenuSetting(CheckboxMessage.AUTO_MUCK_LOSING, "Muck losing hands", 65);
 
- 	this.settingsMenu.visible = false;
+	this.createSetting(CheckboxMessage.AUTO_POST_BLINDS, "Post blinds", 0);
+	this.createSetting(CheckboxMessage.SITOUT_NEXT, "Sit out", 25);
 
- 	this.buyChipsButton = new RaiseShortcutButton();
- 	this.buyChipsButton.addEventListener("click", this.onBuyChipsClick, this);
- 	this.buyChipsButton.x = 700;
- 	this.buyChipsButton.y = 635;
- 	this.buyChipsButton.setText("Buy chips");
- 	this.addChild(this.buyChipsButton);
+	this.settingsMenu.visible = false;
+
+	this.buyChipsButton = new RaiseShortcutButton();
+	this.buyChipsButton.addEventListener("click", this.onBuyChipsClick, this);
+	this.buyChipsButton.x = 700;
+	this.buyChipsButton.y = 635;
+	this.buyChipsButton.setText("Buy chips");
+	this.addChild(this.buyChipsButton);
+
+	this.buyChipsButton.visible=false;
+
+	// Prevent mouse over from falling through, doesn't work.
+	/*this.settingsMenu.interactive = true;
+	this.settingsMenu.buttonMode = true;
+	this.settingsMenu.mouseover = function() { console.log("test"); };
+	this.settingsMenu.mouseout = function() { console.log("test"); };
+	this.settingsMenu.mousedown = function() { console.log("test"); };
+	this.settingsMenu.mouseup = function() { console.log("test"); };
+	this.settingsMenu.click = function() { console.log("test"); };*/
 }
 
 FunctionUtil.extend(SettingsView, PIXI.DisplayObjectContainer);
@@ -113,7 +122,7 @@ SettingsView.prototype.createMenuSetting = function(id, string, y, def) {
 SettingsView.prototype.createSetting = function(id, string, y) {
 	var setting = new SettingsCheckbox(id, string);
 
-	setting.y = 545+y;
+	setting.y = 545 + y;
 	setting.x = 700;
 	this.addChild(setting);
 
@@ -127,7 +136,7 @@ SettingsView.prototype.createSetting = function(id, string, y) {
  * @method onCheckboxChange
  */
 SettingsView.prototype.onCheckboxChange = function(checkbox) {
-	if(checkbox.id == "playAnimations") {
+	if (checkbox.id == "playAnimations") {
 		Settings.getInstance().playAnimations = checkbox.getChecked();
 		console.log("anims changed..");
 	}
@@ -143,10 +152,9 @@ SettingsView.prototype.onSettingsButtonClick = function(interaction_object) {
 	console.log("SettingsView.prototype.onSettingsButtonClick");
 	this.settingsMenu.visible = !this.settingsMenu.visible;
 
-	if(this.settingsMenu.visible) {
+	if (this.settingsMenu.visible) {
 		this.stage.mousedown = this.onStageMouseDown.bind(this);
-	}
-	else {
+	} else {
 		this.stage.mousedown = null;
 	}
 }
@@ -157,7 +165,7 @@ SettingsView.prototype.onSettingsButtonClick = function(interaction_object) {
  */
 SettingsView.prototype.onStageMouseDown = function(interaction_object) {
 	console.log("SettingsView.prototype.onStageMouseDown");
-	if((this.hitTest(this.settingsMenu, interaction_object)) || (this.hitTest(this.settingsButton, interaction_object))) {
+	if ((this.hitTest(this.settingsMenu, interaction_object)) || (this.hitTest(this.settingsButton, interaction_object))) {
 		return;
 	}
 
@@ -170,9 +178,9 @@ SettingsView.prototype.onStageMouseDown = function(interaction_object) {
  * @method hitTest
  */
 SettingsView.prototype.hitTest = function(object, interaction_object) {
-	if((interaction_object.global.x > object.getBounds().x ) && (interaction_object.global.x < (object.getBounds().x + object.getBounds().width)) &&
+	if ((interaction_object.global.x > object.getBounds().x) && (interaction_object.global.x < (object.getBounds().x + object.getBounds().width)) &&
 		(interaction_object.global.y > object.getBounds().y) && (interaction_object.global.y < (object.getBounds().y + object.getBounds().height))) {
-		return true;		
+		return true;
 	}
 	return false;
 }
@@ -197,20 +205,19 @@ SettingsView.prototype.setVisibleButtons = function(buttons) {
 
 	var yp = 543;
 
-	if(this.buyChipsButton.visible) {
+	if (this.buyChipsButton.visible) {
 		this.buyChipsButton.y = yp;
 		yp += 35;
-	}
-	else {
+	} else {
 		yp += 2;
 	}
 
-	if(this.settings[CheckboxMessage.AUTO_POST_BLINDS].visible) {
+	if (this.settings[CheckboxMessage.AUTO_POST_BLINDS].visible) {
 		this.settings[CheckboxMessage.AUTO_POST_BLINDS].y = yp;
 		yp += 25;
 	}
 
-	if(this.settings[CheckboxMessage.SITOUT_NEXT].visible) {
+	if (this.settings[CheckboxMessage.SITOUT_NEXT].visible) {
 		this.settings[CheckboxMessage.SITOUT_NEXT].y = yp;
 		yp += 25;
 	}

@@ -13,18 +13,17 @@ var Checkbox = require("../../utils/Checkbox");
  * @class RaiseShortcutButton
  * @module client
  */
- function RaiseShortcutButton() {
- 	var background = new NineSlice(Resources.getInstance().getTexture("buttonBackground"), 10, 5, 10, 5);
- 	background.width = 105;
- 	background.height = 25;
+function RaiseShortcutButton() {
+	var background = new NineSlice(Resources.getInstance().getTexture("buttonBackground"), 10, 5, 10, 5);
+	background.setLocalSize(105, 25);
 	Button.call(this, background);
 
- 	var styleObject = {
- 		width: 105,
- 		height: 20,
- 		font: "bold 14px Arial",
- 		color: "white"
- 	};
+	var styleObject = {
+		width: 105,
+		height: 20,
+		font: "bold 14px Arial",
+		color: "white"
+	};
 	this.label = new PIXI.Text("", styleObject);
 	this.label.position.x = 8;
 	this.label.position.y = 4;
@@ -48,12 +47,11 @@ RaiseShortcutButton.prototype.setText = function(string) {
  * @method setEnabled
  */
 RaiseShortcutButton.prototype.setEnabled = function(value) {
-	if(value) {
+	if (value) {
 		this.alpha = 1;
 		this.interactive = true;
 		this.buttonMode = true;
-	}
-	else {
+	} else {
 		this.alpha = 0.5;
 		this.interactive = false;
 		this.buttonMode = false;
