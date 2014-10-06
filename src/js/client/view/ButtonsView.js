@@ -20,7 +20,8 @@ function ButtonsView() {
 	this.addChild(this.buttonHolder);
 
 	var sliderBackground = new NineSlice(Resources.getInstance().getTexture("sliderBackground"), 20, 0, 20, 0);
-	sliderBackground.width = 300;
+	sliderBackground.setLocalSize(300,sliderBackground.height);
+	//sliderBackground.width = 300;
 
 	var knob = new PIXI.Sprite(Resources.getInstance().getTexture("sliderKnob"));
 
