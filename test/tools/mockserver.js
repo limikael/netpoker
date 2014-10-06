@@ -2,7 +2,7 @@
 
 var NetPokerServer = require("../../src/js/server/app/NetPokerServer");
 var Backend = require("../../src/js/server/backend/Backend");
-var MockBackendServer = require("../utils/MockBackendServer");
+var MockBackendServer = require("../../src/js/server/mock/MockBackendServer");
 var minimist = require("minimist");
 var fs = require("fs");
 var url = require("url");

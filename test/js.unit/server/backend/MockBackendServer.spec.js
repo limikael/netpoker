@@ -1,4 +1,4 @@
-var MockBackendServer = require("../../../utils/MockBackendServer");
+var MockBackendServer = require("../../../../src/js/server/mock/MockBackendServer");
 var Backend = require("../../../../src/js/server/backend/Backend");
 var request = require("request");
 

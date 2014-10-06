@@ -1,4 +1,4 @@
-var MockBackendServer = require("../../../utils/MockBackendServer");
+var MockBackendServer = require("../../../../src/js/server/mock/MockBackendServer");
 var PipeNetPokerServer = require("../../../utils/PipeNetPokerServer");
 var BotConnection = require("../../../utils/BotConnection");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");

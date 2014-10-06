@@ -15,7 +15,7 @@ var FinishedState = require("../../../../src/js/server/game/FinishedState");
 var ButtonData = require("../../../../src/js/proto/data/ButtonData");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
 var AskBlindState = require("../../../../src/js/server/game/AskBlindState");
-var MockBackendServer = require("../../../utils/MockBackendServer");
+var MockBackendServer = require("../../../../src/js/server/mock/MockBackendServer");
 
 describe("NetPokerServer - game", function() {
 	var netPokerServer;

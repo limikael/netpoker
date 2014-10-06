@@ -1,5 +1,5 @@
 var BotConnection = require("../../../utils/BotConnection");
-var MockBackendServer = require("../../../utils/MockBackendServer");
+var MockBackendServer = require("../../../../src/js/server/mock/MockBackendServer");
 var PipeNetPokerServer = require("../../../utils/PipeNetPokerServer");
 var StateCompleteMessage = require("../../../../src/js/proto/messages/StateCompleteMessage");
 var SeatClickMessage = require("../../../../src/js/proto/messages/SeatClickMessage");

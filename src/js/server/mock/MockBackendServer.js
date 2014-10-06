@@ -1,5 +1,5 @@
-var Backend = require("../../src/js/server/backend/Backend");
-var Thenable = require("../../src/js/utils/Thenable");
+var Backend = require("../../server/backend/Backend");
+var Thenable = require("../../utils/Thenable");
 var http = require("http");
 var url = require("url");
 
