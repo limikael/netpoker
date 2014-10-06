@@ -23,7 +23,8 @@ function NetPokerServer() {
 	this.backend = null;
 
 	this.mockNetwork = false;
-	this.fixedDeck=null;
+	this.fixedDeck = null;
+	this.webRequestHandler = null;
 }
 
 FunctionUtil.extend(NetPokerServer, EventDispatcher);
@@ -88,7 +89,8 @@ NetPokerServer.prototype.onConnectionManagerConnection = function(e) {
  * @private
  */
 NetPokerServer.prototype.onConnectionManagerRequest = function(e) {
-	this.trigger(e);
+	if (this.webRequestHandler)
+		this.webRequestHandler.handleWebRequest(e);
 }
 
 /**
@@ -183,6 +185,14 @@ NetPokerServer.prototype.close = function() {
 	this.connectionManager.close();
 
 	this.tableManager.close();
+}
+
+/**
+ * Set handler for regular web requests coming on on the web socket port
+ * @method setWebRequestHandler
+ */
+NetPokerServer.prototype.setWebRequestHandler = function(webRequestHandler) {
+	this.webRequestHandler = webRequestHandler;
 }
 
 module.exports = NetPokerServer;

@@ -14,9 +14,7 @@ var netPokerServer = new NetPokerServer();
 netPokerServer.setListenPort(port);
 netPokerServer.serveViewCases(__dirname + "/../../res/viewcases");
 netPokerServer.setBackend(new MockBackendServer());
-
-var webRequestHandler = new MockWebRequestHandler();
-webRequestHandler.attachToServer(netPokerServer);
+netPokerServer.setWebRequestHandler(new MockWebRequestHandler());
 
 netPokerServer.listen();
 netPokerServer.run().then(
