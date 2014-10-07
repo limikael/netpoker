@@ -5,6 +5,7 @@ var TableUtil = require("./TableUtil");
 var TableSeat = require("./TableSeat");
 var TableSpectator = require("./TableSpectator");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
+var HandInfoMessage = require("../../proto/messages/HandInfoMessage");
 var ChatMessage = require("../../proto/messages/ChatMessage");
 var DealerButtonMessage = require("../../proto/messages/DealerButtonMessage");
 var ProtoConnection = require("../../proto/ProtoConnection");
@@ -411,6 +412,22 @@ Table.prototype.close = function() {
  */
 Table.prototype.getRakePercent = function() {
 	return this.rakePercent;
+}
+
+/**
+ * Get hand info message.
+ * @method getHandInfoMessage
+ */
+Table.prototype.getHandInfoMessage = function() {
+	var s = "";
+
+	if (this.currentGame && this.currentGame.getId())
+		s += "Current Hand: #" + this.currentGame.getId() + "\n";
+
+	if (this.previousHandId)
+		s += "Previous Hand: #" + this.previousHandId;
+
+	return s;
 }
 
 module.exports = Table;

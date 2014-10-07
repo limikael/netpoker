@@ -160,4 +160,23 @@ describe("Table", function() {
 		expect(t.tableSpectators.length).toBe(1);
 		expect(t.tableSpectators[0].getProtoConnection()).toBe(oldProtoConnection);
 	});
+
+	it("can create a hand info message",function() {
+		var t=new Table(mockServices, config);
+
+		var mockGame={};
+		mockGame.getId=function() {
+			return 123;
+		};
+
+		t.currentGame=mockGame;
+
+		var handInfoMessage=t.getHandInfoMessage();
+		expect(handInfoMessage).toBe("Current Hand: #123\n");
+
+		t.previousHandId=999;
+
+		handInfoMessage=t.getHandInfoMessage();
+		expect(handInfoMessage).toBe("Current Hand: #123\nPrevious Hand: #999");
+	});
 })
