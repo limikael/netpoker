@@ -55,6 +55,10 @@ describe("Game", function() {
 		mockTable.getStake = function() {
 			return 2;
 		};
+		mockTable.getHandInfoMessage = function() {
+			return {};
+		}
+
 		mockTable.send = jasmine.createSpy();
 	});
 

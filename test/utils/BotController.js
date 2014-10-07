@@ -7,6 +7,7 @@ var FoldCardsMessage = require("../../src/js/proto/messages/FoldCardsMessage");
 var DealerButtonMessage = require("../../src/js/proto/messages/DealerButtonMessage");
 var PotMessage = require("../../src/js/proto/messages/PotMessage");
 var BetsToPotMessage = require("../../src/js/proto/messages/BetsToPotMessage");
+var HandInfoMessage = require("../../src/js/proto/messages/HandInfoMessage")
 
 function BotController(model) {
 	this.model = model;
@@ -23,6 +24,7 @@ BotController.prototype.setProtoConnection = function(protoConnection) {
 	this.protoConnection.addMessageHandler(DealerButtonMessage, this.onDealerButtonMessage, this);
 	this.protoConnection.addMessageHandler(PotMessage, this.onPotMessage, this);
 	this.protoConnection.addMessageHandler(BetsToPotMessage, this.onBetsToPotMessage, this);
+	this.protoConnection.addMessageHandler(HandInfoMessage, this.onHandInfoMessage, this);
 }
 
 BotController.prototype.onSeatInfoMessage = function(m) {
@@ -81,6 +83,10 @@ BotController.prototype.onBetsToPotMessage = function() {
 		var seatModel = this.model.seatModels[i];
 		seatModel.setBet(0);
 	}
+}
+
+BotController.prototype.onHandInfoMessage = function(m) {
+	this.model.setHandInfo(m.getText());
 }
 
 module.exports = BotController;

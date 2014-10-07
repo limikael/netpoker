@@ -256,4 +256,8 @@ BotConnection.prototype.getPot = function() {
 	return this.model.getPot();
 }
 
+BotConnection.prototype.getHandInfo = function() {
+	return this.model.getHandInfo();
+}
+
 module.exports = BotConnection;

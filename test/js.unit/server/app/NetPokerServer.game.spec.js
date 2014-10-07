@@ -11,6 +11,7 @@ var SeatClickMessage = require("../../../../src/js/proto/messages/SeatClickMessa
 var ShowDialogMessage = require("../../../../src/js/proto/messages/ShowDialogMessage");
 var ButtonClickMessage = require("../../../../src/js/proto/messages/ButtonClickMessage");
 var ButtonsMessage = require("../../../../src/js/proto/messages/ButtonsMessage");
+var HandInfoMessage = require("../../../../src/js/proto/messages/HandInfoMessage");
 var FinishedState = require("../../../../src/js/server/game/FinishedState");
 var ButtonData = require("../../../../src/js/proto/data/ButtonData");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
@@ -70,6 +71,8 @@ describe("NetPokerServer - game", function() {
 				expect(table.getCurrentGame()).not.toBe(null);
 				expect(table.getCurrentGame().getGameState()).toEqual(jasmine.any(AskBlindState));
 
+				expect(bot1.getHandInfo()).toBe("Current Hand: #987\n");
+				expect(bot1.getLastMessageOfType(HandInfoMessage)).not.toBe(null);
 				expect(bot1.getLastMessageOfType(ButtonsMessage)).toBe(null);
 				expect(bot2.getLastMessageOfType(ButtonsMessage)).not.toBe(null);
 				expect(bot3.getLastMessageOfType(ButtonsMessage)).toBe(null);
@@ -165,6 +168,7 @@ describe("NetPokerServer - game", function() {
 			},
 
 			function(next) {
+				expect(bot1re.getLastMessageOfType(HandInfoMessage)).not.toBe(null);
 				expect(bot1re.getSeatAt(1).getName()).toBe("olle");
 				expect(bot1re.getSeatAt(1).getChips()).toBe(8);
 

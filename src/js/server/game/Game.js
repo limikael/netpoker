@@ -82,6 +82,9 @@ Game.prototype.onStartCallComplete = function(result) {
 		ArrayUtil.shuffle(this.deck);
 	}
 
+	console.log("table: "+this.table);
+	this.send(this.table.getHandInfoMessage());
+
 	this.setGameState(new AskBlindState());
 }
 

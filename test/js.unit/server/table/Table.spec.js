@@ -3,6 +3,7 @@ var User = require("../../../../src/js/server/user/User");
 var EventDispatcher = require("../../../../src/js/utils/EventDispatcher");
 var ProtoConnection = require("../../../../src/js/proto/ProtoConnection");
 var TableInfoMessage = require("../../../../src/js/proto/messages/TableInfoMessage");
+var HandInfoMessage = require("../../../../src/js/proto/messages/HandInfoMessage");
 
 describe("Table", function() {
 	var mockServices;
@@ -172,11 +173,13 @@ describe("Table", function() {
 		t.currentGame=mockGame;
 
 		var handInfoMessage=t.getHandInfoMessage();
-		expect(handInfoMessage).toBe("Current Hand: #123\n");
+		expect(handInfoMessage).toEqual(jasmine.any(HandInfoMessage));
+		expect(handInfoMessage.getText()).toBe("Current Hand: #123\n");
 
 		t.previousHandId=999;
 
 		handInfoMessage=t.getHandInfoMessage();
-		expect(handInfoMessage).toBe("Current Hand: #123\nPrevious Hand: #999");
+		expect(handInfoMessage).toEqual(jasmine.any(HandInfoMessage));
+		expect(handInfoMessage.getText()).toBe("Current Hand: #123\nPrevious Hand: #999");
 	});
 })

@@ -171,7 +171,7 @@ Table.prototype.sendState = function(protoConnection) {
 	for (var i = 0; i < this.chatLines.length; i++)
 		protoConnection.send(new ChatMessage(this.chatLines[i].user, this.chatLines[i].text));
 
-	//c.send(getHandInfoMessage());
+	protoConnection.send(this.getHandInfoMessage());
 
 	if (this.currentGame != null)
 		this.currentGame.sendState(protoConnection);
@@ -282,6 +282,8 @@ Table.prototype.onCurrentGameFinished = function() {
 				tableSeat.leaveTable();
 		}
 	}
+
+	this.send(this.getHandInfoMessage());
 
 	if (this.stopped)
 		return;
@@ -427,7 +429,7 @@ Table.prototype.getHandInfoMessage = function() {
 	if (this.previousHandId)
 		s += "Previous Hand: #" + this.previousHandId;
 
-	return s;
+	return new HandInfoMessage(s);
 }
 
 module.exports = Table;
