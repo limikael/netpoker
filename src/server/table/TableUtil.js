@@ -40,7 +40,7 @@ TableUtil.getActiveSeatIndices = function(numSeats) {
 			break;
 
 		default:
-			throw "Bad number of seats";
+			throw "Bad number of seats...";
 			break;
 	}
 
