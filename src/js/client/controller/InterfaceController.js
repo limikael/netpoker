@@ -2,6 +2,7 @@ var ShowDialogMessage = require("../../proto/messages/ShowDialogMessage");
 var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 var ChatMessage = require("../../proto/messages/ChatMessage");
 var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
+var HandInfoMessage = require("../../proto/messages/HandInfoMessage");
 var PresetButtonsMessage = require("../../proto/messages/PresetButtonsMessage");
 
 /**
@@ -17,6 +18,7 @@ function InterfaceController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(ShowDialogMessage.TYPE, this.onShowDialogMessage, this);
 	this.messageSequencer.addMessageHandler(ChatMessage.TYPE, this.onChat, this);
 	this.messageSequencer.addMessageHandler(TableInfoMessage.TYPE, this.onTableInfoMessage, this);
+	this.messageSequencer.addMessageHandler(HandInfoMessage.TYPE, this.onHandInfoMessage, this);
 
 	this.messageSequencer.addMessageHandler(PresetButtonsMessage.TYPE, this.onPresetButtons, this);
 }
@@ -39,17 +41,15 @@ InterfaceController.prototype.onPresetButtons = function(m) {
 	var presetButtonsView = this.view.getPresetButtonsView();
 
 	var buttons = presetButtonsView.getButtons();
-	for(var i = 0; i < buttons.length; i++) {
-		if(i > m.buttons.length) {
+	for (var i = 0; i < buttons.length; i++) {
+		if (i > m.buttons.length) {
 			buttons[i].hide();
-		}
-		else {
+		} else {
 			var data = m.buttons[i];
 
-			if(data == null) {
+			if (data == null) {
 				buttons[i].hide();
-			}
-			else {
+			} else {
 				buttons[i].show(data.button, data.value);
 			}
 		}
@@ -82,9 +82,19 @@ InterfaceController.prototype.onChat = function(m) {
  * @method onTableInfoMessage
  */
 InterfaceController.prototype.onTableInfoMessage = function(m) {
-	var tableInfoView=this.view.getTableInfoView();
+	var tableInfoView = this.view.getTableInfoView();
 
 	tableInfoView.setTableInfoText(m.getText());
+}
+
+/**
+ * Handle hand info message.
+ * @method onHandInfoMessage
+ */
+InterfaceController.prototype.onHandInfoMessage = function(m) {
+	var tableInfoView = this.view.getTableInfoView();
+
+	tableInfoView.setHandInfoText(m.getText());
 }
 
 module.exports = InterfaceController;

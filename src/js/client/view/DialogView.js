@@ -17,7 +17,7 @@ function DialogView() {
 
 	var cover = new PIXI.Graphics();
 	cover.beginFill(0x000000, .5);
-	cover.drawRect(0, 0, 960, 720);
+	cover.drawRect(-1000, -1000, 960 + 2000, 720 + 2000);
 	cover.endFill();
 	cover.interactive = true;
 	//cover.buttonMode = true;

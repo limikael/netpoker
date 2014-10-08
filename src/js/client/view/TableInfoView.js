@@ -26,6 +26,21 @@ function TableInfoView() {
 	this.tableInfoText.position.x = 355;
 	this.tableInfoText.position.y = 540;
 	this.addChild(this.tableInfoText);
+
+	var style={
+		font: "bold 12px Arial",
+		fill: "#ffffff",
+		dropShadow: true,
+		dropShadowColor: "#000000",
+		dropShadowDistance: 1,
+		stroke: "#000000",
+		strokeThickness: 1,
+	};
+
+	this.handInfoText=new PIXI.Text("<HandInfoText>",style);
+	this.handInfoText.position.y=10;
+	this.handInfoText.position.x=960-this.handInfoText.width;
+	this.addChild(this.handInfoText);
 }
 
 FunctionUtil.extend(TableInfoView, PIXI.DisplayObjectContainer);
@@ -40,7 +55,19 @@ TableInfoView.prototype.setTableInfoText = function(s) {
 		s="";
 
 	this.tableInfoText.setText(s);
-	console.log("setting table info text: " + s);
+}
+
+/**
+ * Set hand info text.
+ * @method setTableInfoText
+ */
+TableInfoView.prototype.setHandInfoText = function(s) {
+	if (!s)
+		s="";
+
+	this.handInfoText.setText(s);
+	this.handInfoText.updateTransform();
+	this.handInfoText.position.x=960-this.handInfoText.width-10;
 }
 
 /**
