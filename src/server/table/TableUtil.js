@@ -12,7 +12,7 @@ function TableUtil() {}
 TableUtil.getActiveSeatIndices = function(numSeats) {
 	var activeIndices;
 
-	console.log("getting active seats: " + numSeats);
+	//console.log("getting active seats: " + numSeats);
 
 	switch (numSeats) {
 		case 2:
