@@ -1,4 +1,4 @@
-var MessageRequestConnection = require("../../../src/js/utils/MessageRequestConnection");
+var MessageRequestConnection = require("../../../src/utils/MessageRequestConnection");
 var connect = require("connect");
 var serveStatic = require("serve-static");
 

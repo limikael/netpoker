@@ -39,6 +39,6 @@
     "test": "./node_modules/.bin/grunt test"
   },
   "bin": {
-    "netpokerserver": "./src/js/server/netpokerserver.js"
+    "netpokerserver": "./src/server/netpokerserver.js"
   }
 }

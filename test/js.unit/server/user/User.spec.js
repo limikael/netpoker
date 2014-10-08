@@ -1,4 +1,4 @@
-var User = require("../../../../src/js/server/user/User");
+var User = require("../../../../src/server/user/User");
 
 describe("User", function() {
 	it("has id and name", function() {

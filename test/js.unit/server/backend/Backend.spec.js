@@ -1,5 +1,5 @@
-var MockBackendServer = require("../../../../src/js/server/mock/MockBackendServer");
-var Backend = require("../../../../src/js/server/backend/Backend");
+var MockBackendServer = require("../../../../src/server/mock/MockBackendServer");
+var Backend = require("../../../../src/server/backend/Backend");
 
 describe("Backend", function() {
 	it("works", function(done) {

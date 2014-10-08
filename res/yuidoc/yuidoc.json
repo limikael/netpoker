@@ -4,7 +4,7 @@
 	"version": "0.1",
 	"options": {
 		"outdir": "doc",
-		"paths": "src/js",
+		"paths": "src",
 		"preprocessor": "res/yuidoc/yuidoc_die_on_warnings.js"
 	}
 }

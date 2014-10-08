@@ -1,4 +1,4 @@
-var CardData = require("../../../../src/js/proto/data/CardData");
+var CardData = require("../../../../src/proto/data/CardData");
 
 describe("CardData", function() {
 

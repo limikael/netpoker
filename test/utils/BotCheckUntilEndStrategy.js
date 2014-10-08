@@ -1,13 +1,13 @@
 var BotStrategy = require("./BotStrategy");
-var FunctionUtil = require("../../src/js/utils/FunctionUtil");
-var StateCompleteMessage = require("../../src/js/proto/messages/StateCompleteMessage");
-var ShowDialogMessage = require("../../src/js/proto/messages/ShowDialogMessage");
-var SeatClickMessage = require("../../src/js/proto/messages/SeatClickMessage");
-var SeatInfoMessage = require("../../src/js/proto/messages/SeatInfoMessage");
-var ButtonClickMessage = require("../../src/js/proto/messages/ButtonClickMessage");
-var PayOutMessage = require("../../src/js/proto/messages/PayOutMessage");
-var ButtonsMessage = require("../../src/js/proto/messages/ButtonsMessage");
-var ButtonData = require("../../src/js/proto/data/ButtonData");
+var FunctionUtil = require("../../src/utils/FunctionUtil");
+var StateCompleteMessage = require("../../src/proto/messages/StateCompleteMessage");
+var ShowDialogMessage = require("../../src/proto/messages/ShowDialogMessage");
+var SeatClickMessage = require("../../src/proto/messages/SeatClickMessage");
+var SeatInfoMessage = require("../../src/proto/messages/SeatInfoMessage");
+var ButtonClickMessage = require("../../src/proto/messages/ButtonClickMessage");
+var PayOutMessage = require("../../src/proto/messages/PayOutMessage");
+var ButtonsMessage = require("../../src/proto/messages/ButtonsMessage");
+var ButtonData = require("../../src/proto/data/ButtonData");
 
 /**
  * Checks until show/muck state.

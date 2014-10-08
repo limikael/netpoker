@@ -1,13 +1,13 @@
-var SeatInfoMessage = require("../../src/js/proto/messages/SeatInfoMessage");
-var ButtonsMessage = require("../../src/js/proto/messages/ButtonsMessage");
-var PocketCardsMessage = require("../../src/js/proto/messages/PocketCardsMessage");
-var BetMessage = require("../../src/js/proto/messages/BetMessage");
-var CommunityCardsMessage = require("../../src/js/proto/messages/CommunityCardsMessage");
-var FoldCardsMessage = require("../../src/js/proto/messages/FoldCardsMessage");
-var DealerButtonMessage = require("../../src/js/proto/messages/DealerButtonMessage");
-var PotMessage = require("../../src/js/proto/messages/PotMessage");
-var BetsToPotMessage = require("../../src/js/proto/messages/BetsToPotMessage");
-var HandInfoMessage = require("../../src/js/proto/messages/HandInfoMessage")
+var SeatInfoMessage = require("../../src/proto/messages/SeatInfoMessage");
+var ButtonsMessage = require("../../src/proto/messages/ButtonsMessage");
+var PocketCardsMessage = require("../../src/proto/messages/PocketCardsMessage");
+var BetMessage = require("../../src/proto/messages/BetMessage");
+var CommunityCardsMessage = require("../../src/proto/messages/CommunityCardsMessage");
+var FoldCardsMessage = require("../../src/proto/messages/FoldCardsMessage");
+var DealerButtonMessage = require("../../src/proto/messages/DealerButtonMessage");
+var PotMessage = require("../../src/proto/messages/PotMessage");
+var BetsToPotMessage = require("../../src/proto/messages/BetsToPotMessage");
+var HandInfoMessage = require("../../src/proto/messages/HandInfoMessage")
 
 function BotController(model) {
 	this.model = model;

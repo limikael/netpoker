@@ -1,6 +1,6 @@
 var qsub = require("qsub");
 var Q = require("q");
-var AsyncSequence = require("./src/js/utils/AsyncSequence");
+var AsyncSequence = require("./src/utils/AsyncSequence");
 var fs = require("fs");
 
 module.exports = function(grunt) {
@@ -70,7 +70,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask("mockserver", function() {
 		var done = this.async();
-		var job = qsub("node").arg("src/js/server/netpokerserver.js");
+		var job = qsub("node").arg("src/server/netpokerserver.js");
 		job.arg("--mock", "--clientport", "2222");
 		job.show().expect(0);
 		job.run().then(done);
@@ -159,7 +159,7 @@ module.exports = function(grunt) {
 
 		que = que.then(function() {
 			var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
-			job.arg("res/mocksite/netpokerclient.bundle.js", "src/js/client/netpokerclient.js");
+			job.arg("res/mocksite/netpokerclient.bundle.js", "src/client/netpokerclient.js");
 			job.show().expect(0);
 			return job.run();
 		});

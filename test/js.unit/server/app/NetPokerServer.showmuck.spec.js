@@ -1,22 +1,22 @@
 var BotConnection = require("../../../utils/BotConnection");
-var MockBackendServer = require("../../../../src/js/server/mock/MockBackendServer");
+var MockBackendServer = require("../../../../src/server/mock/MockBackendServer");
 var PipeNetPokerServer = require("../../../utils/PipeNetPokerServer");
-var StateCompleteMessage = require("../../../../src/js/proto/messages/StateCompleteMessage");
-var SeatClickMessage = require("../../../../src/js/proto/messages/SeatClickMessage");
-var ButtonClickMessage = require("../../../../src/js/proto/messages/ButtonClickMessage");
-var ShowDialogMessage = require("../../../../src/js/proto/messages/ShowDialogMessage");
-var ButtonsMessage = require("../../../../src/js/proto/messages/ButtonsMessage");
-var SeatInfoMessage = require("../../../../src/js/proto/messages/SeatInfoMessage");
-var ButtonData = require("../../../../src/js/proto/data/ButtonData");
-var AsyncSequence = require("../../../../src/js/utils/AsyncSequence");
+var StateCompleteMessage = require("../../../../src/proto/messages/StateCompleteMessage");
+var SeatClickMessage = require("../../../../src/proto/messages/SeatClickMessage");
+var ButtonClickMessage = require("../../../../src/proto/messages/ButtonClickMessage");
+var ShowDialogMessage = require("../../../../src/proto/messages/ShowDialogMessage");
+var ButtonsMessage = require("../../../../src/proto/messages/ButtonsMessage");
+var SeatInfoMessage = require("../../../../src/proto/messages/SeatInfoMessage");
+var ButtonData = require("../../../../src/proto/data/ButtonData");
+var AsyncSequence = require("../../../../src/utils/AsyncSequence");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
-var AskBlindState = require("../../../../src/js/server/game/AskBlindState");
-var RoundState = require("../../../../src/js/server/game/RoundState");
-var ShowMuckState = require("../../../../src/js/server/game/ShowMuckState");
-var FinishedState = require("../../../../src/js/server/game/FinishedState");
-var CardData = require("../../../../src/js/proto/data/CardData");
+var AskBlindState = require("../../../../src/server/game/AskBlindState");
+var RoundState = require("../../../../src/server/game/RoundState");
+var ShowMuckState = require("../../../../src/server/game/ShowMuckState");
+var FinishedState = require("../../../../src/server/game/FinishedState");
+var CardData = require("../../../../src/proto/data/CardData");
 var BotSitInStrategy = require("../../../utils/BotSitInStrategy");
-var ThenableBarrier = require("../../../../src/js/utils/ThenableBarrier");
+var ThenableBarrier = require("../../../../src/utils/ThenableBarrier");
 
 describe("NetPokerServer - show muck", function() {
 	var mockBackendServer;

@@ -17,11 +17,11 @@ MockWebRequestHandler.prototype.handleWebRequest = function(e) {
 	var urlParts = url.parse(e.request.url);
 	var path = urlParts.pathname;
 
-	var fileName = __dirname + "/../../../../res/mocksite/" + path;
+	var fileName = __dirname + "/../../../res/mocksite/" + path;
 
 	if (path == "/") {
 		var caseListContent = "";
-		var dir = fs.readdirSync(__dirname + "/../../../../res/viewcases");
+		var dir = fs.readdirSync(__dirname + "/../../../res/viewcases");
 		for (var i = 0; i < dir.length; i++) {
 			var viewCase = dir[i].replace(".json", "");
 
@@ -30,7 +30,7 @@ MockWebRequestHandler.prototype.handleWebRequest = function(e) {
 			caseListContent += "</li>"
 		}
 
-		var content = fs.readFileSync(__dirname + "/../../../../res/mocksite/index.html");
+		var content = fs.readFileSync(__dirname + "/../../../res/mocksite/index.html");
 		content = content.toString().replace("{caseListContent}", caseListContent);
 
 		e.response.write(content);

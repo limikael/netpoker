@@ -1,8 +1,8 @@
-var MessageServer = require("../../../src/js/utils/MessageServer");
-var MessageClientConnection = require("../../../src/js/utils/MessageClientConnection");
-var MessageServerConnection = require("../../../src/js/utils/MessageServerConnection");
-var Thenable = require("../../../src/js/utils/Thenable");
-var ThenableBarrier = require("../../../src/js/utils/ThenableBarrier");
+var MessageServer = require("../../../src/utils/MessageServer");
+var MessageClientConnection = require("../../../src/utils/MessageClientConnection");
+var MessageServerConnection = require("../../../src/utils/MessageServerConnection");
+var Thenable = require("../../../src/utils/Thenable");
+var ThenableBarrier = require("../../../src/utils/ThenableBarrier");
 
 describe("MessageClientConnection", function() {
 	it("can connect to a server", function(done) {

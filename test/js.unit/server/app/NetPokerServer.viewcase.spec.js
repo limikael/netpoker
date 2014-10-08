@@ -1,10 +1,10 @@
-var NetPokerServer = require("../../../../src/js/server/app/NetPokerServer");
-var Thenable = require("../../../../src/js/utils/Thenable");
-var Backend = require("../../../../src/js/server/backend/Backend");
-var AsyncSequence = require("../../../../src/js/utils/AsyncSequence");
-var MessageClientConnection = require("../../../../src/js/utils/MessageClientConnection");
-var ProtoConnection = require("../../../../src/js/proto/ProtoConnection");
-var InitMessage = require("../../../../src/js/proto/messages/InitMessage")
+var NetPokerServer = require("../../../../src/server/app/NetPokerServer");
+var Thenable = require("../../../../src/utils/Thenable");
+var Backend = require("../../../../src/server/backend/Backend");
+var AsyncSequence = require("../../../../src/utils/AsyncSequence");
+var MessageClientConnection = require("../../../../src/utils/MessageClientConnection");
+var ProtoConnection = require("../../../../src/proto/ProtoConnection");
+var InitMessage = require("../../../../src/proto/messages/InitMessage")
 
 describe("NetPokerServer - viewcase", function() {
 	var mockBackend;

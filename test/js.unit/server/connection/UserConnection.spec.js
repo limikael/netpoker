@@ -1,8 +1,8 @@
-var UserConnection = require("../../../../src/js/server/connection/UserConnection");
-var ProtoConnection = require("../../../../src/js/proto/ProtoConnection");
-var EventDispatcher = require("../../../../src/js/utils/EventDispatcher");
-var Backend = require("../../../../src/js/server/backend/Backend");
-var Thenable = require("../../../../src/js/utils/Thenable");
+var UserConnection = require("../../../../src/server/connection/UserConnection");
+var ProtoConnection = require("../../../../src/proto/ProtoConnection");
+var EventDispatcher = require("../../../../src/utils/EventDispatcher");
+var Backend = require("../../../../src/server/backend/Backend");
+var Thenable = require("../../../../src/utils/Thenable");
 
 describe("UserConnection", function() {
 	var mockBackend, mockServices;

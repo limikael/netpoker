@@ -1,12 +1,12 @@
-var Thenable = require("../../../../src/js/utils/Thenable");
-var EventDispatcher = require("../../../../src/js/utils/EventDispatcher");
-var TableSeatBuyChipsPrompt = require("../../../../src/js/server/table/TableSeatBuyChipsPrompt");
-var User = require("../../../../src/js/server/user/User");
-var Backend = require("../../../../src/js/server/backend/Backend");
-var AsyncSequence = require("../../../../src/js/utils/AsyncSequence");
-var ButtonClickMessage = require("../../../../src/js/proto/messages/ButtonClickMessage");
-var ButtonData = require("../../../../src/js/proto/data/ButtonData");
-var ProtoConnection = require("../../../../src/js/proto/ProtoConnection");
+var Thenable = require("../../../../src/utils/Thenable");
+var EventDispatcher = require("../../../../src/utils/EventDispatcher");
+var TableSeatBuyChipsPrompt = require("../../../../src/server/table/TableSeatBuyChipsPrompt");
+var User = require("../../../../src/server/user/User");
+var Backend = require("../../../../src/server/backend/Backend");
+var AsyncSequence = require("../../../../src/utils/AsyncSequence");
+var ButtonClickMessage = require("../../../../src/proto/messages/ButtonClickMessage");
+var ButtonData = require("../../../../src/proto/data/ButtonData");
+var ProtoConnection = require("../../../../src/proto/ProtoConnection");
 
 describe("TableSeatBuyChipsPrompt", function() {
 	var user;

@@ -1,8 +1,8 @@
-var Game = require("../../../../src/js/server/game/Game");
-var GameSeat = require("../../../../src/js/server/game/GameSeat");
-var Thenable = require("../../../../src/js/utils/Thenable");
+var Game = require("../../../../src/server/game/Game");
+var GameSeat = require("../../../../src/server/game/GameSeat");
+var Thenable = require("../../../../src/utils/Thenable");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
-var EventDispatcher = require("../../../../src/js/utils/EventDispatcher");
+var EventDispatcher = require("../../../../src/utils/EventDispatcher");
 
 describe("Game", function() {
 	var mockTable;

@@ -1,7 +1,7 @@
-var GameSeatPrompt = require("../../../../src/js/server/game/GameSeatPrompt");
-var ButtonData = require("../../../../src/js/proto/data/ButtonData");
-var ButtonClickMessage = require("../../../../src/js/proto/messages/ButtonClickMessage");
-var EventDispatcher = require("../../../../src/js/utils/EventDispatcher");
+var GameSeatPrompt = require("../../../../src/server/game/GameSeatPrompt");
+var ButtonData = require("../../../../src/proto/data/ButtonData");
+var ButtonClickMessage = require("../../../../src/proto/messages/ButtonClickMessage");
+var EventDispatcher = require("../../../../src/utils/EventDispatcher");
 
 describe("GameSeatPrompt", function() {
 	var mockGameSeat;

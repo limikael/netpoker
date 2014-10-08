@@ -1,10 +1,10 @@
-var ConnectionManager = require("../../../../src/js/server/connection/ConnectionManager");
-var UserConnection = require("../../../../src/js/server/connection/UserConnection");
-var ProtoConnection = require("../../../../src/js/proto/ProtoConnection");
-var MessageClientConnection = require("../../../../src/js/utils/MessageClientConnection");
-var EventDispatcher = require("../../../../src/js/utils/EventDispatcher");
-var Backend = require("../../../../src/js/server/backend/Backend");
-var Thenable = require("../../../../src/js/utils/Thenable");
+var ConnectionManager = require("../../../../src/server/connection/ConnectionManager");
+var UserConnection = require("../../../../src/server/connection/UserConnection");
+var ProtoConnection = require("../../../../src/proto/ProtoConnection");
+var MessageClientConnection = require("../../../../src/utils/MessageClientConnection");
+var EventDispatcher = require("../../../../src/utils/EventDispatcher");
+var Backend = require("../../../../src/server/backend/Backend");
+var Thenable = require("../../../../src/utils/Thenable");
 
 describe("ConnectionManager", function() {
 	var mockBackend, mockServices;

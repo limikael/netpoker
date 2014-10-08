@@ -1,6 +1,6 @@
 var MessagePipeConnection = require("../../utils/MessagePipeConnection");
 var TickLoopRunner = require("../../utils/TickLoopRunner");
-var AsyncSequence = require("../../../src/js/utils/AsyncSequence");
+var AsyncSequence = require("../../../src/utils/AsyncSequence");
 
 describe("MessagePipeConnection", function() {
 

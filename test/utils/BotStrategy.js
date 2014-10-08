@@ -1,5 +1,5 @@
-var EventDispatcher=require("../../src/js/utils/EventDispatcher");
-var FunctionUtil=require("../../src/js/utils/FunctionUtil");
+var EventDispatcher=require("../../src/utils/EventDispatcher");
+var FunctionUtil=require("../../src/utils/FunctionUtil");
 
 /**
  * Abstract class for something that the bot can do.

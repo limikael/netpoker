@@ -1,9 +1,9 @@
-var Table = require("../../../../src/js/server/table/Table");
-var User = require("../../../../src/js/server/user/User");
-var EventDispatcher = require("../../../../src/js/utils/EventDispatcher");
-var ProtoConnection = require("../../../../src/js/proto/ProtoConnection");
-var TableInfoMessage = require("../../../../src/js/proto/messages/TableInfoMessage");
-var HandInfoMessage = require("../../../../src/js/proto/messages/HandInfoMessage");
+var Table = require("../../../../src/server/table/Table");
+var User = require("../../../../src/server/user/User");
+var EventDispatcher = require("../../../../src/utils/EventDispatcher");
+var ProtoConnection = require("../../../../src/proto/ProtoConnection");
+var TableInfoMessage = require("../../../../src/proto/messages/TableInfoMessage");
+var HandInfoMessage = require("../../../../src/proto/messages/HandInfoMessage");
 
 describe("Table", function() {
 	var mockServices;

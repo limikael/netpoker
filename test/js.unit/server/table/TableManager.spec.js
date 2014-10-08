@@ -1,6 +1,6 @@
-var Thenable = require("../../../../src/js/utils/Thenable");
-var TableManager = require("../../../../src/js/server/table/TableManager");
-var Backend = require("../../../../src/js/server/backend/Backend");
+var Thenable = require("../../../../src/utils/Thenable");
+var TableManager = require("../../../../src/server/table/TableManager");
+var Backend = require("../../../../src/server/backend/Backend");
 
 describe("TableManager", function() {
 	var mockBackend, mockServices;

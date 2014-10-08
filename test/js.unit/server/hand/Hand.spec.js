@@ -1,5 +1,5 @@
-var Hand = require("../../../../src/js/server/hand/Hand");
-var CardData = require("../../../../src/js/proto/data/CardData");
+var Hand = require("../../../../src/server/hand/Hand");
+var CardData = require("../../../../src/proto/data/CardData");
 
 describe("Hand", function() {
 

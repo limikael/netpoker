@@ -1,4 +1,4 @@
-var Thenable = require("../../src/js/utils/Thenable");
+var Thenable = require("../../src/utils/Thenable");
 //var process = require("process");
 
 function TickLoopRunner() {}

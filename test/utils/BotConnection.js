@@ -1,16 +1,16 @@
-var InitMessage = require("../../src/js/proto/messages/InitMessage");
-var MessageClientConnection = require("../../src/js/utils/MessageClientConnection");
-var ProtoConnection = require("../../src/js/proto/ProtoConnection");
-var Thenable = require("../../src/js/utils/Thenable");
+var InitMessage = require("../../src/proto/messages/InitMessage");
+var MessageClientConnection = require("../../src/utils/MessageClientConnection");
+var ProtoConnection = require("../../src/proto/ProtoConnection");
+var Thenable = require("../../src/utils/Thenable");
 var PipeNetPokerServer = require("./PipeNetPokerServer");
-var StateCompleteMessage = require("../../src/js/proto/messages/StateCompleteMessage");
-var ShowDialogMessage = require("../../src/js/proto/messages/ShowDialogMessage");
-var ButtonClickMessage = require("../../src/js/proto/messages/ButtonClickMessage");
-var SeatClickMessage = require("../../src/js/proto/messages/SeatClickMessage");
-var ButtonData = require("../../src/js/proto/data/ButtonData");
+var StateCompleteMessage = require("../../src/proto/messages/StateCompleteMessage");
+var ShowDialogMessage = require("../../src/proto/messages/ShowDialogMessage");
+var ButtonClickMessage = require("../../src/proto/messages/ButtonClickMessage");
+var SeatClickMessage = require("../../src/proto/messages/SeatClickMessage");
+var ButtonData = require("../../src/proto/data/ButtonData");
 var BotModel = require("./BotModel");
 var BotController = require("./BotController");
-var EventDispatcher = require("../../src/js/utils/EventDispatcher");
+var EventDispatcher = require("../../src/utils/EventDispatcher");
 
 function BotConnection(connectionTarget, token) {
 	this.connectionTarget = connectionTarget;

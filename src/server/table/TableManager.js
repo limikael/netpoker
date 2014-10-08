@@ -1,6 +1,6 @@
-var Backend = require("../../../../src/js/server/backend/Backend");
-var EventDispatcher = require("../../../../src/js/utils/EventDispatcher");
-var FunctionUtil = require("../../../../src/js/utils/FunctionUtil");
+var Backend = require("../../server/backend/Backend");
+var EventDispatcher = require("../../utils/EventDispatcher");
+var FunctionUtil = require("../../utils/FunctionUtil");
 var Table = require("./Table");
 
 /**

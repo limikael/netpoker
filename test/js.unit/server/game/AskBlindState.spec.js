@@ -1,12 +1,12 @@
-var MockBackendServer = require("../../../../src/js/server/mock/MockBackendServer");
+var MockBackendServer = require("../../../../src/server/mock/MockBackendServer");
 var PipeNetPokerServer = require("../../../utils/PipeNetPokerServer");
 var BotConnection = require("../../../utils/BotConnection");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
 var BotSitInStrategy = require("../../../utils/BotSitInStrategy");
-var AsyncSequence = require("../../../../src/js/utils/AsyncSequence");
-var ThenableBarrier = require("../../../../src/js/utils/ThenableBarrier");
-var ButtonData = require("../../../../src/js/proto/data/ButtonData");
-var FinishedState = require("../../../../src/js/server/game/FinishedState");
+var AsyncSequence = require("../../../../src/utils/AsyncSequence");
+var ThenableBarrier = require("../../../../src/utils/ThenableBarrier");
+var ButtonData = require("../../../../src/proto/data/ButtonData");
+var FinishedState = require("../../../../src/server/game/FinishedState");
 
 describe("AskBlindState", function() {
 	var mockBackendServer;

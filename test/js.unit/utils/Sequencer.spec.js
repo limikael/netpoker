@@ -1,5 +1,5 @@
-var Sequencer = require("../../../src/js/utils/Sequencer");
-var EventDispatcher = require("../../../src/js/utils/EventDispatcher");
+var Sequencer = require("../../../src/utils/Sequencer");
+var EventDispatcher = require("../../../src/utils/EventDispatcher");
 
 describe("Sequencer", function() {
 	it("sequences stuff", function() {

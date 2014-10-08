@@ -1,13 +1,13 @@
-var NetPokerServer = require("../../../../src/js/server/app/NetPokerServer");
-var Backend = require("../../../../src/js/server/backend/Backend");
-var Thenable = require("../../../../src/js/utils/Thenable");
+var NetPokerServer = require("../../../../src/server/app/NetPokerServer");
+var Backend = require("../../../../src/server/backend/Backend");
+var Thenable = require("../../../../src/utils/Thenable");
 var BotConnection = require("../../../utils/BotConnection");
-var AsyncSequence = require("../../../../src/js/utils/AsyncSequence");
-var StateCompleteMessage = require("../../../../src/js/proto/messages/StateCompleteMessage");
-var SeatClickMessage = require("../../../../src/js/proto/messages/SeatClickMessage");
-var ShowDialogMessage = require("../../../../src/js/proto/messages/ShowDialogMessage");
-var ButtonClickMessage = require("../../../../src/js/proto/messages/ButtonClickMessage");
-var ButtonData = require("../../../../src/js/proto/data/ButtonData");
+var AsyncSequence = require("../../../../src/utils/AsyncSequence");
+var StateCompleteMessage = require("../../../../src/proto/messages/StateCompleteMessage");
+var SeatClickMessage = require("../../../../src/proto/messages/SeatClickMessage");
+var ShowDialogMessage = require("../../../../src/proto/messages/ShowDialogMessage");
+var ButtonClickMessage = require("../../../../src/proto/messages/ButtonClickMessage");
+var ButtonData = require("../../../../src/proto/data/ButtonData");
 
 describe("NetPokerServer - connection", function() {
 	var mockBackend;

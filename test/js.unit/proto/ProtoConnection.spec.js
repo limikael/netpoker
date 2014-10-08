@@ -1,6 +1,6 @@
-var ProtoConnection = require("../../../src/js/proto/ProtoConnection");
-var InitMessage = require("../../../src/js/proto/messages/InitMessage");
-var EventDispatcher = require("../../../src/js/utils/EventDispatcher");
+var ProtoConnection = require("../../../src/proto/ProtoConnection");
+var InitMessage = require("../../../src/proto/messages/InitMessage");
+var EventDispatcher = require("../../../src/utils/EventDispatcher");
 
 describe("ProtoConnection", function() {
 

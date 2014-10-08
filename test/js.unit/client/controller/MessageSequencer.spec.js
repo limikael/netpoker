@@ -1,7 +1,7 @@
-var MessageSequencer = require("../../../../src/js/client/controller/MessageSequencer");
-var StateCompleteMessage = require("../../../../src/js/proto/messages/StateCompleteMessage");
-var SeatInfoMessage = require("../../../../src/js/proto/messages/SeatInfoMessage");
-var EventDispatcher = require("../../../../src/js/utils/EventDispatcher");
+var MessageSequencer = require("../../../../src/client/controller/MessageSequencer");
+var StateCompleteMessage = require("../../../../src/proto/messages/StateCompleteMessage");
+var SeatInfoMessage = require("../../../../src/proto/messages/SeatInfoMessage");
+var EventDispatcher = require("../../../../src/utils/EventDispatcher");
 
 describe("MessageSequencer", function() {
 	it("sequences messages", function() {
