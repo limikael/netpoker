@@ -72,8 +72,8 @@ describe("NetPokerServer - connection", function() {
 			bot.connectToTable(123);
 			bot.waitForMessage(StateCompleteMessage).then(
 				function() {
-					expect(netPokerServer.tableManager.getTableById(123).tableSpectators.length).toBe(1);
-					expect(netPokerServer.tableManager.getTableById(123).tableSpectators[0].user.getName()).toBe("testson");
+					expect(netPokerServer.cashGameManager.getTableById(123).tableSpectators.length).toBe(1);
+					expect(netPokerServer.cashGameManager.getTableById(123).tableSpectators[0].user.getName()).toBe("testson");
 					netPokerServer.close();
 					bot.close();
 					done();
@@ -97,7 +97,7 @@ describe("NetPokerServer - connection", function() {
 			},
 
 			function(next) {
-				table = netPokerServer.tableManager.getTableById(123);
+				table = netPokerServer.cashGameManager.getTableById(123);
 				expect(table.getTableSeatBySeatIndex(0).isAvailable()).toBe(false);
 				expect(table.getTableSeatBySeatIndex(3).isAvailable()).toBe(true);
 				bot = new BotConnection("http://localhost:2004", "token");
@@ -157,7 +157,7 @@ describe("NetPokerServer - connection", function() {
 			},
 
 			function(next) {
-				table = netPokerServer.tableManager.getTableById(123);
+				table = netPokerServer.cashGameManager.getTableById(123);
 				expect(table.getTableSeatBySeatIndex(0).isAvailable()).toBe(false);
 				expect(table.getTableSeatBySeatIndex(3).isAvailable()).toBe(true);
 				bot = new BotConnection("http://localhost:2004", "token");

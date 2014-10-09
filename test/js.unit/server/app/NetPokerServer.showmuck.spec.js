@@ -41,7 +41,7 @@ describe("NetPokerServer - show muck", function() {
 		var bot1 = new BotConnection(netPokerServer, "user1");
 		var bot2 = new BotConnection(netPokerServer, "user2");
 
-		var table = netPokerServer.tableManager.getTableById(123);
+		var table = netPokerServer.cashGameManager.getTableById(123);
 
 		AsyncSequence.run(
 			function(next) {
@@ -108,7 +108,7 @@ describe("NetPokerServer - show muck", function() {
 		var bot1 = new BotConnection(netPokerServer, "user1");
 		var bot2 = new BotConnection(netPokerServer, "user2");
 
-		var table = netPokerServer.tableManager.getTableById(123);
+		var table = netPokerServer.cashGameManager.getTableById(123);
 
 		AsyncSequence.run(
 			function(next) {

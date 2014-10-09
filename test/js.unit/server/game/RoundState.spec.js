@@ -35,11 +35,11 @@ describe("RoundState", function() {
 		netPokerServer.close();
 	});
 
-	/*it("can raise", function(done) {
+	it("can raise", function(done) {
 		var bot1 = new BotConnection(netPokerServer, "user1");
 		var bot2 = new BotConnection(netPokerServer, "user2");
 
-		var table = netPokerServer.tableManager.getTableById(123);
+		var table = netPokerServer.cashGameManager.getTableById(123);
 
 		AsyncSequence.run(
 			function(next) {
@@ -100,13 +100,13 @@ describe("RoundState", function() {
 				next();
 			}
 		).then(done);
-	});*/
+	});
 
 	it("can handle all in", function(done) {
 		var bot1 = new BotConnection(netPokerServer, "user1");
 		var bot2 = new BotConnection(netPokerServer, "user2");
 
-		var table = netPokerServer.tableManager.getTableById(123);
+		var table = netPokerServer.cashGameManager.getTableById(123);
 
 		AsyncSequence.run(
 			function(next) {

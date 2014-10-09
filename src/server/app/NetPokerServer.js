@@ -1,5 +1,5 @@
 var ConnectionManager = require("../connection/ConnectionManager");
-var TableManager = require("../table/TableManager");
+var CashGameManager = require("../cashgame/CashGameManager");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var Thenable = require("../../utils/Thenable");
@@ -8,7 +8,7 @@ var Backend = require("../backend/Backend");
 /**
  * This is the main class for the server. The 'netpokerserver' command is pretty much a wrapper
  * around this class. This class does pretty much everything that the app is responsible for,
- * such as managing the TableManager with active tables, it is responsible for creating
+ * such as managing the CashGameManager with active tables, it is responsible for creating
  * the ConnectionManager to listen for incoming connections, etc. It does not concern itself
  * with reading command line options or parsing configuration files, these things are left
  * to the entity implementing this class.
@@ -19,7 +19,7 @@ function NetPokerServer() {
 
 	this.listenPort = null;
 	this.connectionManager = new ConnectionManager(this);
-	this.tableManager = null;
+	this.cashGameManager = null;
 	this.backend = null;
 
 	this.mockNetwork = false;
@@ -48,8 +48,8 @@ NetPokerServer.prototype.useFixedDeck = function(deck) {
 
 	this.fixedDeck = deck;
 
-	if (this.tableManager)
-		this.tableManager.useFixedDeck(this.fixedDeck);
+	if (this.cashGameManager)
+		this.cashGameManager.useFixedDeck(this.fixedDeck);
 }
 
 /**
@@ -62,8 +62,8 @@ NetPokerServer.prototype.useFixedDeck = function(deck) {
 NetPokerServer.prototype.onConnectionManagerConnection = function(e) {
 	var initMessage = e.getInitMessage();
 
-	if (initMessage.getTableId() && this.tableManager) {
-		var table = this.tableManager.getTableById(initMessage.getTableId());
+	if (initMessage.getTableId() && this.cashGameManager) {
+		var table = this.cashGameManager.getTableById(initMessage.getTableId());
 
 		if (!table) {
 			console.log("table not found, refusing...")
@@ -128,10 +128,10 @@ NetPokerServer.prototype.serveViewCases = function(dir) {
 
 /**
  * The table manager is initialized.
- * @method onTableManagerInitialized
+ * @method onCashGameManagerInitialized
  * @private
  */
-NetPokerServer.prototype.onTableManagerInitialized = function() {
+NetPokerServer.prototype.onCashGameManagerInitialized = function() {
 	this.connectionManager.on(ConnectionManager.CONNECTION, this.onConnectionManagerConnection, this);
 	this.connectionManager.on("request", this.onConnectionManagerRequest, this);
 
@@ -166,13 +166,13 @@ NetPokerServer.prototype.run = function() {
 
 	this.runThenable = new Thenable();
 
-	this.tableManager = new TableManager(this);
+	this.cashGameManager = new CashGameManager(this);
 
 	if (this.fixedDeck)
-		this.tableManager.useFixedDeck(this.fixedDeck);
+		this.cashGameManager.useFixedDeck(this.fixedDeck);
 
-	this.tableManager.on(TableManager.INITIALIZED, this.onTableManagerInitialized, this);
-	this.tableManager.initialize();
+	this.cashGameManager.on(CashGameManager.INITIALIZED, this.onCashGameManagerInitialized, this);
+	this.cashGameManager.initialize();
 
 	return this.runThenable;
 }
@@ -184,7 +184,7 @@ NetPokerServer.prototype.run = function() {
 NetPokerServer.prototype.close = function() {
 	this.connectionManager.close();
 
-	this.tableManager.close();
+	this.cashGameManager.close();
 }
 
 /**

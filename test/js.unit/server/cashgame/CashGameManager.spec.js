@@ -1,8 +1,8 @@
 var Thenable = require("../../../../src/utils/Thenable");
-var TableManager = require("../../../../src/server/table/TableManager");
+var CashGameManager = require("../../../../src/server/cashgame/CashGameManager");
 var Backend = require("../../../../src/server/backend/Backend");
 
-describe("TableManager", function() {
+describe("CashGameManager", function() {
 	var mockBackend, mockServices;
 	var backendCallData;
 
@@ -31,10 +31,10 @@ describe("TableManager", function() {
 	});
 
 	it("fetches table info on initialization", function(done) {
-		var tableManager = new TableManager(mockServices);
+		var cashGameManager = new CashGameManager(mockServices);
 
-		tableManager.on(TableManager.INITIALIZED, function() {
-			expect(tableManager.tables.length).toBe(2);
+		cashGameManager.on(CashGameManager.INITIALIZED, function() {
+			expect(cashGameManager.tables.length).toBe(2);
 
 			done();
 		});
@@ -59,16 +59,16 @@ describe("TableManager", function() {
 			}]
 		};
 
-		tableManager.initialize();
+		cashGameManager.initialize();
 
 		expect(mockBackend.call).toHaveBeenCalledWith("table/getList");
 	});
 
 	it("can find a table by id", function(done) {
-		var tableManager = new TableManager(mockServices);
+		var cashGameManager = new CashGameManager(mockServices);
 
-		tableManager.on(TableManager.INITIALIZED, function() {
-			var table = tableManager.getTableById("table_123");
+		cashGameManager.on(CashGameManager.INITIALIZED, function() {
+			var table = cashGameManager.getTableById("table_123");
 
 			expect(table).not.toEqual(null);
 			expect(table.getId()).toEqual("table_123");
@@ -88,6 +88,6 @@ describe("TableManager", function() {
 			}]
 		};
 
-		tableManager.initialize();
+		cashGameManager.initialize();
 	});
 });

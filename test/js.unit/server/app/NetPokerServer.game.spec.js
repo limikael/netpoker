@@ -41,7 +41,7 @@ describe("NetPokerServer - game", function() {
 		var bot1 = new BotConnection(netPokerServer, "user1");
 		var bot2 = new BotConnection(netPokerServer, "user2");
 		var bot3 = new BotConnection(netPokerServer, "user3");
-		var table = netPokerServer.tableManager.getTableById(123);
+		var table = netPokerServer.cashGameManager.getTableById(123);
 
 		bot1.connectToTable(123);
 		bot2.connectToTable(123);
@@ -105,7 +105,7 @@ describe("NetPokerServer - game", function() {
 	it("restores the state on reconnection", function(done) {
 		netPokerServer.useFixedDeck(["2c", "3c", "2h", "3h", "7d", "9d", "kd"]);
 
-		var table = netPokerServer.tableManager.getTableById(123);
+		var table = netPokerServer.cashGameManager.getTableById(123);
 
 		var bot1 = new BotConnection(netPokerServer, "user1");
 		var bot2 = new BotConnection(netPokerServer, "user2");

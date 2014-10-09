@@ -30,7 +30,7 @@ describe("AskBlindState", function() {
 	});
 
 	it("doesn't start if there is not enough players", function(done) {
-		var table=netPokerServer.tableManager.getTableById(123);
+		var table=netPokerServer.cashGameManager.getTableById(123);
 		var bot1, bot2;
 
 		AsyncSequence.run(

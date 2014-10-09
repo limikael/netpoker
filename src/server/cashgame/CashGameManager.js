@@ -1,13 +1,13 @@
 var Backend = require("../../server/backend/Backend");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var FunctionUtil = require("../../utils/FunctionUtil");
-var Table = require("./Table");
+var Table = require("../table/Table");
 
 /**
  * Manage list of current cash game tables.
- * @class TableManager
+ * @class CashGameManager
  */
-function TableManager(services) {
+function CashGameManager(services) {
 	EventDispatcher.call(this);
 
 	this.services = services;
@@ -17,15 +17,15 @@ function TableManager(services) {
 	this.fixedDeck = null;
 }
 
-FunctionUtil.extend(TableManager, EventDispatcher);
+FunctionUtil.extend(CashGameManager, EventDispatcher);
 
-TableManager.INITIALIZED = "initialized";
+CashGameManager.INITIALIZED = "initialized";
 
 /**
  * Initialize.
  * @method initialize
  */
-TableManager.prototype.initialize = function() {
+CashGameManager.prototype.initialize = function() {
 	this.services.getBackend().call(Backend.GET_TABLE_LIST).then(
 		this.onInitializeTableListSuccess.bind(this),
 		this.onInitializeTableListError.bind(this)
@@ -36,7 +36,7 @@ TableManager.prototype.initialize = function() {
  * Use fixed deck for debugging.
  * @method useFixedDeck
  */
-TableManager.prototype.useFixedDeck = function(deck) {
+CashGameManager.prototype.useFixedDeck = function(deck) {
 	this.fixedDeck = deck;
 
 	for (var i=0; i<this.tables.length; i++)
@@ -48,7 +48,7 @@ TableManager.prototype.useFixedDeck = function(deck) {
  * @method onInitializeTableListSuccess
  * @private
  */
-TableManager.prototype.onInitializeTableListSuccess = function(result) {
+CashGameManager.prototype.onInitializeTableListSuccess = function(result) {
 	var i;
 
 	for (i = 0; i < result.tables.length; i++) {
@@ -61,7 +61,7 @@ TableManager.prototype.onInitializeTableListSuccess = function(result) {
 		this.tables.push(table);
 	}
 
-	this.trigger(TableManager.INITIALIZED);
+	this.trigger(CashGameManager.INITIALIZED);
 }
 
 /**
@@ -69,7 +69,7 @@ TableManager.prototype.onInitializeTableListSuccess = function(result) {
  * @method onInitializeTableListError
  * @private
  */
-TableManager.prototype.onInitializeTableListError = function(errorMessage) {
+CashGameManager.prototype.onInitializeTableListError = function(errorMessage) {
 	throw "Error fetching table list: " + errorMessage;
 }
 
@@ -77,7 +77,7 @@ TableManager.prototype.onInitializeTableListError = function(errorMessage) {
  * Find a table by id.
  * @method getTableById
  */
-TableManager.prototype.getTableById = function(id) {
+CashGameManager.prototype.getTableById = function(id) {
 	for (var i = 0; i < this.tables.length; i++)
 		if (this.tables[i].getId() == id)
 			return this.tables[i];
@@ -89,9 +89,9 @@ TableManager.prototype.getTableById = function(id) {
  * Hard close.
  * @method close
  */
-TableManager.prototype.close = function() {
+CashGameManager.prototype.close = function() {
 	for (var i = 0; i < this.tables.length; i++)
 		this.tables[i].close();
 }
 
-module.exports = TableManager;
+module.exports = CashGameManager;
