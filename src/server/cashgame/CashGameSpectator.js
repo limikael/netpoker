@@ -7,9 +7,9 @@ var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 
 /**
  * Someone watching a table.
- * @class TableSpectator
+ * @class CashGameSpectator
  */
-function TableSpectator(table, connection, user) {
+function CashGameSpectator(table, connection, user) {
 	EventDispatcher.call(this);
 
 	this.table = table;
@@ -23,24 +23,24 @@ function TableSpectator(table, connection, user) {
 	this.send(this.getTableInfoMessage());
 }
 
-FunctionUtil.extend(TableSpectator, EventDispatcher);
+FunctionUtil.extend(CashGameSpectator, EventDispatcher);
 
-TableSpectator.DONE = "done";
+CashGameSpectator.DONE = "done";
 
 /**
  * Connection close.
  * @method onConnectionClose
  */
-TableSpectator.prototype.onConnectionClose = function() {
+CashGameSpectator.prototype.onConnectionClose = function() {
 	console.log("table spectator connection close");
-	this.trigger(TableSpectator.DONE);
+	this.trigger(CashGameSpectator.DONE);
 }
 
 /**
  * Seat click.
  * @method onSeatClick
  */
-TableSpectator.prototype.onSeatClick = function(m) {
+CashGameSpectator.prototype.onSeatClick = function(m) {
 	var tableSeat = this.table.getTableSeatBySeatIndex(m.getSeatIndex());
 
 	if (!tableSeat || !tableSeat.isAvailable())
@@ -57,14 +57,14 @@ TableSpectator.prototype.onSeatClick = function(m) {
 	this.connection.removeMessageHandler(SeatClickMessage.TYPE, this.onSeatClick, this);
 	this.connection.removeMessageHandler(ChatMessage.TYPE, this.onChat, this);
 
-	this.trigger(TableSpectator.DONE);
+	this.trigger(CashGameSpectator.DONE);
 }
 
 /**
  * Send a message to this table spectator.
  * @method send
  */
-TableSpectator.prototype.send = function(m) {
+CashGameSpectator.prototype.send = function(m) {
 	if (this.connection)
 		this.connection.send(m);
 }
@@ -73,7 +73,7 @@ TableSpectator.prototype.send = function(m) {
  * On chat.
  * @method onChat
  */
-TableSpectator.prototype.onChat = function(message) {
+CashGameSpectator.prototype.onChat = function(message) {
 	if (this.user == null)
 		return;
 	this.table.chat(this.user, message.text);
@@ -83,7 +83,7 @@ TableSpectator.prototype.onChat = function(message) {
  * Get TableInfoMessage to be sent to this TableSpectrator.
  * @method getTableInfoMessage
  */
-TableSpectator.prototype.getTableInfoMessage = function() {
+CashGameSpectator.prototype.getTableInfoMessage = function() {
 	if (!this.user) {
 		var m = new TableInfoMessage("You need to be logged in to play.");
 
@@ -109,8 +109,8 @@ TableSpectator.prototype.getTableInfoMessage = function() {
  * Get connection.
  * @method getProtoConnection
  */
-TableSpectator.prototype.getProtoConnection = function() {
+CashGameSpectator.prototype.getProtoConnection = function() {
 	return this.connection;
 }
 
-module.exports = TableSpectator;
+module.exports = CashGameSpectator;

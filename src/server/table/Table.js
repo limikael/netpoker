@@ -3,7 +3,7 @@ var EventDispatcher = require("../../utils/EventDispatcher");
 var BaseTable = require("./BaseTable");
 var TableUtil = require("./TableUtil");
 var CashGameTableSeat = require("../cashgame/CashGameTableSeat");
-var TableSpectator = require("./TableSpectator");
+var CashGameSpectator = require("../cashgame/CashGameSpectator");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 var HandInfoMessage = require("../../proto/messages/HandInfoMessage");
 var ChatMessage = require("../../proto/messages/ChatMessage");
@@ -122,8 +122,8 @@ Table.prototype.notifyNewConnection = function(protoConnection, user) {
 				if (tableSeat.getProtoConnection()) {
 					console.log("**** re seating...");
 
-					var ts = new TableSpectator(this, tableSeat.getProtoConnection(), user);
-					ts.on(TableSpectator.DONE, this.onTableSpectatorDone, this);
+					var ts = new CashGameSpectator(this, tableSeat.getProtoConnection(), user);
+					ts.on(CashGameSpectator.DONE, this.onTableSpectatorDone, this);
 					this.tableSpectators.push(ts);
 				}
 
@@ -134,8 +134,8 @@ Table.prototype.notifyNewConnection = function(protoConnection, user) {
 	}
 
 	if (!alreadySeated) {
-		var ts = new TableSpectator(this, protoConnection, user);
-		ts.on(TableSpectator.DONE, this.onTableSpectatorDone, this);
+		var ts = new CashGameSpectator(this, protoConnection, user);
+		ts.on(CashGameSpectator.DONE, this.onTableSpectatorDone, this);
 		this.tableSpectators.push(ts);
 	}
 
@@ -150,7 +150,7 @@ Table.prototype.onTableSpectatorDone = function(e) {
 	var tableSpectator = e.target;
 
 	ArrayUtil.remove(this.tableSpectators, tableSpectator);
-	tableSpectator.off(TableSpectator.DONE, this.onTableSpectatorDone, this);
+	tableSpectator.off(CashGameSpectator.DONE, this.onTableSpectatorDone, this);
 }
 
 /** 
