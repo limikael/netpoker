@@ -1,9 +1,9 @@
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
-var BaseTable = require("./BaseTable");
-var TableUtil = require("./TableUtil");
-var CashGameTableSeat = require("../cashgame/CashGameTableSeat");
-var CashGameSpectator = require("../cashgame/CashGameSpectator");
+var BaseTable = require("../table/BaseTable");
+var TableUtil = require("../table/TableUtil");
+var CashGameTableSeat = require("./CashGameTableSeat");
+var CashGameSpectator = require("./CashGameSpectator");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 var HandInfoMessage = require("../../proto/messages/HandInfoMessage");
 var ChatMessage = require("../../proto/messages/ChatMessage");
@@ -15,9 +15,9 @@ var Backend = require("../backend/Backend");
 
 /**
  * Cash game table.
- * @class Table
+ * @class CashGameTable
  */
-function Table(services, config) {
+function CashGameTable(services, config) {
 	if (!config.numseats ||
 		!config.id ||
 		!config.currency ||
@@ -53,13 +53,13 @@ function Table(services, config) {
 	this.previousHandId = null;
 }
 
-FunctionUtil.extend(Table, BaseTable);
+FunctionUtil.extend(CashGameTable, BaseTable);
 
 /**
  * Full?
  * @method isFull
  */
-Table.prototype.isFull = function() {
+CashGameTable.prototype.isFull = function() {
 	for (var i = 0; i < this.tableSeats.length; i++) {
 		if (this.tableSeats[i].isAvailable())
 			return false;
@@ -73,7 +73,7 @@ Table.prototype.isFull = function() {
  * @method setupSeats
  * @private
  */
-Table.prototype.setupSeats = function(numseats) {
+CashGameTable.prototype.setupSeats = function(numseats) {
 	var activeSeatIndices = TableUtil.getActiveSeatIndices(numseats);
 	this.tableSeats = [];
 
@@ -91,7 +91,7 @@ Table.prototype.setupSeats = function(numseats) {
  * Table seat close.
  * @method onTableSeatClose
  */
-Table.prototype.onTableSeatClose = function(e) {
+CashGameTable.prototype.onTableSeatClose = function(e) {
 	if (this.currentGame)
 		return;
 
@@ -102,7 +102,7 @@ Table.prototype.onTableSeatClose = function(e) {
  * Table seat ready.
  * @method onTableSeatReady
  */
-Table.prototype.onTableSeatReady = function() {
+CashGameTable.prototype.onTableSeatReady = function() {
 	if (!this.currentGame && this.getNumInGame() >= 2 && !this.stopped)
 		this.startGame();
 }
@@ -111,7 +111,7 @@ Table.prototype.onTableSeatReady = function() {
  * New connection.
  * @method notifyNewConnection
  */
-Table.prototype.notifyNewConnection = function(protoConnection, user) {
+CashGameTable.prototype.notifyNewConnection = function(protoConnection, user) {
 	var alreadySeated = false;
 
 	if (user) {
@@ -146,7 +146,7 @@ Table.prototype.notifyNewConnection = function(protoConnection, user) {
  * Table spectator done.
  * @method  onTableSpectatorDone
  */
-Table.prototype.onTableSpectatorDone = function(e) {
+CashGameTable.prototype.onTableSpectatorDone = function(e) {
 	var tableSpectator = e.target;
 
 	ArrayUtil.remove(this.tableSpectators, tableSpectator);
@@ -157,7 +157,7 @@ Table.prototype.onTableSpectatorDone = function(e) {
  * Send state.
  * @method sendState
  */
-Table.prototype.sendState = function(protoConnection) {
+CashGameTable.prototype.sendState = function(protoConnection) {
 	var i;
 
 	for (i = 0; i < this.tableSeats.length; i++)
@@ -181,7 +181,7 @@ Table.prototype.sendState = function(protoConnection) {
  * Get id.
  * @method getId
  */
-Table.prototype.getId = function() {
+CashGameTable.prototype.getId = function() {
 	return this.id;
 }
 
@@ -189,7 +189,7 @@ Table.prototype.getId = function() {
  * Is user seated?
  * @method isUserSeated
  */
-Table.prototype.isUserSeated = function(user) {
+CashGameTable.prototype.isUserSeated = function(user) {
 	for (i = 0; i < this.tableSeats.length; i++) {
 		var tableSeat = this.tableSeats[i];
 		if (tableSeat.getUser() && tableSeat.getUser().getId() == user.getId())
@@ -203,7 +203,7 @@ Table.prototype.isUserSeated = function(user) {
  * Get currency.
  * @method getCurrency
  */
-Table.prototype.getCurrency = function() {
+CashGameTable.prototype.getCurrency = function() {
 	return this.currency;
 }
 
@@ -211,7 +211,7 @@ Table.prototype.getCurrency = function() {
  * Get services.
  * @method getServices
  */
-Table.prototype.getServices = function() {
+CashGameTable.prototype.getServices = function() {
 	return this.services;
 }
 
@@ -219,7 +219,7 @@ Table.prototype.getServices = function() {
  * Get table name.
  * @method getName
  */
-Table.prototype.getName = function() {
+CashGameTable.prototype.getName = function() {
 	return this.name;
 }
 
@@ -227,7 +227,7 @@ Table.prototype.getName = function() {
  * Get table name.
  * @method getMinSitInAmount
  */
-Table.prototype.getMinSitInAmount = function() {
+CashGameTable.prototype.getMinSitInAmount = function() {
 	return this.minSitInAmount;
 }
 
@@ -235,7 +235,7 @@ Table.prototype.getMinSitInAmount = function() {
  * Get table name.
  * @method getMaxSitInAmount
  */
-Table.prototype.getMaxSitInAmount = function() {
+CashGameTable.prototype.getMaxSitInAmount = function() {
 	return this.maxSitInAmount;
 }
 
@@ -243,7 +243,7 @@ Table.prototype.getMaxSitInAmount = function() {
  * Start the game.
  * @method startGame
  */
-Table.prototype.startGame = function() {
+CashGameTable.prototype.startGame = function() {
 	if (this.currentGame)
 		throw "There is already a game started";
 
@@ -262,7 +262,7 @@ Table.prototype.startGame = function() {
  * Current game finished.
  * @method onCurrentGameFinished
  */
-Table.prototype.onCurrentGameFinished = function() {
+CashGameTable.prototype.onCurrentGameFinished = function() {
 	if (this.currentGame.getId())
 		this.previousHandId = this.currentGame.getId();
 
@@ -303,7 +303,7 @@ Table.prototype.onCurrentGameFinished = function() {
  * Get current game for this table.
  * @method getCurrentGame
  */
-Table.prototype.getCurrentGame = function() {
+CashGameTable.prototype.getCurrentGame = function() {
 	return this.currentGame;
 }
 
@@ -311,7 +311,7 @@ Table.prototype.getCurrentGame = function() {
  * Get parent id.
  * @method getStartGameParentId
  */
-Table.prototype.getStartGameParentId = function() {
+CashGameTable.prototype.getStartGameParentId = function() {
 	return this.id;
 }
 
@@ -319,7 +319,7 @@ Table.prototype.getStartGameParentId = function() {
  * Send TableInfoMessages to all seats.
  * @method sendTableInfoMessages
  */
-Table.prototype.sendTableInfoMessages = function() {
+CashGameTable.prototype.sendTableInfoMessages = function() {
 	var i;
 
 	for (i = 0; i < this.tableSpectators.length; i++) {
@@ -339,7 +339,7 @@ Table.prototype.sendTableInfoMessages = function() {
  * Get function to call on game start.
  * @method getStartGameFunctionName
  */
-Table.prototype.getStartGameFunctionName = function() {
+CashGameTable.prototype.getStartGameFunctionName = function() {
 	return Backend.START_CASH_GAME;
 }
 
@@ -347,7 +347,7 @@ Table.prototype.getStartGameFunctionName = function() {
  * Get stake.
  * @method getStake
  */
-Table.prototype.getStake = function() {
+CashGameTable.prototype.getStake = function() {
 	return this.stake;
 }
 
@@ -355,7 +355,7 @@ Table.prototype.getStake = function() {
  * Stop.
  * @method stop
  */
-Table.prototype.stop = function() {
+CashGameTable.prototype.stop = function() {
 	this.stopped = true;
 }
 
@@ -363,7 +363,7 @@ Table.prototype.stop = function() {
  * Send a message to all connections on the table.
  * @method send
  */
-Table.prototype.send = function(message) {
+CashGameTable.prototype.send = function(message) {
 	var i;
 
 	for (i = 0; i < this.tableSpectators.length; i++)
@@ -377,7 +377,7 @@ Table.prototype.send = function(message) {
  * Send message to all connections except specified seat.
  * @method sendExceptSeat
  */
-Table.prototype.sendExceptSeat = function(message, except) {
+CashGameTable.prototype.sendExceptSeat = function(message, except) {
 	var i;
 
 	for (i = 0; i < this.tableSpectators.length; i++)
@@ -392,7 +392,7 @@ Table.prototype.sendExceptSeat = function(message, except) {
  * To string.
  * @method toString
  */
-Table.prototype.toString = function() {
+CashGameTable.prototype.toString = function() {
 	return "[Table id=" + this.id + "]";
 }
 
@@ -400,7 +400,7 @@ Table.prototype.toString = function() {
  * Hard close.
  * @method stop
  */
-Table.prototype.close = function() {
+CashGameTable.prototype.close = function() {
 	console.log("------------ hard close table, game=" + this.currentGame);
 	if (this.currentGame) {
 		this.currentGame.close();
@@ -412,7 +412,7 @@ Table.prototype.close = function() {
  * Get rake percent.
  * @method getRakePercent
  */
-Table.prototype.getRakePercent = function() {
+CashGameTable.prototype.getRakePercent = function() {
 	return this.rakePercent;
 }
 
@@ -420,7 +420,7 @@ Table.prototype.getRakePercent = function() {
  * Get hand info message.
  * @method getHandInfoMessage
  */
-Table.prototype.getHandInfoMessage = function() {
+CashGameTable.prototype.getHandInfoMessage = function() {
 	var s = "";
 
 	if (this.currentGame && this.currentGame.getId())
@@ -432,4 +432,4 @@ Table.prototype.getHandInfoMessage = function() {
 	return new HandInfoMessage(s);
 }
 
-module.exports = Table;
+module.exports = CashGameTable;

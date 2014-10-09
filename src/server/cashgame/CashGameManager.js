@@ -1,7 +1,7 @@
 var Backend = require("../../server/backend/Backend");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var FunctionUtil = require("../../utils/FunctionUtil");
-var Table = require("../table/Table");
+var CashGameTable = require("./CashGameTable");
 
 /**
  * Manage list of current cash game tables.
@@ -53,7 +53,7 @@ CashGameManager.prototype.onInitializeTableListSuccess = function(result) {
 
 	for (i = 0; i < result.tables.length; i++) {
 		var tableData = result.tables[i];
-		var table = new Table(this.services, tableData);
+		var table = new CashGameTable(this.services, tableData);
 
 		if (this.fixedDeck)
 			table.useFixedDeck(this.fixedDeck);

@@ -1,11 +1,11 @@
-var Table = require("../../../../src/server/table/Table");
+var CashGameTable = require("../../../../src/server/cashgame/CashGameTable");
 var User = require("../../../../src/server/user/User");
 var EventDispatcher = require("../../../../src/utils/EventDispatcher");
 var ProtoConnection = require("../../../../src/proto/ProtoConnection");
 var TableInfoMessage = require("../../../../src/proto/messages/TableInfoMessage");
 var HandInfoMessage = require("../../../../src/proto/messages/HandInfoMessage");
 
-describe("Table", function() {
+describe("CashGameTable", function() {
 	var mockServices;
 	var config;
 
@@ -24,11 +24,11 @@ describe("Table", function() {
 	});
 
 	it("can be created", function() {
-		var t = new Table(mockServices, config);
+		var t = new CashGameTable(mockServices, config);
 	});
 
 	it("has a parent id that is the same as the id", function() {
-		var t = new Table(mockServices, config);
+		var t = new CashGameTable(mockServices, config);
 		expect(t.getStartGameParentId()).toBe(123);
 		expect(t.getStartGameFunctionName()).toBe("game/startForTable");
 
@@ -36,7 +36,7 @@ describe("Table", function() {
 	});
 
 	it("has some seats", function() {
-		var t = new Table(mockServices, config);
+		var t = new CashGameTable(mockServices, config);
 
 		expect(t.getTableSeats().length).toEqual(10);
 
@@ -50,7 +50,7 @@ describe("Table", function() {
 	});
 
 	it("creates and removes spectators for new connections", function() {
-		var t = new Table(mockServices, config);
+		var t = new CashGameTable(mockServices, config);
 
 		var mockConnection = new EventDispatcher();
 		mockConnection.send = jasmine.createSpy();
@@ -75,7 +75,7 @@ describe("Table", function() {
 	});
 
 	it("can get next seated user in sequence", function() {
-		var t = new Table(mockServices, config);
+		var t = new CashGameTable(mockServices, config);
 
 		var mockTableSeatUser = {};
 		mockTableSeatUser.isInGame = function() {
@@ -108,7 +108,7 @@ describe("Table", function() {
 	});
 
 	it("reestablishes user connections", function() {
-		var t = new Table(mockServices, config);
+		var t = new CashGameTable(mockServices, config);
 
 		var oldMockConnection = new EventDispatcher();
 		oldMockConnection.send = jasmine.createSpy();
@@ -163,7 +163,7 @@ describe("Table", function() {
 	});
 
 	it("can create a hand info message",function() {
-		var t=new Table(mockServices, config);
+		var t=new CashGameTable(mockServices, config);
 
 		var mockGame={};
 		mockGame.getId=function() {
