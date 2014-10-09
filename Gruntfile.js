@@ -115,7 +115,7 @@ module.exports = function(grunt) {
 			var job = qsub("./node_modules/.bin/jasmine-node")
 				.arg("--captureExceptions")
 				.arg("--verbose")
-				.arg("test/js.unit")
+				.arg("test/unit")
 
 			if (grunt.option("match"))
 				job.arg("--match", grunt.option("match"));
