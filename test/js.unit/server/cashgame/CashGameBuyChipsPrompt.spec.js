@@ -1,6 +1,6 @@
 var Thenable = require("../../../../src/utils/Thenable");
 var EventDispatcher = require("../../../../src/utils/EventDispatcher");
-var TableSeatBuyChipsPrompt = require("../../../../src/server/table/TableSeatBuyChipsPrompt");
+var CashGameBuyChipsPrompt = require("../../../../src/server/cashgame/CashGameBuyChipsPrompt");
 var User = require("../../../../src/server/user/User");
 var Backend = require("../../../../src/server/backend/Backend");
 var AsyncSequence = require("../../../../src/utils/AsyncSequence");
@@ -8,7 +8,7 @@ var ButtonClickMessage = require("../../../../src/proto/messages/ButtonClickMess
 var ButtonData = require("../../../../src/proto/data/ButtonData");
 var ProtoConnection = require("../../../../src/proto/ProtoConnection");
 
-describe("TableSeatBuyChipsPrompt", function() {
+describe("CashGameBuyChipsPrompt", function() {
 	var user;
 	var mockConnection;
 	var mockTable;
@@ -81,8 +81,8 @@ describe("TableSeatBuyChipsPrompt", function() {
 	it("can cancels itself on connection close", function(done) {
 		var cancelSpy = jasmine.createSpy();
 
-		var prompt = new TableSeatBuyChipsPrompt(mockTableSeat);
-		prompt.on(TableSeatBuyChipsPrompt.CANCEL, cancelSpy);
+		var prompt = new CashGameBuyChipsPrompt(mockTableSeat);
+		prompt.on(CashGameBuyChipsPrompt.CANCEL, cancelSpy);
 		prompt.ask();
 
 		AsyncSequence.run(
@@ -113,8 +113,8 @@ describe("TableSeatBuyChipsPrompt", function() {
 	it("can cancels itself on cancel", function(done) {
 		var cancelSpy = jasmine.createSpy();
 
-		var prompt = new TableSeatBuyChipsPrompt(mockTableSeat);
-		prompt.on(TableSeatBuyChipsPrompt.CANCEL, cancelSpy);
+		var prompt = new CashGameBuyChipsPrompt(mockTableSeat);
+		prompt.on(CashGameBuyChipsPrompt.CANCEL, cancelSpy);
 		prompt.ask();
 
 		AsyncSequence.run(
@@ -147,9 +147,9 @@ describe("TableSeatBuyChipsPrompt", function() {
 		var completeSpy = jasmine.createSpy();
 		var cancelSpy = jasmine.createSpy();
 
-		var prompt = new TableSeatBuyChipsPrompt(mockTableSeat);
-		prompt.on(TableSeatBuyChipsPrompt.COMPLETE, completeSpy);
-		prompt.on(TableSeatBuyChipsPrompt.CANCEL, cancelSpy);
+		var prompt = new CashGameBuyChipsPrompt(mockTableSeat);
+		prompt.on(CashGameBuyChipsPrompt.COMPLETE, completeSpy);
+		prompt.on(CashGameBuyChipsPrompt.CANCEL, cancelSpy);
 		prompt.ask();
 
 		AsyncSequence.run(
@@ -187,9 +187,9 @@ describe("TableSeatBuyChipsPrompt", function() {
 		var completeSpy = jasmine.createSpy();
 		var cancelSpy = jasmine.createSpy();
 
-		var prompt = new TableSeatBuyChipsPrompt(mockTableSeat);
-		prompt.on(TableSeatBuyChipsPrompt.COMPLETE, completeSpy);
-		prompt.on(TableSeatBuyChipsPrompt.CANCEL, cancelSpy);
+		var prompt = new CashGameBuyChipsPrompt(mockTableSeat);
+		prompt.on(CashGameBuyChipsPrompt.COMPLETE, completeSpy);
+		prompt.on(CashGameBuyChipsPrompt.CANCEL, cancelSpy);
 		prompt.ask();
 
 		AsyncSequence.run(
@@ -241,24 +241,13 @@ describe("TableSeatBuyChipsPrompt", function() {
 			return thenable;
 		};
 
-		var prompt = new TableSeatBuyChipsPrompt(mockTableSeat);
+		var prompt = new CashGameBuyChipsPrompt(mockTableSeat);
 
-		prompt.on(TableSeatBuyChipsPrompt.CANCEL, function() {
+		prompt.on(CashGameBuyChipsPrompt.CANCEL, function() {
 			expect(mockTableSeat.send).toHaveBeenCalled();
 			done();
 		});
 
 		prompt.ask();
-		
-
-		/*var cancelSpy = jasmine.createSpy();
-		prompt.on(TableSeatBuyChipsPrompt.CANCEL,cancelSpy);
-		prompt.ask();
-
-		setTimeout(function() {
-			expect(mockTableSeat.send).toHaveBeenCalled();
-			expect(cancelSpy).toHaveBeenCalled();
-			done();
-		}, 100);*/
 	});
 });

@@ -8,9 +8,9 @@ var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 
 /**
  * Prompt user to buy chips.
- * @class TableSeatBuyChipsPrompt
+ * @class CashGameBuyChipsPrompt
  */
-function TableSeatBuyChipsPrompt(tableSeat) {
+function CashGameBuyChipsPrompt(tableSeat) {
 	EventDispatcher.call(this);
 
 	this.tableSeat = tableSeat;
@@ -19,16 +19,16 @@ function TableSeatBuyChipsPrompt(tableSeat) {
 		throw "Cannot buy chips for a non connected seat";
 }
 
-FunctionUtil.extend(TableSeatBuyChipsPrompt, EventDispatcher);
+FunctionUtil.extend(CashGameBuyChipsPrompt, EventDispatcher);
 
-TableSeatBuyChipsPrompt.COMPLETE = "complete";
-TableSeatBuyChipsPrompt.CANCEL = "cancel";
+CashGameBuyChipsPrompt.COMPLETE = "complete";
+CashGameBuyChipsPrompt.CANCEL = "cancel";
 
 /**
  * Ask if the user wants to be seated.
  * @method ask
  */
-TableSeatBuyChipsPrompt.prototype.ask = function() {
+CashGameBuyChipsPrompt.prototype.ask = function() {
 	if (!this.tableSeat.getProtoConnection())
 		throw "Cannot buy chips for a non connected seat";
 
@@ -49,10 +49,10 @@ TableSeatBuyChipsPrompt.prototype.ask = function() {
  * Balance call success.
  * @method onGetBalanceCallComplete
  */
-TableSeatBuyChipsPrompt.prototype.onGetBalanceCallComplete = function(result) {
+CashGameBuyChipsPrompt.prototype.onGetBalanceCallComplete = function(result) {
 	if (!this.tableSeat.getProtoConnection()) {
 		console.log("the connection went away while checking balance");
-		this.trigger(TableSeatBuyChipsPrompt.CANCEL);
+		this.trigger(CashGameBuyChipsPrompt.CANCEL);
 		return;
 	}
 
@@ -87,27 +87,27 @@ TableSeatBuyChipsPrompt.prototype.onGetBalanceCallComplete = function(result) {
  * Balance call fail.
  * @method onGetBalanceCallError
  */
-TableSeatBuyChipsPrompt.prototype.onGetBalanceCallError = function(e) {
+CashGameBuyChipsPrompt.prototype.onGetBalanceCallError = function(e) {
 	var d = new ShowDialogMessage();
 
 	d.setText("Unable to fetch balance\n\n" + e);
 	d.addButton(ButtonData.OK);
 	this.tableSeat.send(d);
 
-	this.trigger(TableSeatBuyChipsPrompt.CANCEL);
+	this.trigger(CashGameBuyChipsPrompt.CANCEL);
 }
 
 /**
  * Connection close.
  * @method onConnectionClose
  */
-TableSeatBuyChipsPrompt.prototype.onConnectionClose = function() {
+CashGameBuyChipsPrompt.prototype.onConnectionClose = function() {
 	console.log("************ connection closed in buy chips prompt");
 
 	this.tableSeat.off(ProtoConnection.CLOSE, this.onConnectionClose, this);
 	this.tableSeat.off(ButtonClickMessage.TYPE, this.onButtonClick, this);
 
-	this.trigger(TableSeatBuyChipsPrompt.CANCEL);
+	this.trigger(CashGameBuyChipsPrompt.CANCEL);
 }
 
 /**
@@ -115,8 +115,8 @@ TableSeatBuyChipsPrompt.prototype.onConnectionClose = function() {
  * @method onButtonClick
  * @private
  */
-TableSeatBuyChipsPrompt.prototype.onButtonClick = function(e) {
-	//console.log("TableSeatBuyChipsPrompt complete");
+CashGameBuyChipsPrompt.prototype.onButtonClick = function(e) {
+	//console.log("CashGameBuyChipsPrompt complete");
 	//console.log(e);
 
 	if (e.getButton() == ButtonData.SIT_IN) {
@@ -143,7 +143,7 @@ TableSeatBuyChipsPrompt.prototype.onButtonClick = function(e) {
 		this.tableSeat.off(ProtoConnection.CLOSE, this.onConnectionClose, this);
 		this.tableSeat.off(ButtonClickMessage.TYPE, this.onButtonClick, this);
 
-		this.trigger(TableSeatBuyChipsPrompt.CANCEL);
+		this.trigger(CashGameBuyChipsPrompt.CANCEL);
 	}
 }
 
@@ -151,31 +151,31 @@ TableSeatBuyChipsPrompt.prototype.onButtonClick = function(e) {
  * Balance call success.
  * @method onSitInCallComplete
  */
-TableSeatBuyChipsPrompt.prototype.onSitInCallComplete = function(r) {
-	this.trigger(TableSeatBuyChipsPrompt.COMPLETE);
+CashGameBuyChipsPrompt.prototype.onSitInCallComplete = function(r) {
+	this.trigger(CashGameBuyChipsPrompt.COMPLETE);
 }
 
 /**
  * Balance call fail.
  * @method onSitInCallError
  */
-TableSeatBuyChipsPrompt.prototype.onSitInCallError = function(e) {
+CashGameBuyChipsPrompt.prototype.onSitInCallError = function(e) {
 	var d = new ShowDialogMessage();
 	d.setText("Unable to sit you in at the table.\n\n" + e);
 	d.addButton(ButtonData.OK);
 
 	this.tableSeat.send(d);
-	this.trigger(TableSeatBuyChipsPrompt.CANCEL);
+	this.trigger(CashGameBuyChipsPrompt.CANCEL);
 }
 
 /**
  * Get chips.
  * @method getChips
  */
-TableSeatBuyChipsPrompt.prototype.getChips = function() {
+CashGameBuyChipsPrompt.prototype.getChips = function() {
 	console.log("chips: " + this.chips);
 
 	return parseInt(this.chips);
 }
 
-module.exports = TableSeatBuyChipsPrompt;
+module.exports = CashGameBuyChipsPrompt;

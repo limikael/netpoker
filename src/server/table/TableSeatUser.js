@@ -4,7 +4,7 @@ var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 var ButtonData = require("../../proto/data/ButtonData");
-var TableSeatBuyChipsPrompt = require("./TableSeatBuyChipsPrompt");
+var CashGameBuyChipsPrompt = require("../cashgame/CashGameBuyChipsPrompt");
 var Backend = require("../backend/Backend");
 
 /**
@@ -46,9 +46,9 @@ TableSeatUser.prototype.sitIn = function() {
 	if (this.buyChipsPrompt)
 		throw "Buying";
 
-	this.buyChipsPrompt = new TableSeatBuyChipsPrompt(this.tableSeat);
-	this.buyChipsPrompt.on(TableSeatBuyChipsPrompt.COMPLETE, this.onBuyChipsPromptComplete, this);
-	this.buyChipsPrompt.on(TableSeatBuyChipsPrompt.CANCEL, this.onBuyChipsPromptCancel, this);
+	this.buyChipsPrompt = new CashGameBuyChipsPrompt(this.tableSeat);
+	this.buyChipsPrompt.on(CashGameBuyChipsPrompt.COMPLETE, this.onBuyChipsPromptComplete, this);
+	this.buyChipsPrompt.on(CashGameBuyChipsPrompt.CANCEL, this.onBuyChipsPromptCancel, this);
 
 	this.tableSeat.getTable().send(this.tableSeat.getSeatInfoMessage());
 
@@ -60,8 +60,8 @@ TableSeatUser.prototype.sitIn = function() {
  * @method onBuyChipsPromptComplete
  */
 TableSeatUser.prototype.onBuyChipsPromptComplete = function() {
-	this.buyChipsPrompt.off(TableSeatBuyChipsPrompt.COMPLETE, this.onBuyChipsPromptComplete, this);
-	this.buyChipsPrompt.off(TableSeatBuyChipsPrompt.CANCEL, this.onBuyChipsPromptCancel, this);
+	this.buyChipsPrompt.off(CashGameBuyChipsPrompt.COMPLETE, this.onBuyChipsPromptComplete, this);
+	this.buyChipsPrompt.off(CashGameBuyChipsPrompt.CANCEL, this.onBuyChipsPromptCancel, this);
 
 	this.sitInCompleted = true;
 	this.chips = this.buyChipsPrompt.getChips();
@@ -86,8 +86,8 @@ TableSeatUser.prototype.onBuyChipsPromptComplete = function() {
  */
 TableSeatUser.prototype.onBuyChipsPromptCancel = function() {
 	//console.log("buy chips cancel..........");
-	this.buyChipsPrompt.off(TableSeatBuyChipsPrompt.COMPLETE, this.onBuyChipsPromptComplete, this);
-	this.buyChipsPrompt.off(TableSeatBuyChipsPrompt.CANCEL, this.onBuyChipsPromptCancel, this);
+	this.buyChipsPrompt.off(CashGameBuyChipsPrompt.COMPLETE, this.onBuyChipsPromptComplete, this);
+	this.buyChipsPrompt.off(CashGameBuyChipsPrompt.CANCEL, this.onBuyChipsPromptCancel, this);
 	this.buyChipsPrompt = null;
 	this.leave();
 }
