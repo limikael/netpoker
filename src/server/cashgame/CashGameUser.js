@@ -4,14 +4,14 @@ var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 var ButtonData = require("../../proto/data/ButtonData");
-var CashGameBuyChipsPrompt = require("../cashgame/CashGameBuyChipsPrompt");
+var CashGameBuyChipsPrompt = require("./CashGameBuyChipsPrompt");
 var Backend = require("../backend/Backend");
 
 /**
  * A user seated at a table.
- * @class TableSeatUser
+ * @class CashGameUser
  */
-function TableSeatUser(tableSeat, user) {
+function CashGameUser(tableSeat, user) {
 	this.tableSeat = tableSeat;
 	this.user = user;
 	this.sitInCompleted = false;
@@ -22,16 +22,16 @@ function TableSeatUser(tableSeat, user) {
 	this.tableSeat.on(ButtonClickMessage.TYPE, this.onTableSeatButtonClick, this);
 }
 
-FunctionUtil.extend(TableSeatUser, EventDispatcher);
+FunctionUtil.extend(CashGameUser, EventDispatcher);
 
-TableSeatUser.DONE = "done";
-TableSeatUser.READY = "ready";
+CashGameUser.DONE = "done";
+CashGameUser.READY = "ready";
 
 /**
  * Get seated user.
  * @method getUser
  */
-TableSeatUser.prototype.getUser = function() {
+CashGameUser.prototype.getUser = function() {
 	return this.user;
 }
 
@@ -39,7 +39,7 @@ TableSeatUser.prototype.getUser = function() {
  * Sit in user.
  * @method sitIn
  */
-TableSeatUser.prototype.sitIn = function() {
+CashGameUser.prototype.sitIn = function() {
 	if (this.sitInCompleted)
 		throw "Already sitting in";
 
@@ -59,7 +59,7 @@ TableSeatUser.prototype.sitIn = function() {
  * Buy chips prompt complete.
  * @method onBuyChipsPromptComplete
  */
-TableSeatUser.prototype.onBuyChipsPromptComplete = function() {
+CashGameUser.prototype.onBuyChipsPromptComplete = function() {
 	this.buyChipsPrompt.off(CashGameBuyChipsPrompt.COMPLETE, this.onBuyChipsPromptComplete, this);
 	this.buyChipsPrompt.off(CashGameBuyChipsPrompt.CANCEL, this.onBuyChipsPromptCancel, this);
 
@@ -74,7 +74,7 @@ TableSeatUser.prototype.onBuyChipsPromptComplete = function() {
 	} else {
 		this.tableSeat.table.send(this.tableSeat.getSeatInfoMessage());
 
-		this.trigger(TableSeatUser.READY);
+		this.trigger(CashGameUser.READY);
 	}
 
 	this.tableSeat.send(this.getTableInfoMessage());
@@ -84,7 +84,7 @@ TableSeatUser.prototype.onBuyChipsPromptComplete = function() {
  * Buy chips prompt complete.
  * @method onBuyChipsPromptCancel
  */
-TableSeatUser.prototype.onBuyChipsPromptCancel = function() {
+CashGameUser.prototype.onBuyChipsPromptCancel = function() {
 	//console.log("buy chips cancel..........");
 	this.buyChipsPrompt.off(CashGameBuyChipsPrompt.COMPLETE, this.onBuyChipsPromptComplete, this);
 	this.buyChipsPrompt.off(CashGameBuyChipsPrompt.CANCEL, this.onBuyChipsPromptCancel, this);
@@ -96,7 +96,7 @@ TableSeatUser.prototype.onBuyChipsPromptCancel = function() {
  * Is this table seat user in the game?
  * @method isInGame
  */
-TableSeatUser.prototype.isInGame = function() {
+CashGameUser.prototype.isInGame = function() {
 	return this.sitInCompleted && !this.sittingout && !this.leaving;
 }
 
@@ -104,7 +104,7 @@ TableSeatUser.prototype.isInGame = function() {
  * Get chips.
  * @method getChips
  */
-TableSeatUser.prototype.getChips = function() {
+CashGameUser.prototype.getChips = function() {
 	if (isNaN(this.chips))
 		throw new Error("chips is NaN");
 
@@ -116,7 +116,7 @@ TableSeatUser.prototype.getChips = function() {
  * Set chips.
  * @method setChips
  */
-TableSeatUser.prototype.setChips = function(value) {
+CashGameUser.prototype.setChips = function(value) {
 	//console.log("setting chips: " + value);
 	this.chips = value;
 }
@@ -125,8 +125,8 @@ TableSeatUser.prototype.setChips = function(value) {
  * Leave.
  * @method leave
  */
-TableSeatUser.prototype.leave = function() {
-	//console.log("****************** TableSeatUser::leave, leaving="+this.leaving);
+CashGameUser.prototype.leave = function() {
+	//console.log("****************** CashGameUser::leave, leaving="+this.leaving);
 
 	if (this.leaving)
 		return;
@@ -159,7 +159,7 @@ TableSeatUser.prototype.leave = function() {
  * @method onSitoutCallComplete
  * @private
  */
-TableSeatUser.prototype.onSitoutCallComplete = function() {
+CashGameUser.prototype.onSitoutCallComplete = function() {
 	this.cleanupAndNotifyDone();
 }
 
@@ -169,11 +169,11 @@ TableSeatUser.prototype.onSitoutCallComplete = function() {
  * @method cleanupAndNotifyDone
  * @private
  */
-TableSeatUser.prototype.cleanupAndNotifyDone = function() {
+CashGameUser.prototype.cleanupAndNotifyDone = function() {
 	//console.log("********** notifying done in table seat user");
 
 	this.tableSeat.on(ButtonClickMessage.TYPE, this.onTableSeatButtonClick, this);
-	this.trigger(TableSeatUser.DONE);
+	this.trigger(CashGameUser.DONE);
 }
 
 /**
@@ -181,16 +181,16 @@ TableSeatUser.prototype.cleanupAndNotifyDone = function() {
  * @method onSitoutCallError
  * @private
  */
-TableSeatUser.prototype.onSitoutCallError = function() {
+CashGameUser.prototype.onSitoutCallError = function() {
 	console.log("sitout call failed!!!");
-	this.trigger(TableSeatUser.DONE);
+	this.trigger(CashGameUser.DONE);
 }
 
 /**
  * Is this seat currently in reserved mode?
  * @method isReserved
  */
-TableSeatUser.prototype.isReserved = function() {
+CashGameUser.prototype.isReserved = function() {
 	if (this.buyChipsPrompt)
 		return true;
 
@@ -202,7 +202,7 @@ TableSeatUser.prototype.isReserved = function() {
  * Is this table seat user sitting out?
  * @method isSitout
  */
-TableSeatUser.prototype.isSitout = function() {
+CashGameUser.prototype.isSitout = function() {
 	return this.sittingout;
 }
 
@@ -210,7 +210,7 @@ TableSeatUser.prototype.isSitout = function() {
  * Sit out the table seat user.
  * @method sitout
  */
-TableSeatUser.prototype.sitout = function() {
+CashGameUser.prototype.sitout = function() {
 	var b = new ButtonsMessage();
 	b.addButton(new ButtonData(ButtonData.LEAVE));
 	b.addButton(new ButtonData(ButtonData.IM_BACK));
@@ -225,7 +225,7 @@ TableSeatUser.prototype.sitout = function() {
  * Get TableInfoMessage
  * @method getTableInfoMessage
  */
-TableSeatUser.prototype.getTableInfoMessage = function() {
+CashGameUser.prototype.getTableInfoMessage = function() {
 	if (!this.tableSeat.isInGame())
 		return new TableInfoMessage();
 
@@ -245,7 +245,7 @@ TableSeatUser.prototype.getTableInfoMessage = function() {
  * @method onTableSeatButtonClick
  * @private
  */
-TableSeatUser.prototype.onTableSeatButtonClick = function(m) {
+CashGameUser.prototype.onTableSeatButtonClick = function(m) {
 	if (this.leaving)
 		return;
 
@@ -261,7 +261,7 @@ TableSeatUser.prototype.onTableSeatButtonClick = function(m) {
  * @method sitBackIn
  * @private
  */
-TableSeatUser.prototype.sitBackIn = function() {
+CashGameUser.prototype.sitBackIn = function() {
 	if (!this.sittingout)
 		throw new Error("not sitting out");
 
@@ -269,7 +269,7 @@ TableSeatUser.prototype.sitBackIn = function() {
 	this.tableSeat.getTable().send(this.tableSeat.getSeatInfoMessage());
 	this.tableSeat.send(this.getTableInfoMessage());
 
-	this.trigger(TableSeatUser.READY);
+	this.trigger(CashGameUser.READY);
 }
 
-module.exports = TableSeatUser;
+module.exports = CashGameUser;

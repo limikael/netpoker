@@ -1,7 +1,7 @@
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var BaseTableSeat = require("./BaseTableSeat");
-var TableSeatUser = require("./TableSeatUser");
+var CashGameUser = require("../cashgame/CashGameUser");
 var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 var ButtonData = require("../../proto/data/ButtonData");
@@ -60,7 +60,7 @@ TableSeat.prototype.getUser = function() {
  * and needs to do a bit of clean up before switching user, therefore this function
  * will fail if there is already a user seated at this TableSeat.
  *
- * The TableSeat will manage the seated user until the associated TableSeatUser object
+ * The TableSeat will manage the seated user until the associated CashGameUser object
  * signals that it is complete, at which point a the associated user will be reset.
  *
  * It is possible to request that this class relinquishes the associated user using
@@ -83,9 +83,9 @@ TableSeat.prototype.reserve = function(user, protoConnection) {
 		throw "Someone is sitting here";
 
 	this.setProtoConnection(protoConnection);
-	this.tableSeatUser = new TableSeatUser(this, user);
-	this.tableSeatUser.on(TableSeatUser.READY, this.onTableSeatUserReady, this);
-	this.tableSeatUser.on(TableSeatUser.DONE, this.onTableSeatUserDone, this);
+	this.tableSeatUser = new CashGameUser(this, user);
+	this.tableSeatUser.on(CashGameUser.READY, this.onTableSeatUserReady, this);
+	this.tableSeatUser.on(CashGameUser.DONE, this.onTableSeatUserDone, this);
 	this.tableSeatUser.sitIn();
 }
 
@@ -121,8 +121,8 @@ TableSeat.prototype.onTableSeatUserDone = function() {
 	var protoConnection = this.getProtoConnection();
 	var user = this.tableSeatUser.getUser();
 
-	this.tableSeatUser.off(TableSeatUser.READY, this.onTableSeatUserReady, this);
-	this.tableSeatUser.off(TableSeatUser.DONE, this.onTableSeatUserDone, this);
+	this.tableSeatUser.off(CashGameUser.READY, this.onTableSeatUserReady, this);
+	this.tableSeatUser.off(CashGameUser.DONE, this.onTableSeatUserDone, this);
 	this.tableSeatUser = null;
 
 	this.table.send(this.getSeatInfoMessage());
