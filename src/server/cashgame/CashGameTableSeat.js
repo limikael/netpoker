@@ -1,7 +1,7 @@
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
-var BaseTableSeat = require("./BaseTableSeat");
-var CashGameUser = require("../cashgame/CashGameUser");
+var BaseTableSeat = require("../table/BaseTableSeat");
+var CashGameUser = require("./CashGameUser");
 var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 var ButtonData = require("../../proto/data/ButtonData");
@@ -14,26 +14,26 @@ var ButtonData = require("../../proto/data/ButtonData");
  * @class TableSeat
  * @extends BaseTableSeat
  */
-function TableSeat(table, seatIndex, active) {
+function CashGameTableSeat(table, seatIndex, active) {
 	BaseTableSeat.call(this, table, seatIndex, active);
 
 	this.tableSeatUser = null;
 }
 
-FunctionUtil.extend(TableSeat, BaseTableSeat);
+FunctionUtil.extend(CashGameTableSeat, BaseTableSeat);
 
 /**
  * Dispatched to signal when user, previously registered using the
  * `reserve` function, is ready to join the game.
  * @event TableSeat.READY
  */
-TableSeat.READY = "ready";
+CashGameTableSeat.READY = "ready";
 
 /**
  * Is thie seat available?
  * @method isAvailable
  */
-TableSeat.prototype.isAvailable = function() {
+CashGameTableSeat.prototype.isAvailable = function() {
 	if (this.active && !this.tableSeatUser)
 		return true;
 
@@ -45,7 +45,7 @@ TableSeat.prototype.isAvailable = function() {
  * Get currently seated user.
  * @method getUser
  */
-TableSeat.prototype.getUser = function() {
+CashGameTableSeat.prototype.getUser = function() {
 	if (!this.tableSeatUser)
 		return null;
 
@@ -75,7 +75,7 @@ TableSeat.prototype.getUser = function() {
  * @param {User} user The user that reserves the seat.
  * @param {ProtoConnection} protoConnection The connection to the user.
  */
-TableSeat.prototype.reserve = function(user, protoConnection) {
+CashGameTableSeat.prototype.reserve = function(user, protoConnection) {
 	if (!this.active)
 		throw "This seat is not active";
 
@@ -93,7 +93,7 @@ TableSeat.prototype.reserve = function(user, protoConnection) {
  * Set proto connection.
  * @method setProtoConnection
  */
-TableSeat.prototype.setProtoConnection = function(protoConnection) {
+CashGameTableSeat.prototype.setProtoConnection = function(protoConnection) {
 	BaseTableSeat.prototype.setProtoConnection.call(this, protoConnection);
 
 	if (this.protoConnection) {
@@ -115,7 +115,7 @@ TableSeat.prototype.setProtoConnection = function(protoConnection) {
  * @method onTableSeatUserDone
  * @private
  */
-TableSeat.prototype.onTableSeatUserDone = function() {
+CashGameTableSeat.prototype.onTableSeatUserDone = function() {
 	console.log("*********** table seat user done!");
 
 	var protoConnection = this.getProtoConnection();
@@ -141,15 +141,15 @@ TableSeat.prototype.onTableSeatUserDone = function() {
  * @method onTableSeatUserReady
  * @private
  */
-TableSeat.prototype.onTableSeatUserReady = function() {
-	this.trigger(TableSeat.READY);
+CashGameTableSeat.prototype.onTableSeatUserReady = function() {
+	this.trigger(CashGameTableSeat.READY);
 }
 
 /**
  * Is this table seat in the game.
  * @method isInGame
  */
-TableSeat.prototype.isInGame = function() {
+CashGameTableSeat.prototype.isInGame = function() {
 	if (!this.tableSeatUser)
 		return false;
 
@@ -161,7 +161,7 @@ TableSeat.prototype.isInGame = function() {
  * @method getChips
  * @return {Number} The current number of chips for this seat.
  */
-TableSeat.prototype.getChips = function() {
+CashGameTableSeat.prototype.getChips = function() {
 	if (!this.tableSeatUser)
 		return 0;
 
@@ -175,7 +175,7 @@ TableSeat.prototype.getChips = function() {
  * the backend before giving the user up.
  * @method leaveTable
  */
-TableSeat.prototype.leaveTable = function() {
+CashGameTableSeat.prototype.leaveTable = function() {
 	if (!this.tableSeatUser)
 		return;
 
@@ -188,7 +188,7 @@ TableSeat.prototype.leaveTable = function() {
  * @method getSeatInfoMessage
  * @return {SeatInfoMessage}
  */
-TableSeat.prototype.getSeatInfoMessage = function() {
+CashGameTableSeat.prototype.getSeatInfoMessage = function() {
 	var m = BaseTableSeat.prototype.getSeatInfoMessage.call(this);
 
 	if (this.tableSeatUser && this.tableSeatUser.isReserved())
@@ -204,7 +204,7 @@ TableSeat.prototype.getSeatInfoMessage = function() {
  * Add or subtract chips.
  * @method addChips
  */
-TableSeat.prototype.addChips = function(value) {
+CashGameTableSeat.prototype.addChips = function(value) {
 	if (!this.tableSeatUser)
 		throw new Error("no table seat user...");
 
@@ -215,7 +215,7 @@ TableSeat.prototype.addChips = function(value) {
  * Is this seat sitting out?
  * @method isSitout
  */
-TableSeat.prototype.isSitout = function() {
+CashGameTableSeat.prototype.isSitout = function() {
 	if (!this.tableSeatUser)
 		return false;
 
@@ -226,7 +226,7 @@ TableSeat.prototype.isSitout = function() {
  * Sit out the seated user.
  * @method sitout
  */
-TableSeat.prototype.sitout = function() {
+CashGameTableSeat.prototype.sitout = function() {
 	if (!this.tableSeatUser)
 		throw new Error("trying to sit out a null user");
 
@@ -237,11 +237,11 @@ TableSeat.prototype.sitout = function() {
  * Get table info message.
  * @method getTableInfoMessage
  */
-TableSeat.prototype.getTableInfoMessage = function() {
+CashGameTableSeat.prototype.getTableInfoMessage = function() {
 	if (!this.tableSeatUser)
 		return new TableInfoMessage();
 
 	return this.tableSeatUser.getTableInfoMessage();
 }
 
-module.exports = TableSeat;
+module.exports = CashGameTableSeat;

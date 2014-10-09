@@ -2,7 +2,7 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var BaseTable = require("./BaseTable");
 var TableUtil = require("./TableUtil");
-var TableSeat = require("./TableSeat");
+var CashGameTableSeat = require("../cashgame/CashGameTableSeat");
 var TableSpectator = require("./TableSpectator");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 var HandInfoMessage = require("../../proto/messages/HandInfoMessage");
@@ -78,10 +78,10 @@ Table.prototype.setupSeats = function(numseats) {
 	this.tableSeats = [];
 
 	for (var i = 0; i < 10; i++) {
-		var ts = new TableSeat(this, i, activeSeatIndices.indexOf(i) >= 0);
+		var ts = new CashGameTableSeat(this, i, activeSeatIndices.indexOf(i) >= 0);
 
 		ts.on(ProtoConnection.CLOSE, this.onTableSeatClose, this);
-		ts.on(TableSeat.READY, this.onTableSeatReady, this);
+		ts.on(CashGameTableSeat.READY, this.onTableSeatReady, this);
 
 		this.tableSeats.push(ts);
 	}
