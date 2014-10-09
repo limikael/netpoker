@@ -9,6 +9,7 @@ var EventDispatcher = require("../../utils/EventDispatcher");
 var SettingsCheckbox = require("./SettingsCheckbox");
 var RaiseShortcutButton = require("./RaiseShortcutButton");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
+var ButtonData = require("../../proto/data/ButtonData");
 
 /**
  * A settings view
@@ -72,7 +73,7 @@ function SettingsView() {
 	this.buyChipsButton.setText("Buy chips");
 	this.addChild(this.buyChipsButton);
 
-	this.buyChipsButton.visible=false;
+	this.buyChipsButton.visible = false;
 
 	// Prevent mouse over from falling through, doesn't work.
 	/*this.settingsMenu.interactive = true;
@@ -187,11 +188,19 @@ SettingsView.prototype.hitTest = function(object, interaction_object) {
 
 /**
  * Reset.
- * @method reset
+ * @method clear
  */
-SettingsView.prototype.reset = function() {
+SettingsView.prototype.clear = function() {
 	this.buyChipsButton.enabled = true;
 	this.setVisibleButtons([]);
+
+	this.setCheckboxChecked(CheckboxMessage.AUTO_POST_BLINDS, false);
+	this.setCheckboxChecked(CheckboxMessage.AUTO_MUCK_LOSING, false);
+	this.setCheckboxChecked(CheckboxMessage.SITOUT_NEXT, false);
+
+	this.settingsMenu.visible = false;
+	if (this.settingsMenu.visible)
+		this.stage.mousedown = null;
 }
 
 /**
@@ -200,8 +209,8 @@ SettingsView.prototype.reset = function() {
  */
 SettingsView.prototype.setVisibleButtons = function(buttons) {
 	this.buyChipsButton.visible = buttons.indexOf(ButtonData.BUY_CHIPS) != -1;
-	this.settings[CheckboxMessage.AUTO_POST_BLINDS].visible = buttons.indexOf(CheckboxMessage.AUTO_POST_BLINDS);
-	this.settings[CheckboxMessage.SITOUT_NEXT].visible = buttons.indexOf(CheckboxMessage.SITOUT_NEXT);
+	this.settings[CheckboxMessage.AUTO_POST_BLINDS].visible = buttons.indexOf(CheckboxMessage.AUTO_POST_BLINDS) >= 0;
+	this.settings[CheckboxMessage.SITOUT_NEXT].visible = buttons.indexOf(CheckboxMessage.SITOUT_NEXT) >= 0;
 
 	var yp = 543;
 
@@ -224,11 +233,17 @@ SettingsView.prototype.setVisibleButtons = function(buttons) {
 }
 
 /**
- * Get checkbox.
- * @method getCheckboxById
+ * Set checkbox state.
+ * @method setCheckboxChecked
  */
-SettingsView.prototype.getCheckboxById = function(id) {
-	return this.settings[id];
+SettingsView.prototype.setCheckboxChecked = function(id, checked) {
+	console.log("setting checkbox state for: " + id);
+
+	this.settings[id].setChecked(checked);
 }
+
+/*SettingsView.prototype.getCheckboxById = function(id) {
+	return this.settings[id];
+}*/
 
 module.exports = SettingsView;

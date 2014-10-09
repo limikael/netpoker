@@ -18,7 +18,7 @@ CheckboxMessage.SITOUT_NEXT = "sitoutNext";
  * @method getId
  */
 CheckboxMessage.prototype.getId = function() {
-	return this.seatIndex;
+	return this.id;
 }
 
 /**

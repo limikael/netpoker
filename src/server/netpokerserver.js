@@ -27,7 +27,7 @@ var netPokerServer = new NetPokerServer();
 if (args["backend"]) {
 	netPokerServer.setBackendUrl(args["backend"]);
 } else if (args["mock"]) {
-	netPokerServer.serveViewCases(__dirname + "/../../../res/viewcases");
+	netPokerServer.serveViewCases(__dirname + "/../../res/viewcases");
 	netPokerServer.setBackend(new MockBackendServer());
 	netPokerServer.setWebRequestHandler(new MockWebRequestHandler());
 } else {

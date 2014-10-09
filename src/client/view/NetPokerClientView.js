@@ -254,6 +254,14 @@ NetPokerClientView.prototype.getTableInfoView = function() {
 }
 
 /**
+ * Get settings view.
+ * @method getSettingsView
+ */
+NetPokerClientView.prototype.getSettingsView = function() {
+	return this.settingsView;
+}
+
+/**
  * Clear everything to an empty state.
  * @method clear
  */
@@ -277,6 +285,7 @@ NetPokerClientView.prototype.clear = function() {
 	this.buttonsView.clear();
 
 	this.tableInfoView.clear();
+	this.settingsView.clear();
 }
 
 module.exports = NetPokerClientView;

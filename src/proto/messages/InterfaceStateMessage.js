@@ -3,8 +3,10 @@
  * @class InterfaceStateMessage
  */
 function InterfaceStateMessage(visibleButtons) {
-	
-	this.visibleButtons = visibleButtons == null ? new Array() : visibleButtons;
+	if (!visibleButtons)
+		visibleButtons = [];
+
+	this.visibleButtons = visibleButtons;
 }
 
 InterfaceStateMessage.TYPE = "interfaceState";
@@ -14,7 +16,7 @@ InterfaceStateMessage.TYPE = "interfaceState";
  * @method getVisibleButtons
  */
 InterfaceStateMessage.prototype.getVisibleButtons = function() {
-	return this.seatIndex;
+	return this.visibleButtons;
 }
 
 /**

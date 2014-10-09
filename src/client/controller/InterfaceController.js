@@ -4,6 +4,8 @@ var ChatMessage = require("../../proto/messages/ChatMessage");
 var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 var HandInfoMessage = require("../../proto/messages/HandInfoMessage");
 var PresetButtonsMessage = require("../../proto/messages/PresetButtonsMessage");
+var InterfaceStateMessage = require("../../proto/messages/InterfaceStateMessage");
+var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 
 /**
  * Control user interface.
@@ -19,6 +21,8 @@ function InterfaceController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(ChatMessage.TYPE, this.onChat, this);
 	this.messageSequencer.addMessageHandler(TableInfoMessage.TYPE, this.onTableInfoMessage, this);
 	this.messageSequencer.addMessageHandler(HandInfoMessage.TYPE, this.onHandInfoMessage, this);
+	this.messageSequencer.addMessageHandler(InterfaceStateMessage.TYPE, this.onInterfaceStateMessage, this);
+	this.messageSequencer.addMessageHandler(CheckboxMessage.TYPE, this.onCheckboxMessage, this);
 
 	this.messageSequencer.addMessageHandler(PresetButtonsMessage.TYPE, this.onPresetButtons, this);
 }
@@ -95,6 +99,28 @@ InterfaceController.prototype.onHandInfoMessage = function(m) {
 	var tableInfoView = this.view.getTableInfoView();
 
 	tableInfoView.setHandInfoText(m.getText());
+}
+
+/**
+ * Handle interface state message.
+ * @method onInterfaceStateMessage
+ */
+InterfaceController.prototype.onInterfaceStateMessage = function(m) {
+	var settingsView = this.view.getSettingsView();
+
+	settingsView.setVisibleButtons(m.getVisibleButtons());
+}
+
+/**
+ * Handle checkbox message.
+ * @method onCheckboxMessage
+ */
+InterfaceController.prototype.onCheckboxMessage = function(m) {
+	console.log(m);
+
+	var settingsView = this.view.getSettingsView();
+
+	settingsView.setCheckboxChecked(m.getId(), m.getChecked());
 }
 
 module.exports = InterfaceController;
