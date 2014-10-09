@@ -76,6 +76,7 @@ TableInfoView.prototype.setHandInfoText = function(s) {
  */
 TableInfoView.prototype.clear = function() {
 	this.tableInfoText.setText("");
+	this.handInfoText.setText("");
 }
 
 module.exports = TableInfoView;
