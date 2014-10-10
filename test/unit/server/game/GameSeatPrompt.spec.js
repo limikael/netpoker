@@ -1,4 +1,5 @@
 var GameSeatPrompt = require("../../../../src/server/game/GameSeatPrompt");
+var BaseTableSeat = require("../../../../src/server/table/BaseTableSeat");
 var ButtonData = require("../../../../src/proto/data/ButtonData");
 var ButtonClickMessage = require("../../../../src/proto/messages/ButtonClickMessage");
 var EventDispatcher = require("../../../../src/utils/EventDispatcher");
@@ -104,7 +105,6 @@ describe("GameSeatPrompt", function() {
 		jasmine.clock().tick(5000);
 	});
 
-	// work here!
 	it("can use table seat settings", function() {
 		mockTableSeat.getSetting = function(settingId) {
 			if (settingId != "blaj")
@@ -128,5 +128,44 @@ describe("GameSeatPrompt", function() {
 
 		expect(completeSpy).toHaveBeenCalled();
 		expect(gameSeatPrompt.getButton()).toBe(ButtonData.MUCK);
+	});
+
+	it("can use detect changes to table seat settings", function() {
+		var blajSetting = false;
+
+		mockTableSeat.getSetting = function(settingId) {
+			if (settingId != "blaj")
+				throw new Error("something is strange");
+
+			return blajSetting;
+		};
+
+		var gameSeatPrompt = new GameSeatPrompt(mockGameSeat);
+
+		gameSeatPrompt.addButton(ButtonData.MUCK);
+		gameSeatPrompt.addButton(ButtonData.SHOW);
+		gameSeatPrompt.setDefaultButton(ButtonData.MUCK);
+
+		gameSeatPrompt.useTableSeatSetting("blaj", ButtonData.MUCK);
+
+		var completeSpy = jasmine.createSpy();
+		gameSeatPrompt.on(GameSeatPrompt.COMPLETE, completeSpy);
+
+		gameSeatPrompt.ask();
+
+		expect(completeSpy).not.toHaveBeenCalled();
+		expect(function() {
+			gameSeatPrompt.getButton();
+		}).toThrow();
+
+		mockTableSeat.trigger(BaseTableSeat.SETTINGS_CHANGED);
+		expect(completeSpy).not.toHaveBeenCalled();
+
+		blajSetting = true;
+		mockTableSeat.trigger(BaseTableSeat.SETTINGS_CHANGED);
+		expect(completeSpy).toHaveBeenCalled();
+		expect(gameSeatPrompt.getButton()).toBe(ButtonData.MUCK);
+
+		expect(mockTableSeat.listenerMap).toEqual({});
 	});
 });

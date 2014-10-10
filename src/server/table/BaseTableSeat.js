@@ -41,6 +41,12 @@ function BaseTableSeat(table, seatIndex, active) {
 FunctionUtil.extend(BaseTableSeat, EventDispatcher);
 
 /**
+ * Dispatched if settings are changed.
+ * @event BaseTableSeat.SETTINGS_CHANGED
+ */
+BaseTableSeat.SETTINGS_CHANGED = "settingsChanged";
+
+/**
  * Is tihs seat active?
  * @method isActive
  */

@@ -4,6 +4,7 @@ var TimerMessage = require("../../proto/messages/TimerMessage");
 var ButtonData = require("../../proto/data/ButtonData");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var FunctionUtil = require("../../utils/FunctionUtil");
+var BaseTableSeat = require("../table/BaseTableSeat");
 
 /**
  * Game seat prompt.
@@ -124,6 +125,7 @@ GameSeatPrompt.prototype.ask = function() {
 	this.started = Math.round(Date.now() / 1000);
 
 	this.gameSeat.getTableSeat().on(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
+	this.gameSeat.getTableSeat().on(BaseTableSeat.SETTINGS_CHANGED, this.onTableSeatSettingsChanged, this);
 	this.timeoutId = setTimeout(this.onTimeout.bind(this), this.responseTime * 1000);
 	this.gameSeat.send(this.buttonsMessage);
 	this.gameSeat.getGame().send(this.getCurrentTimerMessage());
@@ -149,6 +151,7 @@ GameSeatPrompt.prototype.onButtonClickMessage = function(m) {
 	}
 
 	this.gameSeat.getTableSeat().off(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
+	this.gameSeat.getTableSeat().off(BaseTableSeat.SETTINGS_CHANGED, this.onTableSeatSettingsChanged, this);
 
 	this.button = m.getButton();
 	this.value = m.getValue();
@@ -197,6 +200,7 @@ GameSeatPrompt.prototype.onTimeout = function() {
 	}
 
 	this.gameSeat.getTableSeat().off(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
+	this.gameSeat.getTableSeat().off(BaseTableSeat.SETTINGS_CHANGED, this.onTableSeatSettingsChanged, this);
 
 	this.timeoutId = null;
 
@@ -311,6 +315,29 @@ GameSeatPrompt.prototype.checkTableSeatSettings = function() {
 	}
 
 	return false;
+}
+
+/**
+ * Settings changed for the table seat. Check if they are interesting to us,
+ * in that case signal completion.
+ * @method onTableSeatSettingsChanged
+ * @private
+ */
+GameSeatPrompt.prototype.onTableSeatSettingsChanged = function() {
+	if (this.checkTableSeatSettings()) {
+		if (this.timeoutId) {
+			clearTimeout(this.timeoutId);
+			this.timeoutId = null;
+		}
+
+		this.gameSeat.getTableSeat().off(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
+		this.gameSeat.getTableSeat().off(BaseTableSeat.SETTINGS_CHANGED, this.onTableSeatSettingsChanged, this);
+
+		this.gameSeat.getGame().send(new TimerMessage());
+		this.gameSeat.getGame().setGameSeatPrompt(null);
+		this.gameSeat.send(new ButtonsMessage());
+		this.trigger(GameSeatPrompt.COMPLETE);
+	}
 }
 
 module.exports = GameSeatPrompt;
