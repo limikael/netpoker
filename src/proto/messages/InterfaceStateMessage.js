@@ -20,6 +20,14 @@ InterfaceStateMessage.prototype.getVisibleButtons = function() {
 }
 
 /**
+ * Add a button to be shown.
+ * @method addVisibleButton
+ */
+InterfaceStateMessage.prototype.addVisibleButton=function(buttonId) {
+	this.visibleButtons.push(buttonId);
+}
+
+/**
  * Un-serialize.
  * @method unserialize
  */

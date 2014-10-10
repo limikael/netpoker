@@ -6,6 +6,7 @@ var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 var ButtonData = require("../../proto/data/ButtonData");
 var CashGameBuyChipsPrompt = require("./CashGameBuyChipsPrompt");
 var Backend = require("../backend/Backend");
+var TableSeatSettings = require("../table/TableSeatSettings");
 
 /**
  * A user seated at a table.
@@ -18,6 +19,7 @@ function CashGameUser(tableSeat, user) {
 	this.leaving = false;
 	this.chips = 0;
 	this.sittingout = false;
+	this.settings = new TableSeatSettings();
 
 	this.tableSeat.on(ButtonClickMessage.TYPE, this.onTableSeatButtonClick, this);
 }
@@ -270,6 +272,14 @@ CashGameUser.prototype.sitBackIn = function() {
 	this.tableSeat.send(this.getTableInfoMessage());
 
 	this.trigger(CashGameUser.READY);
+}
+
+/**
+ * Get settings.
+ * @method getSettings
+ */
+CashGameUser.prototype.getSettings = function() {
+	return this.settings;
 }
 
 module.exports = CashGameUser;

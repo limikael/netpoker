@@ -46,18 +46,28 @@ describe("NetPokerServer - show muck", function() {
 		AsyncSequence.run(
 			function(next) {
 				bot1.connectToTable(123);
-				console.log("calling sit in");
-				var t1=bot1.runStrategy(new BotSitInStrategy(1, 10));
-				bot1.replyOnce(ButtonsMessage, new ButtonClickMessage(ButtonData.POST_SB));
-
-				bot2.connectToTable(123);
-				var t2=bot2.runStrategy(new BotSitInStrategy(2, 10));
-				bot2.replyOnce(ButtonsMessage, new ButtonClickMessage(ButtonData.POST_BB));
-
-				ThenableBarrier.wait(t1,t2).then(next);
+				bot1.runStrategy(new BotSitInStrategy(1,10)).then(next);
+				TickLoopRunner.runTicks();
 			},
 
 			function(next) {
+				bot2.connectToTable(123);
+				bot2.runStrategy(new BotSitInStrategy(2,10)).then(next);
+				TickLoopRunner.runTicks();
+			},
+
+			function(next) {
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				expect(table.getCurrentGame().gameState).toEqual(jasmine.any(AskBlindState));
+				bot2.act(ButtonData.POST_SB);
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				bot1.act(ButtonData.POST_BB);
 				TickLoopRunner.runTicks().then(next);
 			},
 
@@ -113,17 +123,28 @@ describe("NetPokerServer - show muck", function() {
 		AsyncSequence.run(
 			function(next) {
 				bot1.connectToTable(123);
-				bot1.replyOnce(ButtonsMessage, new ButtonClickMessage(ButtonData.POST_SB));
-				var t1=bot1.runStrategy(new BotSitInStrategy(1, 10));
-
-				bot2.connectToTable(123);
-				bot2.replyOnce(ButtonsMessage, new ButtonClickMessage(ButtonData.POST_BB));
-				var t2=bot2.runStrategy(new BotSitInStrategy(2, 10));
-
-				ThenableBarrier.wait(t1,t2).then(next);
+				bot1.runStrategy(new BotSitInStrategy(1,10)).then(next);
+				TickLoopRunner.runTicks();
 			},
 
 			function(next) {
+				bot2.connectToTable(123);
+				bot2.runStrategy(new BotSitInStrategy(2,10)).then(next);
+				TickLoopRunner.runTicks();
+			},
+
+			function(next) {
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				expect(table.getCurrentGame().gameState).toEqual(jasmine.any(AskBlindState));
+				bot2.act(ButtonData.POST_SB);
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				bot1.act(ButtonData.POST_BB);
 				TickLoopRunner.runTicks().then(next);
 			},
 

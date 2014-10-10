@@ -1,4 +1,5 @@
 var BotConnection = require("../../../utils/BotConnection");
+var BotSitInStrategy = require("../../../utils/BotSitInStrategy");
 var MockBackendServer = require("../../../../src/server/mock/MockBackendServer");
 var PipeNetPokerServer = require("../../../utils/PipeNetPokerServer");
 var StateCompleteMessage = require("../../../../src/proto/messages/StateCompleteMessage");
@@ -42,15 +43,29 @@ describe("NetPokerServer - round", function() {
 		AsyncSequence.run(
 			function(next) {
 				bot1.connectToTable(123);
-				console.log("calling sit in");
-				bot1.sitIn(1, 10);
-				bot1.replyOnce(ButtonsMessage, new ButtonClickMessage(ButtonData.POST_SB));
+				bot1.runStrategy(new BotSitInStrategy(1,10)).then(next);
+				TickLoopRunner.runTicks();
+			},
 
+			function(next) {
 				bot2.connectToTable(123);
-				bot2.sitIn(2, 10);
-				bot2.replyOnce(ButtonsMessage, new ButtonClickMessage(ButtonData.POST_BB));
+				bot2.runStrategy(new BotSitInStrategy(2,10)).then(next);
+				TickLoopRunner.runTicks();
+			},
 
-				TickLoopRunner.runTicks(50).then(next);
+			function(next) {
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				expect(table.getCurrentGame().gameState).toEqual(jasmine.any(AskBlindState));
+				bot2.act(ButtonData.POST_SB);
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				bot1.act(ButtonData.POST_BB);
+				TickLoopRunner.runTicks().then(next);
 			},
 
 			function(next) {

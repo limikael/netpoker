@@ -4,6 +4,7 @@ var GameState = require("./GameState");
 var GameSeat = require("./GameSeat");
 var GameSeatPrompt = require("./GameSeatPrompt");
 var ButtonData = require("../../proto/data/ButtonData");
+var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 var FinishedState = require("./FinishedState");
 var RoundState = require("./RoundState");
 
@@ -59,6 +60,7 @@ AskBlindState.prototype.askNextBlind = function() {
 	this.prompt.addButton(this.getCurrentBlind(), this.getCurrentBlindAmount());
 	this.prompt.setDefaultButton(ButtonData.SIT_OUT);
 	this.prompt.on(GameSeatPrompt.COMPLETE, this.onPromptComplete, this);
+	this.prompt.useTableSeatSetting(CheckboxMessage.AUTO_POST_BLINDS, this.getCurrentBlind());
 	this.prompt.ask();
 }
 
@@ -94,21 +96,15 @@ AskBlindState.prototype.askDone = function() {
 	var table = this.game.getTable();
 
 	if (this.askTableSeatIndex == table.getDealerButtonIndex()) {
-		if (this.game.getGameSeats().length>=2) {
+		if (this.game.getGameSeats().length >= 2) {
 			this.game.setGameState(new RoundState());
 			this.game.getTable().sendTableInfoMessages();
-		}
-
-		else {
+		} else {
 			this.cancel();
 		}
-	}
-
-	else if (table.getNumInGame()<2) {
+	} else if (table.getNumInGame() < 2) {
 		this.cancel();
-	}
-
-	else {
+	} else {
 		this.askTableSeatIndex = table.getNextSeatIndexInGame(this.askTableSeatIndex);
 		this.askNextBlind();
 	}

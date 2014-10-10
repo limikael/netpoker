@@ -89,6 +89,7 @@ FunctionUtil.extend(SettingsView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(SettingsView);
 
 SettingsView.BUY_CHIPS_CLICK = "buyChipsClick";
+SettingsView.CHECKBOX_CHANGE = "checkboxChange";
 
 /**
  * On buy chips button clicked.
@@ -142,7 +143,10 @@ SettingsView.prototype.onCheckboxChange = function(checkbox) {
 		console.log("anims changed..");
 	}
 
-	this.dispatchEvent("change", checkbox.id, checkbox.getChecked());
+	this.dispatchEvent(SettingsView.CHECKBOX_CHANGE, {
+		checkboxId: checkbox.id,
+		checked: checkbox.getChecked()
+	});
 }
 
 /**
@@ -241,9 +245,5 @@ SettingsView.prototype.setCheckboxChecked = function(id, checked) {
 
 	this.settings[id].setChecked(checked);
 }
-
-/*SettingsView.prototype.getCheckboxById = function(id) {
-	return this.settings[id];
-}*/
 
 module.exports = SettingsView;

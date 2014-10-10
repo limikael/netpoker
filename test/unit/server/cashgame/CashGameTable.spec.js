@@ -138,6 +138,9 @@ describe("CashGameTable", function() {
 		mockTableSeatUser.getTableInfoMessage = function() {
 			return new TableInfoMessage("hello world");
 		}
+		mockTableSeatUser.getSettings = function() {
+			return null;
+		}
 
 		t.getTableSeatBySeatIndex(3).tableSeatUser = mockTableSeatUser;
 		t.getTableSeatBySeatIndex(3).setProtoConnection(oldProtoConnection);

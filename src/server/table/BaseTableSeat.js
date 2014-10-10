@@ -4,6 +4,8 @@ var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var SeatInfoMessage = require("../../proto/messages/SeatInfoMessage");
 var ChatMessage = require("../../proto/messages/ChatMessage");
+var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
+var TableSeatSettings = require("./TableSeatSettings");
 
 /**
  * Base table seat. This is an abstract class representing a seat at a table.
@@ -73,6 +75,7 @@ BaseTableSeat.prototype.setProtoConnection = function(protoConnection) {
 		this.protoConnection.off(ProtoConnection.CLOSE, this.onProtoConnectionClose, this);
 		this.protoConnection.removeMessageHandler(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
 		this.protoConnection.removeMessageHandler(ChatMessage.TYPE, this.onChat, this);
+		this.protoConnection.removeMessageHandler(CheckboxMessage.TYPE, this.onCheckboxMessage, this);
 	}
 
 	this.protoConnection = protoConnection;
@@ -81,6 +84,13 @@ BaseTableSeat.prototype.setProtoConnection = function(protoConnection) {
 		this.protoConnection.on(ProtoConnection.CLOSE, this.onProtoConnectionClose, this);
 		this.protoConnection.addMessageHandler(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
 		this.protoConnection.addMessageHandler(ChatMessage.TYPE, this.onChat, this);
+		this.protoConnection.addMessageHandler(CheckboxMessage.TYPE, this.onCheckboxMessage, this);
+
+		if (this.getSettings()) {
+			this.send(new CheckboxMessage(CheckboxMessage.AUTO_POST_BLINDS, this.getSetting(CheckboxMessage.AUTO_POST_BLINDS)));
+			this.send(new CheckboxMessage(CheckboxMessage.AUTO_MUCK_LOSING, this.getSetting(CheckboxMessage.AUTO_MUCK_LOSING)));
+			this.send(new CheckboxMessage(CheckboxMessage.SITOUT_NEXT, this.getSetting(CheckboxMessage.SITOUT_NEXT)));
+		}
 	}
 }
 
@@ -207,19 +217,36 @@ BaseTableSeat.prototype.getSeatInfoMessage = function() {
  * Get TableSeatSettings.
  * @method getSettings
  */
-BaseTableSeat.getSettings = function() {
-	return null;
+BaseTableSeat.prototype.getSettings = function() {
+	throw new Error("abstract");
 }
 
 /**
  * Get setting.
  * @method getSetting
  */
-BaseTableSeat.getSetting = function(settingId) {
+BaseTableSeat.prototype.getSetting = function(settingId) {
 	if (!this.getSettings())
 		return false;
 
-	return this.getSettings.get(settingId);
+	return this.getSettings().get(settingId);
+}
+
+/**
+ * Checkbox message.
+ * @method onCheckboxMessage
+ */
+BaseTableSeat.prototype.onCheckboxMessage = function(m) {
+	if (!this.getSettings())
+		return;
+
+	if (!TableSeatSettings.isSettingIdValid(m.getId())) {
+		console.log("warn, setting id not valid...");
+		return;
+	}
+
+	this.getSettings().set(m.getId(), m.getChecked());
+	this.trigger(BaseTableSeat.SETTINGS_CHANGED);
 }
 
 module.exports = BaseTableSeat;

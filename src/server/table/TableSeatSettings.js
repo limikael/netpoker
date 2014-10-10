@@ -26,7 +26,7 @@ TableSeatSettings.prototype.get = function(id) {
 	if (!id)
 		throw new Error("setting not available");
 
-	if (TableSeatSettings.AVAILALBE_SETTINGS.indexOf(id) < 0)
+	if (!TableSeatSettings.isSettingIdValid(id))
 		throw new Error("setting not available");
 
 	return this.settings[id];
@@ -40,10 +40,21 @@ TableSeatSettings.prototype.set = function(id, value) {
 	if (!id)
 		throw new Error("setting not available");
 
-	if (TableSeatSettings.AVAILALBE_SETTINGS.indexOf(id) < 0)
+	if (!TableSeatSettings.isSettingIdValid(id))
 		throw new Error("setting not available");
 
 	this.settings[id] = value;
+}
+
+/**
+ * Is this a valid setting id?
+ * @method isSettingIdValid
+ */
+TableSeatSettings.isSettingIdValid = function(id) {
+	if (TableSeatSettings.AVAILALBE_SETTINGS.indexOf(id) < 0)
+		return false;
+
+	return true;
 }
 
 module.exports = TableSeatSettings;

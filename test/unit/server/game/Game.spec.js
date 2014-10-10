@@ -27,6 +27,9 @@ describe("Game", function() {
 			mockTableSeat.addChips = function() {};
 			mockTableSeat.getSeatInfoMessage = function() {};
 			mockTableSeat.send = function() {};
+			mockTableSeat.getSetting = function() {
+				return false;
+			};
 
 			mockTableSeats.push(mockTableSeat);
 		}
@@ -62,8 +65,7 @@ describe("Game", function() {
 		mockTable.send = jasmine.createSpy();
 	});
 
-	afterEach(function() {
-	});
+	afterEach(function() {});
 
 	it("can detect errors on start game call", function() {
 		jasmine.clock().install();
@@ -183,9 +185,9 @@ describe("Game", function() {
 		g.getGameSeatForSeatIndex(3).betToPot();
 		//g.getGameSeatForSeatIndex(4).betToPot();
 
-		console.log("unfolded pot contribs:"+g.getUnfoldedPotContribs());
-		console.log("pots:"+g.getPots());
+		console.log("unfolded pot contribs:" + g.getUnfoldedPotContribs());
+		console.log("pots:" + g.getPots());
 
-		expect(g.getPots()).toEqual([24,4]);
+		expect(g.getPots()).toEqual([24, 4]);
 	});
 });

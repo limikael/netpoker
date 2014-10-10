@@ -11,6 +11,7 @@ var SettingsView = require("../view/SettingsView");
 var TableController = require("./TableController");
 var InterfaceController = require("./InterfaceController");
 var ChatMessage = require("../../proto/messages/ChatMessage");
+var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 var ButtonData = require("../../proto/data/ButtonData");
 var PresetButtonsView = require("../view/PresetButtonsView");
 
@@ -34,10 +35,8 @@ function NetPokerClientController(view) {
 	this.netPokerClientView.on(NetPokerClientView.SEAT_CLICK, this.onSeatClick, this);
 
 	this.netPokerClientView.chatView.addEventListener("chat", this.onViewChat, this);
-
 	this.netPokerClientView.settingsView.addEventListener(SettingsView.BUY_CHIPS_CLICK, this.onBuyChipsButtonClick, this);
-	
-	this.netPokerClientView.settingsView.addEventListener(SettingsView.BUY_CHIPS_CLICK, this.onBuyChipsButtonClick, this);
+	this.netPokerClientView.settingsView.addEventListener(SettingsView.CHECKBOX_CHANGE, this.onCheckboxChange, this);
 
 	this.netPokerClientView.getPresetButtonsView().addEventListener(PresetButtonsView.CHANGE, this.onPresetButtonsChange, this);
 }
@@ -127,12 +126,20 @@ NetPokerClientController.prototype.onPresetButtonsChange = function() {
 	var message = new PresetButtonClickMessage();
 
 	var c = presetButtonsView.getCurrent();
-	if(c != null) {
+	if (c != null) {
 		message.button = c.id;
 		message.value = c.value;
 	}
 
 	this.protoConnection.send(message);
+}
+
+/**
+ * Checkbox change.
+ * @method onCheckboxChange
+ */
+NetPokerClientController.prototype.onCheckboxChange = function(ev) {
+	this.protoConnection.send(new CheckboxMessage(ev.checkboxId, ev.checked));
 }
 
 module.exports = NetPokerClientController;

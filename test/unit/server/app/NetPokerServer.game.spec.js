@@ -12,6 +12,7 @@ var ShowDialogMessage = require("../../../../src/proto/messages/ShowDialogMessag
 var ButtonClickMessage = require("../../../../src/proto/messages/ButtonClickMessage");
 var ButtonsMessage = require("../../../../src/proto/messages/ButtonsMessage");
 var HandInfoMessage = require("../../../../src/proto/messages/HandInfoMessage");
+var CheckboxMessage = require("../../../../src/proto/messages/CheckboxMessage");
 var FinishedState = require("../../../../src/server/game/FinishedState");
 var ButtonData = require("../../../../src/proto/data/ButtonData");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
@@ -73,9 +74,10 @@ describe("NetPokerServer - game", function() {
 
 				expect(bot1.getHandInfo()).toBe("Current Hand: #987\n");
 				expect(bot1.getLastMessageOfType(HandInfoMessage)).not.toBe(null);
-				expect(bot1.getLastMessageOfType(ButtonsMessage)).toBe(null);
-				expect(bot2.getLastMessageOfType(ButtonsMessage)).not.toBe(null);
-				expect(bot3.getLastMessageOfType(ButtonsMessage)).toBe(null);
+
+				expect(bot1.getButtons()).toBe(null);
+				expect(bot2.getButtons()).not.toBe(null);
+				expect(bot3.getButtons()).toBe(null);
 
 				bot1.clearMessages();
 				bot2.clearMessages();
@@ -182,6 +184,40 @@ describe("NetPokerServer - game", function() {
 				expect(bot1re.getSeatAt(2).getCardAt(0).toString()).toBe("XX");
 				expect(bot1re.getSeatAt(1).getCardAt(0).toString()).toBe("3C");
 				expect(bot1re.getSeatAt(1).getCards().length).toBe(2);
+				next();
+			}
+		).then(done);
+	});
+
+	it("can auto post blinds", function(done) {
+		var bot1 = new BotConnection(netPokerServer, "user1");
+		var bot2 = new BotConnection(netPokerServer, "user2");
+		bot1.connectToTable(123);
+		bot2.connectToTable(123);
+
+		AsyncSequence.run(
+			function(next) {
+				bot1.runStrategy(new BotSitInStrategy(1, 10)).then(next);
+				TickLoopRunner.runTicks();
+			},
+
+			function(next) {
+				bot2.runStrategy(new BotSitInStrategy(2, 10)).then(next);
+				TickLoopRunner.runTicks();
+			},
+
+			function(next) {
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				expect(bot2.isActionAvailable(ButtonData.POST_SB)).toBe(true);
+				bot2.send(new CheckboxMessage(CheckboxMessage.AUTO_POST_BLINDS,true));
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				expect(bot2.isActionAvailable(ButtonData.POST_SB)).toBe(false);
 				next();
 			}
 		).then(done);

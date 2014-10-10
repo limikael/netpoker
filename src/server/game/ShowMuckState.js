@@ -7,6 +7,7 @@ var ButtonData = require("../../proto/data/ButtonData");
 var PayOutMessage = require("../../proto/messages/PayOutMessage");
 var DelayMessage = require("../../proto/messages/DelayMessage");
 var PotMessage = require("../../proto/messages/PotMessage");
+var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 var Hand = require("../hand/Hand");
 
 /**
@@ -64,7 +65,7 @@ ShowMuckState.prototype.askOrShow = function() {
 		gameSeat.show();
 		this.askDone();
 	} else {
-		console.log("gameseat: " + gameSeat);
+		//console.log("gameseat: " + gameSeat);
 
 		this.prompt = new GameSeatPrompt(gameSeat);
 		this.prompt.addButton(ButtonData.MUCK);
@@ -73,8 +74,8 @@ ShowMuckState.prototype.askOrShow = function() {
 
 		this.prompt.on(GameSeatPrompt.COMPLETE, this.onPromptComplete, this);
 
-		/*	if (game.communityCards.length==5)
-				prompt.usePref(CheckboxMessage.AUTO_MUCK_LOSING,ButtonData.MUCK);*/
+		if (this.game.getCommunityCards().length == 5)
+			this.prompt.useTableSeatSetting(CheckboxMessage.AUTO_MUCK_LOSING, ButtonData.MUCK);
 
 		this.prompt.ask();
 	}
@@ -93,12 +94,9 @@ ShowMuckState.prototype.onPromptComplete = function() {
 
 	var gameSeat = this.game.getGameSeats()[this.gameSeatIndexToSpeak];
 
-	// the place that needs work...
-
 	if (prompt.getButton() == ButtonData.SHOW) {
 		gameSeat.show();
 	} else {
-		console.log("******** mucikg...")
 		gameSeat.muck();
 	}
 
@@ -134,7 +132,7 @@ ShowMuckState.prototype.mustShow = function(thisSeat) {
 
 	var bestSoFar = null;
 
-	console.log("must show, remaining: "+this.game.getNumPlayersRemaining());
+	console.log("must show, remaining: " + this.game.getNumPlayersRemaining());
 
 	if (this.game.getNumPlayersRemaining() < 2)
 		return false;

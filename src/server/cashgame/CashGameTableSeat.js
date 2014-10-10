@@ -5,6 +5,8 @@ var CashGameUser = require("./CashGameUser");
 var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 var ButtonData = require("../../proto/data/ButtonData");
+var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
+var InterfaceStateMessage = require("../../proto/messages/InterfaceStateMessage");
 
 /**
  * A table seat. This class represents a seat in a cash game.
@@ -87,6 +89,10 @@ CashGameTableSeat.prototype.reserve = function(user, protoConnection) {
 	this.tableSeatUser.on(CashGameUser.READY, this.onTableSeatUserReady, this);
 	this.tableSeatUser.on(CashGameUser.DONE, this.onTableSeatUserDone, this);
 	this.tableSeatUser.sitIn();
+
+	this.send(new CheckboxMessage(CheckboxMessage.AUTO_POST_BLINDS,this.getSetting(CheckboxMessage.AUTO_POST_BLINDS)));
+	this.send(new CheckboxMessage(CheckboxMessage.AUTO_MUCK_LOSING,this.getSetting(CheckboxMessage.AUTO_MUCK_LOSING)));
+	this.send(new CheckboxMessage(CheckboxMessage.SITOUT_NEXT,this.getSetting(CheckboxMessage.SITOUT_NEXT)));
 }
 
 /**
@@ -106,7 +112,13 @@ CashGameTableSeat.prototype.setProtoConnection = function(protoConnection) {
 			}
 		}
 
-		this.protoConnection.send(this.getTableInfoMessage());
+		this.send(this.getTableInfoMessage());
+
+		var m = new InterfaceStateMessage();
+		m.addVisibleButton(CheckboxMessage.AUTO_MUCK_LOSING);
+		m.addVisibleButton(CheckboxMessage.SITOUT_NEXT);
+		m.addVisibleButton(CheckboxMessage.AUTO_POST_BLINDS);
+		this.send(m);
 	}
 }
 
@@ -242,6 +254,17 @@ CashGameTableSeat.prototype.getTableInfoMessage = function() {
 		return new TableInfoMessage();
 
 	return this.tableSeatUser.getTableInfoMessage();
+}
+
+/**
+ * Get settings.
+ * @method getSettings
+ */
+CashGameTableSeat.prototype.getSettings = function() {
+	if (!this.tableSeatUser)
+		return null;
+
+	return this.tableSeatUser.getSettings();
 }
 
 module.exports = CashGameTableSeat;

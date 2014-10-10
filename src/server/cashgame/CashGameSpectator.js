@@ -4,6 +4,8 @@ var ProtoConnection = require("../../proto/ProtoConnection");
 var SeatClickMessage = require("../../proto/messages/SeatClickMessage");
 var ChatMessage = require("../../proto/messages/ChatMessage");
 var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
+var InterfaceStateMessage = require("../../proto/messages/InterfaceStateMessage");
+var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 
 /**
  * Someone watching a table.
@@ -21,6 +23,8 @@ function CashGameSpectator(table, connection, user) {
 	this.connection.addMessageHandler(ChatMessage.TYPE, this.onChat, this);
 
 	this.send(this.getTableInfoMessage());
+	this.send(new InterfaceStateMessage());
+	this.send(new ButtonsMessage());
 }
 
 FunctionUtil.extend(CashGameSpectator, EventDispatcher);

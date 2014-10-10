@@ -7,6 +7,7 @@ var ButtonClickMessage = require("../../../../src/proto/messages/ButtonClickMess
 var ShowDialogMessage = require("../../../../src/proto/messages/ShowDialogMessage");
 var ButtonsMessage = require("../../../../src/proto/messages/ButtonsMessage");
 var SeatInfoMessage = require("../../../../src/proto/messages/SeatInfoMessage");
+var CheckboxMessage = require("../../../../src/proto/messages/CheckboxMessage");
 var ButtonData = require("../../../../src/proto/data/ButtonData");
 var AsyncSequence = require("../../../../src/utils/AsyncSequence");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
@@ -48,20 +49,31 @@ describe("ShowMuckState", function() {
 
 		AsyncSequence.run(
 			function(next) {
-				bot1 = new BotConnection(netPokerServer, "user1");
 				bot1.connectToTable(123);
-				bot1.replyOnce(ButtonsMessage, new ButtonClickMessage(ButtonData.POST_SB));
-				var t1 = bot1.runStrategy(new BotSitInStrategy(1, 10));
-
-				bot2 = new BotConnection(netPokerServer, "user2");
-				bot2.connectToTable(123);
-				bot2.replyOnce(ButtonsMessage, new ButtonClickMessage(ButtonData.POST_BB));
-				var t2 = bot2.runStrategy(new BotSitInStrategy(2, 10));
-
-				ThenableBarrier.wait(t1, t2).then(next);
+				bot1.runStrategy(new BotSitInStrategy(1, 10)).then(next);
+				TickLoopRunner.runTicks();
 			},
 
 			function(next) {
+				bot2.connectToTable(123);
+				bot2.runStrategy(new BotSitInStrategy(2, 10)).then(next);
+				TickLoopRunner.runTicks();
+			},
+
+			function(next) {
+				bot1.send(new CheckboxMessage(CheckboxMessage.AUTO_MUCK_LOSING, false));
+				bot2.send(new CheckboxMessage(CheckboxMessage.AUTO_MUCK_LOSING, false));
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				expect(table.getCurrentGame().gameState).toEqual(jasmine.any(AskBlindState));
+				bot2.act(ButtonData.POST_SB);
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				bot1.act(ButtonData.POST_BB);
 				TickLoopRunner.runTicks().then(next);
 			},
 
