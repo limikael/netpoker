@@ -114,6 +114,11 @@ GameSeatPrompt.prototype.ask = function() {
 	if (!this.defaultButton)
 		throw new Error("GameSeatPrompt doesn't have a default button");
 
+	if (this.checkTableSeatSettings()) {
+		this.trigger(GameSeatPrompt.COMPLETE);
+		return;
+	}
+
 	this.gameSeat.getGame().setGameSeatPrompt(this);
 
 	this.started = Math.round(Date.now() / 1000);
@@ -272,13 +277,40 @@ GameSeatPrompt.prototype.useTableSeatSetting = function(settingId, meansButton) 
 }
 
 /**
+ * Get button data for corresponding button id.
+ * @method getButtonDataByButtonId
+ */
+GameSeatPrompt.prototype.getButtonDataForButtonId = function(buttonId) {
+	var buttons = this.buttonsMessage.getButtons();
+
+	for (var i = 0; i < buttons.length; i++) {
+		if (buttons[i].getButton() == buttonId)
+			return buttons[i];
+	}
+
+	return null;
+}
+
+/**
  * Check applicable table seat settings and update result
  * accordingly. Returns true if any setting was applied, false otherwise.
  * @method checkTableSeatSettings
  * @private
  */
 GameSeatPrompt.prototype.checkTableSeatSettings = function() {
+	for (var settingId in this.settingImplication) {
+		if (this.gameSeat.getTableSeat().getSetting(settingId)) {
+			var buttonId = this.settingImplication[settingId];
+			var buttonData = this.getButtonDataForButtonId(buttonId);
 
+			this.button = buttonData.getButton();
+			this.value = buttonData.getValue();
+
+			return true;
+		}
+	}
+
+	return false;
 }
 
 module.exports = GameSeatPrompt;

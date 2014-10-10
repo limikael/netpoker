@@ -105,7 +105,14 @@ describe("GameSeatPrompt", function() {
 	});
 
 	// work here!
-	/*it("can use table seat settings", function() {
+	it("can use table seat settings", function() {
+		mockTableSeat.getSetting = function(settingId) {
+			if (settingId != "blaj")
+				throw new Error("something is strange");
+
+			return true;
+		};
+
 		var gameSeatPrompt = new GameSeatPrompt(mockGameSeat);
 
 		gameSeatPrompt.addButton(ButtonData.MUCK);
@@ -120,5 +127,6 @@ describe("GameSeatPrompt", function() {
 		gameSeatPrompt.ask();
 
 		expect(completeSpy).toHaveBeenCalled();
-	});*/
+		expect(gameSeatPrompt.getButton()).toBe(ButtonData.MUCK);
+	});
 });
