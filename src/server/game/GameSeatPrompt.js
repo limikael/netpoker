@@ -43,6 +43,7 @@ function GameSeatPrompt(gameSeat) {
 	this.timeoutId = null;
 	this.defaultButton = null;
 	this.started = -1;
+	this.settingImplication = {};
 }
 
 FunctionUtil.extend(GameSeatPrompt, EventDispatcher);
@@ -190,6 +191,8 @@ GameSeatPrompt.prototype.onTimeout = function() {
 		return;
 	}
 
+	this.gameSeat.getTableSeat().off(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
+
 	this.timeoutId = null;
 
 	if (this.defaultButton) {
@@ -258,6 +261,24 @@ GameSeatPrompt.prototype.isCheckCall = function() {
 
 	else
 		return false;
+}
+
+/**
+ * Use a table seat setting to mean a click on the specified button.
+ * @method useTableSeatSetting
+ */
+GameSeatPrompt.prototype.useTableSeatSetting = function(settingId, meansButton) {
+	this.settingImplication[settingId] = meansButton;
+}
+
+/**
+ * Check applicable table seat settings and update result
+ * accordingly. Returns true if any setting was applied, false otherwise.
+ * @method checkTableSeatSettings
+ * @private
+ */
+GameSeatPrompt.prototype.checkTableSeatSettings = function() {
+
 }
 
 module.exports = GameSeatPrompt;

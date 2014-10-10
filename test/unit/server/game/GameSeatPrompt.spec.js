@@ -77,6 +77,9 @@ describe("GameSeatPrompt", function() {
 		jasmine.clock().tick(11 * 1000);
 
 		expect(completeSpy).toHaveBeenCalled();
+
+		// make sure listeners are removed.
+		expect(mockTableSeat.listenerMap).toEqual({});
 	});
 
 	it("can create a TimerMessage", function() {
@@ -100,4 +103,22 @@ describe("GameSeatPrompt", function() {
 
 		jasmine.clock().tick(5000);
 	});
+
+	// work here!
+	/*it("can use table seat settings", function() {
+		var gameSeatPrompt = new GameSeatPrompt(mockGameSeat);
+
+		gameSeatPrompt.addButton(ButtonData.MUCK);
+		gameSeatPrompt.addButton(ButtonData.SHOW);
+		gameSeatPrompt.setDefaultButton(ButtonData.MUCK);
+
+		gameSeatPrompt.useTableSeatSetting("blaj", ButtonData.MUCK);
+
+		var completeSpy = jasmine.createSpy();
+		gameSeatPrompt.on(GameSeatPrompt.COMPLETE, completeSpy);
+
+		gameSeatPrompt.ask();
+
+		expect(completeSpy).toHaveBeenCalled();
+	});*/
 });

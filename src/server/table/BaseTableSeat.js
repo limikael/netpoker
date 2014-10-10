@@ -8,10 +8,10 @@ var ChatMessage = require("../../proto/messages/ChatMessage");
 /**
  * Base table seat. This is an abstract class representing a seat at a table.
  * The extending classes modify the behaivour slightly depending on the type
- * of the game, such as gash games, tournaments, etc. 
+ * of the game, such as gash games, tournaments, etc.
  *
- * These are long lived objects, in the sense that they are active 
- * as long as the table they belong to is active. 
+ * These are long lived objects, in the sense that they are active
+ * as long as the table they belong to is active.
  *
  * The table seat may be "active" or "inactive". Inactive seats are just
  * placeholders and will be represented in the client by removing the
@@ -195,6 +195,25 @@ BaseTableSeat.prototype.getSeatInfoMessage = function() {
 	}
 
 	return m;
+}
+
+/**
+ * Get TableSeatSettings.
+ * @method getSettings
+ */
+BaseTableSeat.getSettings = function() {
+	return null;
+}
+
+/**
+ * Get setting.
+ * @method getSetting
+ */
+BaseTableSeat.getSetting = function(settingId) {
+	if (!this.getSettings())
+		return false;
+
+	return this.getSettings.get(settingId);
 }
 
 module.exports = BaseTableSeat;
