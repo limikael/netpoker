@@ -225,6 +225,7 @@ CashGameUser.prototype.sitout = function() {
 	this.sittingout = true;
 	this.settings.set(CheckboxMessage.SITOUT_NEXT, true);
 	this.tableSeat.send(new CheckboxMessage(CheckboxMessage.SITOUT_NEXT, true));
+	this.tableSeat.send(this.getTableInfoMessage());
 
 	this.tableSeat.getTable().send(this.tableSeat.getSeatInfoMessage());
 }
@@ -274,9 +275,14 @@ CashGameUser.prototype.onTableSeatSettingsChanged = function() {
 	if (this.leaving)
 		return;
 
-	if (this.sittingout && !this.settings.get(CheckboxMessage.SITOUT_NEXT)) {
+	if (this.sittingout &&
+		!this.settings.get(CheckboxMessage.SITOUT_NEXT)) {
 		this.sitBackIn();
 		this.tableSeat.send(new ButtonsMessage());
+	} else if (!this.sittingout &&
+		this.settings.get(CheckboxMessage.SITOUT_NEXT) &&
+		!this.tableSeat.getTable().getCurrentGame()) {
+		this.sitout();
 	}
 }
 
