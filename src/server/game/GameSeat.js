@@ -161,6 +161,7 @@ GameSeat.prototype.onPresetButtonClick = function(m) {
 
 /**
  * Send presets.
+ * @method sendPresets
  */
 GameSeat.prototype.sendPresets = function() {
 	var m = new PresetButtonsMessage();
