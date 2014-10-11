@@ -12,6 +12,7 @@ var ProtoConnection = require("../../proto/ProtoConnection");
 var ArrayUtil = require("../../utils/ArrayUtil");
 var Game = require("../game/Game");
 var Backend = require("../backend/Backend");
+var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 
 /**
  * Cash game table.
@@ -272,7 +273,7 @@ CashGameTable.prototype.onCurrentGameFinished = function() {
 	for (var t = 0; t < this.tableSeats.length; t++) {
 		var tableSeat = this.tableSeats[t];
 
-		//tableSeat.actualizeRebuy();
+		// actualize rebuys here!
 
 		if (tableSeat.isInGame()) {
 			if (!tableSeat.getProtoConnection())
@@ -280,6 +281,9 @@ CashGameTable.prototype.onCurrentGameFinished = function() {
 
 			else if (!tableSeat.getChips())
 				tableSeat.leaveTable();
+
+			else if (tableSeat.getSetting(CheckboxMessage.SITOUT_NEXT))
+				tableSeat.sitout();
 		}
 	}
 

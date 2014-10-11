@@ -260,4 +260,8 @@ BotConnection.prototype.getHandInfo = function() {
 	return this.model.getHandInfo();
 }
 
+BotConnection.prototype.getSetting = function(setting) {
+	return this.model.getSetting(setting);
+}
+
 module.exports = BotConnection;

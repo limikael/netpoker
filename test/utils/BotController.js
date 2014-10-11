@@ -8,6 +8,7 @@ var DealerButtonMessage = require("../../src/proto/messages/DealerButtonMessage"
 var PotMessage = require("../../src/proto/messages/PotMessage");
 var BetsToPotMessage = require("../../src/proto/messages/BetsToPotMessage");
 var HandInfoMessage = require("../../src/proto/messages/HandInfoMessage")
+var CheckboxMessage = require("../../src/proto/messages/CheckboxMessage")
 
 function BotController(model) {
 	this.model = model;
@@ -25,6 +26,7 @@ BotController.prototype.setProtoConnection = function(protoConnection) {
 	this.protoConnection.addMessageHandler(PotMessage, this.onPotMessage, this);
 	this.protoConnection.addMessageHandler(BetsToPotMessage, this.onBetsToPotMessage, this);
 	this.protoConnection.addMessageHandler(HandInfoMessage, this.onHandInfoMessage, this);
+	this.protoConnection.addMessageHandler(CheckboxMessage, this.onCheckboxMessage, this);
 }
 
 BotController.prototype.onSeatInfoMessage = function(m) {
@@ -87,6 +89,10 @@ BotController.prototype.onBetsToPotMessage = function() {
 
 BotController.prototype.onHandInfoMessage = function(m) {
 	this.model.setHandInfo(m.getText());
+}
+
+BotController.prototype.onCheckboxMessage = function(m) {
+	this.model.setSetting(m.getId(), m.getChecked());
 }
 
 module.exports = BotController;

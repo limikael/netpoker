@@ -10,7 +10,8 @@ function BotModel() {
 	this.communityCards = [];
 	this.dealerButtonPosition = -1;
 	this.pots = [];
-	this.handInfo="";
+	this.handInfo = "";
+	this.settings = {};
 }
 
 BotModel.prototype.getSeatModelBySeatIndex = function(i) {
@@ -77,6 +78,18 @@ BotModel.prototype.setHandInfo = function(info) {
 
 BotModel.prototype.getHandInfo = function() {
 	return this.handInfo;
+}
+
+BotModel.prototype.getSetting = function(setting) {
+	if (this.settings[setting])
+		return true;
+
+	else
+		return false;
+}
+
+BotModel.prototype.setSetting = function(setting, checked) {
+	this.settings[setting] = checked;
 }
 
 module.exports = BotModel;

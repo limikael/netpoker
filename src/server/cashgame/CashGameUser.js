@@ -7,6 +7,7 @@ var ButtonData = require("../../proto/data/ButtonData");
 var CashGameBuyChipsPrompt = require("./CashGameBuyChipsPrompt");
 var Backend = require("../backend/Backend");
 var TableSeatSettings = require("../table/TableSeatSettings");
+var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 
 /**
  * A user seated at a table.
@@ -220,6 +221,13 @@ CashGameUser.prototype.sitout = function() {
 
 	this.sittingout = true;
 
+	this.settings.set(CheckboxMessage.SITOUT_NEXT, true);
+	var m = new CheckboxMessage(
+		CheckboxMessage.SITOUT_NEXT,
+		this.settings.get(CheckboxMessage.SITOUT_NEXT)
+	);
+
+	this.tableSeat.send(m);
 	this.tableSeat.getTable().send(this.tableSeat.getSeatInfoMessage());
 }
 
