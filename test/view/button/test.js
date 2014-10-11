@@ -1,6 +1,6 @@
-var FunctionUtil = require("../../../src/js/utils/FunctionUtil");
-var PixiApp = require("../../../src/js/utils/PixiApp");
-var Button = require("../../../src/js/utils/Button");
+var FunctionUtil = require("../../../src/utils/FunctionUtil");
+var PixiApp = require("../../../src/utils/PixiApp");
+var Button = require("../../../src/utils/Button");
 var PIXI = require("pixi.js");
 
 function ButtonTest() {

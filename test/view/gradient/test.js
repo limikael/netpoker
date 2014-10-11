@@ -1,6 +1,6 @@
-var FunctionUtil = require("../../../src/js/utils/FunctionUtil");
-var PixiApp = require("../../../src/js/utils/PixiApp");
-var Gradient = require("../../../src/js/utils/Gradient");
+var FunctionUtil = require("../../../src/utils/FunctionUtil");
+var PixiApp = require("../../../src/utils/PixiApp");
+var Gradient = require("../../../src/utils/Gradient");
 var PIXI = require("pixi.js");
 
 function GradientTest() {

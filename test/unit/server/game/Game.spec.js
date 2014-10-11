@@ -3,6 +3,7 @@ var GameSeat = require("../../../../src/server/game/GameSeat");
 var Thenable = require("../../../../src/utils/Thenable");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
 var EventDispatcher = require("../../../../src/utils/EventDispatcher");
+var AsyncSequence = require("../../../../src/utils/AsyncSequence");
 
 describe("Game", function() {
 	var mockTable;
@@ -63,12 +64,17 @@ describe("Game", function() {
 		}
 
 		mockTable.send = jasmine.createSpy();
+
+		jasmine.clock().install();
 	});
 
-	afterEach(function() {});
+	afterEach(function() {
+		jasmine.clock().uninstall();
+	});
 
-	it("can detect errors on start game call", function() {
-		jasmine.clock().install();
+	it("can detect errors on start game call", function(done) {
+		console.log("installing mock clock");
+		//jasmine.clock().install();
 		mockBackend.call = function(functionName, params) {
 			var t = new Thenable();
 			t.notifyError();
@@ -81,14 +87,27 @@ describe("Game", function() {
 		var g = new Game(mockTable);
 		g.on(Game.FINISHED, finishSpy);
 
-		g.start();
+		AsyncSequence.run(
+			function(next) {
+				g.start();
+				TickLoopRunner.runTicks().then(next);
+			},
 
-		expect(mockBackend.call).toHaveBeenCalledWith("hello", jasmine.any(Object));
+			function(next) {
+				expect(mockBackend.call).toHaveBeenCalledWith("hello", jasmine.any(Object));
+				expect(finishSpy).not.toHaveBeenCalled();
+				TickLoopRunner.runTicks().then(next);
+			},
 
-		expect(finishSpy).not.toHaveBeenCalled();
-		jasmine.clock().tick(Game.ERROR_WAIT + 1);
-		expect(finishSpy).toHaveBeenCalled();
-		jasmine.clock().uninstall();
+			function(next) {
+				expect(finishSpy).not.toHaveBeenCalled();
+				jasmine.clock().tick(Game.ERROR_WAIT + 1000);
+				expect(finishSpy).toHaveBeenCalled();
+
+				//jasmine.clock().uninstall();
+				next();
+			}
+		).then(done);
 	});
 
 	it("can start", function(done) {

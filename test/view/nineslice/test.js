@@ -1,6 +1,6 @@
-var FunctionUtil = require("../../../src/js/utils/FunctionUtil");
-var PixiApp = require("../../../src/js/utils/PixiApp");
-var NineSlice = require("../../../src/js/utils/NineSlice");
+var FunctionUtil = require("../../../src/utils/FunctionUtil");
+var PixiApp = require("../../../src/utils/PixiApp");
+var NineSlice = require("../../../src/utils/NineSlice");
 var PIXI = require("pixi.js");
 
 function NineSliceTest() {

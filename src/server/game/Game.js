@@ -94,7 +94,7 @@ Game.prototype.onStartCallComplete = function(result) {
  * @private
  */
 Game.prototype.onStartCallError = function() {
-	console.log("error starting game");
+	console.log("error starting game, setting timeout");
 	setTimeout(this.onErrorWaitTimer.bind(this), Game.ERROR_WAIT);
 }
 
@@ -104,6 +104,7 @@ Game.prototype.onStartCallError = function() {
  * @private
  */
 Game.prototype.onErrorWaitTimer = function() {
+	console.log("error wait timer complete..");
 	this.trigger(Game.FINISHED);
 }
 

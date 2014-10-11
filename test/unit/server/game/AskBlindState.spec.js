@@ -14,18 +14,15 @@ describe("AskBlindState", function() {
 
 	beforeEach(function(done) {
 		mockBackendServer = new MockBackendServer();
-		mockBackendServer.setListenPort(9999);
-		mockBackendServer.start();
 
 		netPokerServer = new PipeNetPokerServer();
-		netPokerServer.setBackendUrl("http://localhost:9999");
+		netPokerServer.setBackend(mockBackendServer);
 		netPokerServer.run().then(done);
 	});
 
 	afterEach(function() {
 		console.log("closing...");
 
-		mockBackendServer.close();
 		netPokerServer.close();
 	});
 

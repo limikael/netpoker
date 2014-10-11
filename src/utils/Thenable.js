@@ -45,7 +45,8 @@ Thenable.prototype.notifySuccess = function(param) {
 		throw new Error("This thenable is already notified.");
 
 	this.notifyParam = param;
-	setTimeout(this.doNotifySuccess.bind(this), 0);
+	//setTimeout(this.doNotifySuccess.bind(this), 0);
+	process.nextTick(this.doNotifySuccess.bind(this));
 }
 
 /**
@@ -57,7 +58,8 @@ Thenable.prototype.notifyError = function(param) {
 		throw new Error("This thenable is already notified.");
 
 	this.notifyParam = param;
-	setTimeout(this.doNotifyError.bind(this), 0);
+	//setTimeout(this.doNotifyError.bind(this), 0);
+	process.nextTick(this.doNotifyError.bind(this));
 }
 
 /**

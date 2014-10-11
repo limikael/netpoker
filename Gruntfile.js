@@ -132,30 +132,43 @@ module.exports = function(grunt) {
 		que.done();
 	});
 
+	grunt.registerTask("browserify-test", function() {
+		done = this.async();
+
+		AsyncSequence.run(
+			function(next) {
+				var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
+				job.arg("test/view/gradient/test.bundle.js", "test/view/gradient/test.js");
+				job.show().expect(0);
+				job.run().then(next);
+			},
+
+			function(next) {
+				var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
+				job.arg("test/view/nineslice/test.bundle.js", "test/view/nineslice/test.js");
+				job.show().expect(0);
+				job.run().then(next);
+			},
+
+			function(next) {
+				var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
+				job.arg("test/view/button/test.bundle.js", "test/view/button/test.js");
+				job.show().expect(0);
+				job.run().then(next);
+			},
+
+			function(next) {
+				var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
+				job.arg("test/view/thenable/test.bundle.js", "test/view/thenable/test.js");
+				job.show().expect(0);
+				job.run().then(next);
+			}
+		).then(done);
+	});
+
 	grunt.registerTask("browserify", function() {
 		var done = this.async();
 		var que = Q();
-
-		/*que = que.then(function() {
-			var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
-			job.arg("test/view/gradient/test.bundle.js", "test/view/gradient/test.js");
-			job.show().expect(0);
-			return job.run();
-		});
-
-		que = que.then(function() {
-			var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
-			job.arg("test/view/nineslice/test.bundle.js", "test/view/nineslice/test.js");
-			job.show().expect(0);
-			return job.run();
-		});
-
-		que = que.then(function() {
-			var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
-			job.arg("test/view/button/test.bundle.js", "test/view/button/test.js");
-			job.show().expect(0);
-			return job.run();
-		});*/
 
 		que = que.then(function() {
 			var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");

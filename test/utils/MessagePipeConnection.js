@@ -30,14 +30,15 @@ MessagePipeConnection.prototype.connect = function(otherEnd) {
  * Send.
  */
 MessagePipeConnection.prototype.send = function(message) {
-	setTimeout(function() {
+	//	setTimeout(function() {
+	process.nextTick(function() {
 		if (this.otherEnd) {
 			this.otherEnd.trigger({
 				type: MessagePipeConnection.MESSAGE,
 				message: message
 			});
 		}
-	}.bind(this), 0);
+	}.bind(this) /*, 0*/ );
 }
 
 /**
