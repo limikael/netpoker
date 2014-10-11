@@ -1,5 +1,7 @@
 var GameSeat = require("../../../../src/server/game/GameSeat");
 var ButtonData = require("../../../../src/proto/data/ButtonData");
+var PresetButtonClickMessage = require("../../../../src/proto/messages/PresetButtonClickMessage");
+var EventDispatcher = require("../../../../src/utils/EventDispatcher");
 
 describe("GameSeat", function() {
 	var mockTable;
@@ -7,7 +9,7 @@ describe("GameSeat", function() {
 	var mockTableSeat;
 
 	beforeEach(function() {
-		mockTableSeat = {};
+		mockTableSeat = new EventDispatcher();
 		mockTableSeat.chips = 100;
 		mockTableSeat.addChips = function(chips) {
 			this.chips += chips;
@@ -66,7 +68,7 @@ describe("GameSeat", function() {
 		expect(gameSeat.presets[0].isEnabled()).toBe(false);
 	});
 
-	it("manages current preset", function() {
+	it("can enable/disable presets", function() {
 		var gameSeat = new GameSeat(mockGame, 1);
 
 		gameSeat.enablePreset(ButtonData.CALL, 50);
@@ -84,5 +86,37 @@ describe("GameSeat", function() {
 		expect(gameSeat.presets[3].isEnabled()).toBe(true);
 		expect(gameSeat.currentPreset).toBe(null);
 		expect(gameSeat.currentPresetValue).toBe(0);
+	});
+
+	it("updates presets", function() {
+		var gameSeat = new GameSeat(mockGame, 1);
+
+		gameSeat.enablePreset(ButtonData.FOLD);
+		gameSeat.enablePreset(ButtonData.CALL, 50);
+
+		var m = new PresetButtonClickMessage(ButtonData.FOLD);
+		mockTableSeat.trigger(PresetButtonClickMessage.TYPE, m);
+		expect(gameSeat.getCurrentPreset()).toBe(ButtonData.FOLD);
+
+		m = new PresetButtonClickMessage(ButtonData.CALL, 50);
+		mockTableSeat.trigger(PresetButtonClickMessage.TYPE, m);
+		expect(gameSeat.getCurrentPreset()).toBe(ButtonData.CALL);
+		expect(gameSeat.getCurrentPresetValue()).toBe(50);
+	});
+
+	it("can disable presets and enable them again", function() {
+		var gameSeat = new GameSeat(mockGame, 1);
+
+		gameSeat.enablePreset(ButtonData.FOLD);
+		gameSeat.enablePreset(ButtonData.CALL, 50);
+
+		var m = new PresetButtonClickMessage(ButtonData.FOLD);
+		mockTableSeat.trigger(PresetButtonClickMessage.TYPE, m);
+
+		expect(gameSeat.getCurrentPreset()).toBe(ButtonData.FOLD);
+		gameSeat.disableAllPresets();
+
+		gameSeat.enablePreset(ButtonData.FOLD);
+		expect(gameSeat.getCurrentPreset()).toBe(null);
 	});
 });

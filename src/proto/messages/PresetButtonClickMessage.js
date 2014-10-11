@@ -2,9 +2,12 @@
  * Received when ?.
  * @class PresetButtonClickMessage
  */
-function PresetButtonClickMessage(button) {
+function PresetButtonClickMessage(button, value) {
+	if (!value)
+		value = null;
+
 	this.button = button;
-	this.value = null;
+	this.value = value;
 }
 
 PresetButtonClickMessage.TYPE = "presetButtonClick";

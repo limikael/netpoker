@@ -12,15 +12,15 @@ var PresetButton = require("./PresetButton");
  */
 function PresetButtonsView() {
 	PIXI.DisplayObjectContainer.call(this);
-	
+
 	this.buttons = new Array();
 	var origin = Resources.getInstance().getPoint("bigButtonPosition");
 
-	for(var i = 0; i < 6; i++) {
+	for (var i = 0; i < 6; i++) {
 		var p = new PresetButton();
 		p.addEventListener(PresetButton.CHANGE, this.onPresetButtonChange, this);
-		p.x = origin.x + 30 + 140*(i % 2);
-		p.y = origin.y + 35*Math.floor(i/2);
+		p.x = origin.x + 30 + 140 * (i % 2);
+		p.y = origin.y + 35 * Math.floor(i / 2);
 		this.addChild(p);
 		this.buttons.push(p);
 	}
@@ -38,10 +38,10 @@ PresetButtonsView.CHANGE = "change";
  * @method onPresetButtonChange
  */
 PresetButtonsView.prototype.onPresetButtonChange = function(ev) {
-	
-	for(var i = 0; i < this.buttons.length; i++) {
+
+	for (var i = 0; i < this.buttons.length; i++) {
 		var b = this.buttons[i];
-		if(b != ev.target) {
+		if (b != ev.target) {
 			b.setChecked(false);
 		}
 	}
@@ -54,7 +54,7 @@ PresetButtonsView.prototype.onPresetButtonChange = function(ev) {
  * @method hide
  */
 PresetButtonsView.prototype.hide = function() {
-	for(var i = 0; i < this.buttons.length; i++) {
+	for (var i = 0; i < this.buttons.length; i++) {
 		this.buttons[i].hide();
 	}
 }
@@ -81,8 +81,8 @@ PresetButtonsView.prototype.getButtons = function() {
  * @method getCurrent
  */
 PresetButtonsView.prototype.getCurrent = function() {
-	for(var i = 0; i < this.buttons.length; i++) {
-		if(this.buttons[i].getChecked() == true) {
+	for (var i = 0; i < this.buttons.length; i++) {
+		if (this.buttons[i].getChecked() == true) {
 			return this.buttons[i];
 		}
 	}
@@ -94,13 +94,12 @@ PresetButtonsView.prototype.getCurrent = function() {
  * @method setCurrent
  */
 PresetButtonsView.prototype.setCurrent = function(id) {
-	for(var i = 0; i < this.buttons.length; i++) {
+	for (var i = 0; i < this.buttons.length; i++) {
 		var b = this.buttons[i];
 		if ((id != null) && (b.id == id)) {
-			b.checked = true;	
-		}
-		else {
-			b.checked = false;	
+			b.setChecked(true);
+		} else {
+			b.setChecked(false);
 		}
 	}
 }

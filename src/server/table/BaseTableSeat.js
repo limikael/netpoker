@@ -6,6 +6,7 @@ var SeatInfoMessage = require("../../proto/messages/SeatInfoMessage");
 var ChatMessage = require("../../proto/messages/ChatMessage");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 var TableSeatSettings = require("./TableSeatSettings");
+var PresetButtonClickMessage = require("../../proto/messages/PresetButtonClickMessage");
 
 /**
  * Base table seat. This is an abstract class representing a seat at a table.
@@ -76,6 +77,7 @@ BaseTableSeat.prototype.setProtoConnection = function(protoConnection) {
 		this.protoConnection.removeMessageHandler(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
 		this.protoConnection.removeMessageHandler(ChatMessage.TYPE, this.onChat, this);
 		this.protoConnection.removeMessageHandler(CheckboxMessage.TYPE, this.onCheckboxMessage, this);
+		this.protoConnection.removeMessageHandler(PresetButtonClickMessage.TYPE, this.onPresetButtonClickMessage, this);
 	}
 
 	this.protoConnection = protoConnection;
@@ -85,6 +87,7 @@ BaseTableSeat.prototype.setProtoConnection = function(protoConnection) {
 		this.protoConnection.addMessageHandler(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
 		this.protoConnection.addMessageHandler(ChatMessage.TYPE, this.onChat, this);
 		this.protoConnection.addMessageHandler(CheckboxMessage.TYPE, this.onCheckboxMessage, this);
+		this.protoConnection.addMessageHandler(PresetButtonClickMessage.TYPE, this.onPresetButtonClickMessage, this);
 
 		if (this.getSettings()) {
 			this.send(new CheckboxMessage(CheckboxMessage.AUTO_POST_BLINDS, this.getSetting(CheckboxMessage.AUTO_POST_BLINDS)));
@@ -130,6 +133,15 @@ BaseTableSeat.prototype.onChat = function(message) {
  */
 BaseTableSeat.prototype.onButtonClickMessage = function(message) {
 	this.trigger(ButtonClickMessage.TYPE, message);
+}
+
+/**
+ * Preset button message.
+ * @method onPresetButtonsMessage
+ * @private
+ */
+BaseTableSeat.prototype.onPresetButtonClickMessage = function(message) {
+	this.trigger(PresetButtonClickMessage.TYPE, message);
 }
 
 /**

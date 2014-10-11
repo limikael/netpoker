@@ -1,3 +1,5 @@
+var ButtonData = require("../../proto/data/ButtonData");
+
 /**
  * A preset (such as fold/check) for a GameSeat.
  * @class GameSeatPreset
@@ -58,6 +60,28 @@ GameSeatPreset.prototype.getValue = function() {
  */
 GameSeatPreset.prototype.setValue = function(value) {
 	this.value = value;
+}
+
+/**
+ * Check if the value matches.
+ * @method checkValueMatch
+ */
+GameSeatPreset.prototype.checkValueMatch = function(cand) {
+	if (!this.value && !cand)
+		return true;
+
+	if (this.value == cand)
+		return true;
+
+	return false;
+}
+
+/**
+ * Get corresponding button data.
+ * @method getButtonData
+ */
+GameSeatPreset.prototype.getButtonData = function() {
+	return new ButtonData(this.buttonId, this.value);
 }
 
 module.exports = GameSeatPreset;

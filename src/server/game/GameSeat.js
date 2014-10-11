@@ -5,6 +5,8 @@ var PocketCardsMessage = require("../../proto/messages/PocketCardsMessage");
 var Hand = require("../hand/Hand");
 var GameSeatPreset = require("./GameSeatPreset");
 var ButtonData = require("../../proto/data/ButtonData");
+var PresetButtonClickMessage = require("../../proto/messages/PresetButtonClickMessage");
+var PresetButtonsMessage = require("../../proto/messages/PresetButtonsMessage");
 
 /**
  * A seat at a game.
@@ -32,6 +34,52 @@ function GameSeat(game, seatIndex) {
 }
 
 /**
+ * Get current preset.
+ * @method getCurrentPreset
+ */
+GameSeat.prototype.getCurrentPreset = function() {
+	return this.currentPreset;
+}
+
+/**
+ * Get current preset value.
+ * @method getCurrentPresetValue
+ */
+GameSeat.prototype.getCurrentPresetValue = function() {
+	return this.currentPresetValue;
+}
+
+/**
+ * Set current preset.
+ * @method setCurrentPreset
+ */
+GameSeat.prototype.setCurrentPreset = function(buttonId, value) {
+	var preset = this.getPresetByButtonId(buttonId);
+
+	if (preset && preset.isEnabled() && preset.checkValueMatch(value)) {
+		this.currentPreset = buttonId;
+		this.currentPresetValue = value;
+	} else {
+		this.currentPreset = null;
+		this.currentPresetValue = null;
+	}
+}
+
+/**
+ * Is tihs preset valid.
+ * @method isPresetValid
+ */
+GameSeat.prototype.isPresetValid = function(buttonId, value) {
+	var preset = this.getPresetByButtonId(buttonId);
+
+	if (preset && preset.isEnabled() && preset.checkValueMatch(value))
+		return true;
+
+	else
+		return false;
+}
+
+/**
  * Create presets.
  * @method createPresets
  * @private
@@ -54,11 +102,13 @@ GameSeat.prototype.createPresets = function() {
  * @method disableAllPresets
  */
 GameSeat.prototype.disableAllPresets = function() {
-	this.currentPreset = null;
-	this.currentPresetValue = 0;
+	this.tableSeat.off(PresetButtonClickMessage.TYPE, this.onPresetButtonClick, this);
 
 	for (var p = 0; p < this.presets.length; p++)
 		this.presets[p].setEnabled(false);
+
+	this.currentPreset = null;
+	this.currentPresetValue = null;
 }
 
 /**
@@ -70,6 +120,8 @@ GameSeat.prototype.getPresetByButtonId = function(buttonId) {
 	for (var p = 0; p < this.presets.length; p++)
 		if (this.presets[p].getButtonId() == buttonId)
 			return this.presets[p];
+
+	return null;
 }
 
 /**
@@ -79,6 +131,8 @@ GameSeat.prototype.getPresetByButtonId = function(buttonId) {
  * @method enablePreset
  */
 GameSeat.prototype.enablePreset = function(buttonId, value) {
+	this.tableSeat.on(PresetButtonClickMessage.TYPE, this.onPresetButtonClick, this);
+
 	if (!value)
 		value = 0;
 
@@ -88,10 +142,38 @@ GameSeat.prototype.enablePreset = function(buttonId, value) {
 	preset.setValue(value);
 
 	if (preset.getButtonId() == this.currentPreset &&
-		preset.getValue() != this.currentPresetValue) {
+		!preset.checkValueMatch(this.currentPresetValue)) {
 		this.currentPreset = null;
 		this.currentPresetValue = 0;
 	}
+}
+
+/**
+ * Preset button click.
+ * @method onPresetButtonClick
+ * @private
+ */
+GameSeat.prototype.onPresetButtonClick = function(m) {
+	console.log("preset button click");
+
+	this.setCurrentPreset(m.getButton(), m.getValue());
+}
+
+/**
+ * Send presets.
+ */
+GameSeat.prototype.sendPresets = function() {
+	var m = new PresetButtonsMessage();
+
+	for (var p = 0; p < this.presets.length; p++) {
+		var preset = this.presets[p];
+		if (preset.isEnabled())
+			m.setButtonDataAt(preset.getButtonIndex(), preset.getButtonData());
+	}
+
+	m.current = this.currentPreset;
+
+	this.send(m);
 }
 
 /**

@@ -1,2 +1,5 @@
-{"type":"presetButtons", "buttons": [{"button":"checkFold", "value": -1}, {"button":"callAny", "value": 2}]}
+{"type":"presetButtons", "buttons": [{"button":"checkFold", "value": -1}, null, null, {"button":"callAny", "value": 2}]}
 {"type":"stateComplete"}
+{"type":"delay", "delay": 1000}
+{"type":"chat", "text": "sending new"}
+{"type":"presetButtons", "buttons": [{"button":"checkFold", "value": -1}, null, null, {"button":"callAny", "value": 3}]}

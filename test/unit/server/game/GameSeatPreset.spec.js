@@ -15,5 +15,8 @@ describe("GameSeatPreset", function() {
 		gameSeatPreset.setValue(10);
 
 		expect(gameSeatPreset.getValue()).toBe(10);
+
+		var b = gameSeatPreset.getButtonData();
+		expect(b.getButton()).toBe(ButtonData.FOLD);
 	});
 });

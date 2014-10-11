@@ -5,6 +5,7 @@ var ButtonData = require("../../proto/data/ButtonData");
 var CardData = require("../../proto/data/CardData");
 var GameSeatPrompt = require("./GameSeatPrompt");
 var ActionMessage = require("../../proto/messages/ActionMessage");
+var PresetButtonsMessage = require("../../proto/messages/PresetButtonsMessage");
 var BetsToPotMessage = require("../../proto/messages/BetsToPotMessage");
 var PotMessage = require("../../proto/messages/PotMessage");
 var CommunityCardsMessage = require("../../proto/messages/CommunityCardsMessage");
@@ -64,10 +65,10 @@ RoundState.prototype.run = function() {
 
 	this.ensureGameSeatIndexToSpeakNotFolded();
 
-	/*for (gameSeat in game.gameSeats) {
+	for (var g = 0; g < this.game.getGameSeats().length; g++) {
+		var gameSeat = this.game.getGameSeats()[g];
 		gameSeat.disableAllPresets();
-		gameSeat.ensureCurrentPresetIsValid();
-	}*/
+	}
 
 	this.ask();
 }
@@ -128,10 +129,51 @@ RoundState.prototype.ask = function() {
 
 	}
 
-	//this.updateAndSendPresets();
+	this.updateAndSendPresets();
 
 	this.prompt.on(GameSeatPrompt.COMPLETE, this.onPromptComplete, this);
 	this.prompt.ask();
+}
+
+/**
+ * Update and send presets.
+ * @method updateAndSendPresets
+ * @private
+ */
+RoundState.prototype.updateAndSendPresets = function() {
+	for (var g = 0; g < this.game.getGameSeats().length; g++) {
+		var gameSeat = this.game.getGameSeats()[g];
+
+		var oldPreset = gameSeat.getCurrentPreset();
+		var oldPresetValue = gameSeat.getCurrentPresetValue();
+		gameSeat.disableAllPresets();
+
+		if (!gameSeat.isFolded()) {
+			if (this.spokenAtCurrentBet.indexOf(gameSeat) < 0) {
+				gameSeat.enablePreset(ButtonData.FOLD);
+				gameSeat.enablePreset(ButtonData.CALL_ANY);
+
+				if (this.canCheck(gameSeat)) {
+					gameSeat.enablePreset(ButtonData.CHECK);
+					gameSeat.enablePreset(ButtonData.CHECK_FOLD);
+				} else {
+					if (oldPreset == ButtonData.CHECK_FOLD)
+						gameSeat.setCurrentPreset(ButtonData.FOLD);
+
+					gameSeat.enablePreset(ButtonData.CALL, this.getCostToCall(gameSeat))
+				}
+			}
+		}
+
+		if (gameSeat.isPresetValid(oldPreset, oldPresetValue))
+			gameSeat.setCurrentPreset(oldPreset, oldPresetValue);
+
+		if (gameSeat == this.game.getGameSeats()[this.gameSeatIndexToSpeak])
+			gameSeat.send(new PresetButtonsMessage());
+
+		else
+			gameSeat.sendPresets();
+	}
 }
 
 /**
@@ -407,23 +449,12 @@ RoundState.prototype.advanceSpeaker = function() {
  */
 RoundState.prototype.askDone = function() {
 	if (this.game.getNumPlayersRemaining() == 1) {
-		/*for (gameSeat in game.gameSeats) {
-			gameSeat.disableAllPresets();
-			gameSeat.ensureCurrentPresetIsValid();
-			gameSeat.sendPresets();
-		}*/
-
+		this.disableAndSendAllPresets();
 		this.returnExcessiveBets();
 		this.betsToPot();
 		this.game.setGameState(new ShowMuckState());
 	} else if (this.allHasSpoken()) {
-		for (var g = 0; g < this.game.getGameSeats().length; g++) {
-			var gameSeat = this.game.getGameSeats()[g];
-			/*gameSeat.disableAllPresets();
-			gameSeat.ensureCurrentPresetIsValid();
-			gameSeat.sendPresets();*/
-		}
-
+		this.disableAndSendAllPresets();
 		this.returnExcessiveBets();
 		this.betsToPot();
 
@@ -436,6 +467,19 @@ RoundState.prototype.askDone = function() {
 	} else {
 		this.advanceSpeaker();
 		this.ask();
+	}
+}
+
+/**
+ * Disable and send all presets.
+ * @method disableAndSendAllPresets
+ */
+RoundState.prototype.disableAndSendAllPresets = function() {
+	for (var g = 0; g < this.game.getGameSeats().length; g++) {
+		var gameSeat = this.game.getGameSeats()[g];
+
+		gameSeat.disableAllPresets();
+		gameSeat.sendPresets();
 	}
 }
 

@@ -1,4 +1,4 @@
-var PresetButtonData = require("../data/PresetButtonData");
+var ButtonData = require("../data/ButtonData");
 
 /**
  * Received when ?.
@@ -27,6 +27,13 @@ PresetButtonsMessage.prototype.getCurrent = function() {
 	return this.current;
 }
 
+/**
+ * Set buton data.
+ * @method
+ */
+PresetButtonsMessage.prototype.setButtonDataAt = function(index, buttonData) {
+	this.buttons[index] = buttonData;
+}
 
 /**
  * Un-serialize.
@@ -37,15 +44,12 @@ PresetButtonsMessage.prototype.unserialize = function(data) {
 
 	this.buttons = new Array();
 
-	for(var i = 0; i < data.buttons.length; i++) {
+	for (var i = 0; i < data.buttons.length; i++) {
 		var button = data.buttons[i];
 		var buttonData = null;
 
-		if(button != null) {
-			buttonData = new PresetButtonData();
-
-			buttonData.button = button.button;
-			buttonData.value = button.value;
+		if (button != null) {
+			buttonData = new ButtonData(button.button, button.value);
 		}
 
 		this.buttons.push(buttonData);
@@ -62,9 +66,9 @@ PresetButtonsMessage.prototype.serialize = function() {
 		current: this.current
 	};
 
-	for(var i = 0; i < this.buttons.length; i++) {
+	for (var i = 0; i < this.buttons.length; i++) {
 		var buttonData = this.buttons[i];
-		if(buttonData != null)
+		if (buttonData != null)
 			object.buttons.push({
 				button: buttonData.button,
 				value: buttonData.value
