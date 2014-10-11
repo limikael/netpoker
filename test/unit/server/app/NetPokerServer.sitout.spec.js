@@ -27,7 +27,7 @@ describe("NetPokerServer - sitout", function() {
 		netPokerServer.close();
 	});
 
-	it("can sit out when asked", function(done) {
+	it("can sit out, and back in by big button", function(done) {
 		var bot1 = new BotConnection(netPokerServer, "user1");
 		var bot2 = new BotConnection(netPokerServer, "user2");
 
@@ -60,6 +60,13 @@ describe("NetPokerServer - sitout", function() {
 			function(next) {
 				expect(bot2.isActionAvailable(ButtonData.IM_BACK)).toBe(true);
 				expect(bot2.getSetting(CheckboxMessage.SITOUT_NEXT)).toBe(true);
+
+				bot2.act(ButtonData.IM_BACK);
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				//expect(bot2.isActionAvailable(ButtonData.POST_BB)).toBe(true);
 				next();
 			}
 		).then(done);

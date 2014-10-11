@@ -220,14 +220,9 @@ CashGameUser.prototype.sitout = function() {
 	this.tableSeat.send(b);
 
 	this.sittingout = true;
-
 	this.settings.set(CheckboxMessage.SITOUT_NEXT, true);
-	var m = new CheckboxMessage(
-		CheckboxMessage.SITOUT_NEXT,
-		this.settings.get(CheckboxMessage.SITOUT_NEXT)
-	);
+	this.tableSeat.send(new CheckboxMessage(CheckboxMessage.SITOUT_NEXT, true));
 
-	this.tableSeat.send(m);
 	this.tableSeat.getTable().send(this.tableSeat.getSeatInfoMessage());
 }
 
@@ -278,6 +273,9 @@ CashGameUser.prototype.sitBackIn = function() {
 	this.sittingout = false;
 	this.tableSeat.getTable().send(this.tableSeat.getSeatInfoMessage());
 	this.tableSeat.send(this.getTableInfoMessage());
+
+	this.settings.set(CheckboxMessage.SITOUT_NEXT, false);
+	this.tableSeat.send(new CheckboxMessage(CheckboxMessage.SITOUT_NEXT, false));
 
 	this.trigger(CashGameUser.READY);
 }

@@ -2,4 +2,13 @@
 {"type":"handInfo", "text": "Current Hand: #123123123\nPrevious Hand: #123123123"}
 {"type":"interfaceState", "visibleButtons": ["sitoutNext","autoPostBlinds"]}
 {"type":"checkbox", "id": "autoPostBlinds", "checked": true}
+{"type":"delay", "delay": 1000}
+{"type":"checkbox", "id": "sitoutNext", "checked": true}
+{"type":"delay", "delay": 1000}
+{"type":"checkbox", "id": "sitoutNext", "checked": false}
+{"type":"delay", "delay": 1000}
+{"type":"checkbox", "id": "sitoutNext", "checked": true}
+{"type":"delay", "delay": 1000}
+{"type":"checkbox", "id": "sitoutNext", "checked": false}
+{"type":"delay", "delay": 1000}
 {"type":"stateComplete"}
