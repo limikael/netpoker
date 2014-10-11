@@ -7,6 +7,7 @@ var StateCompleteMessage = require("../../src/proto/messages/StateCompleteMessag
 var ShowDialogMessage = require("../../src/proto/messages/ShowDialogMessage");
 var ButtonClickMessage = require("../../src/proto/messages/ButtonClickMessage");
 var SeatClickMessage = require("../../src/proto/messages/SeatClickMessage");
+var CheckboxMessage = require("../../src/proto/messages/CheckboxMessage");
 var ButtonData = require("../../src/proto/data/ButtonData");
 var BotModel = require("./BotModel");
 var BotController = require("./BotController");
@@ -262,6 +263,11 @@ BotConnection.prototype.getHandInfo = function() {
 
 BotConnection.prototype.getSetting = function(setting) {
 	return this.model.getSetting(setting);
+}
+
+BotConnection.prototype.setSetting = function(setting, checked) {
+	this.model.setSetting(setting, checked);
+	this.send(new CheckboxMessage(setting, checked));
 }
 
 module.exports = BotConnection;

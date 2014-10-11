@@ -7,6 +7,7 @@ var ButtonData = require("../../proto/data/ButtonData");
 var CashGameBuyChipsPrompt = require("./CashGameBuyChipsPrompt");
 var Backend = require("../backend/Backend");
 var TableSeatSettings = require("../table/TableSeatSettings");
+var BaseTableSeat = require("../table/BaseTableSeat");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 
 /**
@@ -23,6 +24,7 @@ function CashGameUser(tableSeat, user) {
 	this.settings = new TableSeatSettings();
 
 	this.tableSeat.on(ButtonClickMessage.TYPE, this.onTableSeatButtonClick, this);
+	this.tableSeat.on(BaseTableSeat.SETTINGS_CHANGED, this.onTableSeatSettingsChanged, this);
 }
 
 FunctionUtil.extend(CashGameUser, EventDispatcher);
@@ -175,7 +177,8 @@ CashGameUser.prototype.onSitoutCallComplete = function() {
 CashGameUser.prototype.cleanupAndNotifyDone = function() {
 	//console.log("********** notifying done in table seat user");
 
-	this.tableSeat.on(ButtonClickMessage.TYPE, this.onTableSeatButtonClick, this);
+	this.tableSeat.off(ButtonClickMessage.TYPE, this.onTableSeatButtonClick, this);
+	this.tableSeat.off(BaseTableSeat.SETTINGS_CHANGED, this.onTableSeatSettingsChanged, this);
 	this.trigger(CashGameUser.DONE);
 }
 
@@ -262,11 +265,30 @@ CashGameUser.prototype.onTableSeatButtonClick = function(m) {
 }
 
 /**
+ * Settings changed.
+ * @method onTableSeatSettingsChanged
+ */
+CashGameUser.prototype.onTableSeatSettingsChanged = function() {
+	//console.log("###################### settings changed: "+);
+
+	if (this.leaving)
+		return;
+
+	if (this.sittingout && !this.settings.get(CheckboxMessage.SITOUT_NEXT)) {
+		this.sitBackIn();
+		this.tableSeat.send(new ButtonsMessage());
+	}
+}
+
+/**
  * Sit the user back in after sitout.
  * @method sitBackIn
  * @private
  */
 CashGameUser.prototype.sitBackIn = function() {
+	if (this.leaving)
+		return;
+
 	if (!this.sittingout)
 		throw new Error("not sitting out");
 

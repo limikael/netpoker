@@ -29,9 +29,11 @@ BotStrategy.prototype.notifyComplete=function() {
 	if (this.stopped)
 		return;
 
-	setTimeout(function() {
+//	setTimeout(function() {
+	process.nextTick(function() {
+
 		this.trigger("complete");
-	}.bind(this),0);
+	}.bind(this)); //,0);
 }
 
 /**

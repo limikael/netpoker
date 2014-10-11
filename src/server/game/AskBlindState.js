@@ -60,6 +60,7 @@ AskBlindState.prototype.askNextBlind = function() {
 	this.prompt.addButton(this.getCurrentBlind(), this.getCurrentBlindAmount());
 	this.prompt.setDefaultButton(ButtonData.SIT_OUT);
 	this.prompt.on(GameSeatPrompt.COMPLETE, this.onPromptComplete, this);
+	this.prompt.useTableSeatSetting(CheckboxMessage.SITOUT_NEXT, ButtonData.SIT_OUT);
 	this.prompt.useTableSeatSetting(CheckboxMessage.AUTO_POST_BLINDS, this.getCurrentBlind());
 	this.prompt.ask();
 }
@@ -172,8 +173,8 @@ AskBlindState.prototype.cancel = function() {
 	console.log("Canceling game");
 	this.game.getTable().chat(null, "Not enough players to start the hand.");
 
-	for (var g=0; g<this.game.getGameSeats().length; g++) {
-		var gameSeat=this.game.getGameSeats()[g];
+	for (var g = 0; g < this.game.getGameSeats().length; g++) {
+		var gameSeat = this.game.getGameSeats()[g];
 
 		gameSeat.returnBet(gameSeat.getBet());
 	}
