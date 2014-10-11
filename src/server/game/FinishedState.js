@@ -15,7 +15,7 @@ function FinishedState() {
 
 FunctionUtil.extend(FinishedState, GameState);
 
-FinishedState.FINISH_DELAY = 3000;
+FinishedState.FINISH_DELAY = 5000;
 
 /**
  * Run the state.
@@ -23,7 +23,7 @@ FinishedState.FINISH_DELAY = 3000;
  */
 FinishedState.prototype.run = function() {
 	console.log("**** finished state");
-	this.game.getTable().send(new DelayMessage(FinishedState.FINISH_DELAY));
+	//this.game.getTable().send(new DelayMessage(FinishedState.FINISH_DELAY));
 	this.timeoutId = setTimeout(this.onTimout.bind(this), FinishedState.FINISH_DELAY);
 }
 
