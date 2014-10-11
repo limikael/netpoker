@@ -3,6 +3,8 @@ var FoldCardsMessage = require("../../proto/messages/FoldCardsMessage");
 var ActionMessage = require("../../proto/messages/ActionMessage");
 var PocketCardsMessage = require("../../proto/messages/PocketCardsMessage");
 var Hand = require("../hand/Hand");
+var GameSeatPreset = require("./GameSeatPreset");
+var ButtonData = require("../../proto/data/ButtonData");
 
 /**
  * A seat at a game.
@@ -22,6 +24,74 @@ function GameSeat(game, seatIndex) {
 	this.folded = false;
 	this.showing = false;
 	this.mucked = false;
+
+	this.currentPreset = null;
+	this.currentPresetValue = null;
+
+	this.createPresets();
+}
+
+/**
+ * Create presets.
+ * @method createPresets
+ * @private
+ */
+GameSeat.prototype.createPresets = function() {
+	this.presets = [];
+
+	this.presets.push(new GameSeatPreset(ButtonData.FOLD, 0));
+	this.presets.push(new GameSeatPreset(ButtonData.CHECK, 1));
+	this.presets.push(new GameSeatPreset(ButtonData.CHECK_FOLD, 2));
+	this.presets.push(new GameSeatPreset(ButtonData.CALL, 2));
+	this.presets.push(new GameSeatPreset(ButtonData.CALL_ANY, 3));
+	this.presets.push(new GameSeatPreset(ButtonData.RAISE, 4));
+	this.presets.push(new GameSeatPreset(ButtonData.BET, 4));
+	this.presets.push(new GameSeatPreset(ButtonData.RAISE_ANY, 5));
+}
+
+/**
+ * Disable all presets.
+ * @method disableAllPresets
+ */
+GameSeat.prototype.disableAllPresets = function() {
+	this.currentPreset = null;
+	this.currentPresetValue = 0;
+
+	for (var p = 0; p < this.presets.length; p++)
+		this.presets[p].setEnabled(false);
+}
+
+/**
+ * Get preset by button id.
+ * @method getPresetByButtonId
+ * @private
+ */
+GameSeat.prototype.getPresetByButtonId = function(buttonId) {
+	for (var p = 0; p < this.presets.length; p++)
+		if (this.presets[p].getButtonId() == buttonId)
+			return this.presets[p];
+}
+
+/**
+ * Enable game seat preset.
+ * If the enabled preset is the current one, and if it is enabled with
+ * another value than the current value, we remove the current preset.
+ * @method enablePreset
+ */
+GameSeat.prototype.enablePreset = function(buttonId, value) {
+	if (!value)
+		value = 0;
+
+	var preset = this.getPresetByButtonId(buttonId);
+
+	preset.setEnabled(true);
+	preset.setValue(value);
+
+	if (preset.getButtonId() == this.currentPreset &&
+		preset.getValue() != this.currentPresetValue) {
+		this.currentPreset = null;
+		this.currentPresetValue = 0;
+	}
 }
 
 /**

@@ -32,7 +32,7 @@ GameSeatPreset.prototype.setEnabled = function(value) {
  * Get button id.
  * @method getButonId
  */
-GameSeatPreset.prototype.getButonId = function() {
+GameSeatPreset.prototype.getButtonId = function() {
 	return this.buttonId;
 }
 
