@@ -172,8 +172,11 @@ AskBlindState.prototype.cancel = function() {
 	console.log("Canceling game");
 	this.game.getTable().chat(null, "Not enough players to start the hand.");
 
-	/*for (gameSeat in game.gameSeats)
-		gameSeat.returnBet(gameSeat.bet);*/
+	for (var g=0; g<this.game.getGameSeats().length; g++) {
+		var gameSeat=this.game.getGameSeats()[g];
+
+		gameSeat.returnBet(gameSeat.getBet());
+	}
 
 	this.game.setGameState(new FinishedState());
 

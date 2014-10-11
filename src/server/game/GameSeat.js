@@ -73,17 +73,35 @@ GameSeat.prototype.getPocketCards = function() {
 }
 
 /**
- * Make bet
+ * Make bet.
  * @method makeBet
  */
 GameSeat.prototype.makeBet = function(value) {
 	if (value == 0)
 		return;
 
+	if (value < 0)
+		throw new Error("Trying to make negative bet");
+
 	//console.log("********** making bet");
 
 	this.bet += value;
 	this.tableSeat.addChips(-value);
+
+	this.game.send(this.tableSeat.getSeatInfoMessage());
+	this.game.send(new BetMessage(this.tableSeat.getSeatIndex(), this.bet));
+}
+
+/**
+ * Return bet.
+ * @method returnBet
+ */
+GameSeat.prototype.returnBet = function(value) {
+	if (value > this.bet)
+		throw new Error("Trying to return more than bet");
+
+	this.bet -= value;
+	this.tableSeat.addChips(value);
 
 	this.game.send(this.tableSeat.getSeatInfoMessage());
 	this.game.send(new BetMessage(this.tableSeat.getSeatIndex(), this.bet));
