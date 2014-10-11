@@ -37,12 +37,12 @@ PresetButtonsView.CHANGE = "change";
  * Preset button change.
  * @method onPresetButtonChange
  */
-PresetButtonsView.prototype.onPresetButtonChange = function(button) {
+PresetButtonsView.prototype.onPresetButtonChange = function(ev) {
 	
 	for(var i = 0; i < this.buttons.length; i++) {
 		var b = this.buttons[i];
-		if(b != button) {
-			b.checked = false;
+		if(b != ev.target) {
+			b.setChecked(false);
 		}
 	}
 
