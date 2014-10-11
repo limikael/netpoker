@@ -33,6 +33,10 @@ describe("GameSeatPrompt", function() {
 			return mockGame;
 		}
 
+		mockGameSeat.getCurrentPreset = function() {
+			return null;
+		}
+
 		jasmine.clock().install();
 	});
 
@@ -167,5 +171,30 @@ describe("GameSeatPrompt", function() {
 		expect(gameSeatPrompt.getButton()).toBe(ButtonData.MUCK);
 
 		expect(mockTableSeat.listenerMap).toEqual({});
+	});
+
+	it("can use game seat presets", function() {
+
+		var gameSeatPrompt = new GameSeatPrompt(mockGameSeat);
+
+		mockGameSeat.getCurrentPreset = function() {
+			return ButtonData.CALL;
+		}
+
+		mockGameSeat.getCurrentPresetValue = function() {
+			return 50;
+		}
+
+		gameSeatPrompt.addButton(ButtonData.FOLD);
+		gameSeatPrompt.addButton(ButtonData.CALL, 50);
+		gameSeatPrompt.setDefaultButton(ButtonData.FOLD);
+
+		var completeSpy = jasmine.createSpy();
+		gameSeatPrompt.on(GameSeatPrompt.COMPLETE, completeSpy);
+
+		gameSeatPrompt.ask();
+		expect(completeSpy).toHaveBeenCalled();
+
+		expect(gameSeatPrompt.getButton()).toBe(ButtonData.CALL);
 	});
 });

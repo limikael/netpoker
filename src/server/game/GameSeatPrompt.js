@@ -120,6 +120,11 @@ GameSeatPrompt.prototype.ask = function() {
 		return;
 	}
 
+	if (this.checkGameSeatPresets()) {
+		this.trigger(GameSeatPrompt.COMPLETE);
+		return;
+	}
+
 	this.gameSeat.getGame().setGameSeatPrompt(this);
 
 	this.started = Math.round(Date.now() / 1000);
@@ -338,6 +343,30 @@ GameSeatPrompt.prototype.onTableSeatSettingsChanged = function() {
 		this.gameSeat.send(new ButtonsMessage());
 		this.trigger(GameSeatPrompt.COMPLETE);
 	}
+}
+
+/**
+ * Check applicable game seat presets.
+ * @method
+ */
+GameSeatPrompt.prototype.checkGameSeatPresets = function() {
+	var presetButton = this.gameSeat.getCurrentPreset();
+
+	if (presetButton == ButtonData.CALL_ANY)
+		presetButton = ButtonData.CALL;
+
+	if (presetButton == ButtonData.CHECK_FOLD)
+		presetButton = ButtonData.CHECK;
+
+	var buttonData = this.getButtonDataForButtonId(presetButton);
+
+	if (buttonData) {
+		this.button = buttonData.getButton();
+		this.value = buttonData.getValue();
+		return true;
+	}
+
+	return false;
 }
 
 module.exports = GameSeatPrompt;
