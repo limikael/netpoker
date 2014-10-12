@@ -1,4 +1,9 @@
 /**
+ * Server.
+ * @module server
+ */
+
+/**
  * Abstract class representing the current state of the poker game.
  * @class GameState
  * @constructor

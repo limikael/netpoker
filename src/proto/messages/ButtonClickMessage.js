@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * Sent when the user clicks a button, either in a dialog or
  * for a game action.
  * @class ButtonClickMessage

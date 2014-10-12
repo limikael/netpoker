@@ -1,4 +1,9 @@
 /**
+ * Utilities.
+ * @module utils
+ */
+
+/**
  * Represents a point.
  * @class Point
  * @module utils

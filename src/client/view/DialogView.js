@@ -1,3 +1,8 @@
+/**
+ * Client.
+ * @module client
+ */
+
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var NineSlice = require("../../utils/NineSlice");
@@ -10,7 +15,6 @@ var EventDispatcher = require("../../utils/EventDispatcher");
 /**
  * Dialog view.
  * @class DialogView
- * @module client
  */
 function DialogView() {
 	PIXI.DisplayObjectContainer.call(this);

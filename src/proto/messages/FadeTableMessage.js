@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * Received table should fade.
  * @class FadeTableMessage
  */

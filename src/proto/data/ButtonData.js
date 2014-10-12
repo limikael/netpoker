@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * Button data.
  * @class ButtonData
  */

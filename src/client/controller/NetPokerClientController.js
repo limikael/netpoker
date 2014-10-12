@@ -1,3 +1,8 @@
+/**
+ * Client.
+ * @module client
+ */
+
 var FunctionUtil = require("../../utils/FunctionUtil");
 var MessageSequencer = require("./MessageSequencer");
 var ProtoConnection = require("../../proto/ProtoConnection");
@@ -18,7 +23,6 @@ var PresetButtonsView = require("../view/PresetButtonsView");
 /**
  * Main controller
  * @class NetPokerClientController
- * @module client
  */
 function NetPokerClientController(view) {
 	this.netPokerClientView = view;

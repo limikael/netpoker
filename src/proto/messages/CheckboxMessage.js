@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * Sent when player has checked a checkbox.
  * @class CheckboxMessage
  */

@@ -1,3 +1,8 @@
+/**
+ * Client.
+ * @module client
+ */
+
 var Sequencer = require("../../utils/Sequencer");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var MessageSequenceItem = require("./MessageSequenceItem");
@@ -5,7 +10,6 @@ var MessageSequenceItem = require("./MessageSequenceItem");
 /**
  * Sequences messages.
  * @class MessageSequencer
- * @module client
  */
 function MessageSequencer() {
 	this.sequencer = new Sequencer();

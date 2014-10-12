@@ -1,3 +1,8 @@
+/**
+ * Client.
+ * @module client
+ */
+
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Button = require("../../utils/Button");
@@ -6,7 +11,6 @@ var Resources = require("../resources/Resources");
 /**
  * Big button.
  * @class BigButton
- * @module client
  */
 function BigButton() {
 	Button.call(this);

@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * Received when player has placed a bet.
  * @class BetMessage
  */

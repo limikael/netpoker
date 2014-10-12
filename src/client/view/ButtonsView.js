@@ -1,3 +1,8 @@
+/**
+ * Client.
+ * @module client
+ */
+
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
@@ -11,7 +16,6 @@ var RaiseShortcutButton = require("./RaiseShortcutButton");
 /**
  * Buttons
  * @class ButtonsView
- * @module client
  */
 function ButtonsView() {
 	PIXI.DisplayObjectContainer.call(this);

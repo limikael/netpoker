@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * @class DealerButtonMessage
  */
 function DealerButtonMessage(seatIndex, animate) {

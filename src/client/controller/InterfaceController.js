@@ -1,3 +1,8 @@
+/**
+ * Client.
+ * @module client
+ */
+
 var ShowDialogMessage = require("../../proto/messages/ShowDialogMessage");
 var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 var ChatMessage = require("../../proto/messages/ChatMessage");
@@ -10,7 +15,6 @@ var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 /**
  * Control user interface.
  * @class InterfaceController
- * @module client
  */
 function InterfaceController(messageSequencer, view) {
 	this.messageSequencer = messageSequencer;

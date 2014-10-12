@@ -1,7 +1,11 @@
 /**
+ * Client.
+ * @module client
+ */
+
+/**
  * Client resources
  * @class Settings
- * @module client
  */
  function Settings() {
  	this.playAnimations = true;

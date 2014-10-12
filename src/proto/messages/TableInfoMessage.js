@@ -1,5 +1,11 @@
 /**
- * Received when ?.
+ * Protocol.
+ * @module proto
+ */
+
+/**
+ * Set the big text that calls for user action,
+ * such as "Welcome, please take a seat!".
  * @class TableInfoMessage
  */
 function TableInfoMessage(text, countdown) {

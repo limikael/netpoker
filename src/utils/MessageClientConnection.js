@@ -1,3 +1,8 @@
+/**
+ * Utilities.
+ * @module utils
+ */
+
 var FunctionUtil = require("./FunctionUtil");
 var Thenable = require("./Thenable");
 var WebSocket = require("faye-websocket");
@@ -5,7 +10,6 @@ var WebSocket = require("faye-websocket");
 /**
  * Send and receive websocket messages.
  * @class MessageClientConnection
- * @module utils
  */
 function MessageClientConnection() {
 	Thenable.call(this);

@@ -1,3 +1,8 @@
+/**
+ * Client.
+ * @module client
+ */
+
 var EventDispatcher = require("../../utils/EventDispatcher");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Sequencer = require("../../utils/Sequencer");
@@ -5,7 +10,6 @@ var Sequencer = require("../../utils/Sequencer");
 /**
  * An item in a message sequence.
  * @class MessageSequenceItem
- * @module client
  */
 function MessageSequenceItem(message) {
 	EventDispatcher.call(this);

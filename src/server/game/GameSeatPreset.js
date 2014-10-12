@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var ButtonData = require("../../proto/data/ButtonData");
 
 /**

@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 
 /**

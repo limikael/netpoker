@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var MessageServer = require("../../utils/MessageServer");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");

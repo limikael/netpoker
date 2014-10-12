@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * Received when player pot has changed.
  * @class PotMessage
  */

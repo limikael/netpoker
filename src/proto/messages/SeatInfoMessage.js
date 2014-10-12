@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * Show username and chips on seat.
  * @class SeatInfoMessage
  */

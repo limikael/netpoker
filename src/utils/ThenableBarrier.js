@@ -1,10 +1,14 @@
+/**
+ * Utilities.
+ * @module utils
+ */
+
 var Thenable = require("./Thenable");
 var FunctionUtil = require("../utils/FunctionUtil");
 
 /**
  * Listen to several promises that all must be fulfilled.
  * @class ThenableBarrier
- * @module utils
  */
 function ThenableBarrier() {
 	Thenable.call(this);
@@ -19,8 +23,8 @@ function ThenableBarrier() {
 FunctionUtil.extend(ThenableBarrier, Thenable);
 
 /**
- * @method addThenable
  * Add a thenable to listen to.
+ * @method addThenable
  */
 ThenableBarrier.prototype.addThenable = function(t) {
 	if (this.handlersCalled)
@@ -70,6 +74,7 @@ ThenableBarrier.prototype.onThenableError = function(e) {
 /**
  * Create a thenable barrier
  * @method wait
+ * @static
  */
 ThenableBarrier.wait = function( /* thenables */ ) {
 	var t = new ThenableBarrier();
@@ -82,7 +87,8 @@ ThenableBarrier.wait = function( /* thenables */ ) {
 
 /**
  * Create a thenable barrier
- * @method wait
+ * @method waitAny
+ * @static
  */
 ThenableBarrier.waitAny = function( /* thenables */ ) {
 	var t = new ThenableBarrier();

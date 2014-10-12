@@ -1,3 +1,8 @@
+/**
+ * Client.
+ * @module client
+ */
+
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
@@ -7,7 +12,6 @@ var EventDispatcher = require("../../utils/EventDispatcher");
 /**
  * A chips view.
  * @class ChipsView
- * @module client
  */
 function ChipsView(showToolTip) {
 	PIXI.DisplayObjectContainer.call(this);

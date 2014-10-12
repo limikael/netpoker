@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var ProtoConnection = require("../../proto/ProtoConnection");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Backend = require("../backend/Backend");

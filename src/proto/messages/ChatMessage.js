@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * Received when something has occurred in the chat.
  * @class ChatMessage
  */

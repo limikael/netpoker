@@ -1,3 +1,8 @@
+/**
+ * Client.
+ * @module client
+ */
+
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
@@ -20,7 +25,6 @@ var PresetButtonsView = require("../view/PresetButtonsView");
 /**
  * Net poker client view.
  * @class NetPokerClientView
- * @module client
  */
 function NetPokerClientView() {
 	PIXI.DisplayObjectContainer.call(this);

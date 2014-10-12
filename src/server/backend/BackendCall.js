@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var Thenable = require("../../utils/Thenable");
 var request = require("request");
 

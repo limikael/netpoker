@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var CardData = require("../../proto/data/CardData");

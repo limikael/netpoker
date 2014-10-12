@@ -1,3 +1,8 @@
+/**
+ * Utilities.
+ * @module utils
+ */
+
 "use strict";
 
 var PIXI = require("pixi.js");
@@ -10,7 +15,6 @@ var ContentScaler = require("./ContentScaler");
  * Pixi full window app.
  * Can operate using window coordinates or scaled to specific area.
  * @class PixiApp
- * @module utils
  */
 function PixiApp(domId, width, height) {
 	PIXI.DisplayObjectContainer.call(this);

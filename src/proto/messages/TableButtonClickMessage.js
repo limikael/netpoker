@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * Received when table button clicked.
  * @class TableButtonClickMessage
  */

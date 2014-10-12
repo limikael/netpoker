@@ -1,3 +1,8 @@
+/**
+ * Client.
+ * @module client
+ */
+
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
@@ -14,7 +19,6 @@ var ButtonData = require("../../proto/data/ButtonData");
 /**
  * A settings view
  * @class SettingsView
- * @module client
  */
 function SettingsView() {
 	PIXI.DisplayObjectContainer.call(this);

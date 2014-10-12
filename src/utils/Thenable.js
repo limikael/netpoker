@@ -1,3 +1,8 @@
+/**
+ * Utilities.
+ * @module utils
+ */
+
 var EventDispatcher = require("./EventDispatcher");
 var FunctionUtil = require("./FunctionUtil");
 
@@ -5,7 +10,6 @@ var FunctionUtil = require("./FunctionUtil");
  * An implementation of promises as defined here:
  * http://promises-aplus.github.io/promises-spec/
  * @class Thenable
- * @module utils
  */
 function Thenable() {
 	EventDispatcher.call(this)

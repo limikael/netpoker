@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * Received when interface state has changed.
  * @class InterfaceStateMessage
  */

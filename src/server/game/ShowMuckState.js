@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var GameState = require("./GameState");
 var FinishedState = require("./FinishedState");
 var FunctionUtil = require("../../utils/FunctionUtil");

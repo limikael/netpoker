@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * Show dialog, for e.g. buy in.
  * @class ShowDialogMessage
  */

@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var BetMessage = require("../../proto/messages/BetMessage");
 var FoldCardsMessage = require("../../proto/messages/FoldCardsMessage");
 var ActionMessage = require("../../proto/messages/ActionMessage");

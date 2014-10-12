@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * Received when bets should be placed in pot.
  * @class BetsToPotMessage
  */

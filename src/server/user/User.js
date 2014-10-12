@@ -1,4 +1,9 @@
 /**
+ * Server.
+ * @module server
+ */
+
+/**
  * Represents a user.
  * @class User
  */

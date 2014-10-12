@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var BaseTable = require("../table/BaseTable");
@@ -17,6 +22,7 @@ var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 /**
  * Cash game table.
  * @class CashGameTable
+ * @extends BaseTable
  */
 function CashGameTable(services, config) {
 	if (!config.numseats ||

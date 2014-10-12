@@ -1,3 +1,8 @@
+/**
+ * Utilities.
+ * @module utils
+ */
+
 var PIXI = require("pixi.js");
 var FunctionUtil = require("./FunctionUtil");
 var EventDispatcher = require("./EventDispatcher");
@@ -6,7 +11,6 @@ var Button = require("./Button");
 /**
  * Checkbox.
  * @class Checkbox
- * @module utils
  */
 function Checkbox(background, tick) {
 	PIXI.DisplayObjectContainer.call(this);

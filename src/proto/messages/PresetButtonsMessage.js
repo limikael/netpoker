@@ -1,3 +1,8 @@
+/**
+ * Protocol.
+ * @module proto
+ */
+
 var ButtonData = require("../data/ButtonData");
 
 /**

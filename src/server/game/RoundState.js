@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var GameState = require("./GameState");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var PocketCardsMessage = require("../../proto/messages/PocketCardsMessage");

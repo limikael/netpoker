@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * Message indicating that the user has clicked a seat.
  * @class SeatClickMessage
  */

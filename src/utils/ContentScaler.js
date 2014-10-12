@@ -1,6 +1,15 @@
+/**
+ * Utilities.
+ * @module utils
+ */
+
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../utils/FunctionUtil");
 
+/**
+ * Keep content with a logic size inside boundaries.
+ * @class ContentScaler
+ */
 function ContentScaler(content) {
 	PIXI.DisplayObjectContainer.call(this);
 
@@ -23,6 +32,10 @@ FunctionUtil.extend(ContentScaler, PIXI.DisplayObjectContainer);
 ContentScaler.MIDDLE = "middle";
 ContentScaler.TOP = "top";
 
+/**
+ * Set content to use.
+ * @method setContent
+ */
 ContentScaler.prototype.setContent = function(content) {
 	this.content = content;
 
@@ -39,6 +52,10 @@ ContentScaler.prototype.setContent = function(content) {
 	this.updateScale();
 }
 
+/**
+ * Set logic size of the content.
+ * @method setContentSize
+ */
 ContentScaler.prototype.setContentSize = function(contentWidth, contentHeight) {
 	this.contentWidth = contentWidth;
 	this.contentHeight = contentHeight;
@@ -46,6 +63,10 @@ ContentScaler.prototype.setContentSize = function(contentWidth, contentHeight) {
 	this.updateScale();
 }
 
+/**
+ * Set the actual screen size.
+ * @method setScreenSize
+ */
 ContentScaler.prototype.setScreenSize = function(screenWidth, screenHeight) {
 	this.screenWidth = screenWidth;
 	this.screenHeight = screenHeight;
@@ -53,11 +74,20 @@ ContentScaler.prototype.setScreenSize = function(screenWidth, screenHeight) {
 	this.updateScale();
 }
 
+/**
+ * Set how the content should be aligned on the screen.
+ * @method setAlign
+ */
 ContentScaler.prototype.setAlign = function(align) {
 	this.align = align;
 	this.updateScale();
 }
 
+/**
+ * Update the scaling.
+ * @method updateScale
+ * @private
+ */
 ContentScaler.prototype.updateScale = function() {
 	var scale;
 

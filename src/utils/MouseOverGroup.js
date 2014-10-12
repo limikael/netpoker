@@ -1,3 +1,8 @@
+/**
+ * Utilities.
+ * @module utils
+ */
+
 var PIXI = require("pixi.js");
 var FunctionUtil = require("./FunctionUtil");
 var EventDispatcher = require("./EventDispatcher");
@@ -5,7 +10,6 @@ var EventDispatcher = require("./EventDispatcher");
 /**
  * MouseOverGroup. This is the class for the MouseOverGroup.
  * @class MouseOverGroup
- * @module utils
  */
 function MouseOverGroup() {
 	this.objects = new Array();

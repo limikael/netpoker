@@ -1,3 +1,8 @@
+/**
+ * Client.
+ * @module client
+ */
+
 var SeatInfoMessage = require("../../proto/messages/SeatInfoMessage");
 var CommunityCardsMessage = require("../../proto/messages/CommunityCardsMessage");
 var PocketCardsMessage = require("../../proto/messages/PocketCardsMessage");
@@ -16,7 +21,6 @@ var PayOutMessage = require("../../proto/messages/PayOutMessage");
 /**
  * Control the table
  * @class TableController
- * @module client
  */
 function TableController(messageSequencer, view) {
 	this.messageSequencer = messageSequencer;

@@ -1,3 +1,8 @@
+/**
+ * Protocol.
+ * @module proto
+ */
+
 var CardData = require("../data/CardData");
 
 /**

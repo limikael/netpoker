@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var ConnectionManager = require("../connection/ConnectionManager");
 var CashGameManager = require("../cashgame/CashGameManager");
 var FunctionUtil = require("../../utils/FunctionUtil");

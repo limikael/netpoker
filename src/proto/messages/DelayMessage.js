@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * @class DelayMessage
  */
 function DelayMessage(delay) {

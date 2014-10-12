@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * @class InitMessage
  */
 function InitMessage(token) {

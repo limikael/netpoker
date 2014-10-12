@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var ChatMessage = require("../../proto/messages/ChatMessage");
@@ -6,6 +11,7 @@ var DealerButtonMessage = require("../../proto/messages/DealerButtonMessage");
 /**
  * Base class for cash game and tournament tables.
  * @class BaseTable
+ * @extends EventDispatcher
  */
 function BaseTable() {
 	EventDispatcher.call(this);

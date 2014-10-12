@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var Backend = require("../../server/backend/Backend");
 var Thenable = require("../../utils/Thenable");
 var http = require("http");

@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
@@ -13,6 +18,7 @@ var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 /**
  * A user seated at a table.
  * @class CashGameUser
+ * @extends EventDispatcher
  */
 function CashGameUser(tableSeat, user) {
 	this.tableSeat = tableSeat;

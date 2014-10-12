@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var fs = require("fs");
 var url = require("url");
 

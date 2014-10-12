@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * Received when tournament result message is dispatched.
  * @class TournamentResultMessage
  */

@@ -1,3 +1,8 @@
+/**
+ * Utilities.
+ * @module utils
+ */
+
 var FunctionUtil = require("./FunctionUtil");
 var EventDispatcher = require("./EventDispatcher");
 
@@ -9,7 +14,6 @@ var EventDispatcher = require("./EventDispatcher");
  * start, and the task is considered complete
  * as it dispatches a COMPLETE event.
  * @class Sequencer
- * @module utils
  */
 function Sequencer() {
 	EventDispatcher.call(this);

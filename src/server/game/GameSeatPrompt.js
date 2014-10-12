@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 var TimerMessage = require("../../proto/messages/TimerMessage");

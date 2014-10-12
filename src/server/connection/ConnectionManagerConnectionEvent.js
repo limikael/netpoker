@@ -1,4 +1,9 @@
 /**
+ * Server.
+ * @module server
+ */
+
+/**
  * Connection event for connection manager.
  * @class ConnectionManagerConnectionEvent
  */

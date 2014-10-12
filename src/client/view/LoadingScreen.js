@@ -1,3 +1,8 @@
+/**
+ * Client.
+ * @module client
+ */
+
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Gradient = require("../../utils/Gradient");
@@ -5,7 +10,6 @@ var Gradient = require("../../utils/Gradient");
 /**
  * Loading screen.
  * @class LoadingScreen
- * @module client
  */
 function LoadingScreen() {
 	PIXI.DisplayObjectContainer.call(this);

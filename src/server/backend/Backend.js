@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var BackendCall = require("./BackendCall");
 
 /**

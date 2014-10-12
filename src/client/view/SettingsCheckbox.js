@@ -1,3 +1,8 @@
+/**
+ * Client.
+ * @module client
+ */
+
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
@@ -11,7 +16,6 @@ var Checkbox = require("../../utils/Checkbox");
 /**
  * Checkboxes view
  * @class SettingsCheckbox
- * @module client
  */
 function SettingsCheckbox(id, string) {
  	PIXI.DisplayObjectContainer.call(this);

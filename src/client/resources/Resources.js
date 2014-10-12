@@ -1,3 +1,8 @@
+/**
+ * Client.
+ * @module client
+ */
+
 "use strict";
 
 var PIXI = require("pixi.js");
@@ -6,8 +11,7 @@ var DefaultSkin = require("./DefaultSkin");
 
 /**
  * Client resources
- * @class Resources.
- * @module client
+ * @class Resources
  */
 function Resources() {
 	var i;

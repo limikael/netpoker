@@ -1,4 +1,9 @@
 /**
+ * Server.
+ * @module server
+ */
+
+/**
  * Table util.
  * @class TableUtil
  */

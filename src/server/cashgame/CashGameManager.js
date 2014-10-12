@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var Backend = require("../../server/backend/Backend");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var FunctionUtil = require("../../utils/FunctionUtil");

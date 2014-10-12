@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * Received player has folded.
  * @class FoldCardsMessage
  */

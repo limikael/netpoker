@@ -1,3 +1,8 @@
+/**
+ * Utilities.
+ * @module utils
+ */
+
 var EventDispatcher = require("./EventDispatcher");
 var FunctionUtil = require("./FunctionUtil");
 var Thenable = require("./Thenable");
@@ -5,7 +10,6 @@ var Thenable = require("./Thenable");
 /**
  * Message connection in a browser.
  * @class MessageWebSocketConnection
- * @module utils
  */
 function MessageWebSocketConnection() {
 	EventDispatcher.call(this);

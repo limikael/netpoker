@@ -1,10 +1,14 @@
+/**
+ * Utilities.
+ * @module utils
+ */
+
 var PIXI = require("pixi.js");
 var FunctionUtil = require("./FunctionUtil");
 
 /**
  * Create a sprite with a gradient.
  * @class Gradient
- * @module utils
  */
 function Gradient() {
 	this.width = 100;

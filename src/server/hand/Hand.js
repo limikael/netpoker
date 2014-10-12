@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var CardData = require("../../proto/data/CardData");
 var ArrayUtil = require("../../utils/ArrayUtil");
 

@@ -1,3 +1,8 @@
+/**
+ * Utilities.
+ * @module utils
+ */
+
 "use strict";
 
 var EventDispatcher=require("./EventDispatcher");
@@ -6,7 +11,6 @@ var FunctionUtil=require("./FunctionUtil");
 /**
  * Frame timer.
  * @class FrameTimer
- * @module utils
  */
 function FrameTimer() {
 	EventDispatcher.call(this);

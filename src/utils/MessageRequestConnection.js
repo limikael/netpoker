@@ -1,3 +1,8 @@
+/**
+ * Utilities.
+ * @module utils
+ */
+
 var EventDispatcher = require("./EventDispatcher");
 var FunctionUtil = require("./FunctionUtil");
 var Thenable = require("./Thenable");
@@ -7,7 +12,6 @@ var request = require("request");
  * A "connection" that loads its messages from a json file rather than
  * actually connecting.
  * @class MessageRequestConnection
- * @module utils
  */
 function MessageRequestConnection() {
 	EventDispatcher.call(this);

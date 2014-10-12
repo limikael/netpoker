@@ -1,10 +1,14 @@
+/**
+ * Utilities.
+ * @module utils
+ */
+
 var FunctionUtil = require("./FunctionUtil");
 var EventDispatcher = require("./EventDispatcher");
 
 /**
  * Represents one connection to a MessageServer
  * @class MessageServerConnection
- * @module utils
  */
 function MessageServerConnection(webSocket, parameters) {
 	EventDispatcher.call(this);

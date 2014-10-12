@@ -1,5 +1,5 @@
 /**
- * Protocol related stuff.
+ * Protocol.
  * @module proto
  */
 

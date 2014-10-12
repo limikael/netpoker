@@ -1,4 +1,9 @@
 /**
+ * Protocol.
+ * @module proto
+ */
+
+/**
  * @class ClearMessage
  */
 function ClearMessage(components) {

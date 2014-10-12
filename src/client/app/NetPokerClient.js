@@ -1,3 +1,8 @@
+/**
+ * Client.
+ * @module client
+ */
+
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var PixiApp = require("../../utils/PixiApp");
@@ -14,7 +19,6 @@ var Resources = require("../resources/Resources");
 /**
  * Main entry point for client.
  * @class NetPokerClient
- * @module client
  */
 function NetPokerClient(domId) {
 	PixiApp.call(this, domId, 960, 720);
