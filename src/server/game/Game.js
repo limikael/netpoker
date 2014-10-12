@@ -457,6 +457,8 @@ Game.prototype.isTableSeatInGame = function(tableSeat) {
 Game.prototype.isJoinComplete = function() {
 	if (!this.gameState || this.gameState instanceof AskBlindState)
 		return false;
+
+	return true;
 }
 
 module.exports = Game;

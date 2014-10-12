@@ -330,6 +330,8 @@ CashGameTable.prototype.getStartGameParentId = function() {
  * @method sendTableInfoMessages
  */
 CashGameTable.prototype.sendTableInfoMessages = function() {
+	console.log("******* sending table info messages");
+
 	var i;
 
 	for (i = 0; i < this.tableSpectators.length; i++) {
