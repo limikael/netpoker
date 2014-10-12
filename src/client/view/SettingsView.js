@@ -9,7 +9,6 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var Button = require("../../utils/Button");
 var NineSlice = require("../../utils/NineSlice");
 var Resources = require("../resources/Resources");
-var Settings = require("../app/Settings");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var SettingsCheckbox = require("./SettingsCheckbox");
 var RaiseShortcutButton = require("./RaiseShortcutButton");
@@ -20,8 +19,10 @@ var ButtonData = require("../../proto/data/ButtonData");
  * A settings view
  * @class SettingsView
  */
-function SettingsView() {
+function SettingsView(viewConfig) {
 	PIXI.DisplayObjectContainer.call(this);
+
+	this.viewConfig = viewConfig;
 
 	var object = new PIXI.DisplayObjectContainer();
 	var bg = new NineSlice(Resources.getInstance().getTexture("chatBackground"), 10, 10, 10, 10);
@@ -62,7 +63,9 @@ function SettingsView() {
 
 	this.settings = {};
 
-	this.createMenuSetting("playAnimations", "Play animations", 40, Settings.getInstance().playAnimations);
+	console.log("setting up settings, viewconfig=" + this.viewConfig);
+
+	this.createMenuSetting("playAnimations", "Play animations", 40, this.viewConfig.getPlayAnimations());
 	this.createMenuSetting(CheckboxMessage.AUTO_MUCK_LOSING, "Muck losing hands", 65);
 
 	this.createSetting(CheckboxMessage.AUTO_POST_BLINDS, "Post blinds", 0);
@@ -143,7 +146,7 @@ SettingsView.prototype.createSetting = function(id, string, y) {
  */
 SettingsView.prototype.onCheckboxChange = function(checkbox) {
 	if (checkbox.id == "playAnimations") {
-		Settings.getInstance().playAnimations = checkbox.getChecked();
+		this.viewConfig.setPlayAnimations(checkbox.getChecked());
 		console.log("anims changed..");
 	}
 

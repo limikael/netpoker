@@ -26,9 +26,10 @@ var PresetButtonsView = require("../view/PresetButtonsView");
  * Net poker client view.
  * @class NetPokerClientView
  */
-function NetPokerClientView() {
+function NetPokerClientView(viewConfig) {
 	PIXI.DisplayObjectContainer.call(this);
 
+	this.viewConfig = viewConfig;
 	this.setupBackground();
 
 	this.tableContainer = new PIXI.DisplayObjectContainer();
@@ -40,33 +41,33 @@ function NetPokerClientView() {
 	this.setupSeats();
 	this.setupCommunityCards();
 
-	this.timerView = new TimerView();
+	this.timerView = new TimerView(this.viewConfig);
 	this.tableContainer.addChild(this.timerView);
 
-	this.chatView = new ChatView();
+	this.chatView = new ChatView(this.viewConfig);
 	this.addChild(this.chatView);
 
-	this.buttonsView = new ButtonsView();
+	this.buttonsView = new ButtonsView(this.viewConfig);
 	this.addChild(this.buttonsView);
 
-	this.dealerButtonView = new DealerButtonView();
+	this.dealerButtonView = new DealerButtonView(this.viewConfig);
 	this.addChild(this.dealerButtonView);
 
-	this.tableInfoView = new TableInfoView();
+	this.tableInfoView = new TableInfoView(this.viewConfig);
 	this.addChild(this.tableInfoView);
 
-	this.potView = new PotView();
+	this.potView = new PotView(this.viewConfig);
 	this.addChild(this.potView);
 	this.potView.position.x = Resources.getInstance().getPoint("potPosition").x;
 	this.potView.position.y = Resources.getInstance().getPoint("potPosition").y;
 
-	this.settingsView = new SettingsView();
+	this.settingsView = new SettingsView(this.viewConfig);
 	this.addChild(this.settingsView);
 
-	this.dialogView = new DialogView();
+	this.dialogView = new DialogView(this.viewConfig);
 	this.addChild(this.dialogView);
 
-	this.presetButtonsView = new PresetButtonsView();
+	this.presetButtonsView = new PresetButtonsView(this.viewConfig);
 	this.addChild(this.presetButtonsView);
 
 	this.setupChips();
@@ -82,15 +83,15 @@ NetPokerClientView.SEAT_CLICK = "seatClick";
  * @method setupBackground
  */
 NetPokerClientView.prototype.setupBackground = function() {
-	var g=new PIXI.Graphics();
-	g.beginFill(0x05391d,1);
-	g.drawRect(-1000,0,960+2000,720);
+	var g = new PIXI.Graphics();
+	g.beginFill(0x05391d, 1);
+	g.drawRect(-1000, 0, 960 + 2000, 720);
 	g.endFill();
 	this.addChild(g);
 
-	var g=new PIXI.Graphics();
-	g.beginFill(0x909090,1);
-	g.drawRect(-1000,720,960+2000,1000);
+	var g = new PIXI.Graphics();
+	g.beginFill(0x909090, 1);
+	g.drawRect(-1000, 720, 960 + 2000, 1000);
 	g.endFill();
 	this.addChild(g);
 
@@ -101,9 +102,9 @@ NetPokerClientView.prototype.setupBackground = function() {
 	gradient.addColorStop(1, "#909090");
 
 	var s = gradient.createSprite();
-	s.position.y=530;
-	s.position.x=-1000;
-	s.width = 960+2000;
+	s.position.y = 530;
+	s.position.x = -1000;
+	s.width = 960 + 2000;
 	s.height = 190;
 	this.addChild(s);
 
@@ -133,7 +134,7 @@ NetPokerClientView.prototype.setupSeats = function() {
 		var p = seatView.position;
 
 		for (j = 0; j < 2; j++) {
-			var c = new CardView();
+			var c = new CardView(this.viewConfig);
 			c.hide();
 			c.setTargetPosition(Point(p.x + j * 30 - 60, p.y - 100));
 			this.tableContainer.addChild(c);
@@ -153,7 +154,7 @@ NetPokerClientView.prototype.setupSeats = function() {
 NetPokerClientView.prototype.setupChips = function() {
 	var i;
 	for (i = 0; i < Resources.getInstance().getPoints("betPositions").length; i++) {
-		var chipsView = new ChipsView();
+		var chipsView = new ChipsView(this.viewConfig);
 		this.seatViews[i].setBetChipsView(chipsView);
 
 		chipsView.setAlignment(Resources.getInstance().getValue("betAlign")[i]);
@@ -192,7 +193,7 @@ NetPokerClientView.prototype.setupCommunityCards = function() {
 	var p = Resources.getInstance().getPoint("communityCardsPosition");
 
 	for (i = 0; i < 5; i++) {
-		var cardView = new CardView();
+		var cardView = new CardView(this.viewConfig);
 		cardView.hide();
 		cardView.setTargetPosition(Point(p.x + i * 90, p.y));
 
@@ -284,7 +285,7 @@ NetPokerClientView.prototype.clear = function() {
 	this.chatView.clear();
 
 	this.presetButtonsView.hide();
-	
+
 	this.dialogView.hide();
 	this.buttonsView.clear();
 

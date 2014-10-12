@@ -15,6 +15,7 @@ var LoadingScreen = require("../view/LoadingScreen");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 var InitMessage = require("../../proto/messages/InitMessage");
 var Resources = require("../resources/Resources");
+var ViewConfig = require("../resources/ViewConfig");
 
 /**
  * Main entry point for client.
@@ -30,8 +31,8 @@ function NetPokerClient(domId) {
 	this.loadingScreen.show("LOADING");
 
 	this.url = null;
-
-	this.tableId=null;
+	this.tableId = null;
+	this.viewConfig = new ViewConfig();
 }
 
 FunctionUtil.extend(NetPokerClient, PixiApp);
@@ -57,8 +58,8 @@ NetPokerClient.prototype.setTableId = function(tableId) {
  * @method setViewCase
  */
 NetPokerClient.prototype.setViewCase = function(viewCase) {
-	console.log("****** running view case: "+viewCase);
-	this.viewCase=viewCase;
+	console.log("****** running view case: " + viewCase);
+	this.viewCase = viewCase;
 }
 
 /**
@@ -87,8 +88,8 @@ NetPokerClient.prototype.run = function() {
 		"table.png",
 		"components.png"
 	];
-	if((Resources.getInstance().skin != null) && (Resources.getInstance().skin.textures != null)) {
-		for(var i = 0; i < Resources.getInstance().skin.textures.length; i++) {
+	if ((Resources.getInstance().skin != null) && (Resources.getInstance().skin.textures != null)) {
+		for (var i = 0; i < Resources.getInstance().skin.textures.length; i++) {
 			assets.push(Resources.getInstance().skin.textures[i].file);
 			console.log("add to load list: " + Resources.getInstance().skin.textures[i].file);
 		}
@@ -107,7 +108,7 @@ NetPokerClient.prototype.run = function() {
 NetPokerClient.prototype.onAssetLoaderComplete = function() {
 	console.log("asset loader complete...");
 
-	this.netPokerClientView = new NetPokerClientView();
+	this.netPokerClientView = new NetPokerClientView(this.viewConfig);
 	this.addChildAt(this.netPokerClientView, 0);
 
 	this.netPokerClientController = new NetPokerClientController(this.netPokerClientView);
@@ -144,7 +145,7 @@ NetPokerClient.prototype.onConnectionConnect = function() {
 	this.netPokerClientController.setProtoConnection(this.protoConnection);
 	this.loadingScreen.show("INITIALIZING");
 
-	var initMessage=new InitMessage(this.token);
+	var initMessage = new InitMessage(this.token);
 
 	if (this.tableId)
 		initMessage.setTableId(this.tableId);
@@ -160,7 +161,7 @@ NetPokerClient.prototype.onConnectionConnect = function() {
  * @method onStateCompleteMessage
  * @private
  */
-NetPokerClient.prototype.onStateCompleteMessage=function() {
+NetPokerClient.prototype.onStateCompleteMessage = function() {
 	this.loadingScreen.hide();
 }
 

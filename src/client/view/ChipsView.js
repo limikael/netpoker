@@ -13,9 +13,11 @@ var EventDispatcher = require("../../utils/EventDispatcher");
  * A chips view.
  * @class ChipsView
  */
-function ChipsView(showToolTip) {
+function ChipsView(viewConfig, showToolTip) {
 	PIXI.DisplayObjectContainer.call(this);
 	this.targetPosition = null;
+
+	this.viewConfig = viewConfig;
 
 	this.align = Resources.getInstance().Align.Left;
 
@@ -213,7 +215,7 @@ ChipsView.prototype.animateIn = function() {
 			o.x = Resources.getInstance().getPoint("potPosition").x + this.width / 2;
 	}
 
-	var time = 500;
+	var time = this.viewConfig.scaleAnimationTime(500);
 	var tween = new TWEEN.Tween(this)
 		.to({
 			y: Resources.getInstance().getPoint("potPosition").y,
@@ -259,7 +261,7 @@ ChipsView.prototype.animateOut = function() {
 		y: this.targetPosition.y
 	};
 
-	var time = 500;
+	var time = this.viewConfig.scaleAnimationTime(500);
 	var tween = new TWEEN.Tween(this)
 		.to(o, time)
 		.onComplete(this.onOutAnimationComplete.bind(this))

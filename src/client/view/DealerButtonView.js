@@ -13,9 +13,10 @@ var EventDispatcher = require("../../utils/EventDispatcher");
  * Dialog view.
  * @class DealerButtonView
  */
-function DealerButtonView() {
+function DealerButtonView(viewConfig) {
 	PIXI.DisplayObjectContainer.call(this);
 
+	this.viewConfig = viewConfig;
 
 	var dealerButtonTexture = Resources.getInstance().getTexture("dealerButton");
 	this.sprite = new PIXI.Sprite(dealerButtonTexture);
@@ -56,7 +57,7 @@ DealerButtonView.prototype.animateToSeatIndex = function(seatIndex) {
 		.to({
 			x: destination.x,
 			y: destination.y
-		}, 5 * diff)
+		}, this.viewConfig.scaleAnimationTime(5 * diff))
 		.easing(TWEEN.Easing.Quadratic.Out)
 		.onComplete(this.onShowComplete.bind(this))
 		.start();
