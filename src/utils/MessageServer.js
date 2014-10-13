@@ -79,8 +79,10 @@ MessageServer.prototype.setSecurity = function(key, cert) {}
  * Start listening for connections.
  * @method listen
  */
-MessageServer.prototype.listen = function(port) {
-	this.server.listen(port);
+MessageServer.prototype.listen = function(port, bindAddr) {
+	console.log("Starting message server, port=" + port + ", bound to " + bindAddr);
+
+	this.server.listen(port, bindAddr);
 }
 
 /**

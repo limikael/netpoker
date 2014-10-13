@@ -11,13 +11,14 @@ function usage() {
 	console.log("");
 	console.log("Options:");
 	console.log("");
-	console.log("  --clientPort <port>  Port where to listen for incoming connections.");
-	console.log("  --backend <url>      Which backend to connect to.");
-	console.log("  --mock               Start a mocked server without backend.");
-	console.log("  --apiPort <port>     Port where to listen to api requests.");
-	console.log("  --apiOnClientPort    Allow api requests on the main client port.");
-	console.log("  --apiKey <key>       Require this key for api requests.");
-	console.log("  --config <file.yml>  Load config from yaml file.");
+	console.log("  --clientPort <port>      Port where to listen for incoming connections.");
+	console.log("  --clientBindAddr <port>  Bind to this address when accepting client connectins.");
+	console.log("  --backend <url>          Which backend to connect to.");
+	console.log("  --mock                   Start a mocked server without backend.");
+	console.log("  --apiPort <port>         Port where to listen to api requests.");
+	console.log("  --apiOnClientPort        Allow api requests on the main client port.");
+	console.log("  --apiKey <key>           Require this key for api requests.");
+	console.log("  --config <file.yml>      Load config from yaml file.");
 	console.log("");
 
 	process.exit(1);

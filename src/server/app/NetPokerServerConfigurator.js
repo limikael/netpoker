@@ -34,6 +34,10 @@ NetPokerServerConfigurator.prototype.applySetting = function(name, value) {
 			this.netPokerServer.setClientPort(value);
 			break;
 
+		case "clientBindAddr":
+			this.netPokerServer.setClientBindAddr(value);
+			break;
+
 		case "apiPort":
 			this.netPokerServer.setApiPort(value);
 			break;

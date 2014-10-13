@@ -104,11 +104,11 @@ ConnectionManager.prototype.isListening = function() {
  * Start listening for connections.
  * @method listen
  */
-ConnectionManager.prototype.listen = function(port) {
+ConnectionManager.prototype.listen = function(port, bindAddr) {
 	this.messageServer = new MessageServer();
 	this.messageServer.on(MessageServer.CONNECTION, this.onMessageServerConnection, this);
 	this.messageServer.on("request", this.onMessageServerRequest, this);
-	this.messageServer.listen(port);
+	this.messageServer.listen(port, bindAddr);
 }
 
 /**

@@ -27,6 +27,7 @@ function NetPokerServer() {
 	EventDispatcher.call(this);
 
 	this.clientPort = null;
+	this.clientBindAddr = null;
 	this.connectionManager = new ConnectionManager(this);
 	this.cashGameManager = null;
 	this.backend = null;
@@ -51,6 +52,14 @@ NetPokerServer.STARTED = "started";
  */
 NetPokerServer.prototype.setClientPort = function(port) {
 	this.clientPort = port;
+}
+
+/**
+ * Set address to bind to for client connections.
+ * @method setClientBindAddr
+ */
+NetPokerServer.prototype.setClientBindAddr = function(addr) {
+	this.clientBindAddr = addr;
 }
 
 /**
@@ -160,7 +169,9 @@ NetPokerServer.prototype.onCashGameManagerInitialized = function() {
  * @method listen.
  */
 NetPokerServer.prototype.listen = function() {
-	this.connectionManager.listen(this.clientPort);
+	console.log("listening to bind addr: " + this.clientBindAddr);
+
+	this.connectionManager.listen(this.clientPort, this.clientBindAddr);
 }
 
 /**
@@ -216,7 +227,7 @@ NetPokerServer.prototype.run = function() {
 		throw new Error("No port to listen to.");
 
 	if (this.clientPort && !this.connectionManager.isListening())
-		this.connectionManager.listen(this.clientPort);
+		this.listen();
 
 	if (this.apiPort)
 		this.serverApi.listen(this.apiPort);
