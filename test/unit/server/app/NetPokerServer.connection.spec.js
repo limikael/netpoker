@@ -66,7 +66,7 @@ describe("NetPokerServer - connection", function() {
 	it("routes table connections to the right table", function(done) {
 		var netPokerServer = new NetPokerServer();
 		netPokerServer.setBackend(mockBackend);
-		netPokerServer.setListenPort(2004);
+		netPokerServer.setClientPort(2004);
 		netPokerServer.on(NetPokerServer.STARTED, function() {
 			var bot = new BotConnection("http://localhost:2004", "token");
 			bot.connectToTable(123);
@@ -86,7 +86,7 @@ describe("NetPokerServer - connection", function() {
 	it("lets a user join a table and removes on disconnect", function(done) {
 		var netPokerServer = new NetPokerServer();
 		netPokerServer.setBackend(mockBackend);
-		netPokerServer.setListenPort(2004);
+		netPokerServer.setClientPort(2004);
 
 		var bot;
 		var table;
@@ -146,7 +146,7 @@ describe("NetPokerServer - connection", function() {
 	it("doesn't let the user join with too little balance", function(done) {
 		var netPokerServer = new NetPokerServer();
 		netPokerServer.setBackend(mockBackend);
-		netPokerServer.setListenPort(2004);
+		netPokerServer.setClientPort(2004);
 
 		var bot;
 		var table;

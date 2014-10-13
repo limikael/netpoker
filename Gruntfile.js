@@ -71,7 +71,7 @@ module.exports = function(grunt) {
 	grunt.registerTask("mockserver", function() {
 		var done = this.async();
 		var job = qsub("node").arg("src/server/netpokerserver.js");
-		job.arg("--mock", "--clientport", "2222");
+		job.arg("--mock", "--clientPort", "2222");
 		job.show().expect(0);
 		job.run().then(done);
 	});

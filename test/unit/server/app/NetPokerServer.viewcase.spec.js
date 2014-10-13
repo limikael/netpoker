@@ -48,7 +48,7 @@ describe("NetPokerServer - viewcase", function() {
 		AsyncSequence.run(
 			function(next) {
 				netPokerServer.setBackend(mockBackend);
-				netPokerServer.setListenPort(2004);
+				netPokerServer.setClientPort(2004);
 				netPokerServer.serveViewCases(__dirname + "/../../../../res/viewcases");
 				netPokerServer.run().then(next);
 			},

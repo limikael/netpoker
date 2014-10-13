@@ -22,7 +22,7 @@ var Backend = require("../backend/Backend");
 function NetPokerServer() {
 	EventDispatcher.call(this);
 
-	this.listenPort = null;
+	this.clientPort = null;
 	this.connectionManager = new ConnectionManager(this);
 	this.cashGameManager = null;
 	this.backend = null;
@@ -38,10 +38,10 @@ NetPokerServer.STARTED = "started";
 
 /**
  * Set port to tisten to.
- * @method setListenPort
+ * @method setClientPort
  */
-NetPokerServer.prototype.setListenPort = function(port) {
-	this.listenPort = port;
+NetPokerServer.prototype.setClientPort = function(port) {
+	this.clientPort = port;
 }
 
 /**
@@ -148,7 +148,7 @@ NetPokerServer.prototype.onCashGameManagerInitialized = function() {
  * @method listen.
  */
 NetPokerServer.prototype.listen = function() {
-	this.connectionManager.listen(this.listenPort);
+	this.connectionManager.listen(this.clientPort);
 }
 
 /**
@@ -162,11 +162,11 @@ NetPokerServer.prototype.run = function() {
 	if (!this.backend)
 		throw new Error("No backend");
 
-	if (!this.listenPort && !this.mockNetwork)
+	if (!this.clientPort && !this.mockNetwork)
 		throw new Error("No port to listen to.");
 
-	if (this.listenPort && !this.connectionManager.isListening())
-		this.connectionManager.listen(this.listenPort);
+	if (this.clientPort && !this.connectionManager.isListening())
+		this.connectionManager.listen(this.clientPort);
 
 	this.runThenable = new Thenable();
 

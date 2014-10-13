@@ -12,9 +12,12 @@ function usage() {
 	console.log("");
 	console.log("Options:");
 	console.log("");
-	console.log("  --clientport <port>  Port where to listen for incoming connections.");
+	console.log("  --clientPort <port>  Port where to listen for incoming connections.");
 	console.log("  --backend <url>      Which backend to connect to.");
 	console.log("  --mock               Start a mocked server without backend.");
+	console.log("  --apiPort <port>     Port where to listen to api requests.");
+	console.log("  --apiOnClientPort    Allow api requests on the main client port.");
+	console.log("  --apiKey <key>       Require this key for api requests.")
 	console.log("");
 
 	process.exit(1);
@@ -34,13 +37,13 @@ if (args["backend"]) {
 	usage();
 }
 
-if (!args["clientport"])
+if (!args["clientPort"])
 	usage();
 
-netPokerServer.setListenPort(args["clientport"]);
+netPokerServer.setClientPort(args["clientPort"]);
 
 netPokerServer.run().then(
 	function() {
-		console.log("==== SERVER LISTENING ON PORT: " + args["clientport"] + " ====");
+		console.log("==== SERVER LISTENING ON PORT: " + args["clientPort"] + " ====");
 	}
 );
