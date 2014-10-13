@@ -9,6 +9,7 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var Thenable = require("../../utils/Thenable");
 var Backend = require("../backend/Backend");
+var ServerApi = require("../api/ServerApi");
 
 /**
  * This is the main class for the server. The 'netpokerserver' command is pretty much a wrapper
@@ -30,6 +31,11 @@ function NetPokerServer() {
 	this.mockNetwork = false;
 	this.fixedDeck = null;
 	this.webRequestHandler = null;
+
+	this.serverApi = new ServerApi(this);
+
+	this.apiPort = null;
+	this.apiOnClientPort = false;
 }
 
 FunctionUtil.extend(NetPokerServer, EventDispatcher);
@@ -94,8 +100,11 @@ NetPokerServer.prototype.onConnectionManagerConnection = function(e) {
  * @private
  */
 NetPokerServer.prototype.onConnectionManagerRequest = function(e) {
-	if (this.webRequestHandler)
+	if (this.apiOnClientPort && this.serverApi.canHandleRequest(e.request)) {
+		this.serverApi.handleRequest(e.request, e.response);
+	} else if (this.webRequestHandler) {
 		this.webRequestHandler.handleWebRequest(e);
+	}
 }
 
 /**
@@ -152,6 +161,30 @@ NetPokerServer.prototype.listen = function() {
 }
 
 /**
+ * Set api port.
+ * @method setApiPort
+ */
+NetPokerServer.prototype.setApiPort = function(apiPort) {
+	this.apiPort = apiPort;
+}
+
+/**
+ * Api on client port.
+ * @method setApiOnClientPort
+ */
+NetPokerServer.prototype.setApiOnClientPort = function(value) {
+	this.apiOnClientPort = value;
+}
+
+/**
+ * Set api key.
+ * @method setApiKey
+ */
+NetPokerServer.prototype.setApiKey = function(key) {
+	this.serverApi.setApiKey(key);
+}
+
+/**
  * Start up the server. The server will not be usable immideatly when this function returns,
  * since it needs to ask the backend for the current list of tables. This function returns
  * a promise that will fulfill as the startup sequence is complete.
@@ -167,6 +200,9 @@ NetPokerServer.prototype.run = function() {
 
 	if (this.clientPort && !this.connectionManager.isListening())
 		this.connectionManager.listen(this.clientPort);
+
+	if (this.apiPort)
+		this.serverApi.listen(this.apiPort);
 
 	this.runThenable = new Thenable();
 
@@ -187,8 +223,8 @@ NetPokerServer.prototype.run = function() {
  */
 NetPokerServer.prototype.close = function() {
 	this.connectionManager.close();
-
 	this.cashGameManager.close();
+	this.serverApi.close();
 }
 
 /**

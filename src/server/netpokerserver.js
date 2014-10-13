@@ -17,7 +17,8 @@ function usage() {
 	console.log("  --mock               Start a mocked server without backend.");
 	console.log("  --apiPort <port>     Port where to listen to api requests.");
 	console.log("  --apiOnClientPort    Allow api requests on the main client port.");
-	console.log("  --apiKey <key>       Require this key for api requests.")
+	console.log("  --apiKey <key>       Require this key for api requests.");
+	//console.log("  --config <file.yml>  Load config from yaml file.");
 	console.log("");
 
 	process.exit(1);
@@ -26,6 +27,9 @@ function usage() {
 var args = minimist(process.argv.slice(2));
 
 var netPokerServer = new NetPokerServer();
+
+/*NetPokerServerCommandLine.parseArgs(args, netPokerServer);
+NetPokerServerCommandLine.loadConfigFile(args, netPokerServer);*/
 
 if (args["backend"]) {
 	netPokerServer.setBackend(args["backend"]);
@@ -41,6 +45,15 @@ if (!args["clientPort"])
 	usage();
 
 netPokerServer.setClientPort(args["clientPort"]);
+
+if (args.apiPort)
+	netPokerServer.setApiPort(args.apiPort);
+
+if (args.apiKey)
+	netPokerServer.setApiKey(args.apiKey);
+
+if (args.apiOnClientPort)
+	netPokerServer.setApiOnClientPort(true);
 
 netPokerServer.run().then(
 	function() {
