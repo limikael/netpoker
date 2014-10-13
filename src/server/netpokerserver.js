@@ -25,7 +25,7 @@ var args = minimist(process.argv.slice(2));
 var netPokerServer = new NetPokerServer();
 
 if (args["backend"]) {
-	netPokerServer.setBackendUrl(args["backend"]);
+	netPokerServer.setBackend(args["backend"]);
 } else if (args["mock"]) {
 	netPokerServer.serveViewCases(__dirname + "/../../res/viewcases");
 	netPokerServer.setBackend(new MockBackendServer());

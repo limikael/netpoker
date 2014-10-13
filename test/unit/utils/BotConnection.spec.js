@@ -21,7 +21,7 @@ describe("BotConnection", function() {
 		mockBackendServer.start();
 
 		netPokerServer = new PipeNetPokerServer();
-		netPokerServer.setBackendUrl("http://localhost:9999");
+		netPokerServer.setBackend("http://localhost:9999");
 		netPokerServer.run().then(done);
 	});
 

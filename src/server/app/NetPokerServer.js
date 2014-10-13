@@ -103,15 +103,14 @@ NetPokerServer.prototype.onConnectionManagerRequest = function(e) {
  * @method setBackend
  */
 NetPokerServer.prototype.setBackend = function(backend) {
-	this.backend = backend;
-}
+	if (typeof backend == "string")
+		this.backend = new Backend(backend);
 
-/**
- * Set backend url.
- * @method setBackendUrl
- */
-NetPokerServer.prototype.setBackendUrl = function(url) {
-	this.setBackend(new Backend(url));
+	else if (backend && typeof backend == "object")
+		this.backend = backend;
+
+	else
+		throw new Error("expected backend url or backend instance");
 }
 
 /**
