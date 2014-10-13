@@ -11,6 +11,8 @@ var Thenable = require("../../utils/Thenable");
 var Backend = require("../backend/Backend");
 var ServerApi = require("../api/ServerApi");
 var NetPokerServerConfigurator = require("./NetPokerServerConfigurator");
+var MockBackendServer = require("../mock/MockBackendServer");
+var MockWebRequestHandler = require("../mock/MockWebRequestHandler");
 
 /**
  * This is the main class for the server. The 'netpokerserver' command is pretty much a wrapper
@@ -265,6 +267,16 @@ NetPokerServer.prototype.getClientPort = function() {
 NetPokerServer.prototype.loadConfigFile = function(fileName) {
 	var configurator = new NetPokerServerConfigurator(this);
 	configurator.loadConfigFile(fileName);
+}
+
+/**
+ * Use mock.
+ * @method useMock
+ */
+NetPokerServer.prototype.useMock = function() {
+	this.serveViewCases(__dirname + "/../../res/viewcases");
+	this.setBackend(new MockBackendServer());
+	this.setWebRequestHandler(new MockWebRequestHandler());
 }
 
 module.exports = NetPokerServer;

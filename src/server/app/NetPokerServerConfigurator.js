@@ -1,5 +1,8 @@
-var MockBackendServer = require("../mock/MockBackendServer");
-var MockWebRequestHandler = require("../mock/MockWebRequestHandler");
+/**
+ * Server.
+ * @module server
+ */
+
 var yaml = require("js-yaml");
 var fs = require("fs");
 
@@ -23,11 +26,8 @@ NetPokerServerConfigurator.prototype.applySetting = function(name, value) {
 			break;
 
 		case "mock":
-			if (value) {
-				this.netPokerServer.serveViewCases(__dirname + "/../../res/viewcases");
-				this.netPokerServer.setBackend(new MockBackendServer());
-				this.netPokerServer.setWebRequestHandler(new MockWebRequestHandler());
-			}
+			if (value)
+				this.netPokerServer.useMock();
 			break;
 
 		case "clientPort":
