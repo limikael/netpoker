@@ -13,6 +13,9 @@ var querystring = require("querystring");
 
 /**
  * Server that manages connections where each message is a JSON document.
+ * This class also serves as a web server, and there are two different
+ * events that are dispatched depending on if the request is a web request
+ * or a web socket request.
  * @class MessageServer
  */
 function MessageServer() {
@@ -27,6 +30,7 @@ function MessageServer() {
 FunctionUtil.extend(MessageServer, EventDispatcher);
 
 MessageServer.CONNECTION = "connection";
+MessageServer.REQUEST = "request";
 
 /**
  * Handle server upgrade messages.
@@ -59,7 +63,7 @@ MessageServer.prototype.onServerUpgrade = function(request, socket, body) {
  */
 MessageServer.prototype.onServerRequest = function(request, response) {
 	this.trigger({
-		type: "request",
+		type: MessageServer.REQUEST,
 		request: request,
 		response: response
 	});
