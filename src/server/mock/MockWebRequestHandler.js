@@ -24,6 +24,8 @@ MockWebRequestHandler.prototype.handleWebRequest = function(e) {
 
 	var fileName = __dirname + "/../../../res/mocksite/" + path;
 
+	e.response.setHeader("Content-Type", "text/html");
+
 	if (path == "/") {
 		var caseListContent = "";
 		var dir = fs.readdirSync(__dirname + "/../../../res/viewcases");

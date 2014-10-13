@@ -169,8 +169,6 @@ NetPokerServer.prototype.onCashGameManagerInitialized = function() {
  * @method listen.
  */
 NetPokerServer.prototype.listen = function() {
-	console.log("listening to bind addr: " + this.clientBindAddr);
-
 	this.connectionManager.listen(this.clientPort, this.clientBindAddr);
 }
 
