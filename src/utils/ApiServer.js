@@ -1,3 +1,8 @@
+/**
+ * Utilities.
+ * @module utils
+ */
+
 var http = require("http");
 var url = require("url");
 
