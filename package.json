@@ -41,5 +41,6 @@
   },
   "bin": {
     "netpokerserver": "./src/server/netpokerserver.js"
-  }
+  },
+  "main": "src/netpoker.js"
 }
