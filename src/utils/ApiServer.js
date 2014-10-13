@@ -13,14 +13,28 @@ var url = require("url");
  */
 function ApiServer() {
 	this.handlers = {};
+
+	this.requiredParam = null;
+	this.requiredValue = null;
 }
 
 /**
- * Register handler.
+ * Register handler for a method.
  * @method registerHandler
+ * @param {String} func The name of the method to handle.
+ * @param {Funtion} handler The function that should handle the method.
  */
 ApiServer.prototype.registerHandler = function(func, handler) {
 	this.handlers[func] = handler;
+}
+
+/**
+ * Set authentication param and value
+ * @method setAuthentication.
+ */
+ApiServer.prototype.setAuthentication = function(requiredParam, requiredValue) {
+	this.requiredParam = requiredParam;
+	this.requiredValue = requiredValue;
 }
 
 /**
@@ -78,20 +92,25 @@ ApiServer.prototype.handleWebRequest = function(request, response) {
 		response.statusCode = 404;
 		response.write(JSON.stringify("No such method."));
 	} else {
-		try {
-			var result = this.handleMethod(method, urlParts.query);
-			response.write(JSON.stringify(result));
-		} catch (e) {
-			var message;
+		if (this.requiredParam && urlParts.query[this.requiredParam] != this.requiredValue) {
+			response.statusCode = 401;
+			response.write(JSON.stringify("Unauthorized."));
+		} else {
+			try {
+				var result = this.handleMethod(method, urlParts.query);
+				response.write(JSON.stringify(result));
+			} catch (e) {
+				var message;
 
-			if (e instanceof Error)
-				message = e.message;
+				if (e instanceof Error)
+					message = e.message;
 
-			else
-				message = e.toString();
+				else
+					message = e.toString();
 
-			response.statusCode = 500;
-			response.write(JSON.stringify(message));
+				response.statusCode = 500;
+				response.write(JSON.stringify(message));
+			}
 		}
 	}
 

@@ -52,4 +52,22 @@ describe("ApiServer", function() {
 			done();
 		});
 	});
+
+	it("can require a key", function(done) {
+		var apiServer = new ApiServer();
+		apiServer.listen(9999);
+
+		apiServer.registerHandler("testf", function() {
+			return "hello";
+		});
+
+		apiServer.setAuthentication("key", "test");
+
+		request("http://localhost:9999/testf", function(error, response, body) {
+			expect(response.statusCode).toEqual(401);
+			expect(JSON.parse(body)).toEqual("Unauthorized.");
+			apiServer.close();
+			done();
+		});
+	});
 });
