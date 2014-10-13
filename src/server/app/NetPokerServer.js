@@ -10,6 +10,7 @@ var EventDispatcher = require("../../utils/EventDispatcher");
 var Thenable = require("../../utils/Thenable");
 var Backend = require("../backend/Backend");
 var ServerApi = require("../api/ServerApi");
+var NetPokerServerConfigurator = require("./NetPokerServerConfigurator");
 
 /**
  * This is the main class for the server. The 'netpokerserver' command is pretty much a wrapper
@@ -185,6 +186,20 @@ NetPokerServer.prototype.setApiKey = function(key) {
 }
 
 /**
+ * Do we have all settings required to start?
+ * @method canStart
+ */
+NetPokerServer.prototype.canStart = function() {
+	if (!this.clientPort && !this.mockNetwork)
+		return false;
+
+	if (!this.backend)
+		return false;
+
+	return true;
+}
+
+/**
  * Start up the server. The server will not be usable immideatly when this function returns,
  * since it needs to ask the backend for the current list of tables. This function returns
  * a promise that will fulfill as the startup sequence is complete.
@@ -233,6 +248,23 @@ NetPokerServer.prototype.close = function() {
  */
 NetPokerServer.prototype.setWebRequestHandler = function(webRequestHandler) {
 	this.webRequestHandler = webRequestHandler;
+}
+
+/**
+ * Get client port.
+ * @method getClientPort
+ */
+NetPokerServer.prototype.getClientPort = function() {
+	return this.clientPort;
+}
+
+/**
+ * Load config file
+ * @method loadConfigFile
+ */
+NetPokerServer.prototype.loadConfigFile = function(fileName) {
+	var configurator = new NetPokerServerConfigurator(this);
+	configurator.loadConfigFile(fileName);
 }
 
 module.exports = NetPokerServer;

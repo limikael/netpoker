@@ -1,0 +1,3 @@
+clientPort: 2222
+mock: true
+apiOnClientPort: true

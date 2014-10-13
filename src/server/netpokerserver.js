@@ -2,8 +2,7 @@
 
 var minimist = require("minimist");
 var NetPokerServer = require("./app/NetPokerServer");
-var MockBackendServer = require("./mock/MockBackendServer");
-var MockWebRequestHandler = require("./mock/MockWebRequestHandler");
+var NetPokerServerConfigurator = require("./app/NetPokerServerConfigurator");
 
 function usage() {
 	console.log("Usage: netpokerserver <options>");
@@ -18,7 +17,7 @@ function usage() {
 	console.log("  --apiPort <port>     Port where to listen to api requests.");
 	console.log("  --apiOnClientPort    Allow api requests on the main client port.");
 	console.log("  --apiKey <key>       Require this key for api requests.");
-	//console.log("  --config <file.yml>  Load config from yaml file.");
+	console.log("  --config <file.yml>  Load config from yaml file.");
 	console.log("");
 
 	process.exit(1);
@@ -27,36 +26,14 @@ function usage() {
 var args = minimist(process.argv.slice(2));
 
 var netPokerServer = new NetPokerServer();
+var configurator = new NetPokerServerConfigurator(netPokerServer);
+configurator.applySettings(args);
 
-/*NetPokerServerCommandLine.parseArgs(args, netPokerServer);
-NetPokerServerCommandLine.loadConfigFile(args, netPokerServer);*/
-
-if (args["backend"]) {
-	netPokerServer.setBackend(args["backend"]);
-} else if (args["mock"]) {
-	netPokerServer.serveViewCases(__dirname + "/../../res/viewcases");
-	netPokerServer.setBackend(new MockBackendServer());
-	netPokerServer.setWebRequestHandler(new MockWebRequestHandler());
-} else {
+if (!netPokerServer.canStart())
 	usage();
-}
-
-if (!args["clientPort"])
-	usage();
-
-netPokerServer.setClientPort(args["clientPort"]);
-
-if (args.apiPort)
-	netPokerServer.setApiPort(args.apiPort);
-
-if (args.apiKey)
-	netPokerServer.setApiKey(args.apiKey);
-
-if (args.apiOnClientPort)
-	netPokerServer.setApiOnClientPort(true);
 
 netPokerServer.run().then(
 	function() {
-		console.log("==== SERVER LISTENING ON PORT: " + args["clientPort"] + " ====");
+		console.log("* SERVER LISTENING TO: " + netPokerServer.getClientPort());
 	}
 );
