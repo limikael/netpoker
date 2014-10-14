@@ -139,7 +139,7 @@ MockBackendServer.prototype.call = function(method, params) {
 		thenable.reject();
 
 	return thenable;
-};
+}
 
 /**
  * So that it quacks the same as Backend.
