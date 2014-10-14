@@ -11,6 +11,7 @@ var BackendCall = require("./BackendCall");
  */
 function Backend(baseUrl) {
 	this.baseUrl = baseUrl;
+	this.key = null;
 }
 
 Backend.GET_USER_INFO_BY_TOKEN = "getUserInfoByToken";
@@ -29,10 +30,24 @@ Backend.prototype.setBaseUrl = function(baseUrl) {
 }
 
 /**
+ * Set key to send along with every request.
+ * @method setKey
+ */
+Backend.prototype.setKey = function(key) {
+	this.key = key;
+}
+
+/**
  * Call a backend method.
  * @method call
  */
 Backend.prototype.call = function(method, params) {
+	if (!params)
+		params={};
+
+	if (this.key)
+		params.key=this.key;
+
 	var backendCall = new BackendCall(this.baseUrl + "/" + method, params);
 
 	return backendCall.perform();

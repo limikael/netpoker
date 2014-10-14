@@ -1,5 +1,7 @@
 var MockBackendServer = require("../../../../src/server/mock/MockBackendServer");
 var Backend = require("../../../../src/server/backend/Backend");
+var http = require("http");
+var url = require("url");
 
 describe("Backend", function() {
 	it("works", function(done) {
@@ -23,6 +25,35 @@ describe("Backend", function() {
 				mockBackendServer.close();
 				done();
 			});
+	});
+
+	it("sends a key", function(done) {
+		var server = http.createServer();
+		server.listen(2345);
+
+		server.on("request", function(request, response) {
+			console.log("*************** REQUEST");
+
+			var urlParts = url.parse(request.url, true);
+			var query = urlParts.query;
+
+			expect(query).toEqual({
+				param: "hello",
+				key: "123"
+			});
+
+			response.end();
+			server.close();
+			done();
+		});
+
+		var backend = new Backend();
+		backend.setBaseUrl("http://localhost:2345");
+		backend.setKey("123");
+
+		backend.call("test", {
+			param: "hello"
+		});
 	});
 
 	it("handles errors gracefully", function(done) {
