@@ -12,6 +12,7 @@ var CommunityCardsMessage = require("../../proto/messages/CommunityCardsMessage"
 var PocketCardsMessage = require("../../proto/messages/PocketCardsMessage");
 var ArrayUtil = require("../../utils/ArrayUtil");
 var AskBlindState = require("./AskBlindState");
+var Backend = require("../backend/Backend");
 var ArrayUtil = require("../../utils/ArrayUtil");
 
 /**
@@ -87,7 +88,7 @@ Game.prototype.onStartCallComplete = function(result) {
 		ArrayUtil.shuffle(this.deck);
 	}
 
-	console.log("table: "+this.table);
+	console.log("table: " + this.table);
 	this.send(this.table.getHandInfoMessage());
 
 	this.setGameState(new AskBlindState());
@@ -155,7 +156,41 @@ Game.prototype.setGameState = function(gameState) {
  * @method notifyFinished
  */
 Game.prototype.notifyFinished = function() {
+	console.log("game finished: " + this.id);
+
+	var params = {
+		gameId: this.id,
+		state: this.table.getLogState(),
+		rake: this.rake
+	};
+
 	this.gameState = null;
+
+	var backend = this.table.getServices().getBackend();
+
+	backend.call(Backend.FINISH_GAME, params).then(
+		this.onFinishCallComplete.bind(this),
+		this.onFinishCallError.bind(this)
+	);
+}
+
+/**
+ * Finish game call complete.
+ * @method onFinishCallComplete
+ * @private
+ */
+Game.prototype.onFinishCallComplete=function() {
+	console.log("*********** finish call complete...");
+	this.trigger(Game.FINISHED);
+}
+
+/**
+ * Finish game call complete.
+ * @method onFinishCallComplete
+ * @private
+ */
+Game.prototype.onFinishCallError=function() {
+	console.log("********* WARNING: finish game call failed");
 	this.trigger(Game.FINISHED);
 }
 

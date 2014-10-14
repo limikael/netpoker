@@ -194,4 +194,29 @@ BaseTable.prototype.send = function(m) {
 	throw "abstract";
 }
 
+/**
+ * Get string for logging.
+ * @method getLogState
+ */
+BaseTable.prototype.getLogState = function() {
+	var o = {};
+
+	o.seats=[];
+
+	for (var s = 0; s < this.tableSeats.length; s++) {
+		var tableSeat = this.tableSeats[s];
+
+		if (tableSeat.getUser()) {
+			var d = {
+				seatIndex: tableSeat.getSeatIndex(),
+				userName: tableSeat.getUser().getName(),
+				chips: tableSeat.getChips()
+			};
+			o.seats.push(d);
+		}
+	}
+
+	return JSON.stringify(o);
+}
+
 module.exports = BaseTable;

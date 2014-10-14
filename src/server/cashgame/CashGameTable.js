@@ -413,7 +413,7 @@ CashGameTable.prototype.toString = function() {
  * @method stop
  */
 CashGameTable.prototype.close = function() {
-	console.log("------------ hard close table, game=" + this.currentGame);
+	//console.log("------------ hard close table, game=" + this.currentGame);
 	if (this.currentGame) {
 		this.currentGame.close();
 		this.currentGame = null;

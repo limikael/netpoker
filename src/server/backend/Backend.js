@@ -20,6 +20,7 @@ Backend.GET_USER_BALANCE = "getUserBalance";
 Backend.SIT_IN = "cashGameUserJoin";
 Backend.SIT_OUT = "cahsGameUserLeave";
 Backend.START_CASH_GAME = "gameStartForCashGame";
+Backend.FINISH_GAME = "gameFinish";
 
 /**
  * Set base url.
@@ -42,6 +43,9 @@ Backend.prototype.setKey = function(key) {
  * @method call
  */
 Backend.prototype.call = function(method, params) {
+	if (!method)
+		throw new Error("method missing for backend call!");
+
 	if (!params)
 		params={};
 
