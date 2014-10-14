@@ -61,7 +61,7 @@ describe("CashGameManager", function() {
 
 		cashGameManager.initialize();
 
-		expect(mockBackend.call).toHaveBeenCalledWith("table/getList");
+		expect(mockBackend.call).toHaveBeenCalledWith("getCashGameTableList");
 	});
 
 	it("can find a table by id", function(done) {

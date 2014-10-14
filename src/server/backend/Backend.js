@@ -13,12 +13,12 @@ function Backend(baseUrl) {
 	this.baseUrl = baseUrl;
 }
 
-Backend.GET_USER_INFO_BY_TOKEN = "user/getInfoByToken";
-Backend.GET_TABLE_LIST = "table/getList";
-Backend.GET_USER_BALANCE = "user/getBalance";
-Backend.SIT_IN = "table/sitIn";
-Backend.SIT_OUT = "table/sitOut";
-Backend.START_CASH_GAME = "game/startForTable";
+Backend.GET_USER_INFO_BY_TOKEN = "getUserInfoByToken";
+Backend.GET_CASHGAME_TABLE_LIST = "getCashGameTableList";
+Backend.GET_USER_BALANCE = "getUserBalance";
+Backend.SIT_IN = "cashGameUserJoin";
+Backend.SIT_OUT = "cahsGameUserLeave";
+Backend.START_CASH_GAME = "gameStartForCashGame";
 
 /**
  * Set base url.

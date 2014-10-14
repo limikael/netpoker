@@ -17,7 +17,7 @@ describe("NetPokerServer - viewcase", function() {
 			var thenable = new Thenable();
 
 			switch (method) {
-				case Backend.GET_TABLE_LIST:
+				case Backend.GET_CASHGAME_TABLE_LIST:
 					thenable.notifySuccess({
 						tables: [{
 							id: 123,

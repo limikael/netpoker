@@ -55,7 +55,7 @@ MockBackendServer.prototype.handleMethod = function(method, params) {
 					};
 			}
 
-		case Backend.GET_TABLE_LIST:
+		case Backend.GET_CASHGAME_TABLE_LIST:
 			return {
 				"tables": [{
 					id: 123,

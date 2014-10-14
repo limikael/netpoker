@@ -30,7 +30,7 @@ describe("CashGameTable", function() {
 	it("has a parent id that is the same as the id", function() {
 		var t = new CashGameTable(mockServices, config);
 		expect(t.getStartGameParentId()).toBe(123);
-		expect(t.getStartGameFunctionName()).toBe("game/startForTable");
+		expect(t.getStartGameFunctionName()).toBe("gameStartForCashGame");
 
 		expect(t.getServices()).not.toBe(null);
 	});

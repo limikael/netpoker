@@ -31,7 +31,7 @@ CashGameManager.INITIALIZED = "initialized";
  * @method initialize
  */
 CashGameManager.prototype.initialize = function() {
-	this.services.getBackend().call(Backend.GET_TABLE_LIST).then(
+	this.services.getBackend().call(Backend.GET_CASHGAME_TABLE_LIST).then(
 		this.onInitializeTableListSuccess.bind(this),
 		this.onInitializeTableListError.bind(this)
 	);
