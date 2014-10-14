@@ -25,6 +25,10 @@ NetPokerServerConfigurator.prototype.applySetting = function(name, value) {
 			this.netPokerServer.setBackend(value);
 			break;
 
+		case "backendKey":
+			this.netPokerServer.setBackendKey(value);
+			break;
+
 		case "mock":
 			if (value)
 				this.netPokerServer.useMock();
@@ -50,14 +54,14 @@ NetPokerServerConfigurator.prototype.applySetting = function(name, value) {
 			this.netPokerServer.setApiOnClientPort(value);
 			break;
 
+		case "config":
+			this.loadConfigFile(value);
+			break;
+
 		case "_":
 			if (value.length)
 				throw new Error("Error");
 
-			break;
-
-		case "config":
-			this.loadConfigFile(value);
 			break;
 
 		default:

@@ -31,6 +31,7 @@ function NetPokerServer() {
 	this.connectionManager = new ConnectionManager(this);
 	this.cashGameManager = null;
 	this.backend = null;
+	this.backendKey = null;
 
 	this.mockNetwork = false;
 	this.fixedDeck = null;
@@ -132,6 +133,20 @@ NetPokerServer.prototype.setBackend = function(backend) {
 
 	else
 		throw new Error("expected backend url or backend instance");
+
+	if (this.backendKey)
+		this.backend.setKey(this.backendKey);
+}
+
+/**
+ * Set backend key.
+ * @method setBackendKey
+ */
+NetPokerServer.prototype.setBackendKey = function(key) {
+	this.backendKey = key;
+
+	if (this.backend)
+		this.backend.setKey(this.backendKey);
 }
 
 /**
