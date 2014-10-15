@@ -154,10 +154,20 @@ describe("CashGameManager", function() {
 			function(next) {
 				expect(cashGameManager.tables.length).toBe(3);
 
+				var managerIdleSpy = jasmine.createSpy();
+				cashGameManager.on(CashGameManager.IDLE, managerIdleSpy);
+
 				cashGameManager.getTableById("table_888").currentGame = null;
 				cashGameManager.getTableById("table_888").trigger(CashGameTable.IDLE);
 
 				expect(cashGameManager.tables.length).toBe(2);
+				expect(managerIdleSpy).toHaveBeenCalled();
+
+				cashGameManager.stop();
+
+				expect(cashGameManager.getTableById("table_124").stopped).toBe(true);
+
+				cashGameManager.close();
 				next();
 			}
 		).then(done);

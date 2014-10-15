@@ -22,11 +22,13 @@ function CashGameManager(services) {
 	this.initializedTriggered = false;
 	this.backendCallInProgress = false;
 	this.currentRequestedIds = [];
+	this.stopping = false;
 }
 
 FunctionUtil.extend(CashGameManager, EventDispatcher);
 
 CashGameManager.INITIALIZED = "initialized";
+CashGameManager.IDLE = "idle";
 
 /**
  * Initialize.
@@ -47,6 +49,11 @@ CashGameManager.prototype.initialize = function() {
 CashGameManager.prototype.reloadTables = function() {
 	if (this.backendCallInProgress)
 		return;
+
+	if (this.stopping) {
+		console.log("stopping, won't reload tables now");
+		return;
+	}
 
 	this.services.getBackend().call(Backend.GET_CASHGAME_TABLE_LIST).then(
 		this.onTableListCallSuccess.bind(this),
@@ -151,6 +158,17 @@ CashGameManager.prototype.close = function() {
 }
 
 /**
+ * Stop.
+ * @method stop
+ */
+CashGameManager.prototype.stop = function() {
+	this.stopping = true;
+
+	for (var i = 0; i < this.tables.length; i++)
+		this.tables[i].stop();
+}
+
+/**
  * A table became idle, remove it.
  * @method onTableIdle
  * @private
@@ -166,6 +184,21 @@ CashGameManager.prototype.onTableIdle = function(e) {
 
 		ArrayUtil.remove(this.tables, table);
 	}
+
+	if (this.isIdle())
+		this.trigger(CashGameManager.IDLE);
+}
+
+/**
+ * Are we idle?
+ * @method isIdle
+ */
+CashGameManager.prototype.isIdle = function() {
+	for (var i = 0; i < this.tables.length; i++)
+		if (!this.tables[i].isIdle())
+			return false;
+
+	return true;
 }
 
 module.exports = CashGameManager;
