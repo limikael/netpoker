@@ -54,6 +54,7 @@ describe("CashGameTable", function() {
 
 		var mockConnection = new EventDispatcher();
 		mockConnection.send = jasmine.createSpy();
+		mockConnection.close = jasmine.createSpy();
 
 		var protoConnection = new ProtoConnection(mockConnection);
 		var user = new User({

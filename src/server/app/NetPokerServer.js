@@ -41,6 +41,10 @@ function NetPokerServer() {
 
 	this.apiPort = null;
 	this.apiOnClientPort = false;
+	this.stopped = false;
+
+	this.cashGameManager = new CashGameManager(this);
+	this.cashGameManager.on(CashGameManager.IDLE, this.onCashGameManagerIdle, this);
 }
 
 FunctionUtil.extend(NetPokerServer, EventDispatcher);
@@ -247,8 +251,6 @@ NetPokerServer.prototype.run = function() {
 
 	this.runThenable = new Thenable();
 
-	this.cashGameManager = new CashGameManager(this);
-
 	if (this.fixedDeck)
 		this.cashGameManager.useFixedDeck(this.fixedDeck);
 
@@ -262,8 +264,49 @@ NetPokerServer.prototype.run = function() {
  * Get cashgame manager.
  * @method getCashGameManager
  */
-NetPokerServer.prototype.getCashGameManager=function() {
+NetPokerServer.prototype.getCashGameManager = function() {
 	return this.cashGameManager;
+}
+
+/**
+ * Stop.
+ * @method stop
+ */
+NetPokerServer.prototype.stop = function() {
+	console.log("stop requested...");
+
+	this.stopped = true;
+
+	this.cashGameManager.stop();
+
+	if (this.cashGameManager.isIdle()) {
+		console.log("things are idle, we can close...");
+		this.closeAndExit();
+	}
+}
+
+/**
+ * Cash game manager idle.
+ * @method onCashGameManagerIdle
+ */
+NetPokerServer.prototype.onCashGameManagerIdle = function() {
+	if (this.stopped) {
+		console.log("stop requested, and things are idle... really stopping!")
+		this.closeAndExit();
+	}
+}
+
+/**
+ * This should actually not be needed, but for some reason some
+ * connections somewhere lingers or something.
+ * Investigate!
+ * @method closeAndExit
+ */
+NetPokerServer.prototype.closeAndExit = function() {
+	this.close();
+	setTimeout(function() {
+		process.exit(0);
+	}, 10);
 }
 
 /**

@@ -15,6 +15,7 @@ function ServerApi(netPokerServer) {
 
 	this.apiServer.registerHandler("info", this.onInfo.bind(this));
 	this.apiServer.registerHandler("reloadTables", this.onReloadTables.bind(this));
+	this.apiServer.registerHandler("stop", this.onStop.bind(this));
 }
 
 /**
@@ -33,6 +34,16 @@ ServerApi.prototype.onInfo = function(p) {
  */
 ServerApi.prototype.onReloadTables = function(p) {
 	this.netPokerServer.getCashGameManager().reloadTables();
+
+	return true;
+}
+
+/**
+ * Stop.
+ * @method onStop
+ */
+ServerApi.prototype.onStop = function() {
+	this.netPokerServer.stop();
 
 	return true;
 }

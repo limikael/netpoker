@@ -62,6 +62,8 @@ MessageServer.prototype.onServerUpgrade = function(request, socket, body) {
  * @private
  */
 MessageServer.prototype.onServerRequest = function(request, response) {
+	console.log("server request...");
+
 	this.trigger({
 		type: MessageServer.REQUEST,
 		request: request,

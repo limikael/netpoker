@@ -12,6 +12,7 @@ describe("ProtoConnection", function() {
 	it("can send a message", function() {
 		var mockConnection = new EventDispatcher();
 		mockConnection.send = jasmine.createSpy();
+		mockConnection.close = function() {};
 
 		var protoConnection = new ProtoConnection(mockConnection);
 		protoConnection.send(new InitMessage("initToken"));
@@ -26,6 +27,8 @@ describe("ProtoConnection", function() {
 
 	it("can receive a message", function(done) {
 		var mockConnection = new EventDispatcher();
+		mockConnection.close = function() {};
+
 		var protoConnection = new ProtoConnection(mockConnection);
 
 		protoConnection.addMessageHandler(InitMessage.TYPE, function(m) {
@@ -53,9 +56,10 @@ describe("ProtoConnection", function() {
 
 	it("detects close", function(done) {
 		var mockConnection = new EventDispatcher();
+		mockConnection.close = function() {};
 
 		var protoConnection = new ProtoConnection(mockConnection);
-		protoConnection.on(ProtoConnection.CLOSE,function() {
+		protoConnection.on(ProtoConnection.CLOSE, function() {
 			done();
 		});
 

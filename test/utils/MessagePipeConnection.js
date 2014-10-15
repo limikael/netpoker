@@ -45,8 +45,12 @@ MessagePipeConnection.prototype.send = function(message) {
  * Send.
  */
 MessagePipeConnection.prototype.close = function() {
-	this.otherEnd.trigger(MessagePipeConnection.CLOSE);
+	var other = this.otherEnd;
+
 	this.otherEnd = null;
+
+	if (other)
+		other.trigger(MessagePipeConnection.CLOSE);
 }
 
 /**

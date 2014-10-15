@@ -204,6 +204,7 @@ ProtoConnection.prototype.onConnectionMessage = function(ev) {
  * @private
  */
 ProtoConnection.prototype.onConnectionClose = function(ev) {
+	this.connection.close();
 	this.connection.off("message", this.onConnectionMessage, this);
 	this.connection.off("close", this.onConnectionClose, this);
 	this.connection = null;

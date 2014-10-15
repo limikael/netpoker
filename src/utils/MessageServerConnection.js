@@ -52,6 +52,9 @@ MessageServerConnection.prototype.onWebSocketMessage = function(event) {
  * @private
  */
 MessageServerConnection.prototype.onWebSocketClose = function() {
+	if (this.webSocket)
+		this.webSocket.close();
+
 	this.webSocket = null;
 
 	this.trigger(MessageServerConnection.CLOSE);
@@ -78,7 +81,9 @@ MessageServerConnection.prototype.getConnectionParameters = function() {
  * @method close
  */
 MessageServerConnection.prototype.close = function(message) {
-	this.webSocket.close();
+	if (this.webSocket)
+		this.webSocket.close();
+
 	this.webSocket = null;
 }
 
