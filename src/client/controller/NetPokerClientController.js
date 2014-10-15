@@ -103,10 +103,10 @@ NetPokerClientController.prototype.onSeatClick = function(e) {
  * On send chat message.
  * @method onViewChat
  */
-NetPokerClientController.prototype.onViewChat = function(text) {
+NetPokerClientController.prototype.onViewChat = function(e) {
 	var message = new ChatMessage();
 	message.user = "";
-	message.text = text;
+	message.text = e.text;
 
 	this.protoConnection.send(message);
 }

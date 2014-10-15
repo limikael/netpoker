@@ -349,7 +349,7 @@ NetPokerServer.prototype.loadConfigFile = function(fileName) {
  * @method useMock
  */
 NetPokerServer.prototype.useMock = function() {
-	this.serveViewCases(__dirname + "/../../res/viewcases");
+	this.serveViewCases(__dirname + "/../../../res/viewcases");
 	this.setBackend(new MockBackendServer());
 	this.setWebRequestHandler(new MockWebRequestHandler());
 }

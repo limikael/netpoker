@@ -165,7 +165,7 @@ SettingsView.prototype.onSettingsButtonClick = function(interaction_object) {
 	this.settingsMenu.visible = !this.settingsMenu.visible;
 
 	if (this.settingsMenu.visible) {
-		this.stage.mousedown = this.onStageMouseDown.bind(this);
+		this.stage.mousedown = this.stage.touchstart = this.onStageMouseDown.bind(this);
 	} else {
 		this.stage.mousedown = null;
 	}
