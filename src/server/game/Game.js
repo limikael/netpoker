@@ -179,7 +179,7 @@ Game.prototype.notifyFinished = function() {
  * @method onFinishCallComplete
  * @private
  */
-Game.prototype.onFinishCallComplete=function() {
+Game.prototype.onFinishCallComplete = function() {
 	console.log("*********** finish call complete...");
 	this.trigger(Game.FINISHED);
 }
@@ -189,7 +189,7 @@ Game.prototype.onFinishCallComplete=function() {
  * @method onFinishCallComplete
  * @private
  */
-Game.prototype.onFinishCallError=function() {
+Game.prototype.onFinishCallError = function() {
 	console.log("********* WARNING: finish game call failed");
 	this.trigger(Game.FINISHED);
 }
@@ -275,16 +275,16 @@ Game.prototype.sendExceptSeat = function(m, gameSeat) {
  * @method sendState
  */
 Game.prototype.sendState = function(protoConnection) {
+	var connectionGameSeat = this.getGameSeatByProtoConnection(protoConnection);
+
 	if (this.gameSeatPrompt != null) {
 		protoConnection.send(this.gameSeatPrompt.getCurrentTimerMessage());
 
 		if (this.gameSeatPrompt.getProtoConnection() == protoConnection) {
 			protoConnection.send(this.gameSeatPrompt.getButtonsMessage());
+		} else if (connectionGameSeat != null) {
+			connectionGameSeat.sendPresets();
 		}
-
-		/*else
-			if (connectionGameSeat != null)
-				connectionGameSeat.sendPresets();*/
 	}
 
 	for (var g = 0; g < this.gameSeats.length; g++) {
@@ -494,6 +494,26 @@ Game.prototype.isJoinComplete = function() {
 		return false;
 
 	return true;
+}
+
+/**
+ * Get the game seat that is controlled by this proto connection.
+ * @method getGameSeatByProtoConnection
+ */
+Game.prototype.getGameSeatByProtoConnection = function(protoConnection) {
+	var tableSeat = this.table.getTableSeatByProtoConnection(protoConnection);
+
+	if (!tableSeat)
+		return null;
+
+	for (var g = 0; g < this.gameSeats.length; g++) {
+		var gameSeat = this.gameSeats[g];
+
+		if (gameSeat.getTableSeat() == tableSeat)
+			return gameSeat;
+	}
+
+	return null;
 }
 
 module.exports = Game;
