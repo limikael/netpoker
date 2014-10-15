@@ -1872,10 +1872,10 @@ NetPokerClientController.prototype.onSeatClick = function(e) {
  * On send chat message.
  * @method onViewChat
  */
-NetPokerClientController.prototype.onViewChat = function(text) {
+NetPokerClientController.prototype.onViewChat = function(e) {
 	var message = new ChatMessage();
 	message.user = "";
-	message.text = text;
+	message.text = e.text;
 
 	this.protoConnection.send(message);
 }
@@ -3330,6 +3330,11 @@ function ChatView() {
 	this.mouseOverGroup.addDisplayObject(chatPlate);
 	this.mouseOverGroup.addEventListener("mouseover", this.onChatFieldMouseOver, this);
 	this.mouseOverGroup.addEventListener("mouseout", this.onChatFieldMouseOut, this);
+	this.mouseOverGroup.addEventListener("mousedown", this.onChatFieldMouseDown, this);
+	this.mouseOverGroup.addEventListener("mouseup", this.onChatFieldMouseUp, this);
+
+	chatPlate.touchstart = this.onChatFieldMouseDown.bind(this);
+
 
 	this.clear();
 }
@@ -3386,6 +3391,39 @@ ChatView.prototype.addText = function(user, text) {
 	this.slider.hide();
  }
 
+/**
+ * On mouse down
+ * @method onChatFieldMouseDown
+ */
+ChatView.prototype.onChatFieldMouseDown = function(interaction_object) {
+	interaction_object.target.touchend = interaction_object.target.touchendoutside = this.onChatFieldMouseUp.bind(this);
+	interaction_object.target.touchmove = this.onChatFieldMouseMove.bind(this);
+	this.startMousePos = interaction_object.global.y;
+	this.startPos = this.chatText.y;
+	this.slider.show();
+}
+
+/**
+ * On mouse up
+ * @method onChatFieldMouseUp
+ */
+ChatView.prototype.onChatFieldMouseUp = function(interaction_object) {
+	interaction_object.target.touchend = interaction_object.target.touchendoutside = null;
+	interaction_object.target.touchmove = null;
+	this.slider.hide();
+}
+
+/**
+ * On mouse up
+ * @method onChatFieldMouseUp
+ */
+ChatView.prototype.onChatFieldMouseMove = function(interaction_object) {
+	var pos = interaction_object.global.y;
+	var diff = pos - this.startMousePos;
+
+	this.slider.setValue((-(this.startPos + diff)) / (this.chatText.height + this.margin - this.chatMask.height));
+ 	this.onSliderChange();
+}
 
 /**
  * On key down
@@ -3393,7 +3431,7 @@ ChatView.prototype.addText = function(user, text) {
  */
  ChatView.prototype.onKeyDown = function(event) {
 	if(event.keyCode == 13) {
-		this.dispatchEvent("chat", this.inputField.text);
+		this.dispatchEvent("chat", {text: this.inputField.text});
 		
 		this.inputField.setText("");
 		
@@ -5208,7 +5246,7 @@ SettingsView.prototype.onSettingsButtonClick = function(interaction_object) {
 	this.settingsMenu.visible = !this.settingsMenu.visible;
 
 	if (this.settingsMenu.visible) {
-		this.stage.mousedown = this.onStageMouseDown.bind(this);
+		this.stage.mousedown = this.stage.touchstart = this.onStageMouseDown.bind(this);
 	} else {
 		this.stage.mousedown = null;
 	}
@@ -8167,10 +8205,10 @@ function Button(content) {
 	this.buttonMode = true;
 
 	this.mouseover = this.onMouseover.bind(this);
-	this.mouseout = this.onMouseout.bind(this);
-	this.mousedown = this.onMousedown.bind(this);
+	this.mouseout = this.touchend = this.touchendoutside = this.onMouseout.bind(this);
+	this.mousedown = this.touchstart = this.onMousedown.bind(this);
 	this.mouseup = this.onMouseup.bind(this);
-	this.click = this.onClick.bind(this);
+	this.click = this.tap = this.onClick.bind(this);
 
 	this.colorMatrixFilter = new PIXI.ColorMatrixFilter();
 	this.colorMatrixFilter.matrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
