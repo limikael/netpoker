@@ -192,17 +192,14 @@ describe("Game", function() {
 		g.addGameSeat(new GameSeat(g, 1));
 		g.addGameSeat(new GameSeat(g, 2));
 		g.addGameSeat(new GameSeat(g, 3));
-		//g.addGameSeat(new GameSeat(g, 4));
 
 		g.getGameSeatForSeatIndex(1).makeBet(10);
 		g.getGameSeatForSeatIndex(2).makeBet(10);
 		g.getGameSeatForSeatIndex(3).makeBet(8);
-		//g.getGameSeatForSeatIndex(4).makeBet(21);
 
 		g.getGameSeatForSeatIndex(1).betToPot();
 		g.getGameSeatForSeatIndex(2).betToPot();
 		g.getGameSeatForSeatIndex(3).betToPot();
-		//g.getGameSeatForSeatIndex(4).betToPot();
 
 		console.log("unfolded pot contribs:" + g.getUnfoldedPotContribs());
 		console.log("pots:" + g.getPots());
