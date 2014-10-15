@@ -61,7 +61,7 @@ CashGameBuyChipsPrompt.prototype.onGetBalanceCallComplete = function(result) {
 		return;
 	}
 
-	var balance = result.balance;
+	var balance = parseFloat(result.balance);
 	var d = new ShowDialogMessage();
 	d.setText(
 		"Welcome to " +
