@@ -52,6 +52,25 @@ BaseTable.prototype.getTableSeatBySeatIndex = function(seatIndex) {
 }
 
 /**
+ * Get the TableSeat that this protoConnection is currently controllig,
+ * if any.
+ * @method getTableSeatByConnection
+ */
+BaseTable.prototype.getTableSeatByProtoConnection = function(protoConnection) {
+	if (!protoConnection)
+		throw new Error("Can't get by null connection");
+
+	for (var i = 0; i < this.tableSeats.length; i++) {
+		var tableSeat = this.tableSeats[i];
+
+		if (tableSeat.getProtoConnection() == protoConnection)
+			return tableSeat;
+	}
+
+	return null;
+}
+
+/**
  * Get number of seats that is in game.
  * @method getNumInGame
  */
@@ -201,7 +220,7 @@ BaseTable.prototype.send = function(m) {
 BaseTable.prototype.getLogState = function() {
 	var o = {};
 
-	o.seats=[];
+	o.seats = [];
 
 	for (var s = 0; s < this.tableSeats.length; s++) {
 		var tableSeat = this.tableSeats[s];
