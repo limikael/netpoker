@@ -14,6 +14,7 @@ function ServerApi(netPokerServer) {
 	this.apiServer = new ApiServer();
 
 	this.apiServer.registerHandler("info", this.onInfo.bind(this));
+	this.apiServer.registerHandler("reloadTables", this.onReloadTables.bind(this));
 }
 
 /**
@@ -24,6 +25,16 @@ ServerApi.prototype.onInfo = function(p) {
 	return {
 		state: "running"
 	};
+}
+
+/**
+ * Reload table data..
+ * @method onInfo
+ */
+ServerApi.prototype.onReloadTables = function(p) {
+	this.netPokerServer.getCashGameManager().reloadTables();
+
+	return true;
 }
 
 /**

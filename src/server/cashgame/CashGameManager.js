@@ -55,6 +55,8 @@ CashGameManager.prototype.reloadTables = function() {
 		return;
 	}
 
+	console.log("reloading tables");
+
 	this.services.getBackend().call(Backend.GET_CASHGAME_TABLE_LIST).then(
 		this.onTableListCallSuccess.bind(this),
 		this.onTableListCallError.bind(this)
@@ -78,6 +80,8 @@ CashGameManager.prototype.useFixedDeck = function(deck) {
  * @private
  */
 CashGameManager.prototype.onTableListCallSuccess = function(result) {
+	console.log("got table info from backend");
+
 	this.backendCallInProgress = false;
 
 	var i;

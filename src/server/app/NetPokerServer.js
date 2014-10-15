@@ -259,6 +259,14 @@ NetPokerServer.prototype.run = function() {
 }
 
 /**
+ * Get cashgame manager.
+ * @method getCashGameManager
+ */
+NetPokerServer.prototype.getCashGameManager=function() {
+	return this.cashGameManager;
+}
+
+/**
  * Hard close.
  * @method close
  */
