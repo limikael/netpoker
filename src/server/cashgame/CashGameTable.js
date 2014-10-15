@@ -63,6 +63,12 @@ function CashGameTable(services, config) {
 FunctionUtil.extend(CashGameTable, BaseTable);
 
 /**
+ * Dispatched when stop has been called, and the table has become idle.
+ * @event CashGameTable.IDLE
+ */
+CashGameTable.IDLE = "idle";
+
+/**
  * Full?
  * @method isFull
  */
@@ -89,6 +95,7 @@ CashGameTable.prototype.setupSeats = function(numseats) {
 
 		ts.on(ProtoConnection.CLOSE, this.onTableSeatClose, this);
 		ts.on(CashGameTableSeat.READY, this.onTableSeatReady, this);
+		ts.on(CashGameTableSeat.IDLE, this.onTableSeatIdle, this);
 
 		this.tableSeats.push(ts);
 	}
@@ -96,6 +103,7 @@ CashGameTable.prototype.setupSeats = function(numseats) {
 
 /**
  * Table seat close.
+ * If there is no game in progress, make the user leave the table.
  * @method onTableSeatClose
  */
 CashGameTable.prototype.onTableSeatClose = function(e) {
@@ -112,6 +120,15 @@ CashGameTable.prototype.onTableSeatClose = function(e) {
 CashGameTable.prototype.onTableSeatReady = function() {
 	if (!this.currentGame && this.getNumInGame() >= 2 && !this.stopped)
 		this.startGame();
+}
+
+/**
+ * Table seat became idle.
+ * @method onTableSeatIdle
+ */
+CashGameTable.prototype.onTableSeatIdle = function() {
+	if (this.isIdle())
+		this.trigger(CashGameTable.IDLE);
 }
 
 /**
@@ -364,14 +381,6 @@ CashGameTable.prototype.getStake = function() {
 }
 
 /**
- * Stop.
- * @method stop
- */
-CashGameTable.prototype.stop = function() {
-	this.stopped = true;
-}
-
-/**
  * Send a message to all connections on the table.
  * @method send
  */
@@ -409,15 +418,56 @@ CashGameTable.prototype.toString = function() {
 }
 
 /**
- * Hard close.
+ * Stop.
  * @method stop
  */
+CashGameTable.prototype.stop = function() {
+	this.stopped = true;
+
+	if (!this.currentGame)
+		for (i = 0; i < this.tableSeats.length; i++)
+			this.tableSeats[i].leaveTable();
+}
+
+/**
+ * Hard close.
+ * This should only be used after the table has been cleanly
+ * stopped and has become idle.
+ * @method close
+ */
 CashGameTable.prototype.close = function() {
+	if (!this.isIdle())
+		console.log("warning: closing non idle table");
+
 	//console.log("------------ hard close table, game=" + this.currentGame);
 	if (this.currentGame) {
 		this.currentGame.close();
 		this.currentGame = null;
 	}
+
+	for (var i = 0; i < this.tableSpectators.length; i++) {
+		var tableSpectator = this.tableSpectators[i];
+
+		tableSpectator.off(CashGameSpectator.DONE, this.onTableSpectatorDone, this);
+		tableSpectator.close();
+	}
+
+	this.tableSpectators = [];
+}
+
+/**
+ * Is this table idle? I.e. no game running and no users seated.
+ * @method isIdle
+ */
+CashGameTable.prototype.isIdle = function() {
+	if (this.currentGame)
+		return false;
+
+	for (i = 0; i < this.tableSeats.length; i++)
+		if (this.tableSeats[i].getUser())
+			return false;
+
+	return true;
 }
 
 /**

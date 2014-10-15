@@ -86,10 +86,13 @@ MessageClientConnection.prototype.send = function(message) {
 
 /**
  * Close the connection.
+ * Closing an already closed connection is not an error.
  * @method close
  */
 MessageClientConnection.prototype.close = function(message) {
-	this.webSocket.close();
+	if (this.webSocket) {
+		this.webSocket.close();
+	}
 }
 
 module.exports = MessageClientConnection;

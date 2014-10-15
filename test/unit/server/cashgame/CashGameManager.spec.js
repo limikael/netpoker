@@ -1,6 +1,9 @@
 var Thenable = require("../../../../src/utils/Thenable");
 var CashGameManager = require("../../../../src/server/cashgame/CashGameManager");
+var CashGameTable = require("../../../../src/server/cashgame/CashGameTable");
 var Backend = require("../../../../src/server/backend/Backend");
+var AsyncSequence = require("../../../../src/utils/AsyncSequence");
+var TickLoopRunner = require("../../../utils/TickLoopRunner");
 
 describe("CashGameManager", function() {
 	var mockBackend, mockServices;
@@ -89,5 +92,74 @@ describe("CashGameManager", function() {
 		};
 
 		cashGameManager.initialize();
+	});
+
+	function createTableData(tableId) {
+		return {
+			"id": tableId,
+			numseats: 10,
+			currency: "PLY",
+			name: "Test Table",
+			minSitInAmount: 10,
+			maxSitInAmount: 100,
+			stake: 2
+		};
+	};
+
+	it("can reload table info", function(done) {
+		var cashGameManager = new CashGameManager(mockServices);
+		var initializedSpy = jasmine.createSpy();
+
+		AsyncSequence.run(
+			function(next) {
+				backendCallData = {};
+				backendCallData.tables = [];
+				backendCallData.tables.push(createTableData("table_123"));
+				backendCallData.tables.push(createTableData("table_124"));
+
+				cashGameManager.on(CashGameManager.INITIALIZED, initializedSpy);
+				cashGameManager.initialize();
+
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				expect(initializedSpy).toHaveBeenCalled();
+				expect(cashGameManager.tables.length).toBe(2);
+
+				backendCallData = {};
+				backendCallData.tables = [];
+				backendCallData.tables.push(createTableData("table_999"));
+				backendCallData.tables.push(createTableData("table_888"));
+				backendCallData.tables.push(createTableData("table_124"));
+
+				cashGameManager.reloadTables();
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				expect(cashGameManager.tables.length).toBe(3);
+
+				cashGameManager.getTableById("table_888").currentGame = "a mock game";
+
+				backendCallData = {};
+				backendCallData.tables = [];
+				backendCallData.tables.push(createTableData("table_999"));
+				backendCallData.tables.push(createTableData("table_124"));
+
+				cashGameManager.reloadTables();
+				TickLoopRunner.runTicks().then(next);
+			},
+
+			function(next) {
+				expect(cashGameManager.tables.length).toBe(3);
+
+				cashGameManager.getTableById("table_888").currentGame = null;
+				cashGameManager.getTableById("table_888").trigger(CashGameTable.IDLE);
+
+				expect(cashGameManager.tables.length).toBe(2);
+				next();
+			}
+		).then(done);
 	});
 });

@@ -37,6 +37,12 @@ FunctionUtil.extend(CashGameTableSeat, BaseTableSeat);
 CashGameTableSeat.READY = "ready";
 
 /**
+ * Dispatched to signal when this table seat becomes idle.
+ * @event TableSeat.IDLE
+ */
+CashGameTableSeat.IDLE = "idle";
+
+/**
  * Is thie seat available?
  * @method isAvailable
  */
@@ -95,9 +101,9 @@ CashGameTableSeat.prototype.reserve = function(user, protoConnection) {
 	this.tableSeatUser.on(CashGameUser.DONE, this.onTableSeatUserDone, this);
 	this.tableSeatUser.sitIn();
 
-	this.send(new CheckboxMessage(CheckboxMessage.AUTO_POST_BLINDS,this.getSetting(CheckboxMessage.AUTO_POST_BLINDS)));
-	this.send(new CheckboxMessage(CheckboxMessage.AUTO_MUCK_LOSING,this.getSetting(CheckboxMessage.AUTO_MUCK_LOSING)));
-	this.send(new CheckboxMessage(CheckboxMessage.SITOUT_NEXT,this.getSetting(CheckboxMessage.SITOUT_NEXT)));
+	this.send(new CheckboxMessage(CheckboxMessage.AUTO_POST_BLINDS, this.getSetting(CheckboxMessage.AUTO_POST_BLINDS)));
+	this.send(new CheckboxMessage(CheckboxMessage.AUTO_MUCK_LOSING, this.getSetting(CheckboxMessage.AUTO_MUCK_LOSING)));
+	this.send(new CheckboxMessage(CheckboxMessage.SITOUT_NEXT, this.getSetting(CheckboxMessage.SITOUT_NEXT)));
 }
 
 /**
@@ -151,6 +157,7 @@ CashGameTableSeat.prototype.onTableSeatUserDone = function() {
 	}
 
 	this.table.sendTableInfoMessages();
+	this.trigger(CashGameTableSeat.IDLE);
 }
 
 /**

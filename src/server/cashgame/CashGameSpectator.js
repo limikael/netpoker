@@ -122,4 +122,13 @@ CashGameSpectator.prototype.getProtoConnection = function() {
 	return this.connection;
 }
 
+/**
+ * Close.
+ * @method close
+ */
+CashGameSpectator.prototype.close = function() {
+	if (this.connection)
+		this.connection.close();
+}
+
 module.exports = CashGameSpectator;
