@@ -312,8 +312,15 @@ CashGameTable.prototype.onCurrentGameFinished = function() {
 
 	this.send(this.getHandInfoMessage());
 
-	if (this.stopped)
+	if (this.stopped) {
+		for (var t = 0; t < this.tableSeats.length; t++) {
+			var tableSeat = this.tableSeats[t];
+
+			tableSeat.leaveTable();
+		}
+
 		return;
+	}
 
 	if (this.getNumInGame() >= 2)
 		this.startGame();
