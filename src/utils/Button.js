@@ -21,10 +21,10 @@ function Button(content) {
 	this.buttonMode = true;
 
 	this.mouseover = this.onMouseover.bind(this);
-	this.mouseout = this.onMouseout.bind(this);
-	this.mousedown = this.onMousedown.bind(this);
+	this.mouseout = this.touchend = this.touchendoutside = this.onMouseout.bind(this);
+	this.mousedown = this.touchstart = this.onMousedown.bind(this);
 	this.mouseup = this.onMouseup.bind(this);
-	this.click = this.onClick.bind(this);
+	this.click = this.tap = this.onClick.bind(this);
 
 	this.colorMatrixFilter = new PIXI.ColorMatrixFilter();
 	this.colorMatrixFilter.matrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];

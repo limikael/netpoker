@@ -118,6 +118,11 @@ function ChatView() {
 	this.mouseOverGroup.addDisplayObject(chatPlate);
 	this.mouseOverGroup.addEventListener("mouseover", this.onChatFieldMouseOver, this);
 	this.mouseOverGroup.addEventListener("mouseout", this.onChatFieldMouseOut, this);
+	this.mouseOverGroup.addEventListener("mousedown", this.onChatFieldMouseDown, this);
+	this.mouseOverGroup.addEventListener("mouseup", this.onChatFieldMouseUp, this);
+
+	chatPlate.touchstart = this.onChatFieldMouseDown.bind(this);
+
 
 	this.clear();
 }
@@ -174,6 +179,39 @@ ChatView.prototype.addText = function(user, text) {
 	this.slider.hide();
  }
 
+/**
+ * On mouse down
+ * @method onChatFieldMouseDown
+ */
+ChatView.prototype.onChatFieldMouseDown = function(interaction_object) {
+	interaction_object.target.touchend = interaction_object.target.touchendoutside = this.onChatFieldMouseUp.bind(this);
+	interaction_object.target.touchmove = this.onChatFieldMouseMove.bind(this);
+	this.startMousePos = interaction_object.global.y;
+	this.startPos = this.chatText.y;
+	this.slider.show();
+}
+
+/**
+ * On mouse up
+ * @method onChatFieldMouseUp
+ */
+ChatView.prototype.onChatFieldMouseUp = function(interaction_object) {
+	interaction_object.target.touchend = interaction_object.target.touchendoutside = null;
+	interaction_object.target.touchmove = null;
+	this.slider.hide();
+}
+
+/**
+ * On mouse up
+ * @method onChatFieldMouseUp
+ */
+ChatView.prototype.onChatFieldMouseMove = function(interaction_object) {
+	var pos = interaction_object.global.y;
+	var diff = pos - this.startMousePos;
+
+	this.slider.setValue((-(this.startPos + diff)) / (this.chatText.height + this.margin - this.chatMask.height));
+ 	this.onSliderChange();
+}
 
 /**
  * On key down
@@ -181,7 +219,7 @@ ChatView.prototype.addText = function(user, text) {
  */
  ChatView.prototype.onKeyDown = function(event) {
 	if(event.keyCode == 13) {
-		this.dispatchEvent("chat", this.inputField.text);
+		this.dispatchEvent("chat", {text: this.inputField.text});
 		
 		this.inputField.setText("");
 		
