@@ -168,30 +168,32 @@ module.exports = function(grunt) {
 
 	grunt.registerTask("browserify", function() {
 		var done = this.async();
-		var que = Q();
 
-		que = que.then(function() {
-			var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
-			job.arg("res/mocksite/netpokerclient.bundle.js", "src/client/netpokerclient.js");
-			job.show().expect(0);
-			return job.run();
-		});
+		AsyncSequence.run(
+			function(next) {
+				var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
+				job.arg("res/mocksite/netpokerclient.bundle.js", "src/client/netpokerclient.js");
+				job.show().expect(0);
+				job.run().then(next);
+			},
 
-		que = que.then(function() {
-			var job = qsub("cp").arg("gfx/components.png", "res/mocksite");
-			return job.run();
-		});
+			function(next) {
+				var job = qsub("./node_modules/.bin/browserify").arg("-o");
+				job.arg("bin/netpokerclient.bundle.js", "src/client/netpokerclient.js");
+				job.show().expect(0);
+				job.run().then(next);
+			},
 
-		que = que.then(function() {
-			var job = qsub("cp").arg("gfx/table.png", "res/mocksite");
-			return job.run();
-		});
+			function(next) {
+				var job = qsub("cp").arg("gfx/components.png", "res/mocksite");
+				job.run().then(next);
+			},
 
-		que = que.then(function() {
-			done();
-		});
-
-		que.done();
+			function(next) {
+				var job = qsub("cp").arg("gfx/table.png", "res/mocksite");
+				job.run().then(next);
+			}
+		).then(done);
 	});
 
 	grunt.registerTask("default", function() {
