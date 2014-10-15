@@ -37,17 +37,17 @@ function CashGameTable(services, config) {
 	this.name = config.name;
 	this.id = config.id;
 	this.currency = config.currency;
-	this.stake = config.stake;
-	this.minSitInAmount = config.minSitInAmount;
-	this.maxSitInAmount = config.maxSitInAmount;
+	this.stake = parseFloat(config.stake);
+	this.minSitInAmount = parseFloat(config.minSitInAmount);
+	this.maxSitInAmount = parseFloat(config.maxSitInAmount);
 
 	if (config.rakePercent)
-		this.rakePercent = config.rakePercent;
+		this.rakePercent = parseFloat(config.rakePercent);
 
 	else
 		this.rakePercent = 0;
 
-	this.setupSeats(config.numseats);
+	this.setupSeats(parseInt(config.numseats));
 
 	BaseTable.call(this);
 
