@@ -159,7 +159,7 @@ CashGameUser.prototype.leave = function() {
 	};
 
 	var backend = this.tableSeat.getTable().getServices().getBackend();
-	backend.call(Backend.SIT_OUT).then(
+	backend.call(Backend.SIT_OUT, params).then(
 		this.onSitoutCallComplete.bind(this),
 		this.onSitoutCallError.bind(this)
 	);
