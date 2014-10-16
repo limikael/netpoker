@@ -18,7 +18,7 @@ Backend.GET_USER_INFO_BY_TOKEN = "getUserInfoByToken";
 Backend.GET_CASHGAME_TABLE_LIST = "getCashGameTableList";
 Backend.GET_USER_BALANCE = "getUserBalance";
 Backend.SIT_IN = "cashGameUserJoin";
-Backend.SIT_OUT = "cahsGameUserLeave";
+Backend.SIT_OUT = "cashGameUserLeave";
 Backend.START_CASH_GAME = "gameStartForCashGame";
 Backend.FINISH_GAME = "gameFinish";
 
