@@ -136,6 +136,18 @@ BotConnection.prototype.getLastMessageOfType = function(messageClass) {
 	return null;
 }
 
+BotConnection.prototype.getMessagesOfType = function(messageClass) {
+	var type = messageClass.TYPE;
+	var retMessages = [];
+
+	for (var i = 0; i < this.messages.length; i++) {
+		if (this.messages[i].type == type)
+			retMessages.push(this.messages[i]);
+	}
+
+	return retMessages;
+}
+
 BotConnection.prototype.waitForMessage = function(messageClass) {
 	if (this.waitThenable)
 		throw "Already waiting for message";

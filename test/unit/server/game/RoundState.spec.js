@@ -7,11 +7,13 @@ var ButtonClickMessage = require("../../../../src/proto/messages/ButtonClickMess
 var ShowDialogMessage = require("../../../../src/proto/messages/ShowDialogMessage");
 var ButtonsMessage = require("../../../../src/proto/messages/ButtonsMessage");
 var SeatInfoMessage = require("../../../../src/proto/messages/SeatInfoMessage");
+var PotMessage = require("../../../../src/proto/messages/PotMessage");
 var ButtonData = require("../../../../src/proto/data/ButtonData");
 var AsyncSequence = require("../../../../src/utils/AsyncSequence");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
 var AskBlindState = require("../../../../src/server/game/AskBlindState");
 var RoundState = require("../../../../src/server/game/RoundState");
+var FinishedState = require("../../../../src/server/game/FinishedState");
 var CardData = require("../../../../src/proto/data/CardData");
 var BotSitInStrategy = require("../../../utils/BotSitInStrategy");
 var ThenableBarrier = require("../../../../src/utils/ThenableBarrier");
@@ -117,13 +119,13 @@ describe("RoundState", function() {
 		AsyncSequence.run(
 			function(next) {
 				bot1.connectToTable(123);
-				bot1.runStrategy(new BotSitInStrategy(1,100)).then(next);
+				bot1.runStrategy(new BotSitInStrategy(1,10)).then(next);
 				TickLoopRunner.runTicks();
 			},
 
 			function(next) {
 				bot2.connectToTable(123);
-				bot2.runStrategy(new BotSitInStrategy(2,10)).then(next);
+				bot2.runStrategy(new BotSitInStrategy(2,100)).then(next);
 				TickLoopRunner.runTicks();
 			},
 
@@ -144,11 +146,11 @@ describe("RoundState", function() {
 
 			function(next) {
 				expect(bot1.getSeatAt(1).getBet()).toBe(2);
-				expect(bot1.getSeatAt(1).getChips()).toBe(98);
+				expect(bot1.getSeatAt(1).getChips()).toBe(8);
 				expect(bot1.getSeatAt(2).getBet()).toBe(1);
-				expect(bot1.getSeatAt(2).getChips()).toBe(9);
+				expect(bot1.getSeatAt(2).getChips()).toBe(99);
 
-				bot2.act(ButtonData.RAISE,10);
+				bot2.act(ButtonData.RAISE,100);
 				TickLoopRunner.runTicks().then(next);
 			},
 
@@ -158,8 +160,12 @@ describe("RoundState", function() {
 			},
 
 			function(next) {
-				expect(table.getCurrentGame().getGameState() instanceof RoundState).toBe(false);
+				var potMessages=bot1.getMessagesOfType(PotMessage);
+				console.log(potMessages);
 
+				//expect(potMessages[0].values.length).toBe(1);
+
+				expect(table.getCurrentGame().getGameState()).toEqual(jasmine.any(FinishedState));
 				next();
 			}
 		).then(done);
