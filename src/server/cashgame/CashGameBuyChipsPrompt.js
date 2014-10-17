@@ -157,6 +157,8 @@ CashGameBuyChipsPrompt.prototype.onButtonClick = function(e) {
  * @method onSitInCallComplete
  */
 CashGameBuyChipsPrompt.prototype.onSitInCallComplete = function(r) {
+	console.log("sit in call complete!");
+
 	this.trigger(CashGameBuyChipsPrompt.COMPLETE);
 }
 
@@ -165,6 +167,8 @@ CashGameBuyChipsPrompt.prototype.onSitInCallComplete = function(r) {
  * @method onSitInCallError
  */
 CashGameBuyChipsPrompt.prototype.onSitInCallError = function(e) {
+	console.log("sit in call error!");
+
 	var d = new ShowDialogMessage();
 	d.setText("Unable to sit you in at the table.\n\n" + e);
 	d.addButton(ButtonData.OK);
