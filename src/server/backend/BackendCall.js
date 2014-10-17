@@ -64,8 +64,7 @@ BackendCall.prototype.onRequestComplete = function(e, r, body) {
 		if (data.ok) {
 			this.thenable.resolve(data);
 		} else {
-//			this.thenable.reject(data.message);
-			this.thenable.resolve(data);
+			this.thenable.reject(data.message);
 		}
 
 	} catch (e) {
