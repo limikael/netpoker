@@ -99,8 +99,10 @@ MockBackendServer.prototype.onRequest = function(request, response) {
 
 	var result = this.handleMethod(method, urlParts.query);
 
-	if (result)
+	if (result) {
+		result.ok = 1;
 		response.write(JSON.stringify(result));
+	}
 
 	response.end();
 }

@@ -12,7 +12,8 @@ describe("MockBackendServer", function() {
 		r = request("http://localhost:9999/" + Backend.GET_USER_INFO_BY_TOKEN + "/?token=user1", function(e, r, body) {
 			expect(JSON.parse(body)).toEqual({
 				id: "101",
-				name: "olle"
+				name: "olle",
+				ok: 1
 			});
 			mockBackendServer.close();
 			done();

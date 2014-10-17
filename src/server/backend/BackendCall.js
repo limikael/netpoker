@@ -33,10 +33,7 @@ BackendCall.prototype.perform = function() {
 	var url = this.url + "?" + components.join("&");
 
 	console.log("Backend request: " + url);
-
-	//setTimeout(function() {
-		request.get(url, this.onRequestComplete.bind(this));
-	//}.bind(this), 0);
+	request.get(url, this.onRequestComplete.bind(this));
 
 	return this.thenable;
 }
@@ -63,7 +60,14 @@ BackendCall.prototype.onRequestComplete = function(e, r, body) {
 
 	try {
 		data = JSON.parse(body)
-		this.thenable.resolve(data);
+
+		if (data.ok) {
+			this.thenable.resolve(data);
+		} else {
+//			this.thenable.reject(data.message);
+			this.thenable.resolve(data);
+		}
+
 	} catch (e) {
 		this.thenable.reject(e.toString() + "\n\nServer response:\n" + body);
 	}

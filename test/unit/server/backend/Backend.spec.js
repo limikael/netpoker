@@ -20,7 +20,8 @@ describe("Backend", function() {
 			.then(function(res) {
 				expect(res).toEqual({
 					"id": "101",
-					"name": "olle"
+					"name": "olle",
+					"ok": 1
 				});
 				mockBackendServer.close();
 				done();
