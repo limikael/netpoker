@@ -125,10 +125,33 @@ CashGameBuyChipsPrompt.prototype.onButtonClick = function(e) {
 	//console.log(e);
 
 	if (e.getButton() == ButtonData.SIT_IN) {
-		this.chips = e.getValue();
-
 		this.tableSeat.off(ProtoConnection.CLOSE, this.onConnectionClose, this);
 		this.tableSeat.off(ButtonClickMessage.TYPE, this.onButtonClick, this);
+
+		var chips = e.getValue();
+		var amountError = null;
+
+		if (chips < this.tableSeat.getTable().getMinSitInAmount())
+			amountError = "Minimum required to sit in is " +
+			this.tableSeat.getTable().getCurrency() + " " +
+			this.tableSeat.getTable().getMinSitInAmount();
+
+		if (chips > this.tableSeat.getTable().getMaxSitInAmount())
+			amountError = "Maximum allowed to sit in with is " +
+			this.tableSeat.getTable().getCurrency() + " " +
+			this.tableSeat.getTable().getMinSitInAmount();
+
+		if (amountError) {
+			var d = new ShowDialogMessage();
+			d.setText(amountError);
+			d.addButton(ButtonData.OK);
+
+			this.tableSeat.send(d);
+			this.trigger(CashGameBuyChipsPrompt.CANCEL);
+			return;
+		}
+
+		this.chips = chips;
 
 		var params = {
 			userId: this.tableSeat.getUser().getId(),
