@@ -139,7 +139,7 @@ CashGameBuyChipsPrompt.prototype.onButtonClick = function(e) {
 		if (chips > this.tableSeat.getTable().getMaxSitInAmount())
 			amountError = "Maximum allowed to sit in with is " +
 			this.tableSeat.getTable().getCurrency() + " " +
-			this.tableSeat.getTable().getMinSitInAmount();
+			this.tableSeat.getTable().getMaxSitInAmount();
 
 		if (amountError) {
 			var d = new ShowDialogMessage();
