@@ -44,6 +44,8 @@ describe("BotConnection", function() {
 
 				expect(b.getSeatAt(1).getChips()).toBe(10);
 				expect(b.getSeatAt(1).getName()).toBe("olle");
+
+				b.close();
 				next();
 			}
 		).then(done);

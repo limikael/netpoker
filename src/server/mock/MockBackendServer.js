@@ -74,7 +74,9 @@ MockBackendServer.prototype.handleMethod = function(method, params) {
 			};
 
 		case Backend.SIT_IN:
-			return true;
+			return {
+				ok: 1
+			};
 
 		case Backend.START_CASH_GAME:
 			return {
