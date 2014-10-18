@@ -526,7 +526,7 @@ RoundState.prototype.betsToPot = function() {
 RoundState.prototype.returnExcessiveBets = function() {
 	var bets = [];
 
-	for (var g = 0; g < this.game.getGameSeats(); g++) {
+	for (var g = 0; g < this.game.getGameSeats().length; g++) {
 		var gameSeat = this.game.getGameSeats()[g];
 		bets.push(gameSeat.getBet());
 	}
@@ -536,10 +536,10 @@ RoundState.prototype.returnExcessiveBets = function() {
 
 	var secondHighest = bets[1];
 
-	for (var g = 0; g < this.game.getGameSeats(); g++) {
+	for (var g = 0; g < this.game.getGameSeats().length; g++) {
 		var gameSeat = this.game.getGameSeats()[g];
 		if (gameSeat.getBet() > secondHighest)
-			gameSeat.returnBet(gameSeat.bet - secondHighest);
+			gameSeat.returnBet(gameSeat.getBet() - secondHighest);
 	}
 }
 

@@ -163,7 +163,7 @@ describe("RoundState", function() {
 				var potMessages=bot1.getMessagesOfType(PotMessage);
 				console.log(potMessages);
 
-				//expect(potMessages[0].values.length).toBe(1);
+				expect(potMessages[0].values.length).toBe(1);
 
 				expect(table.getCurrentGame().getGameState()).toEqual(jasmine.any(FinishedState));
 				next();
