@@ -81,6 +81,22 @@ ServerApi.prototype.handleRequest = function(request, response) {
 }
 
 /**
+ * Handle request on root, show usage.
+ * @method handleUsageRequest
+ */
+ServerApi.prototype.handleUsageRequest = function(request, response) {
+	response.setHeader("Content-Type", "text/plain");
+	response.write("\n");
+	response.write("Available API calls:\n");
+	response.write("\n");
+	response.write("  /info          - Get server status information.\n");
+	response.write("  /stop          - Cleanly stop the server.\n");
+	response.write("  /reloadTables  - Reload table information from backend.\n");
+	response.write("\n");
+	response.end();
+}
+
+/**
  * Require key.
  * @method setApiKey
  */

@@ -16,15 +16,15 @@ function MockWebRequestHandler() {}
  * Handle a web request.
  * @method handleWebRequest
  */
-MockWebRequestHandler.prototype.handleWebRequest = function(e) {
-	console.log("web request: " + e.request.url);
+MockWebRequestHandler.prototype.handleWebRequest = function(request, response) {
+	console.log("web request: " + request.url);
 
-	var urlParts = url.parse(e.request.url);
+	var urlParts = url.parse(request.url);
 	var path = urlParts.pathname;
 
 	var fileName = __dirname + "/../../../res/mocksite/" + path;
 
-	e.response.setHeader("Content-Type", "text/html");
+	response.setHeader("Content-Type", "text/html");
 
 	if (path == "/") {
 		var caseListContent = "";
@@ -40,12 +40,12 @@ MockWebRequestHandler.prototype.handleWebRequest = function(e) {
 		var content = fs.readFileSync(__dirname + "/../../../res/mocksite/index.html");
 		content = content.toString().replace("{caseListContent}", caseListContent);
 
-		e.response.write(content);
+		response.write(content);
 	} else if (fs.existsSync(fileName)) {
-		e.response.write(fs.readFileSync(fileName));
+		response.write(fs.readFileSync(fileName));
 	}
 
-	e.response.end();
+	response.end();
 }
 
 /**

@@ -120,7 +120,9 @@ NetPokerServer.prototype.onConnectionManagerRequest = function(e) {
 	if (this.apiOnClientPort && this.serverApi.canHandleRequest(e.request)) {
 		this.serverApi.handleRequest(e.request, e.response);
 	} else if (this.webRequestHandler) {
-		this.webRequestHandler.handleWebRequest(e);
+		this.webRequestHandler.handleWebRequest(e.request, e.response);
+	} else if (this.apiOnClientPort) {
+		this.serverApi.handleUsageRequest(e.request, e.response);
 	}
 }
 
