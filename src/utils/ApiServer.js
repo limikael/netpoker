@@ -13,6 +13,7 @@ var url = require("url");
  */
 function ApiServer() {
 	this.handlers = {};
+	this.rawHandlers = {};
 
 	this.requiredParam = null;
 	this.requiredValue = null;
@@ -26,6 +27,18 @@ function ApiServer() {
  */
 ApiServer.prototype.registerHandler = function(func, handler) {
 	this.handlers[func] = handler;
+}
+
+/**
+ * Register a raw handler for a method.
+ * The handler will be called with the rae request and response and
+ * is supposed to manage everything itself.
+ * @method registerRawHandler
+ * @param {String} func The name of the method to handle.
+ * @param {Funtion} handler The function that should handle the method.
+ */
+ApiServer.prototype.registerRawHandler = function(func, handler) {
+	this.rawHandlers[func] = handler;
 }
 
 /**
@@ -53,6 +66,9 @@ ApiServer.prototype.handleMethod = function(method, parameters) {
  */
 ApiServer.prototype.canHandleMethod = function(method) {
 	if (this.handlers[method])
+		return true;
+
+	if (this.rawHandlers[method])
 		return true;
 
 	return false;
@@ -95,6 +111,9 @@ ApiServer.prototype.handleWebRequest = function(request, response) {
 		if (this.requiredParam && urlParts.query[this.requiredParam] != this.requiredValue) {
 			response.statusCode = 401;
 			response.write(JSON.stringify("Unauthorized."));
+		} else if (this.rawHandlers[method]) {
+			this.rawHandlers[method](request, response, urlParts.query);
+			return;
 		} else {
 			try {
 				var result = this.handleMethod(method, urlParts.query);

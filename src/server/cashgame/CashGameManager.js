@@ -29,6 +29,7 @@ FunctionUtil.extend(CashGameManager, EventDispatcher);
 
 CashGameManager.INITIALIZED = "initialized";
 CashGameManager.IDLE = "idle";
+CashGameManager.NUM_PLAYERS_CHANGE = "numPlayersChange";
 
 /**
  * Initialize.
@@ -96,6 +97,7 @@ CashGameManager.prototype.onTableListCallSuccess = function(result) {
 
 			var table = new CashGameTable(this.services, tableData);
 			table.on(CashGameTable.IDLE, this.onTableIdle, this);
+			table.on(CashGameTable.NUM_PLAYERS_CHANGE, this.onTableNumPlayersChange, this);
 
 			if (this.fixedDeck)
 				table.useFixedDeck(this.fixedDeck);
@@ -115,10 +117,7 @@ CashGameManager.prototype.onTableListCallSuccess = function(result) {
 
 			if (table.isIdle()) {
 				console.log("the table is idle on stop, we can remove it");
-
-				table.close();
-				table.off(CashGameTable.IDLE, this.onTableIdle, this);
-				ArrayUtil.remove(this.tables, table);
+				this.closeAndRemoveTable(table);
 			}
 		}
 	}
@@ -183,14 +182,23 @@ CashGameManager.prototype.onTableIdle = function(e) {
 	console.log("table is idle, id=" + table.getId());
 
 	if (this.currentRequestedIds.indexOf(table.getId()) < 0) {
-		table.close();
-		table.off(CashGameTable.IDLE, this.onTableIdle, this);
-
-		ArrayUtil.remove(this.tables, table);
+		this.closeAndRemoveTable(table);
 	}
 
 	if (this.isIdle())
 		this.trigger(CashGameManager.IDLE);
+}
+
+/**
+ * Close and remove the table.
+ * @method closeAndRemoveTable
+ * @private
+ */
+CashGameManager.prototype.closeAndRemoveTable = function(table) {
+	table.close();
+	table.off(CashGameTable.IDLE, this.onTableIdle, this);
+	table.off(CashGameTable.NUM_PLAYERS_CHANGE, this.onTableNumPlayersChange, this);
+	ArrayUtil.remove(this.tables, table);
 }
 
 /**
@@ -203,6 +211,23 @@ CashGameManager.prototype.isIdle = function() {
 			return false;
 
 	return true;
+}
+
+/**
+ * Number of players change.
+ * @method onTableNumPlayersChange
+ * @private
+ */
+CashGameManager.prototype.onTableNumPlayersChange = function() {
+	this.trigger(CashGameManager.NUM_PLAYERS_CHANGE)
+}
+
+/**
+ * Get tables.
+ * @method getTables
+ */
+CashGameManager.prototype.getTables = function() {
+	return this.tables;
 }
 
 module.exports = CashGameManager;

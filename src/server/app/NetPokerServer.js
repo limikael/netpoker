@@ -51,6 +51,10 @@ FunctionUtil.extend(NetPokerServer, EventDispatcher);
 
 NetPokerServer.STARTED = "started";
 
+NetPokerServer.INITIALIZING = "initializing";
+NetPokerServer.RUNNING = "running";
+NetPokerServer.STOPPED = "stopped";
+
 /**
  * Set port to tisten to.
  * @method setClientPort
@@ -103,7 +107,7 @@ NetPokerServer.prototype.onConnectionManagerConnection = function(e) {
 			console.log("user " + e.getUser().getName() + " connecting to table " + table.getId());
 
 		else
-			console.log("anonymous connection to table "+table.getId());
+			console.log("anonymous connection to table " + table.getId());
 
 		table.notifyNewConnection(e.getProtoConnection(), e.getUser());
 	} else {
@@ -359,6 +363,17 @@ NetPokerServer.prototype.useMock = function() {
 	this.serveViewCases(__dirname + "/../../../res/viewcases");
 	this.setBackend(new MockBackendServer());
 	this.setWebRequestHandler(new MockWebRequestHandler());
+}
+
+/**
+ * Get run state.
+ * @method getState
+ */
+NetPokerServer.prototype.getState = function() {
+	if (this.stopped)
+		return NetPokerServer.STOPPED;
+
+	return NetPokerServer.RUNNING;
 }
 
 module.exports = NetPokerServer;

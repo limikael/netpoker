@@ -19,9 +19,9 @@ describe("ServerApi - integration", function() {
 			function(next) {
 				request("http://localhost:8888/info", function(error, response, body) {
 					expect(response.statusCode).toEqual(200);
-					expect(JSON.parse(body)).toEqual({
-						state: "running"
-					});
+
+					var data=JSON.parse(body);
+					expect(data.state).toBe("running");
 
 					netPokerServer.close();
 					next();
@@ -45,9 +45,9 @@ describe("ServerApi - integration", function() {
 			function(next) {
 				request("http://localhost:2222/info", function(error, response, body) {
 					expect(response.statusCode).toEqual(200);
-					expect(JSON.parse(body)).toEqual({
-						state: "running"
-					});
+
+					var data=JSON.parse(body);
+					expect(data.state).toBe("running");
 
 					netPokerServer.close();
 					next();
@@ -80,10 +80,32 @@ describe("ServerApi - integration", function() {
 			function(next) {
 				request("http://localhost:2222/info?key=asdfasdf", function(error, response, body) {
 					expect(response.statusCode).toEqual(200);
-					expect(JSON.parse(body)).toEqual({
-						state: "running"
-					});
 
+					var data=JSON.parse(body);
+					expect(data.state).toBe("running");
+
+					netPokerServer.close();
+					next();
+				});
+			}
+		).then(done);
+	});
+
+	it("can poll for active players", function(done) {
+		var netPokerServer;
+
+		AsyncSequence.run(
+			function(next) {
+				netPokerServer = new NetPokerServer();
+				netPokerServer.setClientPort(2222);
+				netPokerServer.setApiOnClientPort(true);
+				netPokerServer.setBackend(new MockBackendServer());
+				netPokerServer.run().then(next);
+			},
+
+			function(next) {
+				request("http://localhost:2222/pollNumPlayers", function(r,e,body) {
+					console.log("got: "+body);
 					netPokerServer.close();
 					next();
 				});

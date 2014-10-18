@@ -69,6 +69,12 @@ FunctionUtil.extend(CashGameTable, BaseTable);
 CashGameTable.IDLE = "idle";
 
 /**
+ * Dispatched when the number of players have changed.
+ * @event CashGameTable.IDLE
+ */
+CashGameTable.NUM_PLAYERS_CHANGE = "numPlayersChange";
+
+/**
  * Full?
  * @method isFull
  */
@@ -118,6 +124,8 @@ CashGameTable.prototype.onTableSeatClose = function(e) {
  * @method onTableSeatReady
  */
 CashGameTable.prototype.onTableSeatReady = function() {
+	this.trigger(CashGameTable.NUM_PLAYERS_CHANGE);
+
 	if (!this.currentGame && this.getNumInGame() >= 2 && !this.stopped)
 		this.startGame();
 }
@@ -129,6 +137,8 @@ CashGameTable.prototype.onTableSeatReady = function() {
 CashGameTable.prototype.onTableSeatIdle = function() {
 	if (this.isIdle())
 		this.trigger(CashGameTable.IDLE);
+
+	this.trigger(CashGameTable.NUM_PLAYERS_CHANGE);
 }
 
 /**
@@ -499,6 +509,14 @@ CashGameTable.prototype.getHandInfoMessage = function() {
 		s += "Previous Hand: #" + this.previousHandId;
 
 	return new HandInfoMessage(s);
+}
+
+/**
+ * Is this table stopped?
+ * @method isStopped
+ */
+CashGameTable.prototype.isStopped = function() {
+	return this.stopped;
 }
 
 module.exports = CashGameTable;

@@ -4,6 +4,7 @@
  */
 
 var ApiServer = require("../../utils/ApiServer");
+var PollNumPlayersRequestHandler = require("./PollNumPlayersRequestHandler");
 
 /**
  * A http api so the server can be queried from the outside world.
@@ -16,6 +17,7 @@ function ServerApi(netPokerServer) {
 	this.apiServer.registerHandler("info", this.onInfo.bind(this));
 	this.apiServer.registerHandler("reloadTables", this.onReloadTables.bind(this));
 	this.apiServer.registerHandler("stop", this.onStop.bind(this));
+	this.apiServer.registerRawHandler("pollNumPlayers", this.onPollNumPlayers.bind(this));
 }
 
 /**
@@ -23,9 +25,31 @@ function ServerApi(netPokerServer) {
  * @method onInfo
  */
 ServerApi.prototype.onInfo = function(p) {
-	return {
-		state: "running"
-	};
+	var o = {};
+
+	o.state = this.netPokerServer.getState();
+	o.tables = [];
+
+	var tables = this.netPokerServer.getCashGameManager().getTables();
+
+	for (var i = 0; i < tables.length; i++) {
+		var table = tables[i];
+		var tableInfo = {};
+
+		tableInfo.id = table.getId();
+		tableInfo.players = table.getNumInGame();
+		tableInfo.game = table.getCurrentGame() ? true : false;
+
+		if (table.isStopped())
+			tableInfo.state = "stopped";
+
+		else
+			tableInfo.state = "running";
+
+		o.tables.push(tableInfo);
+	}
+
+	return o;
 }
 
 /**
@@ -42,10 +66,19 @@ ServerApi.prototype.onReloadTables = function(p) {
  * Stop.
  * @method onStop
  */
-ServerApi.prototype.onStop = function() {
+ServerApi.prototype.onStop = function(p) {
 	this.netPokerServer.stop();
 
 	return true;
+}
+
+/**
+ * Poll for change in number of active users.
+ * @method onPoll
+ */
+ServerApi.prototype.onPollNumPlayers = function(request, response, p) {
+	var handler = new PollNumPlayersRequestHandler(this.netPokerServer)
+	handler.handleRequest(request, response, p);
 }
 
 /**

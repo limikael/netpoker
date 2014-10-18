@@ -14,6 +14,15 @@ ObjectUtil.equals = function(a, b) {
 	if (typeof a != "object" || typeof b != "object")
 		return a === b;
 
+	if (!a && !b)
+		return true;
+
+	if (!a)
+		return false;
+
+	if (!b)
+		return false;
+
 	var aProps = Object.getOwnPropertyNames(a);
 	var bProps = Object.getOwnPropertyNames(b);
 
