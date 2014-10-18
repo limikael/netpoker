@@ -53,7 +53,13 @@ MockBackendServer.prototype.handleMethod = function(method, params) {
 						id: "104",
 						name: "lisa"
 					};
+
+				case "anon":
+					return {
+						not: "logged in"
+					};
 			}
+			break;
 
 		case Backend.GET_CASHGAME_TABLE_LIST:
 			return {

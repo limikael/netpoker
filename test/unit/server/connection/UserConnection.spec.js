@@ -71,7 +71,7 @@ describe("UserConnection", function() {
 		});
 	});
 
-	it("closes the connection on bad user data", function(done)  {
+	it("creates an anonymous connection on bad or no user data", function(done)  {
 		var mockConnection = new EventDispatcher();
 		mockConnection.close = jasmine.createSpy();
 		var u = new UserConnection(mockServices, mockConnection);
@@ -86,8 +86,8 @@ describe("UserConnection", function() {
 
 		backendCall.notifySuccess({});
 
-		u.on(UserConnection.CLOSE, function() {
-			expect(mockConnection.close).toHaveBeenCalled();
+		u.on(UserConnection.INITIALIZED, function() {
+			expect(u.getUser()).toBe(null);
 			done();
 		});
 	});

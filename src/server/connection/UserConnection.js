@@ -98,15 +98,17 @@ UserConnection.prototype.handleViewCase = function(viewCase) {
 UserConnection.prototype.onFetchUserCallSuccess = function(result) {
 	this.fetchUserCall = null;
 
+	// Anonymous.
 	if (!result || !result.id || !result.name) {
-		console.warn("fetch user call returned bad data");
+		console.warn("anonymous connection...");
+		this.user = null;
 
-		this.close();
-		this.trigger(UserConnection.CLOSE);
+		this.trigger(UserConnection.INITIALIZED);
 		return;
 	}
 
 	this.user = new User(result);
+	console.warn("connection, user: " + this.user.getId());
 	this.trigger(UserConnection.INITIALIZED);
 }
 

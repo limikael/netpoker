@@ -50,6 +50,9 @@ CashGameSpectator.prototype.onConnectionClose = function() {
  * @method onSeatClick
  */
 CashGameSpectator.prototype.onSeatClick = function(m) {
+	if (!this.user)
+		return;
+
 	var tableSeat = this.table.getTableSeatBySeatIndex(m.getSeatIndex());
 
 	if (!tableSeat || !tableSeat.isAvailable())
@@ -83,8 +86,9 @@ CashGameSpectator.prototype.send = function(m) {
  * @method onChat
  */
 CashGameSpectator.prototype.onChat = function(message) {
-	if (this.user == null)
+	if (!this.user)
 		return;
+
 	this.table.chat(this.user, message.text);
 }
 

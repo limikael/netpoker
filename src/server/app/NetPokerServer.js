@@ -99,7 +99,12 @@ NetPokerServer.prototype.onConnectionManagerConnection = function(e) {
 			return;
 		}
 
-		console.log("user " + e.getUser().getName() + " connecting to table " + table.getId());
+		if (e.getUser())
+			console.log("user " + e.getUser().getName() + " connecting to table " + table.getId());
+
+		else
+			console.log("anonymous connection to table "+table.getId());
+
 		table.notifyNewConnection(e.getProtoConnection(), e.getUser());
 	} else {
 		console.log("no entity to connect to, refusing...")
