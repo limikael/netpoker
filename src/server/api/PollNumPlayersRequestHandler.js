@@ -9,6 +9,8 @@ function PollNumPlayersRequestHandler(netPokerServer) {
 	this.netPokerServer = netPokerServer;
 }
 
+PollNumPlayersRequestHandler.TIMEOUT_DELAY = 10000;
+
 /**
  * Handle request.
  * @method handlerRequest
@@ -37,7 +39,7 @@ PollNumPlayersRequestHandler.prototype.handleRequest = function(request, respons
 	this.netPokerServer.getCashGameManager().on(CashGameManager.NUM_PLAYERS_CHANGE, this.onNumPlayersChange, this);
 	this.request.on("close", this.onRequestClose.bind(this));
 
-	this.timeoutId = setTimeout(this.onTimeout.bind(this), 10000);
+	this.timeoutId = setTimeout(this.onTimeout.bind(this), PollNumPlayersRequestHandler.TIMEOUT_DELAY);
 }
 
 /**

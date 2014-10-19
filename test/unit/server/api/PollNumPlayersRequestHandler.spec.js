@@ -1,4 +1,6 @@
 var PollNumPlayersRequestHandler = require("../../../../src/server/api/PollNumPlayersRequestHandler");
+var CashGameManager = require("../../../../src/server/cashgame/CashGameManager");
+var EventDispatcher = require("../../../../src/utils/EventDispatcher");
 
 describe("PollNumPlayersRequestHandler", function() {
 	var mockNetPokerServer;
@@ -26,7 +28,7 @@ describe("PollNumPlayersRequestHandler", function() {
 			mockTables.push(t);
 		}
 
-		mockCashGameManager = {};
+		mockCashGameManager = new EventDispatcher();
 		mockCashGameManager.getTables = function() {
 			return mockTables;
 		}
@@ -36,13 +38,20 @@ describe("PollNumPlayersRequestHandler", function() {
 			return mockCashGameManager;
 		};
 
-		mockRequest = {};
+		mockRequest = new EventDispatcher();
 		mockResponse = {};
 		mockResponse.written = "";
 		mockResponse.write = function(s) {
 			this.written += s;
 		}
+		spyOn(mockResponse, "write").and.callThrough();
 		mockResponse.end = jasmine.createSpy();
+
+		jasmine.clock().install();
+	});
+
+	afterEach(function() {
+		jasmine.clock().uninstall();
 	});
 
 	it("returns the number of users if queried without parameters", function() {
@@ -53,5 +62,41 @@ describe("PollNumPlayersRequestHandler", function() {
 
 		expect(mockResponse.written).toEqual('{"table_0":1,"table_1":1}');
 		expect(mockResponse.end).toHaveBeenCalled();
+	});
+
+	it("times out if no change", function() {
+		var handler = new PollNumPlayersRequestHandler(mockNetPokerServer);
+
+		var parameters = {};
+		parameters.state = '{"table_0":1,"table_1":1}';
+		handler.handleRequest(mockRequest, mockResponse, parameters);
+
+		expect(mockResponse.end).not.toHaveBeenCalled();
+
+		jasmine.clock().tick(PollNumPlayersRequestHandler.TIMEOUT_DELAY);
+
+		expect(mockResponse.end).toHaveBeenCalled();
+		expect(mockResponse.write).toHaveBeenCalled();
+
+		expect(mockCashGameManager.listenerMap).toEqual({});
+	});
+
+	it("sends new data if a change is detected", function() {
+		var handler = new PollNumPlayersRequestHandler(mockNetPokerServer);
+
+		var parameters = {};
+		parameters.state = '{"table_0":1,"table_1":1}';
+		handler.handleRequest(mockRequest, mockResponse, parameters);
+		expect(mockResponse.end).not.toHaveBeenCalled();
+		mockCashGameManager.trigger(CashGameManager.NUM_PLAYERS_CHANGE);
+		expect(mockResponse.end).not.toHaveBeenCalled();
+
+		mockTables[0].numInGame = 5;
+		mockCashGameManager.trigger(CashGameManager.NUM_PLAYERS_CHANGE);
+
+		expect(mockResponse.write).toHaveBeenCalled();
+		expect(mockResponse.end).toHaveBeenCalled();
+
+		expect(mockResponse.written).toEqual('{"table_0":5,"table_1":1}');
 	});
 });
