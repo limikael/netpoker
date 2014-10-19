@@ -5,7 +5,7 @@ var CashGameManager = require("../cashgame/CashGameManager");
  * Poll for change in number of users.
  * @method PollNumPlayersRequestHandler
  */
-function PollNumPlayersRequestHandler(netPokerServer, request, response, parameters) {
+function PollNumPlayersRequestHandler(netPokerServer) {
 	this.netPokerServer = netPokerServer;
 }
 
@@ -20,7 +20,7 @@ PollNumPlayersRequestHandler.prototype.handleRequest = function(request, respons
 
 	this.referenceState = null;
 
-	if (parameters.state)
+	if (parameters && parameters.state)
 		this.referenceState = JSON.parse(decodeURIComponent(parameters.state));
 
 	var state = this.getCurrentState();
