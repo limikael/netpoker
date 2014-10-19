@@ -36,6 +36,8 @@ PollNumPlayersRequestHandler.prototype.handleRequest = function(request, respons
 
 	this.netPokerServer.getCashGameManager().on(CashGameManager.NUM_PLAYERS_CHANGE, this.onNumPlayersChange, this);
 	this.request.on("close", this.onRequestClose.bind(this));
+
+	this.timeoutId = setTimeout(this.onTimeout.bind(this), 10000);
 }
 
 /**
@@ -52,7 +54,31 @@ PollNumPlayersRequestHandler.prototype.onNumPlayersChange = function() {
 		this.netPokerServer.getCashGameManager().off(CashGameManager.NUM_PLAYERS_CHANGE, this.onNumPlayersChange, this);
 		this.response.write(JSON.stringify(state));
 		this.response.end();
-		return;
+
+		if (this.timeoutId) {
+			clearTimeout(this.timeoutId);
+			this.timeoutId = null;
+		}
+	}
+}
+
+/**
+ * Timeout, send anyway.
+ * @method onTimeout
+ * @private
+ */
+PollNumPlayersRequestHandler.prototype.onTimeout = function() {
+	console.log("PollNumPlayersRequestHandler: timeout");
+
+	var state = this.getCurrentState();
+
+	this.netPokerServer.getCashGameManager().off(CashGameManager.NUM_PLAYERS_CHANGE, this.onNumPlayersChange, this);
+	this.response.write(JSON.stringify(state));
+	this.response.end();
+
+	if (this.timeoutId) {
+		clearTimeout(this.timeoutId);
+		this.timeoutId = null;
 	}
 }
 
@@ -66,6 +92,11 @@ PollNumPlayersRequestHandler.prototype.onRequestClose = function() {
 
 	this.netPokerServer.getCashGameManager().off(CashGameManager.NUM_PLAYERS_CHANGE, this.onNumPlayersChange, this);
 	this.response.end();
+
+	if (this.timeoutId) {
+		clearTimeout(this.timeoutId);
+		this.timeoutId = null;
+	}
 }
 
 /**
