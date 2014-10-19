@@ -91,7 +91,11 @@ ApiServer.prototype.getMethodByRequest = function(request) {
 	var urlParts = url.parse(request.url, true);
 
 	var method = urlParts.pathname;
-	method = method.replace("/", "");
+
+	while (method.indexOf("/")>=0)
+		method = method.replace("/", "");
+
+	console.log("method: "+method);
 
 	return method;
 }

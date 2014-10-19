@@ -12,7 +12,7 @@ describe("ApiServer", function() {
 			}
 		});
 
-		request("http://localhost:9999/testf?val=2", function(error, response, body) {
+		request("http://localhost:9999//testf?val=2", function(error, response, body) {
 			expect(response.statusCode).toEqual(200);
 
 			expect(JSON.parse(body)).toEqual({
