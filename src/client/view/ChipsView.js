@@ -6,20 +6,21 @@
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 var EventDispatcher = require("../../utils/EventDispatcher");
 
 /**
  * A chips view.
  * @class ChipsView
  */
-function ChipsView(viewConfig, showToolTip) {
+function ChipsView(viewConfig, resources, showToolTip) {
 	PIXI.DisplayObjectContainer.call(this);
 	this.targetPosition = null;
 
 	this.viewConfig = viewConfig;
+	this.resources = resources;
 
-	this.align = Resources.getInstance().Align.Left;
+	this.align = this.resources.Align.Left;
 
 	this.value = 0;
 
@@ -83,7 +84,6 @@ ChipsView.prototype.setValue = function(value) {
 	var stackClip = null;
 	var stackPos = 0;
 	var chipPos = 0;
-	var textures = Resources.getInstance().getTextures("chips");
 
 	for (i = 0; i < this.denominations.length; i++) {
 		var denomination = this.denominations[i];
@@ -98,7 +98,7 @@ ChipsView.prototype.setValue = function(value) {
 				this.holder.addChild(stackClip);
 				this.stackClips.push(stackClip);
 			}
-			var texture = textures[i % textures.length];
+			var texture = this.resources.getTexture("chip" + (i % 5));
 			var chip = new PIXI.Sprite(texture);
 			chip.position.y = chipPos;
 			chipPos -= 5;
@@ -118,7 +118,7 @@ ChipsView.prototype.setValue = function(value) {
 				var textField = new PIXI.Text(denominationString, {
 					font: "bold 12px Arial",
 					align: "center",
-					fill: Resources.getInstance().getValue("chipsColors")[i % Resources.getInstance().getValue("chipsColors").length]
+					fill: this.resources.getColor("chipsColor"+ (i % 5))
 				});
 				textField.position.x = (stackClip.width - textField.width) * 0.5;
 				textField.position.y = chipPos + 11;
@@ -133,19 +133,19 @@ ChipsView.prototype.setValue = function(value) {
 	}
 
 	switch (this.align) {
-		case Resources.getInstance().Align.Left:
+		case this.resources.Align.Left:
 			{
 				this.holder.x = 0;
 				break;
 			}
 
-		case Resources.getInstance().Align.Center:
+		case this.resources.Align.Center:
 			{
 				this.holder.x = -this.holder.width / 2;
 				break;
 			}
 
-		case Resources.getInstance().Align.Right:
+		case this.resources.Align.Right:
 			this.holder.x = -this.holder.width;
 	}
 }
@@ -201,24 +201,24 @@ ChipsView.prototype.onShowComplete = function() {
  */
 ChipsView.prototype.animateIn = function() {
 	var o = {
-		y: Resources.getInstance().getPoint("potPosition").y
+		y: this.resources.getPoint("potPosition").y
 	};
 
 	switch (this.align) {
-		case Resources.getInstance().Align.Left:
-			o.x = Resources.getInstance().getPoint("potPosition").x - this.width / 2;
+		case this.resources.Align.Left:
+			o.x = this.resources.getPoint("potPosition").x - this.width / 2;
 
-		case Resources.getInstance().Align.Center:
-			o.x = Resources.getInstance().getPoint("potPosition").x;
+		case this.resources.Align.Center:
+			o.x = this.resources.getPoint("potPosition").x;
 
-		case Resources.getInstance().Align.Right:
-			o.x = Resources.getInstance().getPoint("potPosition").x + this.width / 2;
+		case this.resources.Align.Right:
+			o.x = this.resources.getPoint("potPosition").x + this.width / 2;
 	}
 
 	var time = this.viewConfig.scaleAnimationTime(500);
 	var tween = new TWEEN.Tween(this)
 		.to({
-			y: Resources.getInstance().getPoint("potPosition").y,
+			y: this.resources.getPoint("potPosition").y,
 			x: o.x
 		}, time)
 		.onComplete(this.onInAnimationComplete.bind(this))
@@ -243,17 +243,17 @@ ChipsView.prototype.onInAnimationComplete = function() {
  * @method animateOut
  */
 ChipsView.prototype.animateOut = function() {
-	this.position.y = Resources.getInstance().getPoint("potPosition").y;
+	this.position.y = this.resources.getPoint("potPosition").y;
 
 	switch (this.align) {
-		case Resources.getInstance().Align.Left:
-			this.position.x = Resources.getInstance().getPoint("potPosition").x - this.width / 2;
+		case this.resources.Align.Left:
+			this.position.x = this.resources.getPoint("potPosition").x - this.width / 2;
 
-		case Resources.getInstance().Align.Center:
-			this.position.x = Resources.getInstance().getPoint("potPosition").x;
+		case this.resources.Align.Center:
+			this.position.x = this.resources.getPoint("potPosition").x;
 
-		case Resources.getInstance().Align.Right:
-			this.position.x = Resources.getInstance().getPoint("potPosition").x + this.width / 2;
+		case this.resources.Align.Right:
+			this.position.x = this.resources.getPoint("potPosition").x + this.width / 2;
 	}
 
 	var o = {

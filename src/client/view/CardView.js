@@ -6,24 +6,25 @@
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 var EventDispatcher = require("../../utils/EventDispatcher");
 
 /**
  * A card view.
  * @class CardView
  */
-function CardView(viewConfig) {
+function CardView(viewConfig, resources) {
 	PIXI.DisplayObjectContainer.call(this);
 	this.targetPosition = null;
 
 	this.viewConfig = viewConfig;
+	this.resources = resources;
 
 
-	this.frame = new PIXI.Sprite(Resources.getInstance().getTexture("cardFrame"));
+	this.frame = new PIXI.Sprite(this.resources.getTexture("cardFrame"));
 	this.addChild(this.frame);
 
-	this.suit = new PIXI.Sprite(Resources.getInstance().getTextures("suitSymbols")[0]);
+	this.suit = new PIXI.Sprite(this.resources.getTexture("suitSymbol" + 0));
 	this.suit.position.x = 8;
 	this.suit.position.y = 25;
 	this.addChild(this.suit);
@@ -37,7 +38,7 @@ function CardView(viewConfig) {
 	this.valueField.position.y = 5;
 	this.addChild(this.valueField);
 
-	this.back = new PIXI.Sprite(Resources.getInstance().getTexture("cardBack"));
+	this.back = new PIXI.Sprite(this.resources.getTexture("cardBack"));
 	this.addChild(this.back);
 
 
@@ -72,7 +73,7 @@ CardView.prototype.setCardData = function(cardData) {
 		this.valueField.updateTransform();
 		this.valueField.position.x = 17 - this.valueField.canvas.width / 2;
 
-		this.suit.setTexture(Resources.getInstance().getTextures("suitSymbols")[this.cardData.getSuitIndex()]);
+		this.suit.setTexture(this.resources.getTexture("suitSymbol" + this.cardData.getSuitIndex()));
 	}
 	this.back.visible = true;
 	this.frame.visible = false;

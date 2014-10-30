@@ -6,17 +6,19 @@
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 var EventDispatcher = require("../../utils/EventDispatcher");
 
 /**
  * A timer view
  * @class TimerView
  */
-function TimerView() {
+function TimerView(viewConfig, resources) {
 	PIXI.DisplayObjectContainer.call(this);
+
+	this.resources = resources
 	
-	this.timerClip = new PIXI.Sprite(Resources.getInstance().getTexture("timerBackground"));
+	this.timerClip = new PIXI.Sprite(this.resources.getTexture("timerBackground"));
 	this.addChild(this.timerClip);
 
 
@@ -51,8 +53,8 @@ TimerView.prototype.hide = function() {
 TimerView.prototype.show = function(seatIndex) {
 	
 	this.timerClip.visible = true;
-	this.timerClip.x = Resources.getInstance().getPoints("seatPositions")[seatIndex].x + 55;
-	this.timerClip.y = Resources.getInstance().getPoints("seatPositions")[seatIndex].y - 30;
+	this.timerClip.x = this.resources.getPoint("seatPosition"+seatIndex).x + 55;
+	this.timerClip.y = this.resources.getPoint("seatPosition"+seatIndex).y - 30;
 
 	this.stop();
 

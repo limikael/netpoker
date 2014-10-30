@@ -8,7 +8,7 @@ var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Button = require("../../utils/Button");
 var NineSlice = require("../../utils/NineSlice");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var Checkbox = require("../../utils/Checkbox");
 
@@ -16,9 +16,10 @@ var Checkbox = require("../../utils/Checkbox");
  * Checkboxes view
  * @class SettingsCheckbox
  */
-function SettingsCheckbox(id, string) {
+function SettingsCheckbox(resources, id, string) {
  	PIXI.DisplayObjectContainer.call(this);
 
+ 	this.resources = resources;
  	this.id = id;
 
  	var y = 0;
@@ -34,8 +35,8 @@ function SettingsCheckbox(id, string) {
  	this.label.position.y = y + 1;
  	this.addChild(this.label);
 
- 	var background = new PIXI.Sprite(Resources.getInstance().getTexture("checkboxBackground"));
- 	var tick = new PIXI.Sprite(Resources.getInstance().getTexture("checkboxTick"));
+ 	var background = new PIXI.Sprite(this.resources.getTexture("checkboxBackground"));
+ 	var tick = new PIXI.Sprite(this.resources.getTexture("checkboxTick"));
  	tick.x = 1;
 
  	this.checkbox = new Checkbox(background, tick);

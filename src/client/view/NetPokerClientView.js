@@ -6,7 +6,7 @@
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("../../utils/EventDispatcher");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 var SeatView = require("./SeatView");
 var CardView = require("./CardView");
 var ChatView = require("./ChatView");
@@ -26,48 +26,49 @@ var PresetButtonsView = require("../view/PresetButtonsView");
  * Net poker client view.
  * @class NetPokerClientView
  */
-function NetPokerClientView(viewConfig) {
+function NetPokerClientView(viewConfig, resources) {
 	PIXI.DisplayObjectContainer.call(this);
 
 	this.viewConfig = viewConfig;
+	this.resources = resources;
 	this.setupBackground();
 
 	this.tableContainer = new PIXI.DisplayObjectContainer();
 	this.addChild(this.tableContainer);
 
-	this.tableBackground = new PIXI.Sprite(Resources.getInstance().getTexture("tableBackground"));
+	this.tableBackground = new PIXI.Sprite(this.resources.getTexture("tableBackground"));
 	this.tableContainer.addChild(this.tableBackground);
 
 	this.setupSeats();
 	this.setupCommunityCards();
 
-	this.timerView = new TimerView(this.viewConfig);
+	this.timerView = new TimerView(this.viewConfig, this.resources);
 	this.tableContainer.addChild(this.timerView);
 
-	this.chatView = new ChatView(this.viewConfig);
+	this.chatView = new ChatView(this.viewConfig, this.resources);
 	this.addChild(this.chatView);
 
-	this.buttonsView = new ButtonsView(this.viewConfig);
+	this.buttonsView = new ButtonsView(this.viewConfig, this.resources);
 	this.addChild(this.buttonsView);
 
-	this.dealerButtonView = new DealerButtonView(this.viewConfig);
+	this.dealerButtonView = new DealerButtonView(this.viewConfig, this.resources);
 	this.addChild(this.dealerButtonView);
 
-	this.tableInfoView = new TableInfoView(this.viewConfig);
+	this.tableInfoView = new TableInfoView(this.viewConfig, this.resources);
 	this.addChild(this.tableInfoView);
 
-	this.potView = new PotView(this.viewConfig);
+	this.potView = new PotView(this.viewConfig, this.resources);
 	this.addChild(this.potView);
-	this.potView.position.x = Resources.getInstance().getPoint("potPosition").x;
-	this.potView.position.y = Resources.getInstance().getPoint("potPosition").y;
+	this.potView.position.x = this.resources.getPoint("potPosition").x;
+	this.potView.position.y = this.resources.getPoint("potPosition").y;
 
-	this.settingsView = new SettingsView(this.viewConfig);
+	this.settingsView = new SettingsView(this.viewConfig, this.resources);
 	this.addChild(this.settingsView);
 
-	this.dialogView = new DialogView(this.viewConfig);
+	this.dialogView = new DialogView(this.viewConfig, this.resources);
 	this.addChild(this.dialogView);
 
-	this.presetButtonsView = new PresetButtonsView(this.viewConfig);
+	this.presetButtonsView = new PresetButtonsView(this.viewConfig, this.resources);
 	this.addChild(this.presetButtonsView);
 
 	this.setupChips();
@@ -108,12 +109,12 @@ NetPokerClientView.prototype.setupBackground = function() {
 	s.height = 190;
 	this.addChild(s);
 
-	var s = new PIXI.Sprite(Resources.getInstance().getTexture("dividerLine"));
+	var s = new PIXI.Sprite(this.resources.getTexture("dividerLine"));
 	s.x = 345;
 	s.y = 540;
 	this.addChild(s);
 
-	var s = new PIXI.Sprite(Resources.getInstance().getTexture("dividerLine"));
+	var s = new PIXI.Sprite(this.resources.getTexture("dividerLine"));
 	s.x = 693;
 	s.y = 540;
 	this.addChild(s);
@@ -129,12 +130,12 @@ NetPokerClientView.prototype.setupSeats = function() {
 
 	this.seatViews = [];
 
-	for (i = 0; i < Resources.getInstance().getPoints("seatPositions").length; i++) {
-		var seatView = new SeatView(i);
+	for (i = 0; i < 10; i++) {
+		var seatView = new SeatView(this.resources, i);
 		var p = seatView.position;
 
 		for (j = 0; j < 2; j++) {
-			var c = new CardView(this.viewConfig);
+			var c = new CardView(this.viewConfig, this.resources);
 			c.hide();
 			c.setTargetPosition(Point(p.x + j * 30 - 60, p.y - 100));
 			this.tableContainer.addChild(c);
@@ -153,12 +154,12 @@ NetPokerClientView.prototype.setupSeats = function() {
  */
 NetPokerClientView.prototype.setupChips = function() {
 	var i;
-	for (i = 0; i < Resources.getInstance().getPoints("betPositions").length; i++) {
-		var chipsView = new ChipsView(this.viewConfig);
+	for (i = 0; i < 10; i++) {
+		var chipsView = new ChipsView(this.viewConfig, this.resources);
 		this.seatViews[i].setBetChipsView(chipsView);
 
-		chipsView.setAlignment(Resources.getInstance().getValue("betAlign")[i]);
-		chipsView.setTargetPosition(Resources.getInstance().getPoints("betPositions")[i]);
+		chipsView.setAlignment(this.resources.getValue("betAlign")[i]);
+		chipsView.setTargetPosition(this.resources.getPoint("betPosition"+i));
 		this.tableContainer.addChild(chipsView);
 	}
 }
@@ -190,10 +191,10 @@ NetPokerClientView.prototype.onSeatClick = function(e) {
 NetPokerClientView.prototype.setupCommunityCards = function() {
 	this.communityCards = [];
 
-	var p = Resources.getInstance().getPoint("communityCardsPosition");
+	var p = this.resources.getPoint("communityCardsPosition");
 
 	for (i = 0; i < 5; i++) {
-		var cardView = new CardView(this.viewConfig);
+		var cardView = new CardView(this.viewConfig, this.resources);
 		cardView.hide();
 		cardView.setTargetPosition(Point(p.x + i * 90, p.y));
 

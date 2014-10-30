@@ -6,7 +6,7 @@
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var ChipsView = require("./ChipsView");
 
@@ -14,9 +14,11 @@ var ChipsView = require("./ChipsView");
  * A pot view
  * @class PotView
  */
-function PotView() {
+function PotView(viewConfig, resources) {
 	PIXI.DisplayObjectContainer.call(this);
 	
+	this.viewConfig = viewConfig
+	this.resources = resources;
 	this.value = 0;
 
 	this.holder = new PIXI.DisplayObjectContainer();
@@ -42,7 +44,7 @@ PotView.prototype.setValues = function(values) {
 	var pos = 0;
 
 	for(var i = 0; i < values.length; i++) {
-		var chips = new ChipsView(false);
+		var chips = new ChipsView(this.viewConfig, this.resources, false);
 		this.stacks.push(chips);
 		this.holder.addChild(chips);
 		chips.setValue(values[i]);
