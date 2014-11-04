@@ -10,27 +10,29 @@ var Button = require("../../utils/Button");
 var Slider = require("../../utils/Slider");
 var NineSlice = require("../../utils/NineSlice");
 var BigButton = require("./BigButton");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 var RaiseShortcutButton = require("./RaiseShortcutButton");
 
 /**
  * Buttons
  * @class ButtonsView
  */
-function ButtonsView() {
+function ButtonsView(viewConfig, resources) {
 	PIXI.DisplayObjectContainer.call(this);
+
+	this.resources = resources;
 
 	this.buttonHolder = new PIXI.DisplayObjectContainer();
 	this.addChild(this.buttonHolder);
 
-	var sliderBackground = new NineSlice(Resources.getInstance().getTexture("sliderBackground"), 20, 0, 20, 0);
+	var sliderBackground = new NineSlice(this.resources.getTexture("sliderBackground"), 20, 0, 20, 0);
 	sliderBackground.setLocalSize(300,sliderBackground.height);
 	//sliderBackground.width = 300;
 
-	var knob = new PIXI.Sprite(Resources.getInstance().getTexture("sliderKnob"));
+	var knob = new PIXI.Sprite(this.resources.getTexture("sliderKnob"));
 
 	this.slider = new Slider(sliderBackground, knob);
-	var pos = Resources.getInstance().getPoint("bigButtonPosition");
+	var pos = this.resources.getPoint("bigButtonPosition");
 	this.slider.position.x = pos.x;
 	this.slider.position.y = pos.y - 35;
 	this.slider.addEventListener("change", this.onSliderChange, this);
@@ -43,15 +45,15 @@ function ButtonsView() {
 	this.buttons = [];
 
 	for (var i = 0; i < 3; i++) {
-		var button = new BigButton();
+		var button = new BigButton(this.resources);
 		button.on(Button.CLICK, this.onButtonClick, this);
 		button.position.x = i * 105;
 		this.buttonHolder.addChild(button);
 		this.buttons.push(button);
 	}
 
-	var raiseSprite = new PIXI.Sprite(Resources.getInstance().getTexture("sliderKnob"));
-	var arrowSprite = new PIXI.Sprite(Resources.getInstance().getTexture("upArrow"));
+	var raiseSprite = new PIXI.Sprite(this.resources.getTexture("sliderKnob"));
+	var arrowSprite = new PIXI.Sprite(this.resources.getTexture("upArrow"));
 	arrowSprite.position.x = (raiseSprite.width - arrowSprite.width)*0.5 - 0.5;
 	arrowSprite.position.y = (raiseSprite.height - arrowSprite.height)*0.5 - 2;
 	raiseSprite.addChild(arrowSprite);
@@ -83,7 +85,7 @@ ButtonsView.BUTTON_CLICK = "buttonClick";
 ButtonsView.prototype.createRaiseAmountMenu = function() {
 	this.raiseAmountMenu = new PIXI.DisplayObjectContainer();
 
-	this.raiseMenuBackground = new NineSlice(Resources.getInstance().getTexture("chatBackground"), 10, 10, 10, 10);
+	this.raiseMenuBackground = new NineSlice(this.resources.getTexture("chatBackground"), 10, 10, 10, 10);
 	this.raiseMenuBackground.position.x = 0;
 	this.raiseMenuBackground.position.y = 0;
 	this.raiseMenuBackground.width = 125;
@@ -106,7 +108,7 @@ ButtonsView.prototype.createRaiseAmountMenu = function() {
 	this.raiseShortcutButtons = new Array();
 
 	for(var i = 0; i < 6; i++) {
-		var b = new RaiseShortcutButton();
+		var b = new RaiseShortcutButton(this.resources);
 		b.addEventListener(Button.CLICK, this.onRaiseShortcutClick, this);
 		b.position.x = 10;
 		b.position.y = 35 + i*30;

@@ -8,7 +8,7 @@ var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Button = require("../../utils/Button");
 var NineSlice = require("../../utils/NineSlice");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var Checkbox = require("../../utils/Checkbox");
 
@@ -16,8 +16,8 @@ var Checkbox = require("../../utils/Checkbox");
  * Raise shortcut button
  * @class RaiseShortcutButton
  */
-function RaiseShortcutButton() {
-	var background = new NineSlice(Resources.getInstance().getTexture("buttonBackground"), 10, 5, 10, 5);
+function RaiseShortcutButton(resources) {
+	var background = new NineSlice(resources.getTexture("buttonBackground"), 10, 5, 10, 5);
 	background.setLocalSize(105, 25);
 	Button.call(this, background);
 

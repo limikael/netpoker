@@ -6,16 +6,18 @@
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Button = require("../../utils/Button");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 
 /**
  * Big button.
  * @class BigButton
  */
-function BigButton() {
+function BigButton(resources) {
 	Button.call(this);
 
-	this.bigButtonTexture = Resources.getInstance().getTexture("bigButton");
+	this.resources = resources;
+
+	this.bigButtonTexture = this.resources.getTexture("bigButton");
 
 	this.addChild(new PIXI.Sprite(this.bigButtonTexture));
 

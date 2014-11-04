@@ -6,7 +6,7 @@
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var NineSlice = require("../../utils/NineSlice");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 var DialogButton = require("./DialogButton");
 var ButtonData = require("../../proto/data/ButtonData");
 var PixiTextInput = require("PixiTextInput");
@@ -16,8 +16,10 @@ var EventDispatcher = require("../../utils/EventDispatcher");
  * Dialog view.
  * @class DialogView
  */
-function DialogView() {
+function DialogView(viewConfig, resources) {
 	PIXI.DisplayObjectContainer.call(this);
+
+	this.resources = resources;
 
 	var cover = new PIXI.Graphics();
 	cover.beginFill(0x000000, .5);
@@ -28,7 +30,7 @@ function DialogView() {
 	cover.hitArea = new PIXI.Rectangle(0, 0, 960, 720);
 	this.addChild(cover);
 
-	var b = new NineSlice(Resources.getInstance().getTexture("framePlate"), 10);
+	var b = new NineSlice(this.resources.getTexture("framePlate"), 10);
 	b.setLocalSize(480, 270);
 	b.position.x = 480 - 480 / 2;
 	b.position.y = 360 - 270 / 2;
@@ -49,7 +51,7 @@ function DialogView() {
 	this.buttons = [];
 
 	for (var i = 0; i < 2; i++) {
-		var b = new DialogButton();
+		var b = new DialogButton(this.resources);
 
 		b.position.x = i * 90;
 		b.on("click", this.onButtonClick, this);

@@ -8,7 +8,7 @@ var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Button = require("../../utils/Button");
 var NineSlice = require("../../utils/NineSlice");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var SettingsCheckbox = require("./SettingsCheckbox");
 var RaiseShortcutButton = require("./RaiseShortcutButton");
@@ -19,17 +19,18 @@ var ButtonData = require("../../proto/data/ButtonData");
  * A settings view
  * @class SettingsView
  */
-function SettingsView(viewConfig) {
+function SettingsView(viewConfig, resources) {
 	PIXI.DisplayObjectContainer.call(this);
 
 	this.viewConfig = viewConfig;
+	this.resources = resources;
 
 	var object = new PIXI.DisplayObjectContainer();
-	var bg = new NineSlice(Resources.getInstance().getTexture("chatBackground"), 10, 10, 10, 10);
+	var bg = new NineSlice(this.resources.getTexture("chatBackground"), 10, 10, 10, 10);
 	bg.setLocalSize(30, 30);
 	object.addChild(bg);
 
-	var sprite = new PIXI.Sprite(Resources.getInstance().getTexture("wrenchIcon"));
+	var sprite = new PIXI.Sprite(this.resources.getTexture("wrenchIcon"));
 	sprite.x = 5;
 	sprite.y = 5;
 	object.addChild(sprite);
@@ -42,7 +43,7 @@ function SettingsView(viewConfig) {
 
 	this.settingsMenu = new PIXI.DisplayObjectContainer();
 
-	var mbg = new NineSlice(Resources.getInstance().getTexture("chatBackground"), 10, 10, 10, 10);
+	var mbg = new NineSlice(this.resources.getTexture("chatBackground"), 10, 10, 10, 10);
 	mbg.setLocalSize(250, 100);
 	this.settingsMenu.addChild(mbg);
 
@@ -73,7 +74,7 @@ function SettingsView(viewConfig) {
 
 	this.settingsMenu.visible = false;
 
-	this.buyChipsButton = new RaiseShortcutButton();
+	this.buyChipsButton = new RaiseShortcutButton(this.resources);
 	this.buyChipsButton.addEventListener("click", this.onBuyChipsClick, this);
 	this.buyChipsButton.x = 700;
 	this.buyChipsButton.y = 635;
@@ -112,7 +113,7 @@ SettingsView.prototype.onBuyChipsClick = function(interaction_object) {
  * @method createMenuSetting
  */
 SettingsView.prototype.createMenuSetting = function(id, string, y, def) {
-	var setting = new SettingsCheckbox(id, string);
+	var setting = new SettingsCheckbox(this.resources, id, string);
 
 	setting.y = y;
 	setting.x = 16;
@@ -129,7 +130,7 @@ SettingsView.prototype.createMenuSetting = function(id, string, y, def) {
  * @method createSetting
  */
 SettingsView.prototype.createSetting = function(id, string, y) {
-	var setting = new SettingsCheckbox(id, string);
+	var setting = new SettingsCheckbox(this.resources, id, string);
 
 	setting.y = 545 + y;
 	setting.x = 700;

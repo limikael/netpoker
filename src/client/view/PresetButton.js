@@ -6,7 +6,7 @@
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var Checkbox = require("../../utils/Checkbox");
 var ButtonData = require("../../proto/data/ButtonData");
@@ -15,15 +15,17 @@ var ButtonData = require("../../proto/data/ButtonData");
  * A pot view
  * @class PresetButton
  */
-function PresetButton() {
+function PresetButton(resources) {
 	PIXI.DisplayObjectContainer.call(this);
 	
+	this.resources = resources;
+
 	this.id = null;
 	this.visible = false;
 	this.value = 0;
 
-	var b = new PIXI.Sprite(Resources.getInstance().getTexture("checkboxBackground"));
-	var t = new PIXI.Sprite(Resources.getInstance().getTexture("checkboxTick"));
+	var b = new PIXI.Sprite(this.resources.getTexture("checkboxBackground"));
+	var t = new PIXI.Sprite(this.resources.getTexture("checkboxTick"));
 	t.x = 1;
 
 	this.checkbox = new Checkbox(b,t);

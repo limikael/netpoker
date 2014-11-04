@@ -25,7 +25,12 @@
 			function run() {
 				var params=getQueryStringParams();
 
-				var netPokerClient=new NetPokerClient();
+				var resources = new Resources();
+
+				resources.addSource(DefaultSkin);
+
+				var netPokerClient = new NetPokerClient(resources);
+
 				netPokerClient.setUrl("ws://"+window.location.host+"/");
 				netPokerClient.setToken(params["token"]);
 
@@ -35,21 +40,7 @@
 				if (params["viewcase"])
 					netPokerClient.setViewCase(params["viewcase"]);
 
-				netPokerClient.setSkin({
-					textures: [
-						{
-							id: "componentsTexture2",
-							file: "components2.png"
-						},
-						{
-							id: "tableBackground2",
-							file: "table2.png"
-						}
-					],
-					tableBackground: "tableBackground2",
-					defaultTexture: "componentsTexture2"
-				});
-
+				
 				netPokerClient.run();
 			}
 		</script>

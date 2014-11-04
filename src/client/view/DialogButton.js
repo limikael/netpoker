@@ -6,16 +6,16 @@
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Button = require("../../utils/Button");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 
 /**
  * Dialog button.
  * @class DialogButton
  */
-function DialogButton() {
+function DialogButton(resources) {
 	Button.call(this);
 
-	this.buttonTexture = Resources.getInstance().getTexture("dialogButton");
+	this.buttonTexture = resources.getTexture("dialogButton");
 	this.addChild(new PIXI.Sprite(this.buttonTexture));
 
 	var style = {

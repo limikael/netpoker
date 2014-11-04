@@ -7,7 +7,7 @@ var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var NineSlice = require("../../utils/NineSlice");
 var Slider = require("../../utils/Slider");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 var PixiTextInput = require("PixiTextInput");
 var MouseOverGroup = require("../../utils/MouseOverGroup");
 var EventDispatcher = require("../../utils/EventDispatcher");
@@ -16,19 +16,20 @@ var EventDispatcher = require("../../utils/EventDispatcher");
  * Chat view.
  * @class ChatView
  */
-function ChatView() {
+function ChatView(viewConfig, resources) {
 	PIXI.DisplayObjectContainer.call(this);
 
+	this.resources = resources;
 	this.margin = 5;
 
 	
-	var chatPlate = new NineSlice(Resources.getInstance().getTexture("framePlate"), 10);
+	var chatPlate = new NineSlice(this.resources.getTexture("framePlate"), 10);
 	chatPlate.position.x = 10;
 	chatPlate.position.y = 540;
 	chatPlate.setLocalSize(330, 130);
 	this.addChild(chatPlate);
 
-	var s = new NineSlice(Resources.getInstance().getTexture("framePlate"), 10);
+	var s = new NineSlice(this.resources.getTexture("framePlate"), 10);
 	s.position.x = 10;
 	s.position.y = 675;
 	s.setLocalSize(330, 35);
@@ -95,9 +96,9 @@ function ChatView() {
 
 
 
-	var slideBack = new NineSlice(Resources.getInstance().getTexture("textScrollbarTrack"), 10, 0, 10, 0);
+	var slideBack = new NineSlice(this.resources.getTexture("textScrollbarTrack"), 10, 0, 10, 0);
 	slideBack.width = 107;
-	var slideKnob = new NineSlice(Resources.getInstance().getTexture("textScrollbarThumb"), 10, 0, 10, 0);
+	var slideKnob = new NineSlice(this.resources.getTexture("textScrollbarThumb"), 10, 0, 10, 0);
 	slideKnob.width = 30;
 
 

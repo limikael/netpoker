@@ -6,7 +6,7 @@
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 var EventDispatcher = require("../../utils/EventDispatcher");
 var PresetButton = require("./PresetButton");
 
@@ -14,14 +14,16 @@ var PresetButton = require("./PresetButton");
  * A pot view
  * @class PresetButtonsView
  */
-function PresetButtonsView() {
+function PresetButtonsView(viewConfig, resources) {
 	PIXI.DisplayObjectContainer.call(this);
 
+	this.resources = resources;
+
 	this.buttons = new Array();
-	var origin = Resources.getInstance().getPoint("bigButtonPosition");
+	var origin = this.resources.getPoint("bigButtonPosition");
 
 	for (var i = 0; i < 6; i++) {
-		var p = new PresetButton();
+		var p = new PresetButton(this.resources);
 		p.addEventListener(PresetButton.CHANGE, this.onPresetButtonChange, this);
 		p.x = origin.x + 30 + 140 * (i % 2);
 		p.y = origin.y + 35 * Math.floor(i / 2);

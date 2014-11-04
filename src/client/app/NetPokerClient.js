@@ -14,17 +14,19 @@ var ProtoConnection = require("../../proto/ProtoConnection");
 var LoadingScreen = require("../view/LoadingScreen");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 var InitMessage = require("../../proto/messages/InitMessage");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 var ViewConfig = require("../resources/ViewConfig");
 
 /**
  * Main entry point for client.
  * @class NetPokerClient
  */
-function NetPokerClient(domId) {
+function NetPokerClient(resources, domId) {
 	PixiApp.call(this, domId, 960, 720);
 
 	this.setContentAlign(ContentScaler.TOP);
+
+	this.resources = resources;
 
 	this.loadingScreen = new LoadingScreen();
 	this.addChild(this.loadingScreen);
@@ -75,7 +77,7 @@ NetPokerClient.prototype.setToken = function(token) {
  * @method setSkin
  */
 NetPokerClient.prototype.setSkin = function(skin) {
-	Resources.getInstance().skin = skin;
+	this.resources.addSource(skin);
 }
 
 /**
@@ -83,21 +85,29 @@ NetPokerClient.prototype.setSkin = function(skin) {
  * @method run
  */
 NetPokerClient.prototype.run = function() {
-
+/*
 	var assets = [
 		"table.png",
 		"components.png"
 	];
-	if ((Resources.getInstance().skin != null) && (Resources.getInstance().skin.textures != null)) {
-		for (var i = 0; i < Resources.getInstance().skin.textures.length; i++) {
-			assets.push(Resources.getInstance().skin.textures[i].file);
-			console.log("add to load list: " + Resources.getInstance().skin.textures[i].file);
+	if ((this.resources.skin != null) && (this.resources.skin.textures != null)) {
+		for (var i = 0; i < this.resources.skin.textures.length; i++) {
+			assets.push(this.resources.skin.textures[i].file);
+			console.log("add to load list: " + this.resources.skin.textures[i].file);
 		}
 	}
 
 	this.assetLoader = new PIXI.AssetLoader(assets);
 	this.assetLoader.addEventListener("onComplete", this.onAssetLoaderComplete.bind(this));
 	this.assetLoader.load();
+	*/
+
+	if(this.resources.isLoading()) {
+		this.resources.on(Resources.Loaded, this.onResourcesLoaded, this);
+	}
+	else {
+		this.onResourcesLoaded();
+	}
 }
 
 /**
@@ -105,10 +115,10 @@ NetPokerClient.prototype.run = function() {
  * @method onAssetLoaderComplete
  * @private
  */
-NetPokerClient.prototype.onAssetLoaderComplete = function() {
-	console.log("asset loader complete...");
+NetPokerClient.prototype.onResourcesLoaded = function() {
+	console.log("resources loaded complete...");
 
-	this.netPokerClientView = new NetPokerClientView(this.viewConfig);
+	this.netPokerClientView = new NetPokerClientView(this.viewConfig, this.resources);
 	this.addChildAt(this.netPokerClientView, 0);
 
 	this.netPokerClientController = new NetPokerClientController(this.netPokerClientView);

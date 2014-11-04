@@ -6,20 +6,21 @@
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
-var Resources = require("../resources/Resources");
+var Resources = require("resource-fiddle");
 var Button = require("../../utils/Button");
 
 /**
  * A seat view.
  * @class SeatView
  */
-function SeatView(seatIndex) {
+function SeatView(resources, seatIndex) {
 	Button.call(this);
 
 	this.pocketCards = [];
+	this.resources = resources;
 	this.seatIndex = seatIndex;
 
-	var seatTexture = Resources.getInstance().getTexture("seatPlate");
+	var seatTexture = this.resources.getTexture("seatPlate");
 	var seatSprite = new PIXI.Sprite(seatTexture);
 
 	seatSprite.position.x = -seatTexture.width / 2;
@@ -27,7 +28,7 @@ function SeatView(seatIndex) {
 
 	this.addChild(seatSprite);
 
-	var pos = Resources.getInstance().getPoints("seatPositions")[this.seatIndex];
+	var pos = this.resources.getPoint("seatPosition" + this.seatIndex);
 
 	this.position.x = pos.x;
 	this.position.y = pos.y;
