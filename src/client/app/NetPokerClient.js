@@ -18,17 +18,19 @@ var InitMessage = require("../../proto/messages/InitMessage");
 var Resources = require("resource-fiddle");
 var ViewConfig = require("../resources/ViewConfig");
 var url = require("url");
+var DefaultSkin = require("../resources/DefaultSkin");
 
 /**
  * Main entry point for client.
  * @class NetPokerClient
  */
-function NetPokerClient(resources, domId) {
+function NetPokerClient(domId) {
 	PixiApp.call(this, domId, 960, 720);
 
 	this.setContentAlign(ContentScaler.TOP);
 
-	this.resources = resources;
+	this.resources = new Resources();
+	this.resources.addSource(DefaultSkin);
 
 	this.loadingScreen = new LoadingScreen();
 	this.addChild(this.loadingScreen);

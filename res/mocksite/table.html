@@ -25,11 +25,12 @@
 			function run() {
 				var params=getQueryStringParams();
 
-				var resources = new Resources();
 
-				resources.addSource(DefaultSkin);
 
-				var netPokerClient = new NetPokerClient(resources);
+				var netPokerClient = new NetPokerClient();
+
+				if (params["resources"])
+					netPokerClient.setSkin(params["resources"]);
 
 				netPokerClient.setUrl("ws://"+window.location.host+"/");
 				netPokerClient.setToken(params["token"]);
