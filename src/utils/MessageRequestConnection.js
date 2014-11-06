@@ -38,6 +38,8 @@ MessageRequestConnection.prototype.connect = function(url) {
  */
 MessageRequestConnection.prototype.onRequestComplete=function(e, r, body) {
 	if (e) {
+		console.log("error in request connection");
+		console.log(e);
 		this.trigger(MessageRequestConnection.CLOSE);
 		return;
 	}

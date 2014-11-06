@@ -10,12 +10,14 @@ var ContentScaler = require("../../utils/ContentScaler");
 var NetPokerClientView = require("../view/NetPokerClientView");
 var NetPokerClientController = require("../controller/NetPokerClientController");
 var MessageWebSocketConnection = require("../../utils/MessageWebSocketConnection");
+var MessageRequestConnection = require("../../utils/MessageRequestConnection");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var LoadingScreen = require("../view/LoadingScreen");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 var InitMessage = require("../../proto/messages/InitMessage");
 var Resources = require("resource-fiddle");
 var ViewConfig = require("../resources/ViewConfig");
+var url = require("url");
 
 /**
  * Main entry point for client.
@@ -85,7 +87,7 @@ NetPokerClient.prototype.setSkin = function(skin) {
  * @method run
  */
 NetPokerClient.prototype.run = function() {
-/*
+	/*
 	var assets = [
 		"table.png",
 		"components.png"
@@ -102,10 +104,9 @@ NetPokerClient.prototype.run = function() {
 	this.assetLoader.load();
 	*/
 
-	if(this.resources.isLoading()) {
+	if (this.resources.isLoading()) {
 		this.resources.on(Resources.Loaded, this.onResourcesLoaded, this);
-	}
-	else {
+	} else {
 		this.onResourcesLoaded();
 	}
 }
@@ -136,11 +137,23 @@ NetPokerClient.prototype.connect = function() {
 		return;
 	}
 
-	this.connection = new MessageWebSocketConnection();
+	var parsedUrl = url.parse(this.url);
+
+	console.log("protocol: " + parsedUrl.protocol);
+
+	if (!parsedUrl.protocol ||
+		parsedUrl.protocol == "http:" ||
+		parsedUrl.protocol == "https:")
+		this.connection = new MessageRequestConnection();
+
+	else
+		this.connection = new MessageWebSocketConnection();
+
 	this.connection.on(MessageWebSocketConnection.CONNECT, this.onConnectionConnect, this);
 	this.connection.on(MessageWebSocketConnection.CLOSE, this.onConnectionClose, this);
-	this.connection.connect(this.url);
+
 	this.loadingScreen.show("CONNECTING");
+	this.connection.connect(this.url);
 }
 
 /**

@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<title>Testing</title>
+		<script src="netpokerclient.bundle.js"></script>
+		<script>
+			function run() {
+				var resources = new Resources();
+
+				resources.addSource(DefaultSkin);
+
+				var netPokerClient = new NetPokerClient(resources);
+
+				var u=window.location.href.substring(0,window.location.href.lastIndexOf("/")+1);
+				u+="../viewcases/animated_community_cards.json";
+				console.log("u="+u);
+				netPokerClient.setUrl(u);
+
+				netPokerClient.run();
+			}
+		</script>
+	</head>
+	<body onload="run();">
+	</body>
+</html>
