@@ -29,10 +29,7 @@
 				for (var i=0; i<ids.length; i++) {
 					var id=ids[i];
 
-
-					var resources = new Resources();
-					resources.addSource(DefaultSkin);
-					var netPokerClient = new NetPokerClient(resources, id);
+					var netPokerClient = new NetPokerClient(id);
 					netPokerClient.setUrl("ws://"+window.location.host+"/");
 					netPokerClient.setToken(id);
 
