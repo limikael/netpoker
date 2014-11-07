@@ -6,11 +6,7 @@
 			function run() {
 				var netPokerClient = new NetPokerClient();
 
-				var u=window.location.href.substring(0,window.location.href.lastIndexOf("/")+1);
-				u+="../viewcases/animated_community_cards.json";
-				console.log("u="+u);
-				netPokerClient.setUrl(u);
-
+				netPokerClient.setUrl("../viewcases/animated_community_cards.json");
 				netPokerClient.run();
 			}
 		</script>

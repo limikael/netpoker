@@ -22178,15 +22178,18 @@ NetPokerClient.prototype.connect = function() {
 
 	var parsedUrl = url.parse(this.url);
 
-	console.log("protocol: " + parsedUrl.protocol);
+	//console.log("protocol: " + parsedUrl.protocol);
 
-	if (!parsedUrl.protocol ||
-		parsedUrl.protocol == "http:" ||
-		parsedUrl.protocol == "https:")
+	if (!parsedUrl.protocol) {
+		var path = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
+		this.url = path + this.url;
 		this.connection = new MessageRequestConnection();
-
-	else
+	} else if (parsedUrl.protocol == "http:" ||
+		parsedUrl.protocol == "https:") {
+		this.connection = new MessageRequestConnection();
+	} else {
 		this.connection = new MessageWebSocketConnection();
+	}
 
 	this.connection.on(MessageWebSocketConnection.CONNECT, this.onConnectionConnect, this);
 	this.connection.on(MessageWebSocketConnection.CLOSE, this.onConnectionClose, this);
