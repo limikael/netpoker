@@ -22181,6 +22181,7 @@ NetPokerClient.prototype.connect = function() {
 	//console.log("protocol: " + parsedUrl.protocol);
 
 	if (!parsedUrl.protocol) {
+		console.log("window.location.href is: " + window.location.href);
 		var path = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
 		this.url = path + this.url;
 		this.connection = new MessageRequestConnection();
