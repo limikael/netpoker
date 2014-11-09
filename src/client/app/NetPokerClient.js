@@ -157,6 +157,8 @@ NetPokerClient.prototype.connect = function() {
 	this.connection.on(MessageWebSocketConnection.CONNECT, this.onConnectionConnect, this);
 	this.connection.on(MessageWebSocketConnection.CLOSE, this.onConnectionClose, this);
 
+	console.log("Connecting to: " + this.url);
+
 	this.loadingScreen.show("CONNECTING");
 	this.connection.connect(this.url);
 }
