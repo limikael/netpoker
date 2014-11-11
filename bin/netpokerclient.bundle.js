@@ -21113,8 +21113,10 @@ Resources.prototype.onLoaded = function(loader, loadIndex) {
 		for(var i = 0; i < this.sources.length; i++) {
 			for(var p in this.sources[i]) {
 				for(var o in this.sources[i][p]) {
-					if((this.sources[i][p][o] && (this.sources[i][p][o] != ""))||(!this.resources[p][o])){
-						this.resources[p][o] = this.sources[i][p][o];
+					if(o != "textures") {
+						if((this.sources[i][p][o] && (this.sources[i][p][o] != ""))||(!this.resources[p][o])){
+							this.resources[p][o] = this.sources[i][p][o];
+						}
 					}
 				}
 			}
