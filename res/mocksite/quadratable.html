@@ -29,7 +29,7 @@
 				for (var i=0; i<ids.length; i++) {
 					var id=ids[i];
 
-					var netPokerClient = new NetPokerClient(id);
+					var netPokerClient = new NetPokerClient();
 					netPokerClient.setUrl("ws://"+window.location.host+"/");
 					netPokerClient.setToken(id);
 
@@ -37,6 +37,8 @@
 						netPokerClient.setTableId(params["tableId"]);
 
 					netPokerClient.run();
+
+					netPokerClient.attachToElement(id);
 				}
 			}
 		</script>

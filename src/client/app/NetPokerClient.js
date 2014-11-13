@@ -5,8 +5,7 @@
 
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
-var PixiApp = require("../../utils/PixiApp");
-var ContentScaler = require("../../utils/ContentScaler");
+var PixiApp = require("pixiapp");
 var NetPokerClientView = require("../view/NetPokerClientView");
 var NetPokerClientController = require("../controller/NetPokerClientController");
 var MessageWebSocketConnection = require("../../utils/MessageWebSocketConnection");
@@ -24,10 +23,10 @@ var DefaultSkin = require("../resources/DefaultSkin");
  * Main entry point for client.
  * @class NetPokerClient
  */
-function NetPokerClient(domId) {
-	PixiApp.call(this, domId, 960, 720);
+function NetPokerClient() {
+	PixiApp.call(this, 960, 720);
 
-	this.setContentAlign(ContentScaler.TOP);
+	this.verticalAlign = PixiApp.TOP;
 
 	this.resources = new Resources();
 	this.resources.addSource(DefaultSkin);

@@ -26,11 +26,13 @@
     "jasmine-node": "^2.0.0-beta4",
     "jitsu": "^0.14.0",
     "pixi.js": "^1.6.1",
+    "pixiapp": "0.0.2",
     "pixitextinput": "git+https://github.com/limikael/pixitextinput",
-    "resource-fiddle": "git+https://github.com/ullabrittandersson/resource-fiddle",
     "qsub": "0.0.5",
+    "resource-fiddle": "git+https://github.com/ullabrittandersson/resource-fiddle",
     "serve-static": "^1.6.1",
     "tween.js": "^0.14.0",
+    "yaed": "^1.0.0",
     "yuidocjs": "^0.3.50"
   },
   "engines": {
