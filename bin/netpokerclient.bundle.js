@@ -15232,15 +15232,16 @@ PixiApp.prototype.attachToElement = function(element) {
 	if (this.attachedToElement)
 		throw new Error("Already attached!");
 
-	if (!element)
-		throw new Error("That's not an element!");
-
 	if (typeof element == "string")
 		element = document.getElementById(element);
 
-	console.log("attaching to element, w=" + element.clientWidth + " h=" + element.clientHeight);
+	if (!element)
+		throw new Error("That's not an element!");
+
+	console.log("** attaching to element, w=" + element.clientWidth + " h=" + element.clientHeight);
 
 	this.containerElement = element;
+	this.attachedToElement = true;
 
 	var view;
 
@@ -15278,6 +15279,8 @@ PixiApp.prototype.attachToElement = function(element) {
 
 	window.requestAnimationFrame(this.onAnimationFrame.bind(this));
 	this.trigger("resize");
+
+	console.log("attached...");
 }
 
 /**
@@ -15477,9 +15480,7 @@ if (typeof module !== 'undefined') {
 }
 
 }).call(this);
-},{"pixi.js":65}],65:[function(require,module,exports){
-module.exports=require(63)
-},{"/Users/mikael/Documents/repo/netpoker/node_modules/pixi.js/bin/pixi.js":63}],66:[function(require,module,exports){
+},{"pixi.js":63}],65:[function(require,module,exports){
 (function (process){
 // Copyright 2010-2012 Mikeal Rogers
 //
@@ -15649,7 +15650,7 @@ request.cookie = function (str) {
 }
 
 }).call(this,require('_process'))
-},{"./lib/cookies":67,"./lib/copy":68,"./request":84,"_process":42,"util":62}],67:[function(require,module,exports){
+},{"./lib/cookies":66,"./lib/copy":67,"./request":83,"_process":42,"util":62}],66:[function(require,module,exports){
 var optional = require('./optional')
   , tough = optional('tough-cookie')
   , Cookie = tough && tough.Cookie
@@ -15691,7 +15692,7 @@ exports.jar = function() {
   return new RequestJar();
 };
 
-},{"./optional":71}],68:[function(require,module,exports){
+},{"./optional":70}],67:[function(require,module,exports){
 module.exports =
 function copy (obj) {
   var o = {}
@@ -15700,7 +15701,7 @@ function copy (obj) {
   })
   return o
 }
-},{}],69:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 (function (process){
 var util = require('util')
 
@@ -15711,7 +15712,7 @@ function debug () {
 }
 
 }).call(this,require('_process'))
-},{"_process":42,"util":62}],70:[function(require,module,exports){
+},{"_process":42,"util":62}],69:[function(require,module,exports){
 // Safe toJSON
 module.exports =
 function getSafe (self, uuid) {
@@ -15746,14 +15747,14 @@ function getSafe (self, uuid) {
 
   return safe
 }
-},{}],71:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 module.exports = function(moduleName) {
   try {
     return module.parent.require(moduleName);
   } catch (e) {}
 };
 
-},{}],72:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 module.exports = ForeverAgent
 ForeverAgent.SSL = ForeverAgentSSL
 
@@ -15874,7 +15875,7 @@ function createConnectionSSL (port, host, options) {
   return tls.connect(options);
 }
 
-},{"http":35,"https":39,"net":3,"tls":3,"util":62}],73:[function(require,module,exports){
+},{"http":35,"https":39,"net":3,"tls":3,"util":62}],72:[function(require,module,exports){
 module.exports = stringify;
 
 function getSerialize (fn, decycle) {
@@ -15915,7 +15916,7 @@ function stringify(obj, fn, spaces, decycle) {
 
 stringify.getSerialize = getSerialize;
 
-},{}],74:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 module.exports={
   "text/jade": [
     "jade"
@@ -15944,7 +15945,7 @@ module.exports={
   ]
 }
 
-},{}],75:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 
 // types[extension] = type
 exports.types = Object.create(null)
@@ -16021,7 +16022,7 @@ function define(json) {
   })
 }
 
-},{"./custom.json":74,"./mime.json":76,"./node.json":77}],76:[function(require,module,exports){
+},{"./custom.json":73,"./mime.json":75,"./node.json":76}],75:[function(require,module,exports){
 module.exports={
   "application/1d-interleaved-parityfec": [],
   "application/3gpp-ims+xml": [],
@@ -19340,7 +19341,7 @@ module.exports={
   ]
 }
 
-},{}],77:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 module.exports={
   "text/vtt": [
     "vtt"
@@ -19397,7 +19398,7 @@ module.exports={
   ]
 }
 
-},{}],78:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 (function (Buffer){
 //     uuid.js
 //
@@ -19646,10 +19647,10 @@ module.exports={
 }).call(this);
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":18,"crypto":24}],79:[function(require,module,exports){
+},{"buffer":18,"crypto":24}],78:[function(require,module,exports){
 module.exports = require('./lib');
 
-},{"./lib":80}],80:[function(require,module,exports){
+},{"./lib":79}],79:[function(require,module,exports){
 // Load modules
 
 var Stringify = require('./stringify');
@@ -19666,7 +19667,7 @@ module.exports = {
     parse: Parse
 };
 
-},{"./parse":81,"./stringify":82}],81:[function(require,module,exports){
+},{"./parse":80,"./stringify":81}],80:[function(require,module,exports){
 // Load modules
 
 var Utils = require('./utils');
@@ -19819,7 +19820,7 @@ module.exports = function (str, depth) {
 
 
 
-},{"./utils":83}],82:[function(require,module,exports){
+},{"./utils":82}],81:[function(require,module,exports){
 (function (Buffer){
 // Load modules
 
@@ -19875,7 +19876,7 @@ module.exports = function (obj) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":18}],83:[function(require,module,exports){
+},{"buffer":18}],82:[function(require,module,exports){
 (function (Buffer){
 // Load modules
 
@@ -20010,7 +20011,7 @@ exports.compact = function (obj) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":18}],84:[function(require,module,exports){
+},{"buffer":18}],83:[function(require,module,exports){
 (function (process,Buffer){
 var optional = require('./lib/optional')
   , http = require('http')
@@ -21442,7 +21443,7 @@ Request.prototype.toJSON = toJSON
 module.exports = Request
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./lib/cookies":67,"./lib/copy":68,"./lib/debug":69,"./lib/getSafe":70,"./lib/optional":71,"_process":42,"buffer":18,"crypto":24,"forever-agent":72,"http":35,"json-stringify-safe":73,"mime-types":75,"net":3,"node-uuid":78,"qs":79,"querystring":46,"stream":59,"url":60,"util":62,"zlib":17}],85:[function(require,module,exports){
+},{"./lib/cookies":66,"./lib/copy":67,"./lib/debug":68,"./lib/getSafe":69,"./lib/optional":70,"_process":42,"buffer":18,"crypto":24,"forever-agent":71,"http":35,"json-stringify-safe":72,"mime-types":74,"net":3,"node-uuid":77,"qs":78,"querystring":46,"stream":59,"url":60,"util":62,"zlib":17}],84:[function(require,module,exports){
 "use strict";
 
 /**
@@ -21585,7 +21586,7 @@ EventDispatcher.init = function(cls) {
 }
 
 module.exports = EventDispatcher;
-},{}],86:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 
 
 var PIXI = require("pixi.js");
@@ -22041,7 +22042,7 @@ Resources.prototype.getTextureFromSkin = function(textureid) {
 
 
 module.exports = Resources;
-},{"../client/js/utils/EventDispatcher":85,"pixi.js":63}],87:[function(require,module,exports){
+},{"../client/js/utils/EventDispatcher":84,"pixi.js":63}],86:[function(require,module,exports){
 /**
  * Tween.js - Licensed under the MIT license
  * https://github.com/sole/tween.js
@@ -22799,7 +22800,7 @@ TWEEN.Interpolation = {
 };
 
 module.exports=TWEEN;
-},{}],88:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23014,7 +23015,7 @@ NetPokerClient.prototype.onConnectionClose = function() {
 }
 
 module.exports = NetPokerClient;
-},{"../../proto/ProtoConnection":116,"../../proto/messages/InitMessage":133,"../../proto/messages/StateCompleteMessage":144,"../../utils/FunctionUtil":154,"../../utils/MessageRequestConnection":156,"../../utils/MessageWebSocketConnection":157,"../controller/NetPokerClientController":92,"../resources/DefaultSkin":95,"../resources/ViewConfig":96,"../view/LoadingScreen":105,"../view/NetPokerClientView":106,"pixi.js":63,"pixiapp":64,"resource-fiddle":86,"url":60}],89:[function(require,module,exports){
+},{"../../proto/ProtoConnection":115,"../../proto/messages/InitMessage":132,"../../proto/messages/StateCompleteMessage":143,"../../utils/FunctionUtil":153,"../../utils/MessageRequestConnection":155,"../../utils/MessageWebSocketConnection":156,"../controller/NetPokerClientController":91,"../resources/DefaultSkin":94,"../resources/ViewConfig":95,"../view/LoadingScreen":104,"../view/NetPokerClientView":105,"pixi.js":63,"pixiapp":64,"resource-fiddle":85,"url":60}],88:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23145,7 +23146,7 @@ InterfaceController.prototype.onCheckboxMessage = function(m) {
 }
 
 module.exports = InterfaceController;
-},{"../../proto/messages/ButtonsMessage":123,"../../proto/messages/ChatMessage":124,"../../proto/messages/CheckboxMessage":125,"../../proto/messages/HandInfoMessage":132,"../../proto/messages/InterfaceStateMessage":134,"../../proto/messages/PresetButtonsMessage":140,"../../proto/messages/ShowDialogMessage":143,"../../proto/messages/TableInfoMessage":147}],90:[function(require,module,exports){
+},{"../../proto/messages/ButtonsMessage":122,"../../proto/messages/ChatMessage":123,"../../proto/messages/CheckboxMessage":124,"../../proto/messages/HandInfoMessage":131,"../../proto/messages/InterfaceStateMessage":133,"../../proto/messages/PresetButtonsMessage":139,"../../proto/messages/ShowDialogMessage":142,"../../proto/messages/TableInfoMessage":146}],89:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23219,7 +23220,7 @@ MessageSequenceItem.prototype.onTargetComplete = function() {
 }
 
 module.exports = MessageSequenceItem;
-},{"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"../../utils/Sequencer":161}],91:[function(require,module,exports){
+},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/Sequencer":160}],90:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23294,7 +23295,7 @@ MessageSequencer.prototype.waitFor = function(target, event) {
 }
 
 module.exports = MessageSequencer;
-},{"../../utils/EventDispatcher":153,"../../utils/Sequencer":161,"./MessageSequenceItem":90}],92:[function(require,module,exports){
+},{"../../utils/EventDispatcher":152,"../../utils/Sequencer":160,"./MessageSequenceItem":89}],91:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23444,7 +23445,7 @@ NetPokerClientController.prototype.onCheckboxChange = function(ev) {
 }
 
 module.exports = NetPokerClientController;
-},{"../../proto/ProtoConnection":116,"../../proto/data/ButtonData":117,"../../proto/messages/ButtonClickMessage":122,"../../proto/messages/ChatMessage":124,"../../proto/messages/CheckboxMessage":125,"../../proto/messages/PresetButtonClickMessage":139,"../../proto/messages/SeatClickMessage":141,"../../utils/FunctionUtil":154,"../view/ButtonsView":98,"../view/DialogView":104,"../view/NetPokerClientView":106,"../view/PresetButtonsView":109,"../view/SettingsView":113,"./InterfaceController":89,"./MessageSequencer":91,"./TableController":93}],93:[function(require,module,exports){
+},{"../../proto/ProtoConnection":115,"../../proto/data/ButtonData":116,"../../proto/messages/ButtonClickMessage":121,"../../proto/messages/ChatMessage":123,"../../proto/messages/CheckboxMessage":124,"../../proto/messages/PresetButtonClickMessage":138,"../../proto/messages/SeatClickMessage":140,"../../utils/FunctionUtil":153,"../view/ButtonsView":97,"../view/DialogView":103,"../view/NetPokerClientView":105,"../view/PresetButtonsView":108,"../view/SettingsView":112,"./InterfaceController":88,"./MessageSequencer":90,"./TableController":92}],92:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23701,12 +23702,12 @@ TableController.prototype.onPayOut = function(m) {
 
 
 module.exports = TableController;
-},{"../../proto/messages/ActionMessage":119,"../../proto/messages/BetMessage":120,"../../proto/messages/BetsToPotMessage":121,"../../proto/messages/ClearMessage":126,"../../proto/messages/CommunityCardsMessage":127,"../../proto/messages/DealerButtonMessage":128,"../../proto/messages/DelayMessage":129,"../../proto/messages/FoldCardsMessage":131,"../../proto/messages/PayOutMessage":135,"../../proto/messages/PocketCardsMessage":136,"../../proto/messages/PotMessage":137,"../../proto/messages/SeatInfoMessage":142,"../../proto/messages/TimerMessage":149,"../../utils/EventDispatcher":153}],94:[function(require,module,exports){
+},{"../../proto/messages/ActionMessage":118,"../../proto/messages/BetMessage":119,"../../proto/messages/BetsToPotMessage":120,"../../proto/messages/ClearMessage":125,"../../proto/messages/CommunityCardsMessage":126,"../../proto/messages/DealerButtonMessage":127,"../../proto/messages/DelayMessage":128,"../../proto/messages/FoldCardsMessage":130,"../../proto/messages/PayOutMessage":134,"../../proto/messages/PocketCardsMessage":135,"../../proto/messages/PotMessage":136,"../../proto/messages/SeatInfoMessage":141,"../../proto/messages/TimerMessage":148,"../../utils/EventDispatcher":152}],93:[function(require,module,exports){
 NetPokerClient = require("./app/NetPokerClient");
 
 //var netPokerClient = new NetPokerClient();
 
-},{"./app/NetPokerClient":88}],95:[function(require,module,exports){
+},{"./app/NetPokerClient":87}],94:[function(require,module,exports){
 module.exports = {
 	graphics: {
 		textures: [
@@ -23912,7 +23913,7 @@ module.exports = {
 	,*/
 
 }
-},{}],96:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23954,7 +23955,7 @@ ViewConfig.prototype.scaleAnimationTime = function(millis) {
 }
 
 module.exports = ViewConfig;
-},{}],97:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24030,7 +24031,7 @@ BigButton.prototype.setValue = function(value) {
 }
 
 module.exports = BigButton;
-},{"../../utils/Button":151,"../../utils/FunctionUtil":154,"pixi.js":63,"resource-fiddle":86}],98:[function(require,module,exports){
+},{"../../utils/Button":150,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85}],97:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24302,7 +24303,7 @@ ButtonsView.prototype.onButtonClick = function(e) {
 }
 
 module.exports = ButtonsView;
-},{"../../utils/Button":151,"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"../../utils/NineSlice":159,"../../utils/Slider":162,"./BigButton":97,"./RaiseShortcutButton":110,"pixi.js":63,"resource-fiddle":86}],99:[function(require,module,exports){
+},{"../../utils/Button":150,"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/NineSlice":158,"../../utils/Slider":161,"./BigButton":96,"./RaiseShortcutButton":109,"pixi.js":63,"resource-fiddle":85}],98:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24500,7 +24501,7 @@ CardView.prototype.onFoldComplete = function() {
 }
 
 module.exports = CardView;
-},{"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"pixi.js":63,"resource-fiddle":86,"tween.js":87}],100:[function(require,module,exports){
+},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],99:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24734,7 +24735,7 @@ ChatView.prototype.onChatFieldMouseMove = function(interaction_object) {
 
 module.exports = ChatView;
 
-},{"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"../../utils/MouseOverGroup":158,"../../utils/NineSlice":159,"../../utils/Slider":162,"PixiTextInput":1,"pixi.js":63,"resource-fiddle":86}],101:[function(require,module,exports){
+},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/MouseOverGroup":157,"../../utils/NineSlice":158,"../../utils/Slider":161,"PixiTextInput":1,"pixi.js":63,"resource-fiddle":85}],100:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25039,7 +25040,7 @@ ChipsView.prototype.onOutWaitAnimationComplete = function() {
 }
 
 module.exports = ChipsView;
-},{"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"pixi.js":63,"resource-fiddle":86,"tween.js":87}],102:[function(require,module,exports){
+},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],101:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25136,7 +25137,7 @@ DealerButtonView.prototype.show = function(seatIndex, animate) {
 }
 
 module.exports = DealerButtonView;
-},{"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"pixi.js":63,"resource-fiddle":86,"tween.js":87}],103:[function(require,module,exports){
+},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],102:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25182,7 +25183,7 @@ DialogButton.prototype.setText = function(text) {
 }
 
 module.exports = DialogButton;
-},{"../../utils/Button":151,"../../utils/FunctionUtil":154,"pixi.js":63,"resource-fiddle":86}],104:[function(require,module,exports){
+},{"../../utils/Button":150,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85}],103:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25337,7 +25338,7 @@ DialogView.prototype.onButtonClick = function(e) {
 }
 
 module.exports = DialogView;
-},{"../../proto/data/ButtonData":117,"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"../../utils/NineSlice":159,"./DialogButton":103,"PixiTextInput":1,"pixi.js":63,"resource-fiddle":86}],105:[function(require,module,exports){
+},{"../../proto/data/ButtonData":116,"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/NineSlice":158,"./DialogButton":102,"PixiTextInput":1,"pixi.js":63,"resource-fiddle":85}],104:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25399,7 +25400,7 @@ LoadingScreen.prototype.hide = function() {
 }
 
 module.exports = LoadingScreen;
-},{"../../utils/FunctionUtil":154,"../../utils/Gradient":155,"pixi.js":63}],106:[function(require,module,exports){
+},{"../../utils/FunctionUtil":153,"../../utils/Gradient":154,"pixi.js":63}],105:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25697,7 +25698,7 @@ NetPokerClientView.prototype.clear = function() {
 }
 
 module.exports = NetPokerClientView;
-},{"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"../../utils/Gradient":155,"../../utils/Point":160,"../view/PresetButtonsView":109,"../view/SettingsView":113,"../view/TableInfoView":114,"./ButtonsView":98,"./CardView":99,"./ChatView":100,"./ChipsView":101,"./DealerButtonView":102,"./DialogView":104,"./PotView":107,"./SeatView":111,"./TimerView":115,"pixi.js":63,"resource-fiddle":86}],107:[function(require,module,exports){
+},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/Gradient":154,"../../utils/Point":159,"../view/PresetButtonsView":108,"../view/SettingsView":112,"../view/TableInfoView":113,"./ButtonsView":97,"./CardView":98,"./ChatView":99,"./ChipsView":100,"./DealerButtonView":101,"./DialogView":103,"./PotView":106,"./SeatView":110,"./TimerView":114,"pixi.js":63,"resource-fiddle":85}],106:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25784,7 +25785,7 @@ PotView.prototype.show = function() {
 }
 
 module.exports = PotView;
-},{"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"./ChipsView":101,"pixi.js":63,"resource-fiddle":86,"tween.js":87}],108:[function(require,module,exports){
+},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"./ChipsView":100,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],107:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25910,7 +25911,7 @@ PresetButton.prototype.getValue = function() {
 }
 
 module.exports = PresetButton;
-},{"../../proto/data/ButtonData":117,"../../utils/Checkbox":152,"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"pixi.js":63,"resource-fiddle":86,"tween.js":87}],109:[function(require,module,exports){
+},{"../../proto/data/ButtonData":116,"../../utils/Checkbox":151,"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],108:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26024,7 +26025,7 @@ PresetButtonsView.prototype.setCurrent = function(id) {
 }
 
 module.exports = PresetButtonsView;
-},{"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"./PresetButton":108,"pixi.js":63,"resource-fiddle":86,"tween.js":87}],110:[function(require,module,exports){
+},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"./PresetButton":107,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],109:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26090,7 +26091,7 @@ RaiseShortcutButton.prototype.setEnabled = function(value) {
 }
 
 module.exports = RaiseShortcutButton;
-},{"../../utils/Button":151,"../../utils/Checkbox":152,"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"../../utils/NineSlice":159,"pixi.js":63,"resource-fiddle":86,"tween.js":87}],111:[function(require,module,exports){
+},{"../../utils/Button":150,"../../utils/Checkbox":151,"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/NineSlice":158,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],110:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26304,7 +26305,7 @@ SeatView.prototype.clear = function() {
 }
 
 module.exports = SeatView;
-},{"../../utils/Button":151,"../../utils/FunctionUtil":154,"pixi.js":63,"resource-fiddle":86,"tween.js":87}],112:[function(require,module,exports){
+},{"../../utils/Button":150,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],111:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26382,7 +26383,7 @@ SettingsCheckbox.prototype.setChecked = function(checked) {
 }
 
 module.exports = SettingsCheckbox;
-},{"../../utils/Button":151,"../../utils/Checkbox":152,"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"../../utils/NineSlice":159,"pixi.js":63,"resource-fiddle":86,"tween.js":87}],113:[function(require,module,exports){
+},{"../../utils/Button":150,"../../utils/Checkbox":151,"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/NineSlice":158,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],112:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26640,7 +26641,7 @@ SettingsView.prototype.setCheckboxChecked = function(id, checked) {
 }
 
 module.exports = SettingsView;
-},{"../../proto/data/ButtonData":117,"../../proto/messages/CheckboxMessage":125,"../../utils/Button":151,"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"../../utils/NineSlice":159,"./RaiseShortcutButton":110,"./SettingsCheckbox":112,"pixi.js":63,"resource-fiddle":86,"tween.js":87}],114:[function(require,module,exports){
+},{"../../proto/data/ButtonData":116,"../../proto/messages/CheckboxMessage":124,"../../utils/Button":150,"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/NineSlice":158,"./RaiseShortcutButton":109,"./SettingsCheckbox":111,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],113:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26727,7 +26728,7 @@ TableInfoView.prototype.clear = function() {
 }
 
 module.exports = TableInfoView;
-},{"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"pixi.js":63}],115:[function(require,module,exports){
+},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"pixi.js":63}],114:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26878,7 +26879,7 @@ TimerView.prototype.showPercent = function(value) {
 }
 
 module.exports = TimerView;
-},{"../../utils/EventDispatcher":153,"../../utils/FunctionUtil":154,"pixi.js":63,"resource-fiddle":86,"tween.js":87}],116:[function(require,module,exports){
+},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],115:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27138,7 +27139,7 @@ ProtoConnection.prototype.toString = function() {
 }
 
 module.exports = ProtoConnection;
-},{"../utils/EventDispatcher":153,"../utils/FunctionUtil":154,"./messages/ActionMessage":119,"./messages/BetMessage":120,"./messages/BetsToPotMessage":121,"./messages/ButtonClickMessage":122,"./messages/ButtonsMessage":123,"./messages/ChatMessage":124,"./messages/CheckboxMessage":125,"./messages/ClearMessage":126,"./messages/CommunityCardsMessage":127,"./messages/DealerButtonMessage":128,"./messages/DelayMessage":129,"./messages/FadeTableMessage":130,"./messages/FoldCardsMessage":131,"./messages/HandInfoMessage":132,"./messages/InitMessage":133,"./messages/InterfaceStateMessage":134,"./messages/PayOutMessage":135,"./messages/PocketCardsMessage":136,"./messages/PotMessage":137,"./messages/PreTournamentInfoMessage":138,"./messages/PresetButtonClickMessage":139,"./messages/PresetButtonsMessage":140,"./messages/SeatClickMessage":141,"./messages/SeatInfoMessage":142,"./messages/ShowDialogMessage":143,"./messages/StateCompleteMessage":144,"./messages/TableButtonClickMessage":145,"./messages/TableButtonsMessage":146,"./messages/TableInfoMessage":147,"./messages/TestCaseRequestMessage":148,"./messages/TimerMessage":149,"./messages/TournamentResultMessage":150}],117:[function(require,module,exports){
+},{"../utils/EventDispatcher":152,"../utils/FunctionUtil":153,"./messages/ActionMessage":118,"./messages/BetMessage":119,"./messages/BetsToPotMessage":120,"./messages/ButtonClickMessage":121,"./messages/ButtonsMessage":122,"./messages/ChatMessage":123,"./messages/CheckboxMessage":124,"./messages/ClearMessage":125,"./messages/CommunityCardsMessage":126,"./messages/DealerButtonMessage":127,"./messages/DelayMessage":128,"./messages/FadeTableMessage":129,"./messages/FoldCardsMessage":130,"./messages/HandInfoMessage":131,"./messages/InitMessage":132,"./messages/InterfaceStateMessage":133,"./messages/PayOutMessage":134,"./messages/PocketCardsMessage":135,"./messages/PotMessage":136,"./messages/PreTournamentInfoMessage":137,"./messages/PresetButtonClickMessage":138,"./messages/PresetButtonsMessage":139,"./messages/SeatClickMessage":140,"./messages/SeatInfoMessage":141,"./messages/ShowDialogMessage":142,"./messages/StateCompleteMessage":143,"./messages/TableButtonClickMessage":144,"./messages/TableButtonsMessage":145,"./messages/TableInfoMessage":146,"./messages/TestCaseRequestMessage":147,"./messages/TimerMessage":148,"./messages/TournamentResultMessage":149}],116:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27276,7 +27277,7 @@ ButtonData.prototype.toString = function() {
 }
 
 module.exports = ButtonData;
-},{}],118:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27462,7 +27463,7 @@ CardData.fromString = function(s) {
 }
 
 module.exports = CardData;
-},{}],119:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27524,7 +27525,7 @@ ActionMessage.prototype.serialize = function() {
 }
 
 module.exports = ActionMessage;
-},{}],120:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27578,7 +27579,7 @@ BetMessage.prototype.serialize = function() {
 }
 
 module.exports = BetMessage;
-},{}],121:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27609,7 +27610,7 @@ BetsToPotMessage.prototype.serialize = function() {
 }
 
 module.exports = BetsToPotMessage;
-},{}],122:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27666,7 +27667,7 @@ ButtonClickMessage.prototype.serialize = function() {
 }
 
 module.exports = ButtonClickMessage;
-},{}],123:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27744,7 +27745,7 @@ ButtonsMessage.prototype.serialize = function() {
 }
 
 module.exports = ButtonsMessage;
-},{"../data/ButtonData":117}],124:[function(require,module,exports){
+},{"../data/ButtonData":116}],123:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27798,7 +27799,7 @@ ChatMessage.prototype.serialize = function() {
 }
 
 module.exports = ChatMessage;
-},{}],125:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27856,7 +27857,7 @@ CheckboxMessage.prototype.serialize = function() {
 }
 
 module.exports = CheckboxMessage;
-},{}],126:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27906,7 +27907,7 @@ ClearMessage.prototype.serialize = function() {
 }
 
 module.exports = ClearMessage;
-},{}],127:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28002,7 +28003,7 @@ CommunityCardsMessage.prototype.serialize = function() {
 }
 
 module.exports = CommunityCardsMessage;
-},{"../data/CardData":118}],128:[function(require,module,exports){
+},{"../data/CardData":117}],127:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28055,7 +28056,7 @@ DealerButtonMessage.prototype.serialize = function() {
 }
 
 module.exports = DealerButtonMessage;
-},{}],129:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28097,7 +28098,7 @@ DelayMessage.prototype.serialize = function() {
 }
 
 module.exports = DelayMessage;
-},{}],130:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28151,7 +28152,7 @@ FadeTableMessage.prototype.serialize = function() {
 }
 
 module.exports = FadeTableMessage;
-},{}],131:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28194,7 +28195,7 @@ FoldCardsMessage.prototype.serialize = function() {
 }
 
 module.exports = FoldCardsMessage;
-},{}],132:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28248,7 +28249,7 @@ HandInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = HandInfoMessage;
-},{}],133:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28328,7 +28329,7 @@ InitMessage.prototype.serialize = function() {
 }
 
 module.exports = InitMessage;
-},{}],134:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28382,7 +28383,7 @@ InterfaceStateMessage.prototype.serialize = function() {
 }
 
 module.exports = InterfaceStateMessage;
-},{}],135:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28435,7 +28436,7 @@ PayOutMessage.prototype.serialize = function() {
 }
 
 module.exports = PayOutMessage;
-},{}],136:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28539,7 +28540,7 @@ PocketCardsMessage.prototype.serialize = function() {
 }
 
 module.exports = PocketCardsMessage;
-},{"../data/CardData":118}],137:[function(require,module,exports){
+},{"../data/CardData":117}],136:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28582,7 +28583,7 @@ PotMessage.prototype.serialize = function() {
 }
 
 module.exports = PotMessage;
-},{}],138:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28639,7 +28640,7 @@ PreTournamentInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = PreTournamentInfoMessage;
-},{}],139:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28696,7 +28697,7 @@ PresetButtonClickMessage.prototype.serialize = function() {
 }
 
 module.exports = PresetButtonClickMessage;
-},{}],140:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28786,7 +28787,7 @@ PresetButtonsMessage.prototype.serialize = function() {
 }
 
 module.exports = PresetButtonsMessage;
-},{"../data/ButtonData":117}],141:[function(require,module,exports){
+},{"../data/ButtonData":116}],140:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28829,7 +28830,7 @@ SeatClickMessage.prototype.serialize = function() {
 }
 
 module.exports = SeatClickMessage;
-},{}],142:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28948,7 +28949,7 @@ SeatInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = SeatInfoMessage;
-},{}],143:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29037,7 +29038,7 @@ ShowDialogMessage.prototype.serialize = function() {
 }
 
 module.exports = ShowDialogMessage;
-},{}],144:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29065,7 +29066,7 @@ StateCompleteMessage.prototype.serialize = function() {
 }
 
 module.exports = StateCompleteMessage;
-},{}],145:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29108,7 +29109,7 @@ TableButtonClickMessage.prototype.serialize = function() {
 }
 
 module.exports = TableButtonClickMessage;
-},{}],146:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29192,7 +29193,7 @@ TableButtonsMessage.prototype.serialize = function() {
 }
 
 module.exports = TableButtonsMessage;
-},{}],147:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29302,7 +29303,7 @@ TableInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = TableInfoMessage;
-},{}],148:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29345,7 +29346,7 @@ TestCaseRequestMessage.prototype.serialize = function() {
 }
 
 module.exports = TestCaseRequestMessage;
-},{}],149:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29434,7 +29435,7 @@ TimerMessage.prototype.serialize = function() {
 }
 
 module.exports = TimerMessage;
-},{}],150:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29488,7 +29489,7 @@ TournamentResultMessage.prototype.serialize = function() {
 }
 
 module.exports = TournamentResultMessage;
-},{}],151:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -29578,7 +29579,7 @@ Button.prototype.onClick = function() {
 }
 
 module.exports = Button;
-},{"./EventDispatcher":153,"./FunctionUtil":154,"pixi.js":63}],152:[function(require,module,exports){
+},{"./EventDispatcher":152,"./FunctionUtil":153,"pixi.js":63}],151:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -29640,7 +29641,7 @@ Checkbox.prototype.getChecked = function() {
 
 
 module.exports = Checkbox;
-},{"./Button":151,"./EventDispatcher":153,"./FunctionUtil":154,"pixi.js":63}],153:[function(require,module,exports){
+},{"./Button":150,"./EventDispatcher":152,"./FunctionUtil":153,"pixi.js":63}],152:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -29790,7 +29791,7 @@ EventDispatcher.init = function(cls) {
 }
 
 module.exports = EventDispatcher;
-},{}],154:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -29828,7 +29829,7 @@ FunctionUtil.createDelegate=function(func, scope) {
 
 module.exports=FunctionUtil;
 
-},{}],155:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -29891,7 +29892,7 @@ Gradient.prototype.createSprite = function() {
 }
 
 module.exports = Gradient;
-},{"./FunctionUtil":154,"pixi.js":63}],156:[function(require,module,exports){
+},{"./FunctionUtil":153,"pixi.js":63}],155:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -29969,7 +29970,7 @@ MessageRequestConnection.prototype.send = function(m) {
 }
 
 module.exports = MessageRequestConnection;
-},{"./EventDispatcher":153,"./FunctionUtil":154,"./Thenable":163,"request":66}],157:[function(require,module,exports){
+},{"./EventDispatcher":152,"./FunctionUtil":153,"./Thenable":162,"request":65}],156:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -30079,7 +30080,7 @@ MessageWebSocketConnection.prototype.clearWebSocket = function() {
 }
 
 module.exports = MessageWebSocketConnection;
-},{"./EventDispatcher":153,"./FunctionUtil":154,"./Thenable":163}],158:[function(require,module,exports){
+},{"./EventDispatcher":152,"./FunctionUtil":153,"./Thenable":162}],157:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -30198,7 +30199,7 @@ MouseOverGroup.prototype.onStageMouseUp = function(interaction_object) {
 module.exports = MouseOverGroup;
 
 
-},{"./EventDispatcher":153,"./FunctionUtil":154,"pixi.js":63}],159:[function(require,module,exports){
+},{"./EventDispatcher":152,"./FunctionUtil":153,"pixi.js":63}],158:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -30323,7 +30324,7 @@ NineSlice.prototype.createTexturePart = function(x, y, width, height) {
 }
 
 module.exports = NineSlice;
-},{"./FunctionUtil":154,"pixi.js":63}],160:[function(require,module,exports){
+},{"./FunctionUtil":153,"pixi.js":63}],159:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -30343,7 +30344,7 @@ function Point(x, y) {
 }
 
 module.exports = Point;
-},{}],161:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -30431,7 +30432,7 @@ Sequencer.prototype.abort = function() {
 }
 
 module.exports = Sequencer;
-},{"./EventDispatcher":153,"./FunctionUtil":154}],162:[function(require,module,exports){
+},{"./EventDispatcher":152,"./FunctionUtil":153}],161:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -30601,7 +30602,7 @@ Slider.prototype.onHidden = function() {
 
 module.exports = Slider;
 
-},{"./EventDispatcher":153,"./FunctionUtil":154,"pixi.js":63,"tween.js":87}],163:[function(require,module,exports){
+},{"./EventDispatcher":152,"./FunctionUtil":153,"pixi.js":63,"tween.js":86}],162:[function(require,module,exports){
 (function (process){
 /**
  * Utilities.
@@ -30734,4 +30735,4 @@ Thenable.prototype.reject = function(reason) {
 
 module.exports = Thenable;
 }).call(this,require('_process'))
-},{"./EventDispatcher":153,"./FunctionUtil":154,"_process":42}]},{},[94]);
+},{"./EventDispatcher":152,"./FunctionUtil":153,"_process":42}]},{},[93]);
