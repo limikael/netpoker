@@ -22821,6 +22821,7 @@ var Resources = require("resource-fiddle");
 var ViewConfig = require("../resources/ViewConfig");
 var url = require("url");
 var DefaultSkin = require("../resources/DefaultSkin");
+var TWEEN = require("tween.js");
 
 /**
  * Main entry point for client.
@@ -22841,6 +22842,8 @@ function NetPokerClient() {
 	this.url = null;
 	this.tableId = null;
 	this.viewConfig = new ViewConfig();
+
+	this.on("frame", TWEEN.update);
 }
 
 FunctionUtil.extend(NetPokerClient, PixiApp);
@@ -23015,7 +23018,7 @@ NetPokerClient.prototype.onConnectionClose = function() {
 }
 
 module.exports = NetPokerClient;
-},{"../../proto/ProtoConnection":115,"../../proto/messages/InitMessage":132,"../../proto/messages/StateCompleteMessage":143,"../../utils/FunctionUtil":153,"../../utils/MessageRequestConnection":155,"../../utils/MessageWebSocketConnection":156,"../controller/NetPokerClientController":91,"../resources/DefaultSkin":94,"../resources/ViewConfig":95,"../view/LoadingScreen":104,"../view/NetPokerClientView":105,"pixi.js":63,"pixiapp":64,"resource-fiddle":85,"url":60}],88:[function(require,module,exports){
+},{"../../proto/ProtoConnection":115,"../../proto/messages/InitMessage":132,"../../proto/messages/StateCompleteMessage":143,"../../utils/FunctionUtil":153,"../../utils/MessageRequestConnection":155,"../../utils/MessageWebSocketConnection":156,"../controller/NetPokerClientController":91,"../resources/DefaultSkin":94,"../resources/ViewConfig":95,"../view/LoadingScreen":104,"../view/NetPokerClientView":105,"pixi.js":63,"pixiapp":64,"resource-fiddle":85,"tween.js":86,"url":60}],88:[function(require,module,exports){
 /**
  * Client.
  * @module client

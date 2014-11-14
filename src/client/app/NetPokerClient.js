@@ -18,6 +18,7 @@ var Resources = require("resource-fiddle");
 var ViewConfig = require("../resources/ViewConfig");
 var url = require("url");
 var DefaultSkin = require("../resources/DefaultSkin");
+var TWEEN = require("tween.js");
 
 /**
  * Main entry point for client.
@@ -38,6 +39,8 @@ function NetPokerClient() {
 	this.url = null;
 	this.tableId = null;
 	this.viewConfig = new ViewConfig();
+
+	this.on("frame", TWEEN.update);
 }
 
 FunctionUtil.extend(NetPokerClient, PixiApp);
