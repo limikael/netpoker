@@ -4,7 +4,7 @@
  */
 
 var Thenable = require("./Thenable");
-var FunctionUtil = require("./FunctionUtil");
+var inherits = require("inherits");
 
 /**
  * Do async operations after each other
@@ -17,7 +17,7 @@ function AsyncSequence(functions) {
 	this.functionIndex = 0;
 }
 
-FunctionUtil.extend(AsyncSequence, Thenable);
+inherits(AsyncSequence, Thenable);
 
 /**
  * Run the sequence.

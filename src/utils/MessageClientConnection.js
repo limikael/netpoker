@@ -3,9 +3,9 @@
  * @module utils
  */
 
-var FunctionUtil = require("./FunctionUtil");
 var Thenable = require("./Thenable");
 var WebSocket = require("faye-websocket");
+var inherits = require("inherits");
 
 /**
  * Send and receive websocket messages.
@@ -18,7 +18,7 @@ function MessageClientConnection() {
 	this.connectThenable = null;
 }
 
-FunctionUtil.extend(MessageClientConnection, Thenable);
+inherits(MessageClientConnection, Thenable);
 
 MessageClientConnection.MESSAGE = "message";
 MessageClientConnection.CLOSE = "close";

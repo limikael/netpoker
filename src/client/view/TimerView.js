@@ -5,9 +5,9 @@
 
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("resource-fiddle");
 var EventDispatcher = require("yaed");
+var inherits = require("inherits");
 
 /**
  * A timer view
@@ -34,7 +34,7 @@ function TimerView(viewConfig, resources) {
 	//this.showPercent(30);
 }
 
-FunctionUtil.extend(TimerView, PIXI.DisplayObjectContainer);
+inherits(TimerView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(TimerView);
 
 /**

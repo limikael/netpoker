@@ -5,11 +5,11 @@
 
 var WebSocket = require("faye-websocket");
 var http = require("http");
-var FunctionUtil = require("./FunctionUtil");
 var EventDispatcher = require("yaed");
 var MessageServerConnection = require("./MessageServerConnection");
 var url = require("url");
 var querystring = require("querystring");
+var inherits=require("inherits");
 
 /**
  * Server that manages connections where each message is a JSON document.
@@ -27,7 +27,7 @@ function MessageServer() {
 	this.server.on("request", this.onServerRequest.bind(this));
 }
 
-FunctionUtil.extend(MessageServer, EventDispatcher);
+inherits(MessageServer, EventDispatcher);
 
 MessageServer.CONNECTION = "connection";
 MessageServer.REQUEST = "request";

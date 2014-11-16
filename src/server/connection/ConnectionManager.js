@@ -4,10 +4,10 @@
  */
 
 var MessageServer = require("../../utils/MessageServer");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("yaed");
 var UserConnection = require("../../server/connection/UserConnection");
 var ConnectionManagerConnectionEvent = require("./ConnectionManagerConnectionEvent");
+var inherits = require("inherits");
 
 /**
  * Connection manager.
@@ -22,7 +22,7 @@ function ConnectionManager(services) {
 	this.viewCaseDir = null;
 }
 
-FunctionUtil.extend(ConnectionManager, EventDispatcher);
+inherits(ConnectionManager, EventDispatcher);
 
 /**
  * Dispatched on new connections.

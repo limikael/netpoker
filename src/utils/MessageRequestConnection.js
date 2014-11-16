@@ -3,10 +3,10 @@
  * @module utils
  */
 
-var EventDispatcher = require("yaed");
-var FunctionUtil = require("./FunctionUtil");
 var Thenable = require("./Thenable");
 var request = require("request");
+var inherits = require("inherits");
+var EventDispatcher = require("yaed");
 
 /**
  * A "connection" that loads its messages from a json file rather than
@@ -18,7 +18,7 @@ function MessageRequestConnection() {
 	this.test = 1;
 }
 
-FunctionUtil.extend(MessageRequestConnection, EventDispatcher);
+inherits(MessageRequestConnection, EventDispatcher);
 
 MessageRequestConnection.CONNECT = "connect";
 MessageRequestConnection.MESSAGE = "message";
@@ -36,7 +36,7 @@ MessageRequestConnection.prototype.connect = function(url) {
  * @method onRequestComplete
  * @private
  */
-MessageRequestConnection.prototype.onRequestComplete=function(e, r, body) {
+MessageRequestConnection.prototype.onRequestComplete = function(e, r, body) {
 	if (e) {
 		console.log("error in request connection");
 		console.log(e);
@@ -57,7 +57,7 @@ MessageRequestConnection.prototype.onRequestComplete=function(e, r, body) {
 		//console.log("line: "+line);
 
 		if (line.length && line[0] != "/") {
-			console.log("trigger message: "+line);
+			console.log("trigger message: " + line);
 			this.trigger({
 				type: MessageRequestConnection.MESSAGE,
 				message: JSON.parse(line)

@@ -4,8 +4,8 @@
  */
 
 var PIXI = require("pixi.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var Gradient = require("../../utils/Gradient");
+var inherits = require("inherits");
 
 /**
  * Loading screen.
@@ -37,7 +37,7 @@ function LoadingScreen() {
 	this.addChild(this.textField);
 }
 
-FunctionUtil.extend(LoadingScreen, PIXI.DisplayObjectContainer);
+inherits(LoadingScreen, PIXI.DisplayObjectContainer);
 
 /**
  * Show.

@@ -4,7 +4,6 @@
  */
 
 var PIXI = require("pixi.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var PixiApp = require("pixiapp");
 var NetPokerClientView = require("../view/NetPokerClientView");
 var NetPokerClientController = require("../controller/NetPokerClientController");
@@ -19,6 +18,7 @@ var ViewConfig = require("../resources/ViewConfig");
 var url = require("url");
 var DefaultSkin = require("../resources/DefaultSkin");
 var TWEEN = require("tween.js");
+var inherits = require("inherits");
 
 /**
  * Main entry point for client.
@@ -43,7 +43,7 @@ function NetPokerClient() {
 	this.on("frame", TWEEN.update);
 }
 
-FunctionUtil.extend(NetPokerClient, PixiApp);
+inherits(NetPokerClient, PixiApp);
 
 /**
  * Set url.

@@ -3,8 +3,8 @@
  * @module utils
  */
 
-var FunctionUtil = require("./FunctionUtil");
 var EventDispatcher = require("yaed");
+var inherits=require("inherits");
 
 /**
  * Perform tasks in a sequence.
@@ -23,7 +23,7 @@ function Sequencer() {
 	this.onTaskCompleteClosure = this.onTaskComplete.bind(this);
 }
 
-FunctionUtil.extend(Sequencer, EventDispatcher);
+inherits(Sequencer, EventDispatcher);
 
 Sequencer.START = "start";
 Sequencer.COMPLETE = "complete";

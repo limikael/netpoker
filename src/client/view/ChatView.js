@@ -4,13 +4,13 @@
  */
 
 var PIXI = require("pixi.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var NineSlice = require("../../utils/NineSlice");
 var Slider = require("../../utils/Slider");
 var Resources = require("resource-fiddle");
 var PixiTextInput = require("PixiTextInput");
 var MouseOverGroup = require("../../utils/MouseOverGroup");
 var EventDispatcher = require("yaed");
+var inherits = require("inherits");
 
 /**
  * Chat view.
@@ -128,7 +128,7 @@ function ChatView(viewConfig, resources) {
 	this.clear();
 }
 
-FunctionUtil.extend(ChatView, PIXI.DisplayObjectContainer);
+inherits(ChatView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(ChatView);
 
 

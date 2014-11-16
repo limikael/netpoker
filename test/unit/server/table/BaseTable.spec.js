@@ -1,5 +1,5 @@
 var BaseTable = require("../../../../src/server/table/BaseTable");
-var FunctionUtil = require("../../../../src/utils/FunctionUtil");
+var inherits = require("inherits");
 
 describe("BaseTable", function() {
 	var MyTable;
@@ -25,7 +25,7 @@ describe("BaseTable", function() {
 			BaseTable.call(this);
 		}
 
-		FunctionUtil.extend(MyTable, BaseTable);
+		inherits(MyTable, BaseTable);
 	});
 
 	it("can get a tableSeat by connection", function() {

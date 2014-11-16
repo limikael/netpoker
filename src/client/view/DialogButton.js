@@ -4,9 +4,9 @@
  */
 
 var PIXI = require("pixi.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var Button = require("../../utils/Button");
 var Resources = require("resource-fiddle");
+var inherits = require("inherits");
 
 /**
  * Dialog button.
@@ -30,7 +30,7 @@ function DialogButton(resources) {
 	this.setText("BTN");
 }
 
-FunctionUtil.extend(DialogButton, Button);
+inherits(DialogButton, Button);
 
 /**
  * Set text for the button.

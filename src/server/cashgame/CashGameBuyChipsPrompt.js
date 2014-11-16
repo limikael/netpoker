@@ -3,13 +3,13 @@
  * @module server
  */
 
-var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("yaed");
 var Backend = require("../backend/Backend");
 var ShowDialogMessage = require("../../proto/messages/ShowDialogMessage");
 var ButtonData = require("../../proto/data/ButtonData");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
+var inherits=require("inherits");
 
 /**
  * Prompt user to buy chips.
@@ -24,7 +24,7 @@ function CashGameBuyChipsPrompt(tableSeat) {
 		throw "Cannot buy chips for a non connected seat";
 }
 
-FunctionUtil.extend(CashGameBuyChipsPrompt, EventDispatcher);
+inherits(CashGameBuyChipsPrompt, EventDispatcher);
 
 CashGameBuyChipsPrompt.COMPLETE = "complete";
 CashGameBuyChipsPrompt.CANCEL = "cancel";

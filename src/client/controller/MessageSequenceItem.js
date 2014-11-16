@@ -4,8 +4,8 @@
  */
 
 var EventDispatcher = require("yaed");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var Sequencer = require("../../utils/Sequencer");
+var inherits=require("inherits");
 
 /**
  * An item in a message sequence.
@@ -19,7 +19,7 @@ function MessageSequenceItem(message) {
 	this.waitClosure = null;
 }
 
-FunctionUtil.extend(MessageSequenceItem, EventDispatcher);
+inherits(MessageSequenceItem, EventDispatcher);
 
 /**
  * Get message.

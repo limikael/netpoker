@@ -3,8 +3,8 @@
  * @module utils
  */
 
-var FunctionUtil = require("./FunctionUtil");
 var EventDispatcher = require("yaed");
+var inherits = require("inherits");
 
 /**
  * Represents one connection to a MessageServer
@@ -20,7 +20,7 @@ function MessageServerConnection(webSocket, parameters) {
 	this.webSocket.on("close", this.onWebSocketClose.bind(this));
 }
 
-FunctionUtil.extend(MessageServerConnection, EventDispatcher);
+inherits(MessageServerConnection, EventDispatcher);
 
 MessageServerConnection.MESSAGE = "message";
 MessageServerConnection.CLOSE = "close";

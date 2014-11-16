@@ -4,7 +4,7 @@
  */
 
 var PIXI = require("pixi.js");
-var FunctionUtil = require("./FunctionUtil");
+var inherits = require("inherits");
 
 /**
  * Nine slice. This is a sprite that is a grid, and only the
@@ -37,7 +37,7 @@ function NineSlice(texture, left, top, right, bottom) {
 	this.updateSizes();
 }
 
-FunctionUtil.extend(NineSlice, PIXI.DisplayObjectContainer);
+inherits(NineSlice, PIXI.DisplayObjectContainer);
 
 /**
  * Build the parts for the slices.

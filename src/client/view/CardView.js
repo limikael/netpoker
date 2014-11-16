@@ -5,9 +5,9 @@
 
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("resource-fiddle");
 var EventDispatcher = require("yaed");
+var inherits = require("inherits");
 
 /**
  * A card view.
@@ -51,7 +51,7 @@ function CardView(viewConfig, resources) {
 	this.mask = this.maskGraphics;
 }
 
-FunctionUtil.extend(CardView, PIXI.DisplayObjectContainer);
+inherits(CardView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(CardView);
 
 /**

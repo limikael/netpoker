@@ -5,15 +5,14 @@
 
 var GameState = require("./GameState");
 var FinishedState = require("./FinishedState");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var GameSeatPrompt = require("./GameSeatPrompt");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var ButtonData = require("../../proto/data/ButtonData");
 var PayOutMessage = require("../../proto/messages/PayOutMessage");
 var DelayMessage = require("../../proto/messages/DelayMessage");
 var PotMessage = require("../../proto/messages/PotMessage");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 var Hand = require("../hand/Hand");
+var inherits = require("inherits");
 
 /**
  * Show or muck cards.
@@ -25,7 +24,7 @@ function ShowMuckState() {
 	this.gameSeatIndexToSpeak = 0;
 }
 
-FunctionUtil.extend(ShowMuckState, GameState);
+inherits(ShowMuckState, GameState);
 
 /**
  * Run.

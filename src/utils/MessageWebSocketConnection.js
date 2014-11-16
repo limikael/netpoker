@@ -4,8 +4,8 @@
  */
 
 var EventDispatcher = require("yaed");
-var FunctionUtil = require("./FunctionUtil");
 var Thenable = require("./Thenable");
+var inherits = require("inherits");
 
 /**
  * Message connection in a browser.
@@ -16,7 +16,7 @@ function MessageWebSocketConnection() {
 	this.test = 1;
 }
 
-FunctionUtil.extend(MessageWebSocketConnection, EventDispatcher);
+inherits(MessageWebSocketConnection, EventDispatcher);
 
 MessageWebSocketConnection.CONNECT = "connect";
 MessageWebSocketConnection.MESSAGE = "message";

@@ -16,7 +16,7 @@ function FunctionUtil() {
  * @method extend
  * @static
  */
-FunctionUtil.extend=function(target, base) {
+inherits=function(target, base) {
 	target.prototype=Object.create(base.prototype);
 	target.prototype.constructor=target;
 }

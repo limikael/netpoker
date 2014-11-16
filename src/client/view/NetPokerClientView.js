@@ -4,7 +4,6 @@
  */
 
 var PIXI = require("pixi.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("yaed");
 var Resources = require("resource-fiddle");
 var SeatView = require("./SeatView");
@@ -21,6 +20,7 @@ var TimerView = require("./TimerView");
 var SettingsView = require("../view/SettingsView");
 var TableInfoView = require("../view/TableInfoView");
 var PresetButtonsView = require("../view/PresetButtonsView");
+var inherits = require("inherits");
 
 /**
  * Net poker client view.
@@ -74,7 +74,7 @@ function NetPokerClientView(viewConfig, resources) {
 	this.setupChips();
 }
 
-FunctionUtil.extend(NetPokerClientView, PIXI.DisplayObjectContainer);
+inherits(NetPokerClientView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(NetPokerClientView);
 
 NetPokerClientView.SEAT_CLICK = "seatClick";

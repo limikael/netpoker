@@ -3,7 +3,6 @@
  * @module server
  */
 
-var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("yaed");
 var GameState = require("./GameState");
 var GameSeat = require("./GameSeat");
@@ -12,6 +11,7 @@ var ButtonData = require("../../proto/data/ButtonData");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 var FinishedState = require("./FinishedState");
 var RoundState = require("./RoundState");
+var inherits = require("inherits");
 
 /**
  * During this state, we ask each participating user if they want to pay
@@ -27,7 +27,7 @@ function AskBlindState() {
 	GameState.call(this);
 }
 
-FunctionUtil.extend(AskBlindState, GameState);
+inherits(AskBlindState, GameState);
 
 /**
  * Run the state.

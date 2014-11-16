@@ -3,7 +3,6 @@
  * @module server
  */
 
-var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("yaed");
 var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
@@ -14,6 +13,7 @@ var Backend = require("../backend/Backend");
 var TableSeatSettings = require("../table/TableSeatSettings");
 var BaseTableSeat = require("../table/BaseTableSeat");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
+var inherits = require("inherits");
 
 /**
  * A user seated at a table.
@@ -33,7 +33,7 @@ function CashGameUser(tableSeat, user) {
 	this.tableSeat.on(BaseTableSeat.SETTINGS_CHANGED, this.onTableSeatSettingsChanged, this);
 }
 
-FunctionUtil.extend(CashGameUser, EventDispatcher);
+inherits(CashGameUser, EventDispatcher);
 
 CashGameUser.DONE = "done";
 CashGameUser.READY = "ready";

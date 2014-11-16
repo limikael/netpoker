@@ -3,11 +3,11 @@
  * @module server
  */
 
-var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("yaed");
 var GameState = require("./GameState");
 var DelayMessage = require("../../proto/messages/DelayMessage");
 var ClearMessage = require("../../proto/messages/ClearMessage");
+var inherits = require("inherits");
 
 /**
  * The game is finished. We do a wait and then clear the table,
@@ -18,7 +18,7 @@ function FinishedState() {
 	GameState.call(this);
 }
 
-FunctionUtil.extend(FinishedState, GameState);
+inherits(FinishedState, GameState);
 
 FinishedState.FINISH_DELAY = 5000;
 

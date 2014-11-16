@@ -5,9 +5,9 @@
 
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("resource-fiddle");
 var Button = require("../../utils/Button");
+var inherits = require("inherits");
 
 /**
  * A seat view.
@@ -66,7 +66,7 @@ function SeatView(resources, seatIndex) {
 	this.betChips = null;
 }
 
-FunctionUtil.extend(SeatView, Button);
+inherits(SeatView, Button);
 
 /**
  * Set reference to bet chips.

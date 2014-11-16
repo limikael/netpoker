@@ -5,8 +5,8 @@
 
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
-var FunctionUtil = require("./FunctionUtil");
 var EventDispatcher = require("yaed");
+var inherits = require("inherits");
 
 /**
  * Slider. This is the class for the slider.
@@ -34,7 +34,7 @@ function Slider(background, knob) {
 	this.alpha = 0;
 }
 
-FunctionUtil.extend(Slider, PIXI.DisplayObjectContainer);
+inherits(Slider, PIXI.DisplayObjectContainer);
 EventDispatcher.init(Slider);
 
 

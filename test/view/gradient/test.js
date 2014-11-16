@@ -18,6 +18,6 @@ function GradientTest() {
 	this.addChild(s);
 }
 
-FunctionUtil.extend(GradientTest, PixiApp);
+inherits(GradientTest, PixiApp);
 
 new GradientTest();

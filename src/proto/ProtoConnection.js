@@ -4,7 +4,7 @@
  */
 
 var EventDispatcher = require("yaed");
-var FunctionUtil = require("../utils/FunctionUtil");
+var inherits=require("inherits");
 
 var InitMessage = require("./messages/InitMessage");
 var StateCompleteMessage = require("./messages/StateCompleteMessage");
@@ -92,7 +92,7 @@ function ProtoConnection(connection) {
 	this.connection.addEventListener("close", this.onConnectionClose, this);
 }
 
-FunctionUtil.extend(ProtoConnection, EventDispatcher);
+inherits(ProtoConnection, EventDispatcher);
 
 /**
  * Triggers if the remote party closes the underlying connection.

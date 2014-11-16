@@ -5,12 +5,12 @@
 
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var Button = require("../../utils/Button");
 var NineSlice = require("../../utils/NineSlice");
 var Resources = require("resource-fiddle");
 var EventDispatcher = require("yaed");
 var Checkbox = require("../../utils/Checkbox");
+var inherits = require("inherits");
 
 /**
  * Raise shortcut button
@@ -33,7 +33,7 @@ function RaiseShortcutButton(resources) {
 	this.addChild(this.label);
 }
 
-FunctionUtil.extend(RaiseShortcutButton, Button);
+inherits(RaiseShortcutButton, Button);
 EventDispatcher.init(RaiseShortcutButton);
 
 /**

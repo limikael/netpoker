@@ -8,8 +8,8 @@ var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 var TimerMessage = require("../../proto/messages/TimerMessage");
 var ButtonData = require("../../proto/data/ButtonData");
 var EventDispatcher = require("yaed");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var BaseTableSeat = require("../table/BaseTableSeat");
+var inherits = require("inherits");
 
 /**
  * Game seat prompt.
@@ -52,7 +52,7 @@ function GameSeatPrompt(gameSeat) {
 	this.settingImplication = {};
 }
 
-FunctionUtil.extend(GameSeatPrompt, EventDispatcher);
+inherits(GameSeatPrompt, EventDispatcher);
 
 /**
  * Triggered when we receiv an action from the user, or the prompt timed out.

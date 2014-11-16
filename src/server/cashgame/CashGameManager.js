@@ -5,9 +5,9 @@
 
 var Backend = require("../../server/backend/Backend");
 var EventDispatcher = require("yaed");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var ArrayUtil = require("../../utils/ArrayUtil");
 var CashGameTable = require("./CashGameTable");
+var inherits = require("inherits");
 
 /**
  * Manage list of current cash game tables.
@@ -25,7 +25,7 @@ function CashGameManager(services) {
 	this.stopping = false;
 }
 
-FunctionUtil.extend(CashGameManager, EventDispatcher);
+inherits(CashGameManager, EventDispatcher);
 
 CashGameManager.INITIALIZED = "initialized";
 CashGameManager.IDLE = "idle";

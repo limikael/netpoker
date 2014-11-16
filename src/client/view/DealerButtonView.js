@@ -5,9 +5,9 @@
 
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("resource-fiddle");
 var EventDispatcher = require("yaed");
+var inherits = require("inherits");
 
 /**
  * Dialog view.
@@ -25,7 +25,7 @@ function DealerButtonView(viewConfig, resources) {
 	this.hide();
 }
 
-FunctionUtil.extend(DealerButtonView, PIXI.DisplayObjectContainer);
+inherits(DealerButtonView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(DealerButtonView);
 
 /**

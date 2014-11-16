@@ -3,7 +3,6 @@
  * @module server
  */
 
-var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("yaed");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var SeatClickMessage = require("../../proto/messages/SeatClickMessage");
@@ -11,6 +10,7 @@ var ChatMessage = require("../../proto/messages/ChatMessage");
 var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 var InterfaceStateMessage = require("../../proto/messages/InterfaceStateMessage");
 var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
+var inherits = require("inherits");
 
 /**
  * Someone watching a table.
@@ -32,7 +32,7 @@ function CashGameSpectator(table, connection, user) {
 	this.send(new ButtonsMessage());
 }
 
-FunctionUtil.extend(CashGameSpectator, EventDispatcher);
+inherits(CashGameSpectator, EventDispatcher);
 
 CashGameSpectator.DONE = "done";
 

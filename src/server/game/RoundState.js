@@ -4,7 +4,6 @@
  */
 
 var GameState = require("./GameState");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var PocketCardsMessage = require("../../proto/messages/PocketCardsMessage");
 var ButtonData = require("../../proto/data/ButtonData");
 var CardData = require("../../proto/data/CardData");
@@ -15,6 +14,7 @@ var BetsToPotMessage = require("../../proto/messages/BetsToPotMessage");
 var PotMessage = require("../../proto/messages/PotMessage");
 var CommunityCardsMessage = require("../../proto/messages/CommunityCardsMessage");
 var ShowMuckState = require("./ShowMuckState");
+var inherits = require("inherits");
 
 /**
  * Manage a round of beting.
@@ -36,7 +36,7 @@ function RoundState() {
 	this.hasRun = false;
 }
 
-FunctionUtil.extend(RoundState, GameState);
+inherits(RoundState, GameState);
 
 /**
  * Run the state.

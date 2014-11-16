@@ -5,7 +5,6 @@
 
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var Button = require("../../utils/Button");
 var NineSlice = require("../../utils/NineSlice");
 var Resources = require("resource-fiddle");
@@ -14,6 +13,7 @@ var SettingsCheckbox = require("./SettingsCheckbox");
 var RaiseShortcutButton = require("./RaiseShortcutButton");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 var ButtonData = require("../../proto/data/ButtonData");
+var inherits = require("inherits");
 
 /**
  * A settings view
@@ -93,7 +93,7 @@ function SettingsView(viewConfig, resources) {
 	this.settingsMenu.click = function() { console.log("test"); };*/
 }
 
-FunctionUtil.extend(SettingsView, PIXI.DisplayObjectContainer);
+inherits(SettingsView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(SettingsView);
 
 SettingsView.BUY_CHIPS_CLICK = "buyChipsClick";

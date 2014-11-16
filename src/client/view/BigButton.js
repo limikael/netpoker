@@ -4,9 +4,9 @@
  */
 
 var PIXI = require("pixi.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var Button = require("../../utils/Button");
 var Resources = require("resource-fiddle");
+var inherits = require("inherits");
 
 /**
  * Big button.
@@ -43,7 +43,7 @@ function BigButton(resources) {
 	this.setValue(123);
 }
 
-FunctionUtil.extend(BigButton, Button);
+inherits(BigButton, Button);
 
 /**
  * Set label for the button.

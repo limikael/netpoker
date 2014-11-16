@@ -4,9 +4,9 @@
  */
 
 var PIXI = require("pixi.js");
-var FunctionUtil = require("./FunctionUtil");
 var EventDispatcher = require("yaed");
 var Button = require("./Button");
+var inherits = require("inherits");
 
 /**
  * Checkbox.
@@ -26,7 +26,7 @@ function Checkbox(background, tick) {
 	this.setChecked(false);
 }
 
-FunctionUtil.extend(Checkbox, PIXI.DisplayObjectContainer);
+inherits(Checkbox, PIXI.DisplayObjectContainer);
 EventDispatcher.init(Checkbox);
 
 /**

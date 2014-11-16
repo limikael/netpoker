@@ -5,11 +5,11 @@
 
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("resource-fiddle");
 var EventDispatcher = require("yaed");
 var Checkbox = require("../../utils/Checkbox");
 var ButtonData = require("../../proto/data/ButtonData");
+var inherits = require("inherits");
 
 /**
  * A pot view
@@ -45,7 +45,7 @@ function PresetButton(resources) {
 	this.addChild(this.labelField);
 }
 
-FunctionUtil.extend(PresetButton, PIXI.DisplayObjectContainer);
+inherits(PresetButton, PIXI.DisplayObjectContainer);
 EventDispatcher.init(PresetButton);
 
 

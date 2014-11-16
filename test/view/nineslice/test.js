@@ -15,7 +15,7 @@ function NineSliceTest() {
 	this.assetLoader.load();
 }
 
-FunctionUtil.extend(NineSliceTest, PixiApp);
+inherits(NineSliceTest, PixiApp);
 
 NineSliceTest.prototype.onAssetLoaderComplete = function() {
 	console.log("loaded");

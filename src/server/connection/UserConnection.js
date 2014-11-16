@@ -4,11 +4,11 @@
  */
 
 var ProtoConnection = require("../../proto/ProtoConnection");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var Backend = require("../backend/Backend");
 var InitMessage = require("../../proto/messages/InitMessage");
 var User = require("../user/User");
 var fs = require("fs");
+var inherits = require("inherits");
 
 /**
  * Represents a connection waiting for a user to be authenticated.
@@ -30,7 +30,7 @@ function UserConnection(services, connection) {
 	this.addMessageHandler(InitMessage.TYPE, this.onInitMessage, this);
 }
 
-FunctionUtil.extend(UserConnection, ProtoConnection);
+inherits(UserConnection, ProtoConnection);
 
 UserConnection.INITIALIZED = "initialized";
 UserConnection.CLOSE = ProtoConnection.CLOSE;

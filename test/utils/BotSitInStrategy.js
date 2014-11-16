@@ -1,11 +1,11 @@
 var BotStrategy=require("./BotStrategy");
-var FunctionUtil=require("../../src/utils/FunctionUtil");
 var StateCompleteMessage=require("../../src/proto/messages/StateCompleteMessage");
 var ShowDialogMessage=require("../../src/proto/messages/ShowDialogMessage");
 var SeatClickMessage=require("../../src/proto/messages/SeatClickMessage");
 var SeatInfoMessage=require("../../src/proto/messages/SeatInfoMessage");
 var ButtonClickMessage=require("../../src/proto/messages/ButtonClickMessage");
 var ButtonData=require("../../src/proto/data/ButtonData");
+var inherits = require("inherits");
 
 /**
  * Sit in at specified seat, with the specified amount of money.
@@ -18,7 +18,7 @@ function BotSitInStrategy(seatIndex, sitInAmount) {
 	this.sitInAmount=sitInAmount;
 }
 
-FunctionUtil.extend(BotSitInStrategy,BotStrategy);
+inherits(BotSitInStrategy,BotStrategy);
 
 /**
  * Run the strategy.

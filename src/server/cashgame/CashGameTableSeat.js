@@ -3,7 +3,6 @@
  * @module server
  */
 
-var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("yaed");
 var BaseTableSeat = require("../table/BaseTableSeat");
 var CashGameUser = require("./CashGameUser");
@@ -12,6 +11,7 @@ var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 var ButtonData = require("../../proto/data/ButtonData");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 var InterfaceStateMessage = require("../../proto/messages/InterfaceStateMessage");
+var inherits = require("inherits");
 
 /**
  * A table seat. This class represents a seat in a cash game.
@@ -27,7 +27,7 @@ function CashGameTableSeat(table, seatIndex, active) {
 	this.tableSeatUser = null;
 }
 
-FunctionUtil.extend(CashGameTableSeat, BaseTableSeat);
+inherits(CashGameTableSeat, BaseTableSeat);
 
 /**
  * Dispatched to signal when user, previously registered using the

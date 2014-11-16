@@ -4,7 +4,6 @@
  */
 
 var PIXI = require("pixi.js");
-var FunctionUtil = require("./FunctionUtil");
 
 /**
  * Create a sprite with a gradient.

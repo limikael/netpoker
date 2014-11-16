@@ -3,7 +3,6 @@
  * @module server
  */
 
-var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("yaed");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 var ProtoConnection = require("../../proto/ProtoConnection");
@@ -12,6 +11,7 @@ var ChatMessage = require("../../proto/messages/ChatMessage");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 var TableSeatSettings = require("./TableSeatSettings");
 var PresetButtonClickMessage = require("../../proto/messages/PresetButtonClickMessage");
+var inherits=require("inherits");
 
 /**
  * Base table seat. This is an abstract class representing a seat at a table.
@@ -46,7 +46,7 @@ function BaseTableSeat(table, seatIndex, active) {
 	this.protoConnection = null;
 }
 
-FunctionUtil.extend(BaseTableSeat, EventDispatcher);
+inherits(BaseTableSeat, EventDispatcher);
 
 /**
  * Dispatched if settings are changed.

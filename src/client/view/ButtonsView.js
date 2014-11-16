@@ -4,7 +4,6 @@
  */
 
 var PIXI = require("pixi.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("yaed");
 var Button = require("../../utils/Button");
 var Slider = require("../../utils/Slider");
@@ -12,6 +11,7 @@ var NineSlice = require("../../utils/NineSlice");
 var BigButton = require("./BigButton");
 var Resources = require("resource-fiddle");
 var RaiseShortcutButton = require("./RaiseShortcutButton");
+var inherits = require("inherits");
 
 /**
  * Buttons
@@ -72,7 +72,7 @@ function ButtonsView(viewConfig, resources) {
 	this.buttonsDatas = [];
 }
 
-FunctionUtil.extend(ButtonsView, PIXI.DisplayObjectContainer);
+inherits(ButtonsView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(ButtonsView);
 
 ButtonsView.BUTTON_CLICK = "buttonClick";

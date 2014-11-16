@@ -1,7 +1,7 @@
 var NetPokerServer = require("../../src/server/app/NetPokerServer");
-var FunctionUtil = require("../../src/utils/FunctionUtil");
 var EventDispatcher = require("yaed");
 var MessagePipeConnection = require("./MessagePipeConnection");
+var inherits = require("inherits");
 
 /**
  * PipeNetPokerServer
@@ -12,7 +12,7 @@ function PipeNetPokerServer() {
 	this.mockNetwork = true;
 }
 
-FunctionUtil.extend(PipeNetPokerServer, NetPokerServer);
+inherits(PipeNetPokerServer, NetPokerServer);
 
 /**
  * Create a connected message pipe.

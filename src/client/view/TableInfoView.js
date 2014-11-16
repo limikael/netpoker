@@ -4,8 +4,8 @@
  */
 
 var PIXI = require("pixi.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("yaed");
+var inherits = require("inherits");
 
 /**
  * Show table info.
@@ -47,7 +47,7 @@ function TableInfoView() {
 	this.addChild(this.handInfoText);
 }
 
-FunctionUtil.extend(TableInfoView, PIXI.DisplayObjectContainer);
+inherits(TableInfoView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(TableInfoView);
 
 /**

@@ -4,8 +4,8 @@
  */
 
 var PIXI = require("pixi.js");
-var FunctionUtil = require("./FunctionUtil");
 var EventDispatcher = require("yaed");
+var inherits = require("inherits");
 
 /**
  * MouseOverGroup. This is the class for the MouseOverGroup.
@@ -17,7 +17,7 @@ function MouseOverGroup() {
 	this.mouseDown = false;
 
 }
-FunctionUtil.extend(MouseOverGroup, PIXI.DisplayObjectContainer);
+inherits(MouseOverGroup, PIXI.DisplayObjectContainer);
 EventDispatcher.init(MouseOverGroup);
 
 

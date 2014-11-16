@@ -1,5 +1,5 @@
-var EventDispatcher=require("yaed");
-var FunctionUtil=require("../../src/utils/FunctionUtil");
+var EventDispatcher = require("yaed");
+var inherits = require("inherits");
 
 /**
  * Abstract class for something that the bot can do.
@@ -7,29 +7,29 @@ var FunctionUtil=require("../../src/utils/FunctionUtil");
  * @class BotStrategy
  */
 function BotStrategy() {
-	this.botConnection=null;
-	this.stopped=false;
+	this.botConnection = null;
+	this.stopped = false;
 }
 
-FunctionUtil.extend(BotStrategy,EventDispatcher);
+inherits(BotStrategy, EventDispatcher);
 
 /**
  * Set reference to BotConnection
  * @method setBotConnection
  */
-BotStrategy.prototype.setBotConnection=function(botConnection) {
-	this.botConnection=botConnection;
+BotStrategy.prototype.setBotConnection = function(botConnection) {
+	this.botConnection = botConnection;
 }
 
 /**
  * The strategy is complete.
  * @method notifyComplete
  */
-BotStrategy.prototype.notifyComplete=function() {
+BotStrategy.prototype.notifyComplete = function() {
 	if (this.stopped)
 		return;
 
-//	setTimeout(function() {
+	//	setTimeout(function() {
 	process.nextTick(function() {
 
 		this.trigger("complete");
@@ -40,8 +40,8 @@ BotStrategy.prototype.notifyComplete=function() {
  * Stop the strategy.
  * @method stop
  */
-BotStrategy.prototype.stop=function() {
-	this.stopped=true;
+BotStrategy.prototype.stop = function() {
+	this.stopped = true;
 }
 
-module.exports=BotStrategy;
+module.exports = BotStrategy;

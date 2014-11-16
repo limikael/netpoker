@@ -3,7 +3,6 @@
  * @module server
  */
 
-var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("yaed");
 var BaseTable = require("../table/BaseTable");
 var TableUtil = require("../table/TableUtil");
@@ -18,6 +17,7 @@ var ArrayUtil = require("../../utils/ArrayUtil");
 var Game = require("../game/Game");
 var Backend = require("../backend/Backend");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
+var inherits = require("inherits");
 
 /**
  * Cash game table.
@@ -60,7 +60,7 @@ function CashGameTable(services, config) {
 	this.previousHandId = null;
 }
 
-FunctionUtil.extend(CashGameTable, BaseTable);
+inherits(CashGameTable, BaseTable);
 
 /**
  * Dispatched when stop has been called, and the table has become idle.

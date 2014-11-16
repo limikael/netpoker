@@ -5,7 +5,6 @@
 
 var ConnectionManager = require("../connection/ConnectionManager");
 var CashGameManager = require("../cashgame/CashGameManager");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("yaed");
 var Thenable = require("../../utils/Thenable");
 var Backend = require("../backend/Backend");
@@ -13,6 +12,7 @@ var ServerApi = require("../api/ServerApi");
 var NetPokerServerConfigurator = require("./NetPokerServerConfigurator");
 var MockBackendServer = require("../mock/MockBackendServer");
 var MockWebRequestHandler = require("../mock/MockWebRequestHandler");
+var inherits = require("inherits");
 
 /**
  * This is the main class for the server. The 'netpokerserver' command is pretty much a wrapper
@@ -47,7 +47,7 @@ function NetPokerServer() {
 	this.cashGameManager.on(CashGameManager.IDLE, this.onCashGameManagerIdle, this);
 }
 
-FunctionUtil.extend(NetPokerServer, EventDispatcher);
+inherits(NetPokerServer, EventDispatcher);
 
 NetPokerServer.STARTED = "started";
 

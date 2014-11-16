@@ -4,8 +4,8 @@
  */
 
 var PIXI = require("pixi.js");
-var FunctionUtil = require("./FunctionUtil");
 var EventDispatcher = require("yaed");
+var inherits = require("inherits");
 
 /**
  * Button.
@@ -32,7 +32,7 @@ function Button(content) {
 	this.filters = [this.colorMatrixFilter];
 }
 
-FunctionUtil.extend(Button, PIXI.DisplayObjectContainer);
+inherits(Button, PIXI.DisplayObjectContainer);
 EventDispatcher.init(Button);
 
 Button.LIGHT_MATRIX = [1.5, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 1];

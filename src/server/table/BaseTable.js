@@ -3,10 +3,10 @@
  * @module server
  */
 
-var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("yaed");
 var ChatMessage = require("../../proto/messages/ChatMessage");
 var DealerButtonMessage = require("../../proto/messages/DealerButtonMessage");
+var inherits=require("inherits");
 
 /**
  * Base class for cash game and tournament tables.
@@ -25,7 +25,7 @@ function BaseTable() {
 	this.fixedDeck = null;
 }
 
-FunctionUtil.extend(BaseTable, EventDispatcher);
+inherits(BaseTable, EventDispatcher);
 
 /**
  * Use fixed deck for debugging.

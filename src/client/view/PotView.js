@@ -5,10 +5,10 @@
 
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("resource-fiddle");
 var EventDispatcher = require("yaed");
 var ChipsView = require("./ChipsView");
+var inherits = require("inherits");
 
 /**
  * A pot view
@@ -27,7 +27,7 @@ function PotView(viewConfig, resources) {
 	this.stacks = new Array();
 }
 
-FunctionUtil.extend(PotView, PIXI.DisplayObjectContainer);
+inherits(PotView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(PotView);
 
 /**

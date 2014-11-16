@@ -4,7 +4,7 @@
  */
 
 var EventDispatcher = require("yaed");
-var FunctionUtil = require("./FunctionUtil");
+var inherits=require("inherits");
 
 /**
  * An implementation of promises as defined here:
@@ -21,7 +21,7 @@ function Thenable() {
 	this.notifyParam = null;
 }
 
-FunctionUtil.extend(Thenable, EventDispatcher);
+inherits(Thenable, EventDispatcher);
 
 /**
  * Set resolution handlers.

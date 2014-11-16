@@ -1,5 +1,4 @@
 var BotStrategy = require("./BotStrategy");
-var FunctionUtil = require("../../src/utils/FunctionUtil");
 var StateCompleteMessage = require("../../src/proto/messages/StateCompleteMessage");
 var ShowDialogMessage = require("../../src/proto/messages/ShowDialogMessage");
 var SeatClickMessage = require("../../src/proto/messages/SeatClickMessage");
@@ -8,6 +7,7 @@ var ButtonClickMessage = require("../../src/proto/messages/ButtonClickMessage");
 var PayOutMessage = require("../../src/proto/messages/PayOutMessage");
 var ButtonsMessage = require("../../src/proto/messages/ButtonsMessage");
 var ButtonData = require("../../src/proto/data/ButtonData");
+var inherits = require("inherits");
 
 /**
  * Checks until show/muck state.
@@ -17,7 +17,7 @@ function BotCheckUntilEndStrategy() {
 	BotStrategy.call(this);
 }
 
-FunctionUtil.extend(BotCheckUntilEndStrategy, BotStrategy);
+inherits(BotCheckUntilEndStrategy, BotStrategy);
 
 /**
  * Run the strategy.

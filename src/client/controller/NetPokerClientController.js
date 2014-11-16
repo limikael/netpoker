@@ -3,7 +3,6 @@
  * @module client
  */
 
-var FunctionUtil = require("../../utils/FunctionUtil");
 var MessageSequencer = require("./MessageSequencer");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var ButtonsView = require("../view/ButtonsView");

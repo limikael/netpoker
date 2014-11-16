@@ -5,9 +5,9 @@
 
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("resource-fiddle");
 var EventDispatcher = require("yaed");
+var inherits = require("inherits");
 
 /**
  * A chips view.
@@ -39,7 +39,7 @@ function ChipsView(viewConfig, resources, showToolTip) {
 
 }
 
-FunctionUtil.extend(ChipsView, PIXI.DisplayObjectContainer);
+inherits(ChipsView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(ChipsView);
 
 /**

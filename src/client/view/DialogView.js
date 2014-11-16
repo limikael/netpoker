@@ -4,13 +4,13 @@
  */
 
 var PIXI = require("pixi.js");
-var FunctionUtil = require("../../utils/FunctionUtil");
 var NineSlice = require("../../utils/NineSlice");
 var Resources = require("resource-fiddle");
 var DialogButton = require("./DialogButton");
 var ButtonData = require("../../proto/data/ButtonData");
 var PixiTextInput = require("PixiTextInput");
 var EventDispatcher = require("yaed");
+var inherits = require("inherits");
 
 /**
  * Dialog view.
@@ -77,7 +77,7 @@ function DialogView(viewConfig, resources) {
 	this.hide();
 }
 
-FunctionUtil.extend(DialogView, PIXI.DisplayObjectContainer);
+inherits(DialogView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(DialogView);
 
 DialogView.BUTTON_CLICK = "buttonClick";

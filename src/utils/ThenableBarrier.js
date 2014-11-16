@@ -4,7 +4,7 @@
  */
 
 var Thenable = require("./Thenable");
-var FunctionUtil = require("../utils/FunctionUtil");
+var inherits = require("inherits");
 
 /**
  * Listen to several promises that all must be fulfilled.
@@ -20,7 +20,7 @@ function ThenableBarrier() {
 	this.done=false;
 }
 
-FunctionUtil.extend(ThenableBarrier, Thenable);
+inherits(ThenableBarrier, Thenable);
 
 /**
  * Add a thenable to listen to.

@@ -3,7 +3,6 @@
  * @module server
  */
 
-var FunctionUtil = require("../../utils/FunctionUtil");
 var EventDispatcher = require("yaed");
 var CardData = require("../../proto/data/CardData");
 var BetMessage = require("../../proto/messages/BetMessage");
@@ -14,6 +13,7 @@ var ArrayUtil = require("../../utils/ArrayUtil");
 var AskBlindState = require("./AskBlindState");
 var Backend = require("../backend/Backend");
 var ArrayUtil = require("../../utils/ArrayUtil");
+var inherits = require("inherits");
 
 /**
  * Represents one game of poker.
@@ -35,7 +35,7 @@ function Game(table) {
 	this.fixedDeck = null;
 }
 
-FunctionUtil.extend(Game, EventDispatcher);
+inherits(Game, EventDispatcher);
 
 Game.FINISHED = "finished";
 

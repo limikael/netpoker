@@ -1,5 +1,5 @@
 var EventDispatcher = require("yaed");
-var FunctionUtil = require("../../src/utils/FunctionUtil");
+var inherits = require("inherits");
 
 /**
  * Message pipe connection.
@@ -10,7 +10,7 @@ function MessagePipeConnection() {
 	this.otherEnd = null;
 }
 
-FunctionUtil.extend(MessagePipeConnection, EventDispatcher);
+inherits(MessagePipeConnection, EventDispatcher);
 
 MessagePipeConnection.MESSAGE = "message";
 MessagePipeConnection.CLOSE = "close";
