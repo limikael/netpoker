@@ -4,7 +4,7 @@
  */
 
 var FunctionUtil = require("../../utils/FunctionUtil");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var BaseTableSeat = require("../table/BaseTableSeat");
 var CashGameUser = require("./CashGameUser");
 var TableInfoMessage = require("../../proto/messages/TableInfoMessage");

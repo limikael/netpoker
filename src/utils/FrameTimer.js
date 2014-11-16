@@ -5,7 +5,7 @@
 
 "use strict";
 
-var EventDispatcher=require("./EventDispatcher");
+var EventDispatcher=require("yaed");
 var FunctionUtil=require("./FunctionUtil");
 
 /**

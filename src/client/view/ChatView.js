@@ -10,7 +10,7 @@ var Slider = require("../../utils/Slider");
 var Resources = require("resource-fiddle");
 var PixiTextInput = require("PixiTextInput");
 var MouseOverGroup = require("../../utils/MouseOverGroup");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * Chat view.

@@ -11,7 +11,7 @@ var CheckboxMessage = require("../../src/proto/messages/CheckboxMessage");
 var ButtonData = require("../../src/proto/data/ButtonData");
 var BotModel = require("./BotModel");
 var BotController = require("./BotController");
-var EventDispatcher = require("../../src/utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 
 function BotConnection(connectionTarget, token) {
 	this.connectionTarget = connectionTarget;

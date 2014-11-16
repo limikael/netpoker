@@ -1,6 +1,6 @@
 var NetPokerServer = require("../../src/server/app/NetPokerServer");
 var FunctionUtil = require("../../src/utils/FunctionUtil");
-var EventDispatcher = require("../../src/utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var MessagePipeConnection = require("./MessagePipeConnection");
 
 /**

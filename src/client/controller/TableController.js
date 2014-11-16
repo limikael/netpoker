@@ -14,7 +14,7 @@ var TimerMessage = require("../../proto/messages/TimerMessage");
 var ActionMessage = require("../../proto/messages/ActionMessage");
 var FoldCardsMessage = require("../../proto/messages/FoldCardsMessage");
 var DelayMessage = require("../../proto/messages/DelayMessage");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var ClearMessage = require("../../proto/messages/ClearMessage");
 var PayOutMessage = require("../../proto/messages/PayOutMessage");
 

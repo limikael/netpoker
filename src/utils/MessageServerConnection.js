@@ -4,7 +4,7 @@
  */
 
 var FunctionUtil = require("./FunctionUtil");
-var EventDispatcher = require("./EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * Represents one connection to a MessageServer

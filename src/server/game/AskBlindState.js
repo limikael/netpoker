@@ -4,7 +4,7 @@
  */
 
 var FunctionUtil = require("../../utils/FunctionUtil");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var GameState = require("./GameState");
 var GameSeat = require("./GameSeat");
 var GameSeatPrompt = require("./GameSeatPrompt");

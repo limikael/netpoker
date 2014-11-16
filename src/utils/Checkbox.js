@@ -5,7 +5,7 @@
 
 var PIXI = require("pixi.js");
 var FunctionUtil = require("./FunctionUtil");
-var EventDispatcher = require("./EventDispatcher");
+var EventDispatcher = require("yaed");
 var Button = require("./Button");
 
 /**

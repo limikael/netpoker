@@ -1,6 +1,6 @@
 var PollNumPlayersRequestHandler = require("../../../../src/server/api/PollNumPlayersRequestHandler");
 var CashGameManager = require("../../../../src/server/cashgame/CashGameManager");
-var EventDispatcher = require("../../../../src/utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 
 describe("PollNumPlayersRequestHandler", function() {
 	var mockNetPokerServer;

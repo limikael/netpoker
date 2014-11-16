@@ -4,7 +4,7 @@
  */
 
 var FunctionUtil = require("./FunctionUtil");
-var EventDispatcher = require("./EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * Perform tasks in a sequence.

@@ -1,6 +1,6 @@
 var CashGameTable = require("../../../../src/server/cashgame/CashGameTable");
 var User = require("../../../../src/server/user/User");
-var EventDispatcher = require("../../../../src/utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var ProtoConnection = require("../../../../src/proto/ProtoConnection");
 var TableInfoMessage = require("../../../../src/proto/messages/TableInfoMessage");
 var HandInfoMessage = require("../../../../src/proto/messages/HandInfoMessage");

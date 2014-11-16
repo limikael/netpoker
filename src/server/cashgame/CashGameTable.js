@@ -4,7 +4,7 @@
  */
 
 var FunctionUtil = require("../../utils/FunctionUtil");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var BaseTable = require("../table/BaseTable");
 var TableUtil = require("../table/TableUtil");
 var CashGameTableSeat = require("./CashGameTableSeat");
@@ -136,7 +136,9 @@ CashGameTable.prototype.onTableSeatReady = function() {
  */
 CashGameTable.prototype.onTableSeatIdle = function() {
 	if (this.isIdle())
-		this.trigger(CashGameTable.IDLE);
+		this.trigger({
+			type: CashGameTable.IDLE
+		});
 
 	this.trigger(CashGameTable.NUM_PLAYERS_CHANGE);
 }

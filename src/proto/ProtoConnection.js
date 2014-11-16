@@ -3,7 +3,7 @@
  * @module proto
  */
 
-var EventDispatcher = require("../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var FunctionUtil = require("../utils/FunctionUtil");
 
 var InitMessage = require("./messages/InitMessage");

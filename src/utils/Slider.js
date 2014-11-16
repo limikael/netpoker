@@ -6,7 +6,7 @@
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("./FunctionUtil");
-var EventDispatcher = require("./EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * Slider. This is the class for the slider.

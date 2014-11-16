@@ -1,6 +1,6 @@
 var UserConnection = require("../../../../src/server/connection/UserConnection");
 var ProtoConnection = require("../../../../src/proto/ProtoConnection");
-var EventDispatcher = require("../../../../src/utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var Backend = require("../../../../src/server/backend/Backend");
 var Thenable = require("../../../../src/utils/Thenable");
 

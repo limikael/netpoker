@@ -4,7 +4,7 @@
  */
 
 var Backend = require("../../server/backend/Backend");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var ArrayUtil = require("../../utils/ArrayUtil");
 var CashGameTable = require("./CashGameTable");

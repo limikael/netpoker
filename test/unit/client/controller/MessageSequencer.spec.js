@@ -1,7 +1,7 @@
 var MessageSequencer = require("../../../../src/client/controller/MessageSequencer");
 var StateCompleteMessage = require("../../../../src/proto/messages/StateCompleteMessage");
 var SeatInfoMessage = require("../../../../src/proto/messages/SeatInfoMessage");
-var EventDispatcher = require("../../../../src/utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 
 describe("MessageSequencer", function() {
 	it("sequences messages", function() {

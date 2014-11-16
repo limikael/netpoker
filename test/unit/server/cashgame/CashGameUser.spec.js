@@ -1,5 +1,5 @@
 var User = require("../../../../src/server/user/User");
-var EventDispatcher = require("../../../../src/utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var CashGameUser = require("../../../../src/server/cashgame/CashGameUser");
 
 describe("CashGameUser", function() {

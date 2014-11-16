@@ -7,7 +7,7 @@ var ButtonsMessage = require("../../proto/messages/ButtonsMessage");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 var TimerMessage = require("../../proto/messages/TimerMessage");
 var ButtonData = require("../../proto/data/ButtonData");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var BaseTableSeat = require("../table/BaseTableSeat");
 

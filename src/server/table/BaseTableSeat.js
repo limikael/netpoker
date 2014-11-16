@@ -4,7 +4,7 @@
  */
 
 var FunctionUtil = require("../../utils/FunctionUtil");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var SeatInfoMessage = require("../../proto/messages/SeatInfoMessage");

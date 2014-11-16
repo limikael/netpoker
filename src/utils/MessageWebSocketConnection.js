@@ -3,7 +3,7 @@
  * @module utils
  */
 
-var EventDispatcher = require("./EventDispatcher");
+var EventDispatcher = require("yaed");
 var FunctionUtil = require("./FunctionUtil");
 var Thenable = require("./Thenable");
 

@@ -9,7 +9,7 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var Button = require("../../utils/Button");
 var NineSlice = require("../../utils/NineSlice");
 var Resources = require("resource-fiddle");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var Checkbox = require("../../utils/Checkbox");
 
 /**

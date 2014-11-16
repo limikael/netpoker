@@ -1,4 +1,4 @@
-var EventDispatcher=require("../../src/utils/EventDispatcher");
+var EventDispatcher=require("yaed");
 var FunctionUtil=require("../../src/utils/FunctionUtil");
 
 /**

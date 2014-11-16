@@ -2,7 +2,7 @@ var GameSeatPrompt = require("../../../../src/server/game/GameSeatPrompt");
 var BaseTableSeat = require("../../../../src/server/table/BaseTableSeat");
 var ButtonData = require("../../../../src/proto/data/ButtonData");
 var ButtonClickMessage = require("../../../../src/proto/messages/ButtonClickMessage");
-var EventDispatcher = require("../../../../src/utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 
 describe("GameSeatPrompt", function() {
 	var mockGameSeat;

@@ -22802,6 +22802,156 @@ TWEEN.Interpolation = {
 module.exports=TWEEN;
 },{}],87:[function(require,module,exports){
 /**
+ * AS3/jquery style event dispatcher. Slightly modified. The
+ * jquery style on/off/trigger style of adding listeners is
+ * currently the preferred one.
+ *
+ * The on method for adding listeners takes an extra parameter which is the
+ * scope in which listeners should be called. So this:
+ *
+ *     object.on("event", listener, this);
+ *
+ * Has the same function when adding events as:
+ *
+ *     object.on("event", listener.bind(this));
+ *
+ * However, the difference is that if we use the second method it
+ * will not be possible to remove the listeners later, unless
+ * the closure created by bind is stored somewhere. If the
+ * first method is used, we can remove the listener with:
+ *
+ *     object.off("event", listener, this);
+ *
+ * @class EventDispatcher
+ */
+function EventDispatcher() {
+	this.listenerMap = {};
+}
+
+/**
+ * Add event listener.
+ * @method addEventListener
+ */
+EventDispatcher.prototype.addEventListener = function(eventType, listener, scope) {
+	if (!this.listenerMap)
+		this.listenerMap = {};
+
+	if (!eventType)
+		throw new Error("Event type required for event dispatcher");
+
+	if (!listener)
+		throw new Error("Listener required for event dispatcher");
+
+	this.removeEventListener(eventType, listener, scope);
+
+	if (!this.listenerMap.hasOwnProperty(eventType))
+		this.listenerMap[eventType] = [];
+
+	this.listenerMap[eventType].push({
+		listener: listener,
+		scope: scope
+	});
+}
+
+/**
+ * Remove event listener.
+ * @method removeEventListener
+ */
+EventDispatcher.prototype.removeEventListener = function(eventType, listener, scope) {
+	if (!this.listenerMap)
+		this.listenerMap = {};
+
+	if (!this.listenerMap.hasOwnProperty(eventType))
+		return;
+
+	var listeners = this.listenerMap[eventType];
+
+	for (var i = 0; i < listeners.length; i++) {
+		var listenerObj = listeners[i];
+
+		if (listener == listenerObj.listener && scope == listenerObj.scope) {
+			listeners.splice(i, 1);
+			i--;
+		}
+	}
+
+	if (!listeners.length)
+		delete this.listenerMap[eventType];
+}
+
+/**
+ * Dispatch event.
+ * @method dispatchEvent
+ */
+EventDispatcher.prototype.dispatchEvent = function(event /* ... */ ) {
+	if (!this.listenerMap)
+		this.listenerMap = {};
+
+	var eventType;
+	var listenerParams;
+
+	if (typeof event == "string") {
+		eventType = event;
+
+		if (arguments.length > 1)
+			listenerParams = Array.prototype.slice.call(arguments, 1);
+
+		else listenerParams = [{
+			type: eventType,
+			target: this
+		}];
+	} else {
+		eventType = event.type;
+		event.target = this;
+		listenerParams = [event];
+	}
+
+	if (!this.listenerMap.hasOwnProperty(eventType))
+		return;
+
+	for (var i in this.listenerMap[eventType]) {
+		var listenerObj = this.listenerMap[eventType][i];
+		listenerObj.listener.apply(listenerObj.scope, listenerParams);
+	}
+}
+
+/**
+ * Jquery style alias for addEventListener
+ * @method on
+ */
+EventDispatcher.prototype.on = EventDispatcher.prototype.addEventListener;
+
+/**
+ * Jquery style alias for removeEventListener
+ * @method off
+ */
+EventDispatcher.prototype.off = EventDispatcher.prototype.removeEventListener;
+
+/**
+ * Jquery style alias for dispatchEvent
+ * @method trigger
+ */
+EventDispatcher.prototype.trigger = EventDispatcher.prototype.dispatchEvent;
+
+/**
+ * Make something an event dispatcher. Can be used for multiple inheritance.
+ * @method init
+ * @static
+ */
+EventDispatcher.init = function(cls) {
+	cls.prototype.addEventListener = EventDispatcher.prototype.addEventListener;
+	cls.prototype.removeEventListener = EventDispatcher.prototype.removeEventListener;
+	cls.prototype.dispatchEvent = EventDispatcher.prototype.dispatchEvent;
+	cls.prototype.on = EventDispatcher.prototype.on;
+	cls.prototype.off = EventDispatcher.prototype.off;
+	cls.prototype.trigger = EventDispatcher.prototype.trigger;
+}
+
+if (typeof module !== 'undefined') {
+	module.exports = EventDispatcher;
+}
+},{}],88:[function(require,module,exports){
+/**
  * Client.
  * @module client
  */
@@ -23018,7 +23168,7 @@ NetPokerClient.prototype.onConnectionClose = function() {
 }
 
 module.exports = NetPokerClient;
-},{"../../proto/ProtoConnection":115,"../../proto/messages/InitMessage":132,"../../proto/messages/StateCompleteMessage":143,"../../utils/FunctionUtil":153,"../../utils/MessageRequestConnection":155,"../../utils/MessageWebSocketConnection":156,"../controller/NetPokerClientController":91,"../resources/DefaultSkin":94,"../resources/ViewConfig":95,"../view/LoadingScreen":104,"../view/NetPokerClientView":105,"pixi.js":63,"pixiapp":64,"resource-fiddle":85,"tween.js":86,"url":60}],88:[function(require,module,exports){
+},{"../../proto/ProtoConnection":116,"../../proto/messages/InitMessage":133,"../../proto/messages/StateCompleteMessage":144,"../../utils/FunctionUtil":153,"../../utils/MessageRequestConnection":155,"../../utils/MessageWebSocketConnection":156,"../controller/NetPokerClientController":92,"../resources/DefaultSkin":95,"../resources/ViewConfig":96,"../view/LoadingScreen":105,"../view/NetPokerClientView":106,"pixi.js":63,"pixiapp":64,"resource-fiddle":85,"tween.js":86,"url":60}],89:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23149,13 +23299,13 @@ InterfaceController.prototype.onCheckboxMessage = function(m) {
 }
 
 module.exports = InterfaceController;
-},{"../../proto/messages/ButtonsMessage":122,"../../proto/messages/ChatMessage":123,"../../proto/messages/CheckboxMessage":124,"../../proto/messages/HandInfoMessage":131,"../../proto/messages/InterfaceStateMessage":133,"../../proto/messages/PresetButtonsMessage":139,"../../proto/messages/ShowDialogMessage":142,"../../proto/messages/TableInfoMessage":146}],89:[function(require,module,exports){
+},{"../../proto/messages/ButtonsMessage":123,"../../proto/messages/ChatMessage":124,"../../proto/messages/CheckboxMessage":125,"../../proto/messages/HandInfoMessage":132,"../../proto/messages/InterfaceStateMessage":134,"../../proto/messages/PresetButtonsMessage":140,"../../proto/messages/ShowDialogMessage":143,"../../proto/messages/TableInfoMessage":147}],90:[function(require,module,exports){
 /**
  * Client.
  * @module client
  */
 
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Sequencer = require("../../utils/Sequencer");
 
@@ -23223,14 +23373,14 @@ MessageSequenceItem.prototype.onTargetComplete = function() {
 }
 
 module.exports = MessageSequenceItem;
-},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/Sequencer":160}],90:[function(require,module,exports){
+},{"../../utils/FunctionUtil":153,"../../utils/Sequencer":160,"yaed":87}],91:[function(require,module,exports){
 /**
  * Client.
  * @module client
  */
 
 var Sequencer = require("../../utils/Sequencer");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var MessageSequenceItem = require("./MessageSequenceItem");
 
 /**
@@ -23298,7 +23448,7 @@ MessageSequencer.prototype.waitFor = function(target, event) {
 }
 
 module.exports = MessageSequencer;
-},{"../../utils/EventDispatcher":152,"../../utils/Sequencer":160,"./MessageSequenceItem":89}],91:[function(require,module,exports){
+},{"../../utils/Sequencer":160,"./MessageSequenceItem":90,"yaed":87}],92:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23448,7 +23598,7 @@ NetPokerClientController.prototype.onCheckboxChange = function(ev) {
 }
 
 module.exports = NetPokerClientController;
-},{"../../proto/ProtoConnection":115,"../../proto/data/ButtonData":116,"../../proto/messages/ButtonClickMessage":121,"../../proto/messages/ChatMessage":123,"../../proto/messages/CheckboxMessage":124,"../../proto/messages/PresetButtonClickMessage":138,"../../proto/messages/SeatClickMessage":140,"../../utils/FunctionUtil":153,"../view/ButtonsView":97,"../view/DialogView":103,"../view/NetPokerClientView":105,"../view/PresetButtonsView":108,"../view/SettingsView":112,"./InterfaceController":88,"./MessageSequencer":90,"./TableController":92}],92:[function(require,module,exports){
+},{"../../proto/ProtoConnection":116,"../../proto/data/ButtonData":117,"../../proto/messages/ButtonClickMessage":122,"../../proto/messages/ChatMessage":124,"../../proto/messages/CheckboxMessage":125,"../../proto/messages/PresetButtonClickMessage":139,"../../proto/messages/SeatClickMessage":141,"../../utils/FunctionUtil":153,"../view/ButtonsView":98,"../view/DialogView":104,"../view/NetPokerClientView":106,"../view/PresetButtonsView":109,"../view/SettingsView":113,"./InterfaceController":89,"./MessageSequencer":91,"./TableController":93}],93:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23465,7 +23615,7 @@ var TimerMessage = require("../../proto/messages/TimerMessage");
 var ActionMessage = require("../../proto/messages/ActionMessage");
 var FoldCardsMessage = require("../../proto/messages/FoldCardsMessage");
 var DelayMessage = require("../../proto/messages/DelayMessage");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var ClearMessage = require("../../proto/messages/ClearMessage");
 var PayOutMessage = require("../../proto/messages/PayOutMessage");
 
@@ -23705,12 +23855,12 @@ TableController.prototype.onPayOut = function(m) {
 
 
 module.exports = TableController;
-},{"../../proto/messages/ActionMessage":118,"../../proto/messages/BetMessage":119,"../../proto/messages/BetsToPotMessage":120,"../../proto/messages/ClearMessage":125,"../../proto/messages/CommunityCardsMessage":126,"../../proto/messages/DealerButtonMessage":127,"../../proto/messages/DelayMessage":128,"../../proto/messages/FoldCardsMessage":130,"../../proto/messages/PayOutMessage":134,"../../proto/messages/PocketCardsMessage":135,"../../proto/messages/PotMessage":136,"../../proto/messages/SeatInfoMessage":141,"../../proto/messages/TimerMessage":148,"../../utils/EventDispatcher":152}],93:[function(require,module,exports){
+},{"../../proto/messages/ActionMessage":119,"../../proto/messages/BetMessage":120,"../../proto/messages/BetsToPotMessage":121,"../../proto/messages/ClearMessage":126,"../../proto/messages/CommunityCardsMessage":127,"../../proto/messages/DealerButtonMessage":128,"../../proto/messages/DelayMessage":129,"../../proto/messages/FoldCardsMessage":131,"../../proto/messages/PayOutMessage":135,"../../proto/messages/PocketCardsMessage":136,"../../proto/messages/PotMessage":137,"../../proto/messages/SeatInfoMessage":142,"../../proto/messages/TimerMessage":149,"yaed":87}],94:[function(require,module,exports){
 NetPokerClient = require("./app/NetPokerClient");
 
 //var netPokerClient = new NetPokerClient();
 
-},{"./app/NetPokerClient":87}],94:[function(require,module,exports){
+},{"./app/NetPokerClient":88}],95:[function(require,module,exports){
 module.exports = {
 	graphics: {
 		textures: [
@@ -23916,7 +24066,7 @@ module.exports = {
 	,*/
 
 }
-},{}],95:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23958,7 +24108,7 @@ ViewConfig.prototype.scaleAnimationTime = function(millis) {
 }
 
 module.exports = ViewConfig;
-},{}],96:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24034,7 +24184,7 @@ BigButton.prototype.setValue = function(value) {
 }
 
 module.exports = BigButton;
-},{"../../utils/Button":150,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85}],97:[function(require,module,exports){
+},{"../../utils/Button":151,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85}],98:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24042,7 +24192,7 @@ module.exports = BigButton;
 
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var Button = require("../../utils/Button");
 var Slider = require("../../utils/Slider");
 var NineSlice = require("../../utils/NineSlice");
@@ -24306,7 +24456,7 @@ ButtonsView.prototype.onButtonClick = function(e) {
 }
 
 module.exports = ButtonsView;
-},{"../../utils/Button":150,"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/NineSlice":158,"../../utils/Slider":161,"./BigButton":96,"./RaiseShortcutButton":109,"pixi.js":63,"resource-fiddle":85}],98:[function(require,module,exports){
+},{"../../utils/Button":151,"../../utils/FunctionUtil":153,"../../utils/NineSlice":158,"../../utils/Slider":161,"./BigButton":97,"./RaiseShortcutButton":110,"pixi.js":63,"resource-fiddle":85,"yaed":87}],99:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24316,7 +24466,7 @@ var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("resource-fiddle");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * A card view.
@@ -24504,7 +24654,7 @@ CardView.prototype.onFoldComplete = function() {
 }
 
 module.exports = CardView;
-},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],99:[function(require,module,exports){
+},{"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86,"yaed":87}],100:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24517,7 +24667,7 @@ var Slider = require("../../utils/Slider");
 var Resources = require("resource-fiddle");
 var PixiTextInput = require("PixiTextInput");
 var MouseOverGroup = require("../../utils/MouseOverGroup");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * Chat view.
@@ -24738,7 +24888,7 @@ ChatView.prototype.onChatFieldMouseMove = function(interaction_object) {
 
 module.exports = ChatView;
 
-},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/MouseOverGroup":157,"../../utils/NineSlice":158,"../../utils/Slider":161,"PixiTextInput":1,"pixi.js":63,"resource-fiddle":85}],100:[function(require,module,exports){
+},{"../../utils/FunctionUtil":153,"../../utils/MouseOverGroup":157,"../../utils/NineSlice":158,"../../utils/Slider":161,"PixiTextInput":1,"pixi.js":63,"resource-fiddle":85,"yaed":87}],101:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24748,7 +24898,7 @@ var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("resource-fiddle");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * A chips view.
@@ -25043,7 +25193,7 @@ ChipsView.prototype.onOutWaitAnimationComplete = function() {
 }
 
 module.exports = ChipsView;
-},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],101:[function(require,module,exports){
+},{"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86,"yaed":87}],102:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25053,7 +25203,7 @@ var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("resource-fiddle");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * Dialog view.
@@ -25140,7 +25290,7 @@ DealerButtonView.prototype.show = function(seatIndex, animate) {
 }
 
 module.exports = DealerButtonView;
-},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],102:[function(require,module,exports){
+},{"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86,"yaed":87}],103:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25186,7 +25336,7 @@ DialogButton.prototype.setText = function(text) {
 }
 
 module.exports = DialogButton;
-},{"../../utils/Button":150,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85}],103:[function(require,module,exports){
+},{"../../utils/Button":151,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85}],104:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25199,7 +25349,7 @@ var Resources = require("resource-fiddle");
 var DialogButton = require("./DialogButton");
 var ButtonData = require("../../proto/data/ButtonData");
 var PixiTextInput = require("PixiTextInput");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * Dialog view.
@@ -25341,7 +25491,7 @@ DialogView.prototype.onButtonClick = function(e) {
 }
 
 module.exports = DialogView;
-},{"../../proto/data/ButtonData":116,"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/NineSlice":158,"./DialogButton":102,"PixiTextInput":1,"pixi.js":63,"resource-fiddle":85}],104:[function(require,module,exports){
+},{"../../proto/data/ButtonData":117,"../../utils/FunctionUtil":153,"../../utils/NineSlice":158,"./DialogButton":103,"PixiTextInput":1,"pixi.js":63,"resource-fiddle":85,"yaed":87}],105:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25403,7 +25553,7 @@ LoadingScreen.prototype.hide = function() {
 }
 
 module.exports = LoadingScreen;
-},{"../../utils/FunctionUtil":153,"../../utils/Gradient":154,"pixi.js":63}],105:[function(require,module,exports){
+},{"../../utils/FunctionUtil":153,"../../utils/Gradient":154,"pixi.js":63}],106:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25411,7 +25561,7 @@ module.exports = LoadingScreen;
 
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var Resources = require("resource-fiddle");
 var SeatView = require("./SeatView");
 var CardView = require("./CardView");
@@ -25701,7 +25851,7 @@ NetPokerClientView.prototype.clear = function() {
 }
 
 module.exports = NetPokerClientView;
-},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/Gradient":154,"../../utils/Point":159,"../view/PresetButtonsView":108,"../view/SettingsView":112,"../view/TableInfoView":113,"./ButtonsView":97,"./CardView":98,"./ChatView":99,"./ChipsView":100,"./DealerButtonView":101,"./DialogView":103,"./PotView":106,"./SeatView":110,"./TimerView":114,"pixi.js":63,"resource-fiddle":85}],106:[function(require,module,exports){
+},{"../../utils/FunctionUtil":153,"../../utils/Gradient":154,"../../utils/Point":159,"../view/PresetButtonsView":109,"../view/SettingsView":113,"../view/TableInfoView":114,"./ButtonsView":98,"./CardView":99,"./ChatView":100,"./ChipsView":101,"./DealerButtonView":102,"./DialogView":104,"./PotView":107,"./SeatView":111,"./TimerView":115,"pixi.js":63,"resource-fiddle":85,"yaed":87}],107:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25711,7 +25861,7 @@ var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("resource-fiddle");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var ChipsView = require("./ChipsView");
 
 /**
@@ -25788,7 +25938,7 @@ PotView.prototype.show = function() {
 }
 
 module.exports = PotView;
-},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"./ChipsView":100,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],107:[function(require,module,exports){
+},{"../../utils/FunctionUtil":153,"./ChipsView":101,"pixi.js":63,"resource-fiddle":85,"tween.js":86,"yaed":87}],108:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25798,7 +25948,7 @@ var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("resource-fiddle");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var Checkbox = require("../../utils/Checkbox");
 var ButtonData = require("../../proto/data/ButtonData");
 
@@ -25914,7 +26064,7 @@ PresetButton.prototype.getValue = function() {
 }
 
 module.exports = PresetButton;
-},{"../../proto/data/ButtonData":116,"../../utils/Checkbox":151,"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],108:[function(require,module,exports){
+},{"../../proto/data/ButtonData":117,"../../utils/Checkbox":152,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86,"yaed":87}],109:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25924,7 +26074,7 @@ var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("resource-fiddle");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var PresetButton = require("./PresetButton");
 
 /**
@@ -26028,7 +26178,7 @@ PresetButtonsView.prototype.setCurrent = function(id) {
 }
 
 module.exports = PresetButtonsView;
-},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"./PresetButton":107,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],109:[function(require,module,exports){
+},{"../../utils/FunctionUtil":153,"./PresetButton":108,"pixi.js":63,"resource-fiddle":85,"tween.js":86,"yaed":87}],110:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26040,7 +26190,7 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var Button = require("../../utils/Button");
 var NineSlice = require("../../utils/NineSlice");
 var Resources = require("resource-fiddle");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var Checkbox = require("../../utils/Checkbox");
 
 /**
@@ -26094,7 +26244,7 @@ RaiseShortcutButton.prototype.setEnabled = function(value) {
 }
 
 module.exports = RaiseShortcutButton;
-},{"../../utils/Button":150,"../../utils/Checkbox":151,"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/NineSlice":158,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],110:[function(require,module,exports){
+},{"../../utils/Button":151,"../../utils/Checkbox":152,"../../utils/FunctionUtil":153,"../../utils/NineSlice":158,"pixi.js":63,"resource-fiddle":85,"tween.js":86,"yaed":87}],111:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26308,7 +26458,7 @@ SeatView.prototype.clear = function() {
 }
 
 module.exports = SeatView;
-},{"../../utils/Button":150,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],111:[function(require,module,exports){
+},{"../../utils/Button":151,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],112:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26320,7 +26470,7 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var Button = require("../../utils/Button");
 var NineSlice = require("../../utils/NineSlice");
 var Resources = require("resource-fiddle");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var Checkbox = require("../../utils/Checkbox");
 
 /**
@@ -26386,7 +26536,7 @@ SettingsCheckbox.prototype.setChecked = function(checked) {
 }
 
 module.exports = SettingsCheckbox;
-},{"../../utils/Button":150,"../../utils/Checkbox":151,"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/NineSlice":158,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],112:[function(require,module,exports){
+},{"../../utils/Button":151,"../../utils/Checkbox":152,"../../utils/FunctionUtil":153,"../../utils/NineSlice":158,"pixi.js":63,"resource-fiddle":85,"tween.js":86,"yaed":87}],113:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26398,7 +26548,7 @@ var FunctionUtil = require("../../utils/FunctionUtil");
 var Button = require("../../utils/Button");
 var NineSlice = require("../../utils/NineSlice");
 var Resources = require("resource-fiddle");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var SettingsCheckbox = require("./SettingsCheckbox");
 var RaiseShortcutButton = require("./RaiseShortcutButton");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
@@ -26644,7 +26794,7 @@ SettingsView.prototype.setCheckboxChecked = function(id, checked) {
 }
 
 module.exports = SettingsView;
-},{"../../proto/data/ButtonData":116,"../../proto/messages/CheckboxMessage":124,"../../utils/Button":150,"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"../../utils/NineSlice":158,"./RaiseShortcutButton":109,"./SettingsCheckbox":111,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],113:[function(require,module,exports){
+},{"../../proto/data/ButtonData":117,"../../proto/messages/CheckboxMessage":125,"../../utils/Button":151,"../../utils/FunctionUtil":153,"../../utils/NineSlice":158,"./RaiseShortcutButton":110,"./SettingsCheckbox":112,"pixi.js":63,"resource-fiddle":85,"tween.js":86,"yaed":87}],114:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26652,7 +26802,7 @@ module.exports = SettingsView;
 
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * Show table info.
@@ -26731,7 +26881,7 @@ TableInfoView.prototype.clear = function() {
 }
 
 module.exports = TableInfoView;
-},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"pixi.js":63}],114:[function(require,module,exports){
+},{"../../utils/FunctionUtil":153,"pixi.js":63,"yaed":87}],115:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26741,7 +26891,7 @@ var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("resource-fiddle");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * A timer view
@@ -26882,13 +27032,13 @@ TimerView.prototype.showPercent = function(value) {
 }
 
 module.exports = TimerView;
-},{"../../utils/EventDispatcher":152,"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86}],115:[function(require,module,exports){
+},{"../../utils/FunctionUtil":153,"pixi.js":63,"resource-fiddle":85,"tween.js":86,"yaed":87}],116:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
  */
 
-var EventDispatcher = require("../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var FunctionUtil = require("../utils/FunctionUtil");
 
 var InitMessage = require("./messages/InitMessage");
@@ -27142,7 +27292,7 @@ ProtoConnection.prototype.toString = function() {
 }
 
 module.exports = ProtoConnection;
-},{"../utils/EventDispatcher":152,"../utils/FunctionUtil":153,"./messages/ActionMessage":118,"./messages/BetMessage":119,"./messages/BetsToPotMessage":120,"./messages/ButtonClickMessage":121,"./messages/ButtonsMessage":122,"./messages/ChatMessage":123,"./messages/CheckboxMessage":124,"./messages/ClearMessage":125,"./messages/CommunityCardsMessage":126,"./messages/DealerButtonMessage":127,"./messages/DelayMessage":128,"./messages/FadeTableMessage":129,"./messages/FoldCardsMessage":130,"./messages/HandInfoMessage":131,"./messages/InitMessage":132,"./messages/InterfaceStateMessage":133,"./messages/PayOutMessage":134,"./messages/PocketCardsMessage":135,"./messages/PotMessage":136,"./messages/PreTournamentInfoMessage":137,"./messages/PresetButtonClickMessage":138,"./messages/PresetButtonsMessage":139,"./messages/SeatClickMessage":140,"./messages/SeatInfoMessage":141,"./messages/ShowDialogMessage":142,"./messages/StateCompleteMessage":143,"./messages/TableButtonClickMessage":144,"./messages/TableButtonsMessage":145,"./messages/TableInfoMessage":146,"./messages/TestCaseRequestMessage":147,"./messages/TimerMessage":148,"./messages/TournamentResultMessage":149}],116:[function(require,module,exports){
+},{"../utils/FunctionUtil":153,"./messages/ActionMessage":119,"./messages/BetMessage":120,"./messages/BetsToPotMessage":121,"./messages/ButtonClickMessage":122,"./messages/ButtonsMessage":123,"./messages/ChatMessage":124,"./messages/CheckboxMessage":125,"./messages/ClearMessage":126,"./messages/CommunityCardsMessage":127,"./messages/DealerButtonMessage":128,"./messages/DelayMessage":129,"./messages/FadeTableMessage":130,"./messages/FoldCardsMessage":131,"./messages/HandInfoMessage":132,"./messages/InitMessage":133,"./messages/InterfaceStateMessage":134,"./messages/PayOutMessage":135,"./messages/PocketCardsMessage":136,"./messages/PotMessage":137,"./messages/PreTournamentInfoMessage":138,"./messages/PresetButtonClickMessage":139,"./messages/PresetButtonsMessage":140,"./messages/SeatClickMessage":141,"./messages/SeatInfoMessage":142,"./messages/ShowDialogMessage":143,"./messages/StateCompleteMessage":144,"./messages/TableButtonClickMessage":145,"./messages/TableButtonsMessage":146,"./messages/TableInfoMessage":147,"./messages/TestCaseRequestMessage":148,"./messages/TimerMessage":149,"./messages/TournamentResultMessage":150,"yaed":87}],117:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27280,7 +27430,7 @@ ButtonData.prototype.toString = function() {
 }
 
 module.exports = ButtonData;
-},{}],117:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27466,7 +27616,7 @@ CardData.fromString = function(s) {
 }
 
 module.exports = CardData;
-},{}],118:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27528,7 +27678,7 @@ ActionMessage.prototype.serialize = function() {
 }
 
 module.exports = ActionMessage;
-},{}],119:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27582,7 +27732,7 @@ BetMessage.prototype.serialize = function() {
 }
 
 module.exports = BetMessage;
-},{}],120:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27613,7 +27763,7 @@ BetsToPotMessage.prototype.serialize = function() {
 }
 
 module.exports = BetsToPotMessage;
-},{}],121:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27670,7 +27820,7 @@ ButtonClickMessage.prototype.serialize = function() {
 }
 
 module.exports = ButtonClickMessage;
-},{}],122:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27748,7 +27898,7 @@ ButtonsMessage.prototype.serialize = function() {
 }
 
 module.exports = ButtonsMessage;
-},{"../data/ButtonData":116}],123:[function(require,module,exports){
+},{"../data/ButtonData":117}],124:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27802,7 +27952,7 @@ ChatMessage.prototype.serialize = function() {
 }
 
 module.exports = ChatMessage;
-},{}],124:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27860,7 +28010,7 @@ CheckboxMessage.prototype.serialize = function() {
 }
 
 module.exports = CheckboxMessage;
-},{}],125:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27910,7 +28060,7 @@ ClearMessage.prototype.serialize = function() {
 }
 
 module.exports = ClearMessage;
-},{}],126:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28006,7 +28156,7 @@ CommunityCardsMessage.prototype.serialize = function() {
 }
 
 module.exports = CommunityCardsMessage;
-},{"../data/CardData":117}],127:[function(require,module,exports){
+},{"../data/CardData":118}],128:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28059,7 +28209,7 @@ DealerButtonMessage.prototype.serialize = function() {
 }
 
 module.exports = DealerButtonMessage;
-},{}],128:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28101,7 +28251,7 @@ DelayMessage.prototype.serialize = function() {
 }
 
 module.exports = DelayMessage;
-},{}],129:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28155,7 +28305,7 @@ FadeTableMessage.prototype.serialize = function() {
 }
 
 module.exports = FadeTableMessage;
-},{}],130:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28198,7 +28348,7 @@ FoldCardsMessage.prototype.serialize = function() {
 }
 
 module.exports = FoldCardsMessage;
-},{}],131:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28252,7 +28402,7 @@ HandInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = HandInfoMessage;
-},{}],132:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28332,7 +28482,7 @@ InitMessage.prototype.serialize = function() {
 }
 
 module.exports = InitMessage;
-},{}],133:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28386,7 +28536,7 @@ InterfaceStateMessage.prototype.serialize = function() {
 }
 
 module.exports = InterfaceStateMessage;
-},{}],134:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28439,7 +28589,7 @@ PayOutMessage.prototype.serialize = function() {
 }
 
 module.exports = PayOutMessage;
-},{}],135:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28543,7 +28693,7 @@ PocketCardsMessage.prototype.serialize = function() {
 }
 
 module.exports = PocketCardsMessage;
-},{"../data/CardData":117}],136:[function(require,module,exports){
+},{"../data/CardData":118}],137:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28586,7 +28736,7 @@ PotMessage.prototype.serialize = function() {
 }
 
 module.exports = PotMessage;
-},{}],137:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28643,7 +28793,7 @@ PreTournamentInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = PreTournamentInfoMessage;
-},{}],138:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28700,7 +28850,7 @@ PresetButtonClickMessage.prototype.serialize = function() {
 }
 
 module.exports = PresetButtonClickMessage;
-},{}],139:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28790,7 +28940,7 @@ PresetButtonsMessage.prototype.serialize = function() {
 }
 
 module.exports = PresetButtonsMessage;
-},{"../data/ButtonData":116}],140:[function(require,module,exports){
+},{"../data/ButtonData":117}],141:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28833,7 +28983,7 @@ SeatClickMessage.prototype.serialize = function() {
 }
 
 module.exports = SeatClickMessage;
-},{}],141:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28952,7 +29102,7 @@ SeatInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = SeatInfoMessage;
-},{}],142:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29041,7 +29191,7 @@ ShowDialogMessage.prototype.serialize = function() {
 }
 
 module.exports = ShowDialogMessage;
-},{}],143:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29069,7 +29219,7 @@ StateCompleteMessage.prototype.serialize = function() {
 }
 
 module.exports = StateCompleteMessage;
-},{}],144:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29112,7 +29262,7 @@ TableButtonClickMessage.prototype.serialize = function() {
 }
 
 module.exports = TableButtonClickMessage;
-},{}],145:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29196,7 +29346,7 @@ TableButtonsMessage.prototype.serialize = function() {
 }
 
 module.exports = TableButtonsMessage;
-},{}],146:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29306,7 +29456,7 @@ TableInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = TableInfoMessage;
-},{}],147:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29349,7 +29499,7 @@ TestCaseRequestMessage.prototype.serialize = function() {
 }
 
 module.exports = TestCaseRequestMessage;
-},{}],148:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29438,7 +29588,7 @@ TimerMessage.prototype.serialize = function() {
 }
 
 module.exports = TimerMessage;
-},{}],149:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29492,7 +29642,7 @@ TournamentResultMessage.prototype.serialize = function() {
 }
 
 module.exports = TournamentResultMessage;
-},{}],150:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -29500,7 +29650,7 @@ module.exports = TournamentResultMessage;
 
 var PIXI = require("pixi.js");
 var FunctionUtil = require("./FunctionUtil");
-var EventDispatcher = require("./EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * Button.
@@ -29582,7 +29732,7 @@ Button.prototype.onClick = function() {
 }
 
 module.exports = Button;
-},{"./EventDispatcher":152,"./FunctionUtil":153,"pixi.js":63}],151:[function(require,module,exports){
+},{"./FunctionUtil":153,"pixi.js":63,"yaed":87}],152:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -29590,7 +29740,7 @@ module.exports = Button;
 
 var PIXI = require("pixi.js");
 var FunctionUtil = require("./FunctionUtil");
-var EventDispatcher = require("./EventDispatcher");
+var EventDispatcher = require("yaed");
 var Button = require("./Button");
 
 /**
@@ -29644,157 +29794,7 @@ Checkbox.prototype.getChecked = function() {
 
 
 module.exports = Checkbox;
-},{"./Button":150,"./EventDispatcher":152,"./FunctionUtil":153,"pixi.js":63}],152:[function(require,module,exports){
-/**
- * Utilities.
- * @module utils
- */
-
-"use strict";
-
-/**
- * AS3/jquery style event dispatcher. Slightly modified. The
- * jquery style on/off/trigger style of adding listeners is
- * currently the preferred one.
- * 
- * The on method for adding listeners takes an extra parameter which is the
- * scope in which listeners should be called. So this:
- *
- *     object.on("event", listener, this);
- *
- * Has the same function when adding events as:
- *
- *     object.on("event", listener.bind(this));
- *
- * However, the difference is that if we use the second method it
- * will not be possible to remove the listeners later, unless
- * the closure created by bind is stored somewhere. If the 
- * first method is used, we can remove the listener with:
- *
- *     object.off("event", listener, this);
- *
- * @class EventDispatcher
- */
-function EventDispatcher() {
-	this.listenerMap = {};
-}
-
-/**
- * Add event listener.
- * @method addEventListener
- * @deprecated
- */
-EventDispatcher.prototype.addEventListener = function(eventType, listener, scope) {
-	if (!this.listenerMap)
-		this.listenerMap = {};
-
-	if (!eventType)
-		throw new Error("Event type required for event dispatcher");
-
-	if (!listener)
-		throw new Error("Listener required for event dispatcher");
-
-	this.removeEventListener(eventType, listener, scope);
-
-	if (!this.listenerMap.hasOwnProperty(eventType))
-		this.listenerMap[eventType] = [];
-
-	this.listenerMap[eventType].push({
-		listener: listener,
-		scope: scope
-	});
-}
-
-/**
- * Remove event listener.
- * @method removeEventListener
- * @deprecated
- */
-EventDispatcher.prototype.removeEventListener = function(eventType, listener, scope) {
-	if (!this.listenerMap)
-		this.listenerMap = {};
-
-	if (!this.listenerMap.hasOwnProperty(eventType))
-		return;
-
-	var listeners = this.listenerMap[eventType];
-
-	for (var i = 0; i < listeners.length; i++) {
-		var listenerObj = listeners[i];
-
-		if (listener == listenerObj.listener && scope == listenerObj.scope) {
-			listeners.splice(i, 1);
-			i--;
-		}
-	}
-
-	if (!listeners.length)
-		delete this.listenerMap[eventType];
-}
-
-/**
- * Dispatch event.
- * @method dispatchEvent
- */
-EventDispatcher.prototype.dispatchEvent = function(event, data) {
-	if (!this.listenerMap)
-		this.listenerMap = {};
-
-	if (typeof event == "string") {
-		event = {
-			type: event
-		};
-	}
-
-	if (!this.listenerMap.hasOwnProperty(event.type))
-		return;
-
-	if (data == undefined)
-		data = event;
-
-	data.target = this;
-
-	for (var i in this.listenerMap[event.type]) {
-		var listenerObj = this.listenerMap[event.type][i];
-
-		listenerObj.listener.call(listenerObj.scope, data);
-	}
-}
-
-/**
- * Jquery style alias for addEventListener
- * @method on
- */
-EventDispatcher.prototype.on = EventDispatcher.prototype.addEventListener;
-
-/**
- * Jquery style alias for removeEventListener
- * @method off
- */
-EventDispatcher.prototype.off = EventDispatcher.prototype.removeEventListener;
-
-/**
- * Jquery style alias for dispatchEvent
- * @method trigger
- */
-EventDispatcher.prototype.trigger = EventDispatcher.prototype.dispatchEvent;
-
-/**
- * Make something an event dispatcher. Can be used for multiple inheritance.
- * @method init
- * @static
- */
-EventDispatcher.init = function(cls) {
-	cls.prototype.addEventListener = EventDispatcher.prototype.addEventListener;
-	cls.prototype.removeEventListener = EventDispatcher.prototype.removeEventListener;
-	cls.prototype.dispatchEvent = EventDispatcher.prototype.dispatchEvent;
-	cls.prototype.on = EventDispatcher.prototype.on;
-	cls.prototype.off = EventDispatcher.prototype.off;
-	cls.prototype.trigger = EventDispatcher.prototype.trigger;
-}
-
-module.exports = EventDispatcher;
-},{}],153:[function(require,module,exports){
+},{"./Button":151,"./FunctionUtil":153,"pixi.js":63,"yaed":87}],153:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -29901,7 +29901,7 @@ module.exports = Gradient;
  * @module utils
  */
 
-var EventDispatcher = require("./EventDispatcher");
+var EventDispatcher = require("yaed");
 var FunctionUtil = require("./FunctionUtil");
 var Thenable = require("./Thenable");
 var request = require("request");
@@ -29973,13 +29973,13 @@ MessageRequestConnection.prototype.send = function(m) {
 }
 
 module.exports = MessageRequestConnection;
-},{"./EventDispatcher":152,"./FunctionUtil":153,"./Thenable":162,"request":65}],156:[function(require,module,exports){
+},{"./FunctionUtil":153,"./Thenable":162,"request":65,"yaed":87}],156:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
  */
 
-var EventDispatcher = require("./EventDispatcher");
+var EventDispatcher = require("yaed");
 var FunctionUtil = require("./FunctionUtil");
 var Thenable = require("./Thenable");
 
@@ -30083,7 +30083,7 @@ MessageWebSocketConnection.prototype.clearWebSocket = function() {
 }
 
 module.exports = MessageWebSocketConnection;
-},{"./EventDispatcher":152,"./FunctionUtil":153,"./Thenable":162}],157:[function(require,module,exports){
+},{"./FunctionUtil":153,"./Thenable":162,"yaed":87}],157:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -30091,7 +30091,7 @@ module.exports = MessageWebSocketConnection;
 
 var PIXI = require("pixi.js");
 var FunctionUtil = require("./FunctionUtil");
-var EventDispatcher = require("./EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * MouseOverGroup. This is the class for the MouseOverGroup.
@@ -30202,7 +30202,7 @@ MouseOverGroup.prototype.onStageMouseUp = function(interaction_object) {
 module.exports = MouseOverGroup;
 
 
-},{"./EventDispatcher":152,"./FunctionUtil":153,"pixi.js":63}],158:[function(require,module,exports){
+},{"./FunctionUtil":153,"pixi.js":63,"yaed":87}],158:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -30354,7 +30354,7 @@ module.exports = Point;
  */
 
 var FunctionUtil = require("./FunctionUtil");
-var EventDispatcher = require("./EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * Perform tasks in a sequence.
@@ -30435,7 +30435,7 @@ Sequencer.prototype.abort = function() {
 }
 
 module.exports = Sequencer;
-},{"./EventDispatcher":152,"./FunctionUtil":153}],161:[function(require,module,exports){
+},{"./FunctionUtil":153,"yaed":87}],161:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -30444,7 +30444,7 @@ module.exports = Sequencer;
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("./FunctionUtil");
-var EventDispatcher = require("./EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * Slider. This is the class for the slider.
@@ -30605,14 +30605,14 @@ Slider.prototype.onHidden = function() {
 
 module.exports = Slider;
 
-},{"./EventDispatcher":152,"./FunctionUtil":153,"pixi.js":63,"tween.js":86}],162:[function(require,module,exports){
+},{"./FunctionUtil":153,"pixi.js":63,"tween.js":86,"yaed":87}],162:[function(require,module,exports){
 (function (process){
 /**
  * Utilities.
  * @module utils
  */
 
-var EventDispatcher = require("./EventDispatcher");
+var EventDispatcher = require("yaed");
 var FunctionUtil = require("./FunctionUtil");
 
 /**
@@ -30738,4 +30738,4 @@ Thenable.prototype.reject = function(reason) {
 
 module.exports = Thenable;
 }).call(this,require('_process'))
-},{"./EventDispatcher":152,"./FunctionUtil":153,"_process":42}]},{},[93]);
+},{"./FunctionUtil":153,"_process":42,"yaed":87}]},{},[94]);

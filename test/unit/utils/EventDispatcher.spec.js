@@ -1,4 +1,4 @@
-var EventDispatcher = require("../../../src/utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 
 describe("EventDispatcher", function() {
 	it("can dispatch events", function() {

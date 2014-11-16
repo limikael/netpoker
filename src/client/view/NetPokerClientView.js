@@ -5,7 +5,7 @@
 
 var PIXI = require("pixi.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var Resources = require("resource-fiddle");
 var SeatView = require("./SeatView");
 var CardView = require("./CardView");

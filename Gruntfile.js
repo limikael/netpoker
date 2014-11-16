@@ -1,7 +1,7 @@
 var qsub = require("qsub");
 var Q = require("q");
-var AsyncSequence = require("./src/utils/AsyncSequence");
 var fs = require("fs");
+var async = require("async");
 
 module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-ftpush');
@@ -16,7 +16,8 @@ module.exports = function(grunt) {
 		if (fs.existsSync("doc.zip"))
 			fs.unlinkSync("doc.zip");
 
-		AsyncSequence.run(
+		async.series([
+
 			function(next) {
 				var job = qsub("zip");
 				job.arg("-r", "doc.zip", "doc");
@@ -53,8 +54,12 @@ module.exports = function(grunt) {
 					fs.unlinkSync("doc.zip");
 
 				next();
+			},
+
+			function(next) {
+				done();
 			}
-		).then(done);
+		]);
 	});
 
 	grunt.registerTask("doc", function() {
@@ -80,7 +85,8 @@ module.exports = function(grunt) {
 		var done = this.async();
 		var job;
 
-		AsyncSequence.run(
+		async.series([
+
 			function(next) {
 				var job = qsub("./node_modules/.bin/jitsu");
 				job.arg("config", "set", "apiTokenName", "netpoker");
@@ -103,8 +109,12 @@ module.exports = function(grunt) {
 				var job = qsub("./node_modules/.bin/jitsu");
 				job.arg("deploy", "-c");
 				job.show().expect(0).run().then(next, grunt.fail.fatal);
+			},
+
+			function(next) {
+				done();
 			}
-		).then(done);
+		]);
 	});
 
 	grunt.registerTask("test", function() {
@@ -135,7 +145,8 @@ module.exports = function(grunt) {
 	grunt.registerTask("browserify-test", function() {
 		done = this.async();
 
-		AsyncSequence.run(
+		async.series([
+
 			function(next) {
 				var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
 				job.arg("test/view/gradient/test.bundle.js", "test/view/gradient/test.js");
@@ -162,14 +173,19 @@ module.exports = function(grunt) {
 				job.arg("test/view/thenable/test.bundle.js", "test/view/thenable/test.js");
 				job.show().expect(0);
 				job.run().then(next);
+			},
+
+			function(next) {
+				done();
 			}
-		).then(done);
+		]);
 	});
 
 	grunt.registerTask("browserify", function() {
 		var done = this.async();
 
-		AsyncSequence.run(
+		async.series([
+
 			function(next) {
 				var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
 				job.arg("res/mocksite/netpokerclient.bundle.js", "src/client/netpokerclient.js");
@@ -192,8 +208,12 @@ module.exports = function(grunt) {
 			function(next) {
 				var job = qsub("cp").arg("gfx/table.png", "res/mocksite");
 				job.run().then(next);
+			},
+
+			function(next) {
+				done();
 			}
-		).then(done);
+		]);
 	});
 
 	grunt.registerTask("default", function() {

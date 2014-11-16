@@ -7,7 +7,7 @@ var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Resources = require("resource-fiddle");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var ChipsView = require("./ChipsView");
 
 /**

@@ -5,7 +5,7 @@
 
 var MessageServer = require("../../utils/MessageServer");
 var FunctionUtil = require("../../utils/FunctionUtil");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var UserConnection = require("../../server/connection/UserConnection");
 var ConnectionManagerConnectionEvent = require("./ConnectionManagerConnectionEvent");
 

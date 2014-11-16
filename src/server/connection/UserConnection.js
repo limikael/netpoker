@@ -71,7 +71,9 @@ UserConnection.prototype.handleViewCase = function(viewCase) {
 	if (!fs.existsSync(caseFileName)) {
 		console.log("got request for non existing view case");
 		this.close();
-		this.trigger(UserConnection.CLOSE);
+		this.trigger({
+			type: UserConnection.CLOSE
+		});
 		return;
 	}
 
@@ -103,13 +105,17 @@ UserConnection.prototype.onFetchUserCallSuccess = function(result) {
 		console.warn("anonymous connection...");
 		this.user = null;
 
-		this.trigger(UserConnection.INITIALIZED);
+		this.trigger({
+			type: UserConnection.INITIALIZED
+		});
 		return;
 	}
 
 	this.user = new User(result);
 	console.warn("connection, user: " + this.user.getId());
-	this.trigger(UserConnection.INITIALIZED);
+	this.trigger({
+		type: UserConnection.INITIALIZED
+	});
 }
 
 /**
@@ -122,7 +128,9 @@ UserConnection.prototype.onFetchUserCallError = function() {
 	console.warn("fetch user call failed");
 
 	this.close();
-	this.trigger(UserConnection.CLOSE);
+	this.trigger({
+		type: UserConnection.CLOSE
+	});
 }
 
 /**

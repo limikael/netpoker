@@ -10,7 +10,7 @@ var Resources = require("resource-fiddle");
 var DialogButton = require("./DialogButton");
 var ButtonData = require("../../proto/data/ButtonData");
 var PixiTextInput = require("PixiTextInput");
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 
 /**
  * Dialog view.

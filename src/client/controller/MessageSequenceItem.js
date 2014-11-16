@@ -3,7 +3,7 @@
  * @module client
  */
 
-var EventDispatcher = require("../../utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var FunctionUtil = require("../../utils/FunctionUtil");
 var Sequencer = require("../../utils/Sequencer");
 

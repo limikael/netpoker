@@ -1,5 +1,5 @@
 var Thenable = require("../../../../src/utils/Thenable");
-var EventDispatcher = require("../../../../src/utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var CashGameBuyChipsPrompt = require("../../../../src/server/cashgame/CashGameBuyChipsPrompt");
 var User = require("../../../../src/server/user/User");
 var Backend = require("../../../../src/server/backend/Backend");

@@ -1,6 +1,6 @@
 var ProtoConnection = require("../../../src/proto/ProtoConnection");
 var InitMessage = require("../../../src/proto/messages/InitMessage");
-var EventDispatcher = require("../../../src/utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 
 describe("ProtoConnection", function() {
 

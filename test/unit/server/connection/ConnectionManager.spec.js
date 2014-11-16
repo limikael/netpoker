@@ -2,7 +2,7 @@ var ConnectionManager = require("../../../../src/server/connection/ConnectionMan
 var UserConnection = require("../../../../src/server/connection/UserConnection");
 var ProtoConnection = require("../../../../src/proto/ProtoConnection");
 var MessageClientConnection = require("../../../../src/utils/MessageClientConnection");
-var EventDispatcher = require("../../../../src/utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var Backend = require("../../../../src/server/backend/Backend");
 var Thenable = require("../../../../src/utils/Thenable");
 

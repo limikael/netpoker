@@ -2,7 +2,7 @@ var Game = require("../../../../src/server/game/Game");
 var GameSeat = require("../../../../src/server/game/GameSeat");
 var Thenable = require("../../../../src/utils/Thenable");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
-var EventDispatcher = require("../../../../src/utils/EventDispatcher");
+var EventDispatcher = require("yaed");
 var AsyncSequence = require("../../../../src/utils/AsyncSequence");
 
 describe("Game", function() {
