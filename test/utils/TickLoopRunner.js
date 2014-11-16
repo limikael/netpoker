@@ -1,5 +1,4 @@
-var Thenable = require("../../src/utils/Thenable");
-//var process = require("process");
+var Thenable = require("tinp");
 
 function TickLoopRunner() {}
 
@@ -7,7 +6,6 @@ TickLoopRunner.prototype.run = function(requestedTicks) {
 	this.requestedTicks = requestedTicks;
 	this.currentTicks = 0;
 
-	//setTimeout(this.onTick.bind(this), 0);
 	process.nextTick(this.onTick.bind(this));
 
 	this.thenable = new Thenable();
@@ -18,11 +16,10 @@ TickLoopRunner.prototype.onTick = function() {
 	this.currentTicks++;
 
 	if (this.currentTicks > this.requestedTicks) {
-		this.thenable.notifySuccess();
+		this.thenable.resolve();
 		return;
 	}
 
-	//setTimeout(this.onTick.bind(this), 0);
 	process.nextTick(this.onTick.bind(this));
 }
 
@@ -34,8 +31,5 @@ TickLoopRunner.runTicks = function(num) {
 
 	return tickLoopRunner.run(num);
 }
-
-/*TickLoopRunner.setTimeout = setTimeout;
-console.log("TickLoopRunner.... setTimeout=" + setTimeout);*/
 
 module.exports = TickLoopRunner;

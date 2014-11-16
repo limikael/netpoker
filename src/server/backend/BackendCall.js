@@ -3,7 +3,7 @@
  * @module server
  */
 
-var Thenable = require("../../utils/Thenable");
+var Thenable = require("tinp");
 var request = require("request");
 
 /**

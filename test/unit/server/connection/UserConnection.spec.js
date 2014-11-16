@@ -2,7 +2,7 @@ var UserConnection = require("../../../../src/server/connection/UserConnection")
 var ProtoConnection = require("../../../../src/proto/ProtoConnection");
 var EventDispatcher = require("yaed");
 var Backend = require("../../../../src/server/backend/Backend");
-var Thenable = require("../../../../src/utils/Thenable");
+var Thenable = require("tinp");
 
 describe("UserConnection", function() {
 	var mockBackend, mockServices;
@@ -39,7 +39,7 @@ describe("UserConnection", function() {
 			}
 		});
 
-		backendCall.notifySuccess({
+		backendCall.resolve({
 			id: 123,
 			name: "hello"
 		});
@@ -63,7 +63,7 @@ describe("UserConnection", function() {
 			}
 		});
 
-		backendCall.notifyError();
+		backendCall.reject();
 
 		u.on(UserConnection.CLOSE, function() {
 			expect(mockConnection.close).toHaveBeenCalled();
@@ -84,7 +84,7 @@ describe("UserConnection", function() {
 			}
 		});
 
-		backendCall.notifySuccess({});
+		backendCall.resolve({});
 
 		u.on(UserConnection.INITIALIZED, function() {
 			expect(u.getUser()).toBe(null);

@@ -4,7 +4,7 @@
  */
 
 var Backend = require("../../server/backend/Backend");
-var Thenable = require("../../utils/Thenable");
+var Thenable = require("tinp");
 var http = require("http");
 var url = require("url");
 

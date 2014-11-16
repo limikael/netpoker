@@ -16,7 +16,7 @@ var ShowMuckState = require("../../../../src/server/game/ShowMuckState");
 var FinishedState = require("../../../../src/server/game/FinishedState");
 var CardData = require("../../../../src/proto/data/CardData");
 var BotSitInStrategy = require("../../../utils/BotSitInStrategy");
-var ThenableBarrier = require("../../../../src/utils/ThenableBarrier");
+var Thenable = require("tinp");
 
 describe("NetPokerServer - show muck", function() {
 	var mockBackendServer;

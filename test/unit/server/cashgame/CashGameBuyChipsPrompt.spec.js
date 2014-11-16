@@ -1,4 +1,4 @@
-var Thenable = require("../../../../src/utils/Thenable");
+var Thenable = require("tinp");
 var EventDispatcher = require("yaed");
 var CashGameBuyChipsPrompt = require("../../../../src/server/cashgame/CashGameBuyChipsPrompt");
 var User = require("../../../../src/server/user/User");
@@ -48,7 +48,7 @@ describe("CashGameBuyChipsPrompt", function() {
 
 			switch (method) {
 				case Backend.GET_USER_BALANCE:
-					thenable.notifySuccess({
+					thenable.resolve({
 						balance: 123,
 					});
 					break;
@@ -201,11 +201,7 @@ describe("CashGameBuyChipsPrompt", function() {
 				expect(mockBackend.call.calls.count()).toBe(1);
 
 				mockBackend.call = function(method) {
-					var thenable = new Thenable();
-
-					thenable.notifyError("something wrong");
-
-					return thenable;
+					return Thenable.rejected("something wrong");
 				};
 
 				spyOn(mockBackend, "call").and.callThrough();
@@ -234,11 +230,7 @@ describe("CashGameBuyChipsPrompt", function() {
 
 	it("fails gracefully", function(done) {
 		mockBackend.call = function(method) {
-			var thenable = new Thenable();
-
-			thenable.notifyError("something wrong");
-
-			return thenable;
+			return Thenable.rejected("something wrong");
 		};
 
 		var prompt = new CashGameBuyChipsPrompt(mockTableSeat);

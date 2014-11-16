@@ -3,9 +3,10 @@
  * @module utils
  */
 
-var Thenable = require("./Thenable");
+var Thenable = require("tinp");
 var WebSocket = require("faye-websocket");
 var inherits = require("inherits");
+var EventDispatcher = require("yaed");
 
 /**
  * Send and receive websocket messages.
@@ -18,7 +19,7 @@ function MessageClientConnection() {
 	this.connectThenable = null;
 }
 
-inherits(MessageClientConnection, Thenable);
+inherits(MessageClientConnection, EventDispatcher);
 
 MessageClientConnection.MESSAGE = "message";
 MessageClientConnection.CLOSE = "close";
@@ -44,7 +45,7 @@ MessageClientConnection.prototype.connect = function(url) {
  * @private
  */
 MessageClientConnection.prototype.onWebSocketOpen = function() {
-	this.connectThenable.notifySuccess();
+	this.connectThenable.resolve();
 	this.connectThenable = null;
 }
 
@@ -62,7 +63,8 @@ MessageClientConnection.prototype.onWebSocketMessage = function(event) {
 			message: message
 		});
 	} catch (err) {
-		console.log("MessageClientConnection received non JSON data");
+		console.log(err);
+		console.log("MessageClientConnection received non JSON data: "+event.data);
 	}
 }
 

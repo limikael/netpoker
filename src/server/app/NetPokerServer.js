@@ -6,7 +6,7 @@
 var ConnectionManager = require("../connection/ConnectionManager");
 var CashGameManager = require("../cashgame/CashGameManager");
 var EventDispatcher = require("yaed");
-var Thenable = require("../../utils/Thenable");
+var Thenable = require("tinp");
 var Backend = require("../backend/Backend");
 var ServerApi = require("../api/ServerApi");
 var NetPokerServerConfigurator = require("./NetPokerServerConfigurator");
@@ -191,7 +191,7 @@ NetPokerServer.prototype.onCashGameManagerInitialized = function() {
 	this.connectionManager.on("request", this.onConnectionManagerRequest, this);
 
 	this.trigger(NetPokerServer.STARTED);
-	this.runThenable.notifySuccess();
+	this.runThenable.resolve();
 }
 
 /**

@@ -4,7 +4,7 @@
  */
 
 var EventDispatcher = require("yaed");
-var Thenable = require("./Thenable");
+var Thenable = require("tinp");
 var inherits = require("inherits");
 
 /**

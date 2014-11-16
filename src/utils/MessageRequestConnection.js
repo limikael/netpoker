@@ -3,7 +3,7 @@
  * @module utils
  */
 
-var Thenable = require("./Thenable");
+var Thenable = require("tinp");
 var request = require("request");
 var inherits = require("inherits");
 var EventDispatcher = require("yaed");

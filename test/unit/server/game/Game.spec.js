@@ -1,6 +1,6 @@
 var Game = require("../../../../src/server/game/Game");
 var GameSeat = require("../../../../src/server/game/GameSeat");
-var Thenable = require("../../../../src/utils/Thenable");
+var Thenable = require("tinp");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
 var EventDispatcher = require("yaed");
 var AsyncSequence = require("../../../../src/utils/AsyncSequence");
@@ -76,9 +76,7 @@ describe("Game", function() {
 		console.log("installing mock clock");
 		//jasmine.clock().install();
 		mockBackend.call = function(functionName, params) {
-			var t = new Thenable();
-			t.notifyError();
-			return t;
+			return Thenable.rejected();
 		}
 
 		spyOn(mockBackend, "call").and.callThrough();
@@ -113,7 +111,7 @@ describe("Game", function() {
 	it("can start", function(done) {
 		mockBackend.call = function(functionName, params) {
 			var t = new Thenable();
-			t.notifySuccess({
+			t.resolve({
 				gameId: 789
 			});
 			return t;
@@ -149,11 +147,9 @@ describe("Game", function() {
 
 	it("can use a fixed deck", function(done) {
 		mockBackend.call = function(functionName, params) {
-			var t = new Thenable();
-			t.notifySuccess({
+			return Thenable.resolved({
 				gameId: 789
 			});
-			return t;
 		}
 
 		var g = new Game(mockTable);

@@ -4,7 +4,7 @@
  */
 
 var EventDispatcher = require("yaed");
-var inherits=require("inherits");
+var inherits = require("inherits");
 
 /**
  * Perform tasks in a sequence.

@@ -1,6 +1,6 @@
 var NetPokerServer = require("../../../../src/server/app/NetPokerServer");
 var Backend = require("../../../../src/server/backend/Backend");
-var Thenable = require("../../../../src/utils/Thenable");
+var Thenable = require("tinp");
 var BotConnection = require("../../../utils/BotConnection");
 var AsyncSequence = require("../../../../src/utils/AsyncSequence");
 var StateCompleteMessage = require("../../../../src/proto/messages/StateCompleteMessage");
@@ -24,7 +24,7 @@ describe("NetPokerServer - connection", function() {
 
 			switch (method) {
 				case Backend.GET_CASHGAME_TABLE_LIST:
-					thenable.notifySuccess({
+					thenable.resolve({
 						tables: [{
 							id: 123,
 							numseats: 4,
@@ -38,24 +38,24 @@ describe("NetPokerServer - connection", function() {
 					break;
 
 				case Backend.GET_USER_INFO_BY_TOKEN:
-					thenable.notifySuccess({
+					thenable.resolve({
 						id: 999,
 						name: "testson"
 					});
 					break;
 
 				case Backend.GET_USER_BALANCE:
-					thenable.notifySuccess({
+					thenable.resolve({
 						balance: 123
 					});
 					break;
 
 				case Backend.SIT_IN:
-					thenable.notifySuccess();
+					thenable.resolve();
 					break;
 
 				default:
-					thenable.notifyError();
+					thenable.reject();
 					break;
 			}
 
@@ -178,9 +178,7 @@ describe("NetPokerServer - connection", function() {
 				expect(table.getTableSeatBySeatIndex(3).isInGame()).toBe(false);
 
 				mockBackend.call = function(method) {
-					var thenable = new Thenable();
-					thenable.notifyError();
-					return thenable;
+					return Thenable.rejected();
 				}
 
 				bot.send(new ButtonClickMessage(ButtonData.SIT_IN, 100));

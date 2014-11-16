@@ -1,7 +1,6 @@
 var PipeNetPokerServer = require("../../../utils/PipeNetPokerServer");
 var Backend = require("../../../../src/server/backend/Backend");
-var Thenable = require("../../../../src/utils/Thenable");
-var ThenableBarrier = require("../../../../src/utils/ThenableBarrier");
+var Thenable = require("tinp");
 var BotConnection = require("../../../utils/BotConnection");
 var BotSitInStrategy = require("../../../utils/BotSitInStrategy");
 var BotActSequenceStrategy = require("../../../utils/BotActSequenceStrategy");
@@ -76,7 +75,7 @@ describe("Game.integration", function() {
 					ButtonData.MUCK
 				]));
 
-				ThenableBarrier.wait(s1, s2).then(next);
+				Thenable.all(s1, s2).then(next);
 			},
 
 			function(next) {

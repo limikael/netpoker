@@ -3,7 +3,7 @@
  * @module utils
  */
 
-var Thenable = require("./Thenable");
+var Thenable = require("tinp");
 var inherits = require("inherits");
 
 /**
@@ -35,7 +35,7 @@ AsyncSequence.prototype.run = function() {
  */
 AsyncSequence.prototype.next = function(p) {
 	if (this.functionIndex >= this.functions.length) {
-		this.notifySuccess(p);
+		this.resolve(p);
 		return;
 	}
 

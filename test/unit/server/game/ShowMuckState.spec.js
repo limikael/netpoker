@@ -16,9 +16,9 @@ var RoundState = require("../../../../src/server/game/RoundState");
 var CardData = require("../../../../src/proto/data/CardData");
 var BotSitInStrategy = require("../../../utils/BotSitInStrategy");
 var BotCheckUntilEndStrategy = require("../../../utils/BotCheckUntilEndStrategy");
-var ThenableBarrier = require("../../../../src/utils/ThenableBarrier");
 var ShowMuckState = require("../../../../src/server/game/ShowMuckState");
 var Hand = require("../../../../src/server/hand/Hand");
+var Thenable = require("tinp");
 
 describe("ShowMuckState", function() {
 	var mockBackendServer;
@@ -78,7 +78,7 @@ describe("ShowMuckState", function() {
 				var t1 = bot1.runStrategy(new BotCheckUntilEndStrategy());
 				var t2 = bot2.runStrategy(new BotCheckUntilEndStrategy());
 
-				ThenableBarrier.waitAny(t1, t2).then(next);
+				Thenable.race(t1, t2).then(next);
 			},
 
 			function(next) {

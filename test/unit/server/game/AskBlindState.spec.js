@@ -4,7 +4,7 @@ var BotConnection = require("../../../utils/BotConnection");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
 var BotSitInStrategy = require("../../../utils/BotSitInStrategy");
 var AsyncSequence = require("../../../../src/utils/AsyncSequence");
-var ThenableBarrier = require("../../../../src/utils/ThenableBarrier");
+var Thenable = require("tinp");
 var ButtonData = require("../../../../src/proto/data/ButtonData");
 var FinishedState = require("../../../../src/server/game/FinishedState");
 
@@ -27,20 +27,20 @@ describe("AskBlindState", function() {
 	});
 
 	it("doesn't start if there is not enough players", function(done) {
-		var table=netPokerServer.cashGameManager.getTableById(123);
+		var table = netPokerServer.cashGameManager.getTableById(123);
 		var bot1, bot2;
 
 		AsyncSequence.run(
 			function(next) {
 				bot1 = new BotConnection(netPokerServer, "user1");
 				bot1.connectToTable(123);
-				var t1=bot1.runStrategy(new BotSitInStrategy(1, 10));
+				var t1 = bot1.runStrategy(new BotSitInStrategy(1, 10));
 
 				bot2 = new BotConnection(netPokerServer, "user2");
 				bot2.connectToTable(123);
-				var t2=bot2.runStrategy(new BotSitInStrategy(2, 10));
+				var t2 = bot2.runStrategy(new BotSitInStrategy(2, 10));
 
-				ThenableBarrier.wait(t1,t2).then(next);
+				Thenable.all(t1, t2).then(next);
 			},
 
 			function(next) {

@@ -1,7 +1,7 @@
 var InitMessage = require("../../src/proto/messages/InitMessage");
 var MessageClientConnection = require("../../src/utils/MessageClientConnection");
 var ProtoConnection = require("../../src/proto/ProtoConnection");
-var Thenable = require("../../src/utils/Thenable");
+var Thenable = require("tinp");
 var PipeNetPokerServer = require("./PipeNetPokerServer");
 var StateCompleteMessage = require("../../src/proto/messages/StateCompleteMessage");
 var ShowDialogMessage = require("../../src/proto/messages/ShowDialogMessage");
@@ -180,7 +180,7 @@ BotConnection.prototype.onProtoConnectionMessage = function(e) {
 		this.waitingForType = null;
 		this.waitThenable = null;
 
-		thenable.notifySuccess(e.message);
+		thenable.resolve(e.message);
 	}
 }
 

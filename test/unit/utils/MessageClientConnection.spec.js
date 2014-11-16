@@ -1,8 +1,7 @@
 var MessageServer = require("../../../src/utils/MessageServer");
 var MessageClientConnection = require("../../../src/utils/MessageClientConnection");
 var MessageServerConnection = require("../../../src/utils/MessageServerConnection");
-var Thenable = require("../../../src/utils/Thenable");
-var ThenableBarrier = require("../../../src/utils/ThenableBarrier");
+var Thenable = require("tinp");
 
 describe("MessageClientConnection", function() {
 	it("can connect to a server", function(done) {
@@ -17,28 +16,28 @@ describe("MessageClientConnection", function() {
 		server.listen(2004);
 		server.on(MessageServer.CONNECTION, function(ev) {
 			serverConnection = ev.connection;
-			serverThenable.notifySuccess();
+			serverThenable.resolve();
 
 			serverConnection.on(MessageServerConnection.MESSAGE, function(ev) {
 				serverReceivedMessage = ev.message;
-				serverGotMessage.notifySuccess();
+				serverGotMessage.resolve();
 			});
 
 			serverConnection.on(MessageServerConnection.CLOSE, function(ev) {
-				serverConnectionClosed.notifySuccess();
+				serverConnectionClosed.resolve();
 			});
 		});
 
 		var client = new MessageClientConnection();
 
 		client.on(MessageClientConnection.MESSAGE, function(ev) {
-			clientGotMessage.notifySuccess();
+			clientGotMessage.resolve();
 			clientReceivedMessage = ev.message;
 		});
 
 		var clientThenable = client.connect("http://localhost:2004");
 
-		ThenableBarrier.wait(clientThenable, serverThenable).then(
+		Thenable.all(clientThenable, serverThenable).then(
 			function() {
 				client.send({
 					"hello": "from client"
@@ -47,7 +46,7 @@ describe("MessageClientConnection", function() {
 					"hello": "from server"
 				});
 
-				ThenableBarrier.wait(serverGotMessage, clientGotMessage).then(
+				Thenable.all(serverGotMessage, clientGotMessage).then(
 					function() {
 						expect(serverReceivedMessage).toEqual({
 							"hello": "from client"
@@ -73,22 +72,22 @@ describe("MessageClientConnection", function() {
 
 	it("can detect when it is closed", function(done) {
 		var server = new MessageServer();
-		var serverThenable=new Thenable();
+		var serverThenable = new Thenable();
 
 		server.listen(2001);
 		server.on(MessageServer.CONNECTION, function(ev) {
 			serverConnection = ev.connection;
-			serverThenable.notifySuccess();
+			serverThenable.resolve();
 		});
 
-		var client=new MessageClientConnection();
-		var clientThenable=client.connect("http://localhost:2001")
+		var client = new MessageClientConnection();
+		var clientThenable = client.connect("http://localhost:2001")
 
-		client.on(MessageClientConnection.CLOSE,function() {
+		client.on(MessageClientConnection.CLOSE, function() {
 			done();
 		});
 
-		ThenableBarrier.wait(clientThenable, serverThenable).then(
+		Thenable.all(clientThenable, serverThenable).then(
 			function() {
 				server.close();
 				serverConnection.close();

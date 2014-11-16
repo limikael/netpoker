@@ -1,4 +1,4 @@
-var Thenable = require("../../../../src/utils/Thenable");
+var Thenable = require("tinp");
 var CashGameManager = require("../../../../src/server/cashgame/CashGameManager");
 var CashGameTable = require("../../../../src/server/cashgame/CashGameTable");
 var Backend = require("../../../../src/server/backend/Backend");
@@ -17,10 +17,10 @@ describe("CashGameManager", function() {
 			var thenable = new Thenable();
 
 			if (backendCallData)
-				thenable.notifySuccess(backendCallData);
+				thenable.resolve(backendCallData);
 
 			else
-				thenable.notifyError();
+				thenable.reject();
 
 			return thenable;
 		};

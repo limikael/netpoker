@@ -4,7 +4,7 @@ var ProtoConnection = require("../../../../src/proto/ProtoConnection");
 var MessageClientConnection = require("../../../../src/utils/MessageClientConnection");
 var EventDispatcher = require("yaed");
 var Backend = require("../../../../src/server/backend/Backend");
-var Thenable = require("../../../../src/utils/Thenable");
+var Thenable = require("tinp");
 
 describe("ConnectionManager", function() {
 	var mockBackend, mockServices;
@@ -18,10 +18,10 @@ describe("ConnectionManager", function() {
 			var thenable = new Thenable();
 
 			if (backendCallData)
-				thenable.notifySuccess(backendCallData);
+				thenable.resolve(backendCallData);
 
 			else
-				thenable.notifyError();
+				thenable.reject();
 
 			return thenable;
 		};

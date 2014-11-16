@@ -1,5 +1,5 @@
 var NetPokerServer = require("../../../../src/server/app/NetPokerServer");
-var Thenable = require("../../../../src/utils/Thenable");
+var Thenable = require("tinp");
 var Backend = require("../../../../src/server/backend/Backend");
 var AsyncSequence = require("../../../../src/utils/AsyncSequence");
 var MessageClientConnection = require("../../../../src/utils/MessageClientConnection");
@@ -18,7 +18,7 @@ describe("NetPokerServer - viewcase", function() {
 
 			switch (method) {
 				case Backend.GET_CASHGAME_TABLE_LIST:
-					thenable.notifySuccess({
+					thenable.resolve({
 						tables: [{
 							id: 123,
 							numseats: 4,
@@ -32,7 +32,7 @@ describe("NetPokerServer - viewcase", function() {
 					break;
 
 				default:
-					thenable.notifyError();
+					thenable.reject();
 					break;
 			}
 

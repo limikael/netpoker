@@ -16,7 +16,6 @@ var RoundState = require("../../../../src/server/game/RoundState");
 var FinishedState = require("../../../../src/server/game/FinishedState");
 var CardData = require("../../../../src/proto/data/CardData");
 var BotSitInStrategy = require("../../../utils/BotSitInStrategy");
-var ThenableBarrier = require("../../../../src/utils/ThenableBarrier");
 
 describe("RoundState", function() {
 	var mockBackendServer;
