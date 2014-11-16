@@ -82,8 +82,8 @@ NetPokerClient.prototype.setToken = function(token) {
  * Set token.
  * @method setSkin
  */
-NetPokerClient.prototype.setSkin = function(skin) {
-	this.resources.addSource(skin);
+NetPokerClient.prototype.setSkin = function(skin, noCache) {
+	this.resources.addSource(skin, noCache);
 }
 
 /**
