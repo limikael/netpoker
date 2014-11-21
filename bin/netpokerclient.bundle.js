@@ -31317,7 +31317,7 @@ Resources.prototype.addSource = function(object, noCache) {
 			} else {
 				return false;
 			}
-		}
+		}/*
 		try {
 			if(!fileExists(object)) {
 				return;
@@ -31325,13 +31325,13 @@ Resources.prototype.addSource = function(object, noCache) {
 		}
 		catch(error) {
 			console.warn("Failed to load file: ", object);
-		}
+		}*/
 
 		try {
 			var loader = new Resources.JsonLoader(object, true, noCache);
-			loader.onLoaded = this.onLoaded.bind(this, loader, this.loadIndex);
+			loader.onLoaded = this.onLoaded.bind(this, loader, this.loadIndex, noCache);
 			var loadIndex = parseInt(this.loadIndex + 0);
-			loader.onError = this.onError.bind(this, loader, loadIndex);
+			loader.onError = this.onError.bind(this, loader, loadIndex, noCache);
 			loader.load();
 			this.sources.push(this.loadIndex);
 			this.loadCount++;
@@ -31364,7 +31364,7 @@ Resources.prototype.getResourceObject = function() {
 	return this.resources;
 };
 
-Resources.prototype.onLoaded = function(loader, loadIndex) {
+Resources.prototype.onLoaded = function(loader, loadIndex, noCache) {
 	this.loadCount--;
 	
 	if(loader != null) {
@@ -31407,7 +31407,7 @@ Resources.prototype.onLoaded = function(loader, loadIndex) {
 			for(var i = this.textureCount; i < this.resources.graphics.textures.length; i++) {
 				this.textureCount = this.resources.graphics.textures.length;
 				var textureObject = this.resources.graphics.textures[i];
-				this.textures[textureObject.id] = new PIXI.Texture.fromImage(textureObject.file);
+				this.textures[textureObject.id] = new PIXI.Texture.fromImage(textureObject.file + (noCache ? ("?__timestamp__=" + Date.now()) : ""));
 				if(this.textures[textureObject.id].baseTexture.hasLoaded) {
 					this.onTextureLoaded();
 				}
@@ -31426,7 +31426,7 @@ Resources.prototype.onLoaded = function(loader, loadIndex) {
 	}
 };
 
-Resources.prototype.onError = function(loader, loadIndex) {
+Resources.prototype.onError = function(loader, loadIndex, noCache) {
 	console.warn("Resources.prototype.onError");
 	this.loadCount--;
 
@@ -31465,7 +31465,7 @@ Resources.prototype.onError = function(loader, loadIndex) {
 			for(var i = this.textureCount; i < this.resources.graphics.textures.length; i++) {
 				this.textureCount = this.resources.graphics.textures.length;
 				var textureObject = this.resources.graphics.textures[i];
-				this.textures[textureObject.id] = new PIXI.Texture.fromImage(textureObject.file);
+				this.textures[textureObject.id] = new PIXI.Texture.fromImage(textureObject.file + (noCache ? ("?__timestamp__=" + Date.now()) : ""));
 				if(this.textures[textureObject.id].baseTexture.hasLoaded) {
 					this.onTextureLoaded();
 				}
