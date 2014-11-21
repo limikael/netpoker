@@ -31372,7 +31372,7 @@ Resources.prototype.onLoaded = function(loader, loadIndex) {
 	}
 
 	if(this.loadCount == 0) {
-		console.log("---------------\n(this.loadCount == 0)\n---------------");
+		//console.log("---------------\n(this.loadCount == 0)\n---------------");
 
 		for(var i = 0; i < this.sources.length; i++) {
 			for(var p in this.sources[i]) {
@@ -31412,7 +31412,7 @@ Resources.prototype.onLoaded = function(loader, loadIndex) {
 					this.onTextureLoaded();
 				}
 				else {
-					console.log("adding listeners to: ", this.textures[textureObject.id].baseTexture.imageUrl);
+					//console.log("adding listeners to: ", this.textures[textureObject.id].baseTexture.imageUrl);
 					this.textures[textureObject.id].baseTexture.addEventListener("loaded", this.onTextureLoaded.bind(this));
 					this.textures[textureObject.id].baseTexture.addEventListener("error", this.onTextureError.bind(this));
 				}
@@ -31470,7 +31470,7 @@ Resources.prototype.onError = function(loader, loadIndex) {
 					this.onTextureLoaded();
 				}
 				else {
-					console.log("adding listeners to: ", this.textures[textureObject.id].baseTexture.imageUrl);
+					//console.log("adding listeners to: ", this.textures[textureObject.id].baseTexture.imageUrl);
 					this.textures[textureObject.id].baseTexture.addEventListener("loaded", this.onTextureLoaded.bind(this));
 					this.textures[textureObject.id].baseTexture.addEventListener("error", this.onTextureError.bind(this));
 				}
@@ -31488,9 +31488,9 @@ Resources.prototype.onTextureLoaded = function(event) {
 	if(event && event.content) {
 		event.content.removeAllEventListeners();
 	}
-	console.log("\n---------");
-	console.log("Resources.prototype.onTextureLoaded: this.texturesLoaded = ", this.texturesLoaded, ", this.textureCount = ", this.textureCount, ", event = ", event);
-	console.log("---------\n");
+	//console.log("\n---------");
+	//console.log("Resources.prototype.onTextureLoaded: this.texturesLoaded = ", this.texturesLoaded, ", this.textureCount = ", this.textureCount, ", event = ", event);
+	//console.log("---------\n");
 	if(this.texturesLoaded >= this.textureCount) {
 		this.trigger(Resources.Loaded);
 	}
