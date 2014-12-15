@@ -38,6 +38,8 @@ function NetPokerClientView(viewConfig, resources) {
 
 	this.tableBackground = new PIXI.Sprite(this.resources.getTexture("tableBackground"));
 	this.tableContainer.addChild(this.tableBackground);
+	this.tableBackground.position.x = this.resources.getPoint("tablePosition").x;
+	this.tableBackground.position.y = this.resources.getPoint("tablePosition").y;
 
 	this.setupSeats();
 	this.setupCommunityCards();

@@ -29,6 +29,8 @@
 
 				if (params["resources"])
 					netPokerClient.setSkin(params["resources"]);
+				else 
+					netPokerClient.setSkin("textures.json");
 
 				netPokerClient.setUrl("ws://"+window.location.host+"/");
 				netPokerClient.setToken(params["token"]);

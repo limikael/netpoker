@@ -178,7 +178,8 @@ module.exports = {
 		betPosition9: [181,200],
 
 		potPosition: [485,315],
-		bigButtonPosition: [366,575]
+		bigButtonPosition: [366,575],
+		tablePosition: [94, 94]
 
 	},
 	colors: {
