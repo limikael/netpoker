@@ -179,7 +179,7 @@ module.exports = {
 
 		potPosition: [485,315],
 		bigButtonPosition: [366,575],
-		tablePosition: [94, 94]
+		tablePosition: [0, 0]
 
 	},
 	colors: {
@@ -197,7 +197,8 @@ module.exports = {
 			"right", "right", 
 			"right", "center", "left",
 			"left", "left"
-		]
+		],
+		communityCardMargin: 1
 	}
 	/*,
 

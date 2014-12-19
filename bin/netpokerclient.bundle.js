@@ -24351,7 +24351,7 @@ NetPokerClient.prototype.onConnectionClose = function() {
 }
 
 module.exports = NetPokerClient;
-},{"../../proto/ProtoConnection":134,"../../proto/messages/InitMessage":151,"../../proto/messages/StateCompleteMessage":162,"../../utils/MessageRequestConnection":172,"../../utils/MessageWebSocketConnection":173,"../controller/NetPokerClientController":110,"../resources/DefaultSkin":113,"../resources/ViewConfig":114,"../view/LoadingScreen":123,"../view/NetPokerClientView":124,"inherits":79,"pixi.js":80,"pixiapp":81,"resource-fiddle":102,"tween.js":104,"url":76}],107:[function(require,module,exports){
+},{"../../proto/ProtoConnection":135,"../../proto/messages/InitMessage":152,"../../proto/messages/StateCompleteMessage":163,"../../utils/MessageRequestConnection":173,"../../utils/MessageWebSocketConnection":174,"../controller/NetPokerClientController":110,"../resources/DefaultSkin":113,"../resources/ViewConfig":114,"../view/LoadingScreen":124,"../view/NetPokerClientView":125,"inherits":79,"pixi.js":80,"pixiapp":81,"resource-fiddle":102,"tween.js":104,"url":76}],107:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24482,7 +24482,7 @@ InterfaceController.prototype.onCheckboxMessage = function(m) {
 }
 
 module.exports = InterfaceController;
-},{"../../proto/messages/ButtonsMessage":141,"../../proto/messages/ChatMessage":142,"../../proto/messages/CheckboxMessage":143,"../../proto/messages/HandInfoMessage":150,"../../proto/messages/InterfaceStateMessage":152,"../../proto/messages/PresetButtonsMessage":158,"../../proto/messages/ShowDialogMessage":161,"../../proto/messages/TableInfoMessage":165}],108:[function(require,module,exports){
+},{"../../proto/messages/ButtonsMessage":142,"../../proto/messages/ChatMessage":143,"../../proto/messages/CheckboxMessage":144,"../../proto/messages/HandInfoMessage":151,"../../proto/messages/InterfaceStateMessage":153,"../../proto/messages/PresetButtonsMessage":159,"../../proto/messages/ShowDialogMessage":162,"../../proto/messages/TableInfoMessage":166}],108:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24556,7 +24556,7 @@ MessageSequenceItem.prototype.onTargetComplete = function() {
 }
 
 module.exports = MessageSequenceItem;
-},{"../../utils/Sequencer":177,"inherits":79,"yaed":105}],109:[function(require,module,exports){
+},{"../../utils/Sequencer":178,"inherits":79,"yaed":105}],109:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24631,7 +24631,7 @@ MessageSequencer.prototype.waitFor = function(target, event) {
 }
 
 module.exports = MessageSequencer;
-},{"../../utils/Sequencer":177,"./MessageSequenceItem":108,"yaed":105}],110:[function(require,module,exports){
+},{"../../utils/Sequencer":178,"./MessageSequenceItem":108,"yaed":105}],110:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24780,7 +24780,7 @@ NetPokerClientController.prototype.onCheckboxChange = function(ev) {
 }
 
 module.exports = NetPokerClientController;
-},{"../../proto/ProtoConnection":134,"../../proto/data/ButtonData":135,"../../proto/messages/ButtonClickMessage":140,"../../proto/messages/ChatMessage":142,"../../proto/messages/CheckboxMessage":143,"../../proto/messages/PresetButtonClickMessage":157,"../../proto/messages/SeatClickMessage":159,"../view/ButtonsView":116,"../view/DialogView":122,"../view/NetPokerClientView":124,"../view/PresetButtonsView":127,"../view/SettingsView":131,"./InterfaceController":107,"./MessageSequencer":109,"./TableController":111}],111:[function(require,module,exports){
+},{"../../proto/ProtoConnection":135,"../../proto/data/ButtonData":136,"../../proto/messages/ButtonClickMessage":141,"../../proto/messages/ChatMessage":143,"../../proto/messages/CheckboxMessage":144,"../../proto/messages/PresetButtonClickMessage":158,"../../proto/messages/SeatClickMessage":160,"../view/ButtonsView":116,"../view/DialogView":123,"../view/NetPokerClientView":125,"../view/PresetButtonsView":128,"../view/SettingsView":132,"./InterfaceController":107,"./MessageSequencer":109,"./TableController":111}],111:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25037,7 +25037,7 @@ TableController.prototype.onPayOut = function(m) {
 
 
 module.exports = TableController;
-},{"../../proto/messages/ActionMessage":137,"../../proto/messages/BetMessage":138,"../../proto/messages/BetsToPotMessage":139,"../../proto/messages/ClearMessage":144,"../../proto/messages/CommunityCardsMessage":145,"../../proto/messages/DealerButtonMessage":146,"../../proto/messages/DelayMessage":147,"../../proto/messages/FoldCardsMessage":149,"../../proto/messages/PayOutMessage":153,"../../proto/messages/PocketCardsMessage":154,"../../proto/messages/PotMessage":155,"../../proto/messages/SeatInfoMessage":160,"../../proto/messages/TimerMessage":167,"yaed":105}],112:[function(require,module,exports){
+},{"../../proto/messages/ActionMessage":138,"../../proto/messages/BetMessage":139,"../../proto/messages/BetsToPotMessage":140,"../../proto/messages/ClearMessage":145,"../../proto/messages/CommunityCardsMessage":146,"../../proto/messages/DealerButtonMessage":147,"../../proto/messages/DelayMessage":148,"../../proto/messages/FoldCardsMessage":150,"../../proto/messages/PayOutMessage":154,"../../proto/messages/PocketCardsMessage":155,"../../proto/messages/PotMessage":156,"../../proto/messages/SeatInfoMessage":161,"../../proto/messages/TimerMessage":168,"yaed":105}],112:[function(require,module,exports){
 NetPokerClient = require("./app/NetPokerClient");
 
 //var netPokerClient = new NetPokerClient();
@@ -25224,7 +25224,7 @@ module.exports = {
 
 		potPosition: [485,315],
 		bigButtonPosition: [366,575],
-		tablePosition: [94, 94]
+		tablePosition: [0, 0]
 
 	},
 	colors: {
@@ -25242,7 +25242,8 @@ module.exports = {
 			"right", "right", 
 			"right", "center", "left",
 			"left", "left"
-		]
+		],
+		communityCardMargin: 1
 	}
 	/*,
 
@@ -25367,7 +25368,7 @@ BigButton.prototype.setValue = function(value) {
 }
 
 module.exports = BigButton;
-},{"../../utils/Button":169,"inherits":79,"pixi.js":80,"resource-fiddle":102}],116:[function(require,module,exports){
+},{"../../utils/Button":170,"inherits":79,"pixi.js":80,"resource-fiddle":102}],116:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25639,7 +25640,74 @@ ButtonsView.prototype.onButtonClick = function(e) {
 }
 
 module.exports = ButtonsView;
-},{"../../utils/Button":169,"../../utils/NineSlice":175,"../../utils/Slider":178,"./BigButton":115,"./RaiseShortcutButton":128,"inherits":79,"pixi.js":80,"resource-fiddle":102,"yaed":105}],117:[function(require,module,exports){
+},{"../../utils/Button":170,"../../utils/NineSlice":176,"../../utils/Slider":179,"./BigButton":115,"./RaiseShortcutButton":129,"inherits":79,"pixi.js":80,"resource-fiddle":102,"yaed":105}],117:[function(require,module,exports){
+/**
+ * Client.
+ * @module client
+ */
+
+var PIXI = require("pixi.js");
+var inherits = require("inherits");
+
+/**
+ * The front view of a card.
+ * @class CardFrontView
+ */
+function CardFrontView(viewConfig, resources) {
+	PIXI.DisplayObjectContainer.call(this);
+
+	this.resources = resources;
+};
+inherits(CardFrontView, PIXI.DisplayObjectContainer);
+
+
+CardFrontView.prototype.setCardData = function(cardData) {
+	this.cardData = cardData;
+
+	// cardDiamonds2 cardDiamonds3 cardDiamonds4 cardDiamonds5 ...  cardDiamondsQ  cardDiamondsK  cardDiamondsA
+	var cardTexture;
+	try {
+		cardTexture = this.resources.getTexture("card"+this.cardData.getLongSuitString()+this.cardData.getCardValueString());
+	}
+	catch(e) {
+		// Do nothing, not an error.
+	}
+	
+	if(cardTexture) {
+		this.frame = new PIXI.Sprite(cardTexture);
+		this.addChild(this.frame);
+	}
+	else {
+		this.frame = new PIXI.Sprite(this.resources.getTexture("cardFrame"));
+		this.addChild(this.frame);
+
+
+		this.suit = new PIXI.Sprite(this.resources.getTexture("suitSymbol" + this.cardData.getSuitIndex()));
+		this.suit.position.x = 8;
+		this.suit.position.y = 25;
+		this.addChild(this.suit);
+
+		var style = {
+			font: "bold 16px Arial"
+		};
+
+		this.valueField = new PIXI.Text("[val]", style);
+		this.addChild(this.valueField);
+		this.valueField.style.fill = this.cardData.getColor();
+
+		this.valueField.setText(this.cardData.getCardValueString());
+		this.valueField.updateTransform();
+		this.valueField.position.x = 17 - this.valueField.canvas.width / 2;
+		this.valueField.position.y = 5;
+
+		this.suit.setTexture(this.resources.getTexture("suitSymbol" + this.cardData.getSuitIndex()));
+	}
+};
+
+
+
+module.exports = CardFrontView;
+},{"inherits":79,"pixi.js":80}],118:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25647,7 +25715,7 @@ module.exports = ButtonsView;
 
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
-var Resources = require("resource-fiddle");
+var CardFrontView = require("./CardFrontView");
 var EventDispatcher = require("yaed");
 var inherits = require("inherits");
 
@@ -25663,15 +25731,15 @@ function CardView(viewConfig, resources) {
 	this.resources = resources;
 
 
-	this.frame = new PIXI.Sprite(this.resources.getTexture("cardFrame"));
-	this.addChild(this.frame);
-
+	this.front = new CardFrontView(this.viewConfig, this.resources);//PIXI.Sprite(this.resources.getTexture("cardFrame"));
+	this.addChild(this.front);
+/*
 	this.suit = new PIXI.Sprite(this.resources.getTexture("suitSymbol" + 0));
 	this.suit.position.x = 8;
 	this.suit.position.y = 25;
 	this.addChild(this.suit);
-
-	var style = {
+*/
+/*	var style = {
 		font: "bold 16px Arial"
 	};
 
@@ -25679,14 +25747,14 @@ function CardView(viewConfig, resources) {
 	this.valueField.position.x = 6;
 	this.valueField.position.y = 5;
 	this.addChild(this.valueField);
-
+*/
 	this.back = new PIXI.Sprite(this.resources.getTexture("cardBack"));
 	this.addChild(this.back);
 
 
 	this.maskGraphics = new PIXI.Graphics();
 	this.maskGraphics.beginFill(0x000000);
-	this.maskGraphics.drawRect(0, 0, 87, this.height);
+	this.maskGraphics.drawRect(0, 0, this.back.width, this.back.height);
 	this.maskGraphics.endFill();
 	this.addChild(this.maskGraphics);
 
@@ -25709,6 +25777,7 @@ CardView.prototype.setCardData = function(cardData) {
 		this.back.visible = false;
 		this.frame.visible = true;
 */
+/*
 		this.valueField.style.fill = this.cardData.getColor();
 
 		this.valueField.setText(this.cardData.getCardValueString());
@@ -25716,9 +25785,15 @@ CardView.prototype.setCardData = function(cardData) {
 		this.valueField.position.x = 17 - this.valueField.canvas.width / 2;
 
 		this.suit.setTexture(this.resources.getTexture("suitSymbol" + this.cardData.getSuitIndex()));
+		*/
+		this.front.setCardData(this.cardData);
+
+		this.maskGraphics.beginFill(0x000000);
+		this.maskGraphics.drawRect(0, 0, this.front.width, this.front.height);
+		this.maskGraphics.endFill();
 	}
 	this.back.visible = true;
-	this.frame.visible = false;
+	this.front.visible = false;
 }
 
 /**
@@ -25796,7 +25871,7 @@ CardView.prototype.onShowStart = function() {
 CardView.prototype.onShowComplete = function() {
 	if (this.cardData.isShown()) {
 		this.back.visible = false;
-		this.frame.visible = true;
+		this.front.visible = true;
 	}
 	this.dispatchEvent("animationDone", this);
 }
@@ -25837,7 +25912,7 @@ CardView.prototype.onFoldComplete = function() {
 }
 
 module.exports = CardView;
-},{"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],118:[function(require,module,exports){
+},{"./CardFrontView":117,"inherits":79,"pixi.js":80,"tween.js":104,"yaed":105}],119:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26071,7 +26146,7 @@ ChatView.prototype.onChatFieldMouseMove = function(interaction_object) {
 
 module.exports = ChatView;
 
-},{"../../utils/MouseOverGroup":174,"../../utils/NineSlice":175,"../../utils/Slider":178,"PixiTextInput":1,"inherits":79,"pixi.js":80,"resource-fiddle":102,"yaed":105}],119:[function(require,module,exports){
+},{"../../utils/MouseOverGroup":175,"../../utils/NineSlice":176,"../../utils/Slider":179,"PixiTextInput":1,"inherits":79,"pixi.js":80,"resource-fiddle":102,"yaed":105}],120:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26376,7 +26451,7 @@ ChipsView.prototype.onOutWaitAnimationComplete = function() {
 }
 
 module.exports = ChipsView;
-},{"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],120:[function(require,module,exports){
+},{"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],121:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26473,7 +26548,7 @@ DealerButtonView.prototype.show = function(seatIndex, animate) {
 }
 
 module.exports = DealerButtonView;
-},{"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],121:[function(require,module,exports){
+},{"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],122:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26519,7 +26594,7 @@ DialogButton.prototype.setText = function(text) {
 }
 
 module.exports = DialogButton;
-},{"../../utils/Button":169,"inherits":79,"pixi.js":80,"resource-fiddle":102}],122:[function(require,module,exports){
+},{"../../utils/Button":170,"inherits":79,"pixi.js":80,"resource-fiddle":102}],123:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26674,7 +26749,7 @@ DialogView.prototype.onButtonClick = function(e) {
 }
 
 module.exports = DialogView;
-},{"../../proto/data/ButtonData":135,"../../utils/NineSlice":175,"./DialogButton":121,"PixiTextInput":1,"inherits":79,"pixi.js":80,"resource-fiddle":102,"yaed":105}],123:[function(require,module,exports){
+},{"../../proto/data/ButtonData":136,"../../utils/NineSlice":176,"./DialogButton":122,"PixiTextInput":1,"inherits":79,"pixi.js":80,"resource-fiddle":102,"yaed":105}],124:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26736,7 +26811,7 @@ LoadingScreen.prototype.hide = function() {
 }
 
 module.exports = LoadingScreen;
-},{"../../utils/Gradient":171,"inherits":79,"pixi.js":80}],124:[function(require,module,exports){
+},{"../../utils/Gradient":172,"inherits":79,"pixi.js":80}],125:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26933,11 +27008,11 @@ NetPokerClientView.prototype.setupCommunityCards = function() {
 	this.communityCards = [];
 
 	var p = this.resources.getPoint("communityCardsPosition");
-
+	var margin = this.resources.getValue("communityCardMargin");
 	for (i = 0; i < 5; i++) {
 		var cardView = new CardView(this.viewConfig, this.resources);
 		cardView.hide();
-		cardView.setTargetPosition(Point(p.x + i * 90, p.y));
+		cardView.setTargetPosition(Point(p.x + i * (cardView.back.width + margin), p.y));
 
 		this.communityCards.push(cardView);
 		this.tableContainer.addChild(cardView);
@@ -27036,7 +27111,7 @@ NetPokerClientView.prototype.clear = function() {
 }
 
 module.exports = NetPokerClientView;
-},{"../../utils/Gradient":171,"../../utils/Point":176,"../view/PresetButtonsView":127,"../view/SettingsView":131,"../view/TableInfoView":132,"./ButtonsView":116,"./CardView":117,"./ChatView":118,"./ChipsView":119,"./DealerButtonView":120,"./DialogView":122,"./PotView":125,"./SeatView":129,"./TimerView":133,"inherits":79,"pixi.js":80,"resource-fiddle":102,"yaed":105}],125:[function(require,module,exports){
+},{"../../utils/Gradient":172,"../../utils/Point":177,"../view/PresetButtonsView":128,"../view/SettingsView":132,"../view/TableInfoView":133,"./ButtonsView":116,"./CardView":118,"./ChatView":119,"./ChipsView":120,"./DealerButtonView":121,"./DialogView":123,"./PotView":126,"./SeatView":130,"./TimerView":134,"inherits":79,"pixi.js":80,"resource-fiddle":102,"yaed":105}],126:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -27123,7 +27198,7 @@ PotView.prototype.show = function() {
 }
 
 module.exports = PotView;
-},{"./ChipsView":119,"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],126:[function(require,module,exports){
+},{"./ChipsView":120,"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],127:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -27249,7 +27324,7 @@ PresetButton.prototype.getValue = function() {
 }
 
 module.exports = PresetButton;
-},{"../../proto/data/ButtonData":135,"../../utils/Checkbox":170,"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],127:[function(require,module,exports){
+},{"../../proto/data/ButtonData":136,"../../utils/Checkbox":171,"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],128:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -27363,7 +27438,7 @@ PresetButtonsView.prototype.setCurrent = function(id) {
 }
 
 module.exports = PresetButtonsView;
-},{"./PresetButton":126,"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],128:[function(require,module,exports){
+},{"./PresetButton":127,"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],129:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -27429,7 +27504,7 @@ RaiseShortcutButton.prototype.setEnabled = function(value) {
 }
 
 module.exports = RaiseShortcutButton;
-},{"../../utils/Button":169,"../../utils/Checkbox":170,"../../utils/NineSlice":175,"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],129:[function(require,module,exports){
+},{"../../utils/Button":170,"../../utils/Checkbox":171,"../../utils/NineSlice":176,"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],130:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -27643,7 +27718,7 @@ SeatView.prototype.clear = function() {
 }
 
 module.exports = SeatView;
-},{"../../utils/Button":169,"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104}],130:[function(require,module,exports){
+},{"../../utils/Button":170,"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104}],131:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -27721,7 +27796,7 @@ SettingsCheckbox.prototype.setChecked = function(checked) {
 }
 
 module.exports = SettingsCheckbox;
-},{"../../utils/Button":169,"../../utils/Checkbox":170,"../../utils/NineSlice":175,"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],131:[function(require,module,exports){
+},{"../../utils/Button":170,"../../utils/Checkbox":171,"../../utils/NineSlice":176,"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],132:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -27979,7 +28054,7 @@ SettingsView.prototype.setCheckboxChecked = function(id, checked) {
 }
 
 module.exports = SettingsView;
-},{"../../proto/data/ButtonData":135,"../../proto/messages/CheckboxMessage":143,"../../utils/Button":169,"../../utils/NineSlice":175,"./RaiseShortcutButton":128,"./SettingsCheckbox":130,"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],132:[function(require,module,exports){
+},{"../../proto/data/ButtonData":136,"../../proto/messages/CheckboxMessage":144,"../../utils/Button":170,"../../utils/NineSlice":176,"./RaiseShortcutButton":129,"./SettingsCheckbox":131,"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],133:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -28066,7 +28141,7 @@ TableInfoView.prototype.clear = function() {
 }
 
 module.exports = TableInfoView;
-},{"inherits":79,"pixi.js":80,"yaed":105}],133:[function(require,module,exports){
+},{"inherits":79,"pixi.js":80,"yaed":105}],134:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -28217,7 +28292,7 @@ TimerView.prototype.showPercent = function(value) {
 }
 
 module.exports = TimerView;
-},{"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],134:[function(require,module,exports){
+},{"inherits":79,"pixi.js":80,"resource-fiddle":102,"tween.js":104,"yaed":105}],135:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28477,7 +28552,7 @@ ProtoConnection.prototype.toString = function() {
 }
 
 module.exports = ProtoConnection;
-},{"./messages/ActionMessage":137,"./messages/BetMessage":138,"./messages/BetsToPotMessage":139,"./messages/ButtonClickMessage":140,"./messages/ButtonsMessage":141,"./messages/ChatMessage":142,"./messages/CheckboxMessage":143,"./messages/ClearMessage":144,"./messages/CommunityCardsMessage":145,"./messages/DealerButtonMessage":146,"./messages/DelayMessage":147,"./messages/FadeTableMessage":148,"./messages/FoldCardsMessage":149,"./messages/HandInfoMessage":150,"./messages/InitMessage":151,"./messages/InterfaceStateMessage":152,"./messages/PayOutMessage":153,"./messages/PocketCardsMessage":154,"./messages/PotMessage":155,"./messages/PreTournamentInfoMessage":156,"./messages/PresetButtonClickMessage":157,"./messages/PresetButtonsMessage":158,"./messages/SeatClickMessage":159,"./messages/SeatInfoMessage":160,"./messages/ShowDialogMessage":161,"./messages/StateCompleteMessage":162,"./messages/TableButtonClickMessage":163,"./messages/TableButtonsMessage":164,"./messages/TableInfoMessage":165,"./messages/TestCaseRequestMessage":166,"./messages/TimerMessage":167,"./messages/TournamentResultMessage":168,"inherits":79,"yaed":105}],135:[function(require,module,exports){
+},{"./messages/ActionMessage":138,"./messages/BetMessage":139,"./messages/BetsToPotMessage":140,"./messages/ButtonClickMessage":141,"./messages/ButtonsMessage":142,"./messages/ChatMessage":143,"./messages/CheckboxMessage":144,"./messages/ClearMessage":145,"./messages/CommunityCardsMessage":146,"./messages/DealerButtonMessage":147,"./messages/DelayMessage":148,"./messages/FadeTableMessage":149,"./messages/FoldCardsMessage":150,"./messages/HandInfoMessage":151,"./messages/InitMessage":152,"./messages/InterfaceStateMessage":153,"./messages/PayOutMessage":154,"./messages/PocketCardsMessage":155,"./messages/PotMessage":156,"./messages/PreTournamentInfoMessage":157,"./messages/PresetButtonClickMessage":158,"./messages/PresetButtonsMessage":159,"./messages/SeatClickMessage":160,"./messages/SeatInfoMessage":161,"./messages/ShowDialogMessage":162,"./messages/StateCompleteMessage":163,"./messages/TableButtonClickMessage":164,"./messages/TableButtonsMessage":165,"./messages/TableInfoMessage":166,"./messages/TestCaseRequestMessage":167,"./messages/TimerMessage":168,"./messages/TournamentResultMessage":169,"inherits":79,"yaed":105}],136:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28615,7 +28690,7 @@ ButtonData.prototype.toString = function() {
 }
 
 module.exports = ButtonData;
-},{}],136:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28634,6 +28709,8 @@ CardData.CARD_VALUE_STRINGS =
 
 CardData.SUIT_STRINGS =
 	["D", "C", "H", "S"];
+CardData.LONG_SUIT_STRINGS =
+	["Diamonds", "Clubs", "Hearts", "Spades"];
 
 CardData.HIDDEN = -1;
 
@@ -28677,6 +28754,14 @@ CardData.prototype.getSuitIndex = function() {
  */
 CardData.prototype.getSuitString = function() {
 	return CardData.SUIT_STRINGS[this.getSuitIndex()];
+}
+
+/**
+ * Get long suit string.
+ * @method getLongSuitString
+ */
+CardData.prototype.getLongSuitString = function() {
+	return CardData.LONG_SUIT_STRINGS[this.getSuitIndex()];
 }
 
 /**
@@ -28801,7 +28886,7 @@ CardData.fromString = function(s) {
 }
 
 module.exports = CardData;
-},{}],137:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28863,7 +28948,7 @@ ActionMessage.prototype.serialize = function() {
 }
 
 module.exports = ActionMessage;
-},{}],138:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28917,7 +29002,7 @@ BetMessage.prototype.serialize = function() {
 }
 
 module.exports = BetMessage;
-},{}],139:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -28948,7 +29033,7 @@ BetsToPotMessage.prototype.serialize = function() {
 }
 
 module.exports = BetsToPotMessage;
-},{}],140:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29005,7 +29090,7 @@ ButtonClickMessage.prototype.serialize = function() {
 }
 
 module.exports = ButtonClickMessage;
-},{}],141:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29083,7 +29168,7 @@ ButtonsMessage.prototype.serialize = function() {
 }
 
 module.exports = ButtonsMessage;
-},{"../data/ButtonData":135}],142:[function(require,module,exports){
+},{"../data/ButtonData":136}],143:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29137,7 +29222,7 @@ ChatMessage.prototype.serialize = function() {
 }
 
 module.exports = ChatMessage;
-},{}],143:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29195,7 +29280,7 @@ CheckboxMessage.prototype.serialize = function() {
 }
 
 module.exports = CheckboxMessage;
-},{}],144:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29245,7 +29330,7 @@ ClearMessage.prototype.serialize = function() {
 }
 
 module.exports = ClearMessage;
-},{}],145:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29341,7 +29426,7 @@ CommunityCardsMessage.prototype.serialize = function() {
 }
 
 module.exports = CommunityCardsMessage;
-},{"../data/CardData":136}],146:[function(require,module,exports){
+},{"../data/CardData":137}],147:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29394,7 +29479,7 @@ DealerButtonMessage.prototype.serialize = function() {
 }
 
 module.exports = DealerButtonMessage;
-},{}],147:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29436,7 +29521,7 @@ DelayMessage.prototype.serialize = function() {
 }
 
 module.exports = DelayMessage;
-},{}],148:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29490,7 +29575,7 @@ FadeTableMessage.prototype.serialize = function() {
 }
 
 module.exports = FadeTableMessage;
-},{}],149:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29533,7 +29618,7 @@ FoldCardsMessage.prototype.serialize = function() {
 }
 
 module.exports = FoldCardsMessage;
-},{}],150:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29587,7 +29672,7 @@ HandInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = HandInfoMessage;
-},{}],151:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29667,7 +29752,7 @@ InitMessage.prototype.serialize = function() {
 }
 
 module.exports = InitMessage;
-},{}],152:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29721,7 +29806,7 @@ InterfaceStateMessage.prototype.serialize = function() {
 }
 
 module.exports = InterfaceStateMessage;
-},{}],153:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29774,7 +29859,7 @@ PayOutMessage.prototype.serialize = function() {
 }
 
 module.exports = PayOutMessage;
-},{}],154:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29878,7 +29963,7 @@ PocketCardsMessage.prototype.serialize = function() {
 }
 
 module.exports = PocketCardsMessage;
-},{"../data/CardData":136}],155:[function(require,module,exports){
+},{"../data/CardData":137}],156:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29921,7 +30006,7 @@ PotMessage.prototype.serialize = function() {
 }
 
 module.exports = PotMessage;
-},{}],156:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -29978,7 +30063,7 @@ PreTournamentInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = PreTournamentInfoMessage;
-},{}],157:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -30035,7 +30120,7 @@ PresetButtonClickMessage.prototype.serialize = function() {
 }
 
 module.exports = PresetButtonClickMessage;
-},{}],158:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -30125,7 +30210,7 @@ PresetButtonsMessage.prototype.serialize = function() {
 }
 
 module.exports = PresetButtonsMessage;
-},{"../data/ButtonData":135}],159:[function(require,module,exports){
+},{"../data/ButtonData":136}],160:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -30168,7 +30253,7 @@ SeatClickMessage.prototype.serialize = function() {
 }
 
 module.exports = SeatClickMessage;
-},{}],160:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -30287,7 +30372,7 @@ SeatInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = SeatInfoMessage;
-},{}],161:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -30376,7 +30461,7 @@ ShowDialogMessage.prototype.serialize = function() {
 }
 
 module.exports = ShowDialogMessage;
-},{}],162:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -30404,7 +30489,7 @@ StateCompleteMessage.prototype.serialize = function() {
 }
 
 module.exports = StateCompleteMessage;
-},{}],163:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -30447,7 +30532,7 @@ TableButtonClickMessage.prototype.serialize = function() {
 }
 
 module.exports = TableButtonClickMessage;
-},{}],164:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -30531,7 +30616,7 @@ TableButtonsMessage.prototype.serialize = function() {
 }
 
 module.exports = TableButtonsMessage;
-},{}],165:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -30641,7 +30726,7 @@ TableInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = TableInfoMessage;
-},{}],166:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -30684,7 +30769,7 @@ TestCaseRequestMessage.prototype.serialize = function() {
 }
 
 module.exports = TestCaseRequestMessage;
-},{}],167:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -30773,7 +30858,7 @@ TimerMessage.prototype.serialize = function() {
 }
 
 module.exports = TimerMessage;
-},{}],168:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -30827,7 +30912,7 @@ TournamentResultMessage.prototype.serialize = function() {
 }
 
 module.exports = TournamentResultMessage;
-},{}],169:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -30917,7 +31002,7 @@ Button.prototype.onClick = function() {
 }
 
 module.exports = Button;
-},{"inherits":79,"pixi.js":80,"yaed":105}],170:[function(require,module,exports){
+},{"inherits":79,"pixi.js":80,"yaed":105}],171:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -30979,7 +31064,7 @@ Checkbox.prototype.getChecked = function() {
 
 
 module.exports = Checkbox;
-},{"./Button":169,"inherits":79,"pixi.js":80,"yaed":105}],171:[function(require,module,exports){
+},{"./Button":170,"inherits":79,"pixi.js":80,"yaed":105}],172:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -31041,7 +31126,7 @@ Gradient.prototype.createSprite = function() {
 }
 
 module.exports = Gradient;
-},{"pixi.js":80}],172:[function(require,module,exports){
+},{"pixi.js":80}],173:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -31119,7 +31204,7 @@ MessageRequestConnection.prototype.send = function(m) {
 }
 
 module.exports = MessageRequestConnection;
-},{"inherits":79,"request":82,"tinp":103,"yaed":105}],173:[function(require,module,exports){
+},{"inherits":79,"request":82,"tinp":103,"yaed":105}],174:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -31229,7 +31314,7 @@ MessageWebSocketConnection.prototype.clearWebSocket = function() {
 }
 
 module.exports = MessageWebSocketConnection;
-},{"inherits":79,"tinp":103,"yaed":105}],174:[function(require,module,exports){
+},{"inherits":79,"tinp":103,"yaed":105}],175:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -31348,7 +31433,7 @@ MouseOverGroup.prototype.onStageMouseUp = function(interaction_object) {
 module.exports = MouseOverGroup;
 
 
-},{"inherits":79,"pixi.js":80,"yaed":105}],175:[function(require,module,exports){
+},{"inherits":79,"pixi.js":80,"yaed":105}],176:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -31473,7 +31558,7 @@ NineSlice.prototype.createTexturePart = function(x, y, width, height) {
 }
 
 module.exports = NineSlice;
-},{"inherits":79,"pixi.js":80}],176:[function(require,module,exports){
+},{"inherits":79,"pixi.js":80}],177:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -31493,7 +31578,7 @@ function Point(x, y) {
 }
 
 module.exports = Point;
-},{}],177:[function(require,module,exports){
+},{}],178:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -31581,7 +31666,7 @@ Sequencer.prototype.abort = function() {
 }
 
 module.exports = Sequencer;
-},{"inherits":79,"yaed":105}],178:[function(require,module,exports){
+},{"inherits":79,"yaed":105}],179:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils

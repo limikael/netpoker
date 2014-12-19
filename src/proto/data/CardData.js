@@ -16,6 +16,8 @@ CardData.CARD_VALUE_STRINGS =
 
 CardData.SUIT_STRINGS =
 	["D", "C", "H", "S"];
+CardData.LONG_SUIT_STRINGS =
+	["Diamonds", "Clubs", "Hearts", "Spades"];
 
 CardData.HIDDEN = -1;
 
@@ -59,6 +61,14 @@ CardData.prototype.getSuitIndex = function() {
  */
 CardData.prototype.getSuitString = function() {
 	return CardData.SUIT_STRINGS[this.getSuitIndex()];
+}
+
+/**
+ * Get long suit string.
+ * @method getLongSuitString
+ */
+CardData.prototype.getLongSuitString = function() {
+	return CardData.LONG_SUIT_STRINGS[this.getSuitIndex()];
 }
 
 /**

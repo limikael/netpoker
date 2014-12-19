@@ -5,7 +5,7 @@
 
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
-var Resources = require("resource-fiddle");
+var CardFrontView = require("./CardFrontView");
 var EventDispatcher = require("yaed");
 var inherits = require("inherits");
 
@@ -21,15 +21,15 @@ function CardView(viewConfig, resources) {
 	this.resources = resources;
 
 
-	this.frame = new PIXI.Sprite(this.resources.getTexture("cardFrame"));
-	this.addChild(this.frame);
-
+	this.front = new CardFrontView(this.viewConfig, this.resources);//PIXI.Sprite(this.resources.getTexture("cardFrame"));
+	this.addChild(this.front);
+/*
 	this.suit = new PIXI.Sprite(this.resources.getTexture("suitSymbol" + 0));
 	this.suit.position.x = 8;
 	this.suit.position.y = 25;
 	this.addChild(this.suit);
-
-	var style = {
+*/
+/*	var style = {
 		font: "bold 16px Arial"
 	};
 
@@ -37,14 +37,14 @@ function CardView(viewConfig, resources) {
 	this.valueField.position.x = 6;
 	this.valueField.position.y = 5;
 	this.addChild(this.valueField);
-
+*/
 	this.back = new PIXI.Sprite(this.resources.getTexture("cardBack"));
 	this.addChild(this.back);
 
 
 	this.maskGraphics = new PIXI.Graphics();
 	this.maskGraphics.beginFill(0x000000);
-	this.maskGraphics.drawRect(0, 0, 87, this.height);
+	this.maskGraphics.drawRect(0, 0, this.back.width, this.back.height);
 	this.maskGraphics.endFill();
 	this.addChild(this.maskGraphics);
 
@@ -67,6 +67,7 @@ CardView.prototype.setCardData = function(cardData) {
 		this.back.visible = false;
 		this.frame.visible = true;
 */
+/*
 		this.valueField.style.fill = this.cardData.getColor();
 
 		this.valueField.setText(this.cardData.getCardValueString());
@@ -74,9 +75,15 @@ CardView.prototype.setCardData = function(cardData) {
 		this.valueField.position.x = 17 - this.valueField.canvas.width / 2;
 
 		this.suit.setTexture(this.resources.getTexture("suitSymbol" + this.cardData.getSuitIndex()));
+		*/
+		this.front.setCardData(this.cardData);
+
+		this.maskGraphics.beginFill(0x000000);
+		this.maskGraphics.drawRect(0, 0, this.front.width, this.front.height);
+		this.maskGraphics.endFill();
 	}
 	this.back.visible = true;
-	this.frame.visible = false;
+	this.front.visible = false;
 }
 
 /**
@@ -154,7 +161,7 @@ CardView.prototype.onShowStart = function() {
 CardView.prototype.onShowComplete = function() {
 	if (this.cardData.isShown()) {
 		this.back.visible = false;
-		this.frame.visible = true;
+		this.front.visible = true;
 	}
 	this.dispatchEvent("animationDone", this);
 }

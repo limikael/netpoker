@@ -194,11 +194,11 @@ NetPokerClientView.prototype.setupCommunityCards = function() {
 	this.communityCards = [];
 
 	var p = this.resources.getPoint("communityCardsPosition");
-
+	var margin = this.resources.getValue("communityCardMargin");
 	for (i = 0; i < 5; i++) {
 		var cardView = new CardView(this.viewConfig, this.resources);
 		cardView.hide();
-		cardView.setTargetPosition(Point(p.x + i * 90, p.y));
+		cardView.setTargetPosition(Point(p.x + i * (cardView.back.width + margin), p.y));
 
 		this.communityCards.push(cardView);
 		this.tableContainer.addChild(cardView);

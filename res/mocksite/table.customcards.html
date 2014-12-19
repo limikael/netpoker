@@ -32,7 +32,47 @@
 				else 
 					netPokerClient.setSkin("textures.json");
 */
-				
+				netPokerClient.setSkin({
+					graphics: {
+						textures: [
+							{
+								id: "cardDiamondsQTexture",
+								file: "queen.png"
+							},
+							{
+								id: "cardDiamondsKTexture",
+								file: "king.png"
+							},
+							{
+								id: "cardBackTexture",
+								file: "cardBack.png"
+							}, 
+							{
+								id: "cardDiamondsATexture",
+								file: "a.png"
+							}
+						],
+						cardDiamondsQ: {
+							texture: "cardDiamondsQTexture",
+							coords: [0, 0, 89, 134]
+						},
+						cardDiamondsK: {
+							texture: "cardDiamondsKTexture",
+							coords: [0, 0, 89, 134]
+						},
+						cardDiamondsA: {
+							texture: "cardDiamondsATexture",
+							coords: [0, 0, 89, 134]
+						},
+						cardBack: {
+							texture: "cardBackTexture",
+							coords: [0, 0, 89, 134]
+						}
+					},
+					values: {
+						communityCardMargin: 10
+					}
+				});
 				netPokerClient.setUrl("ws://"+window.location.host+"/");
 				netPokerClient.setToken(params["token"]);
 
