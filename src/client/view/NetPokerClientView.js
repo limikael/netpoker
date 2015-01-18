@@ -160,7 +160,7 @@ NetPokerClientView.prototype.setupChips = function() {
 		var chipsView = new ChipsView(this.viewConfig, this.resources);
 		this.seatViews[i].setBetChipsView(chipsView);
 
-		chipsView.setAlignment(this.resources.getValue("betAlign")[i]);
+		chipsView.setAlignment(this.resources.getValue("betAlign").charAt(i));
 		chipsView.setTargetPosition(this.resources.getPoint("betPosition"+i));
 		this.tableContainer.addChild(chipsView);
 	}
@@ -194,7 +194,7 @@ NetPokerClientView.prototype.setupCommunityCards = function() {
 	this.communityCards = [];
 
 	var p = this.resources.getPoint("communityCardsPosition");
-	var margin = this.resources.getValue("communityCardMargin");
+	var margin = parseInt(this.resources.getValue("communityCardMargin"));
 	for (i = 0; i < 5; i++) {
 		var cardView = new CardView(this.viewConfig, this.resources);
 		cardView.hide();

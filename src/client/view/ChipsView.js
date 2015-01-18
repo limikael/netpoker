@@ -118,7 +118,7 @@ ChipsView.prototype.setValue = function(value) {
 				var textField = new PIXI.Text(denominationString, {
 					font: "bold 12px Arial",
 					align: "center",
-					fill: this.resources.getColor("chipsColor"+ (i % 5))
+					fill: this.resources.getColor("chipsColor" + (i % 5))
 				});
 				textField.position.x = (stackClip.width - textField.width) * 0.5;
 				textField.position.y = chipPos + 11;
@@ -134,19 +134,19 @@ ChipsView.prototype.setValue = function(value) {
 
 	switch (this.align) {
 		case this.resources.Align.Left:
-			{
-				this.holder.x = 0;
-				break;
-			}
+		case "L":
+			this.holder.x = 0;
+			break;
 
 		case this.resources.Align.Center:
-			{
-				this.holder.x = -this.holder.width / 2;
-				break;
-			}
+		case "C":
+			this.holder.x = -this.holder.width / 2;
+			break;
 
 		case this.resources.Align.Right:
+		case "R":
 			this.holder.x = -this.holder.width;
+			break;
 	}
 }
 

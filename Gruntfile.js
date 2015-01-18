@@ -2,6 +2,7 @@ var qsub = require("qsub");
 var Q = require("q");
 var fs = require("fs");
 var async = require("async");
+var fse = require("fs-extra");
 
 module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-ftpush');
@@ -201,16 +202,13 @@ module.exports = function(grunt) {
 			},
 
 			function(next) {
-				var job = qsub("cp").arg("gfx/components.png", "res/mocksite");
-				job.run().then(next);
-			},
+				fse.copySync("res/mocksite/netpokerclient.bundle.js", "res/skin/netpokerclient.bundle.js");
 
-			function(next) {
-				var job = qsub("cp").arg("gfx/table.png", "res/mocksite");
-				job.run().then(next);
-			},
+				fse.copySync("res/skin/textureFiles/custom/texture.json", "res/mocksite/texture.json");
+				fse.copySync("res/skin/textureFiles/custom/texture0.png", "res/mocksite/texture0.png");
 
-			function(next) {
+				fse.copySync("res/skin/textureFiles/custom/texture.json", "bin/texture.json");
+				fse.copySync("res/skin/textureFiles/custom/texture0.png", "bin/texture0.png");
 				done();
 			}
 		]);

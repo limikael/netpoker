@@ -16,7 +16,6 @@ var InitMessage = require("../../proto/messages/InitMessage");
 var Resources = require("resource-fiddle");
 var ViewConfig = require("../resources/ViewConfig");
 var url = require("url");
-var DefaultSkin = require("../resources/DefaultSkin");
 var TWEEN = require("tween.js");
 var inherits = require("inherits");
 
@@ -29,8 +28,9 @@ function NetPokerClient() {
 
 	this.verticalAlign = PixiApp.TOP;
 
+	this.haveSkin = false;
 	this.resources = new Resources();
-	this.resources.addSource(DefaultSkin);
+	//this.resources.addSource(DefaultSkin);
 
 	this.loadingScreen = new LoadingScreen();
 	this.addChild(this.loadingScreen);
@@ -83,6 +83,7 @@ NetPokerClient.prototype.setToken = function(token) {
  * @method setSkin
  */
 NetPokerClient.prototype.setSkin = function(skin, noCache) {
+	this.haveSkin = true;
 	this.resources.addSource(skin, noCache);
 }
 
@@ -107,6 +108,9 @@ NetPokerClient.prototype.run = function() {
 	this.assetLoader.addEventListener("onComplete", this.onAssetLoaderComplete.bind(this));
 	this.assetLoader.load();
 	*/
+
+	if (!this.haveSkin)
+		this.resources.addSource("texture.json");
 
 	if (this.resources.isLoading()) {
 		this.resources.on(Resources.Loaded, this.onResourcesLoaded, this);
@@ -212,6 +216,30 @@ NetPokerClient.prototype.onConnectionClose = function() {
 	this.netPokerClientController.setProtoConnection(null);
 	this.loadingScreen.show("CONNECTION ERROR");
 	setTimeout(this.connect.bind(this), 3000);
+}
+
+/**
+ * Utility function to get all query string params.
+ * @method getQueryStringParams
+ * @static
+ */
+NetPokerClient.getQueryStringParams = function() {
+	var params = {};
+	(function() {
+
+		var match,
+			pl = /\+/g, // Regex for replacing addition symbol with a space
+			search = /([^&=]+)=?([^&]*)/g,
+			decode = function(s) {
+				return decodeURIComponent(s.replace(pl, " "));
+			},
+			query = window.location.search.substring(1).replace(/amp;/g, "");
+
+		while (match = search.exec(query))
+			params[decode(match[1])] = decode(match[2]);
+	})();
+
+	return params;
 }
 
 module.exports = NetPokerClient;
