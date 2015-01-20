@@ -58,6 +58,8 @@ ChipsView.prototype.setAlignment = function(align) {
  * @method setTargetPosition
  */
 ChipsView.prototype.setTargetPosition = function(position) {
+	console.log("setting target position: " + JSON.stringify(position));
+
 	this.targetPosition = position;
 	this.position.x = position.x;
 	this.position.y = position.y;
@@ -206,13 +208,19 @@ ChipsView.prototype.animateIn = function() {
 
 	switch (this.align) {
 		case this.resources.Align.Left:
+		case "L":
 			o.x = this.resources.getPoint("potPosition").x - this.width / 2;
+			break;
 
 		case this.resources.Align.Center:
+		case "C":
 			o.x = this.resources.getPoint("potPosition").x;
+			break;
 
 		case this.resources.Align.Right:
+		case "R":
 			o.x = this.resources.getPoint("potPosition").x + this.width / 2;
+			break;
 	}
 
 	var time = this.viewConfig.scaleAnimationTime(500);
@@ -247,13 +255,19 @@ ChipsView.prototype.animateOut = function() {
 
 	switch (this.align) {
 		case this.resources.Align.Left:
+		case "L":
 			this.position.x = this.resources.getPoint("potPosition").x - this.width / 2;
+			break;
 
 		case this.resources.Align.Center:
+		case "C":
 			this.position.x = this.resources.getPoint("potPosition").x;
+			break;
 
 		case this.resources.Align.Right:
+		case "R":
 			this.position.x = this.resources.getPoint("potPosition").x + this.width / 2;
+			break;
 	}
 
 	var o = {
