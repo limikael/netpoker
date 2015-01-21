@@ -40,7 +40,7 @@ Gradient.prototype.addColorStop = function(weight, color) {
  * @method createSprite
  */
 Gradient.prototype.createSprite = function() {
-	console.log("rendering gradient...");
+	//console.log("rendering gradient...");
 	var c = document.createElement("canvas");
 	c.width = this.width;
 	c.height = this.height;

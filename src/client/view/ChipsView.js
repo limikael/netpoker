@@ -58,7 +58,7 @@ ChipsView.prototype.setAlignment = function(align) {
  * @method setTargetPosition
  */
 ChipsView.prototype.setTargetPosition = function(position) {
-	console.log("setting target position: " + JSON.stringify(position));
+	//console.log("setting target position: " + JSON.stringify(position));
 
 	this.targetPosition = position;
 	this.position.x = position.x;

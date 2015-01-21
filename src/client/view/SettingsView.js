@@ -64,7 +64,7 @@ function SettingsView(viewConfig, resources) {
 
 	this.settings = {};
 
-	console.log("setting up settings, viewconfig=" + this.viewConfig);
+	//console.log("setting up settings, viewconfig=" + this.viewConfig);
 
 	this.createMenuSetting("playAnimations", "Play animations", 40, this.viewConfig.getPlayAnimations());
 	this.createMenuSetting(CheckboxMessage.AUTO_MUCK_LOSING, "Muck losing hands", 65);
@@ -249,7 +249,7 @@ SettingsView.prototype.setVisibleButtons = function(buttons) {
  * @method setCheckboxChecked
  */
 SettingsView.prototype.setCheckboxChecked = function(id, checked) {
-	console.log("setting checkbox state for: " + id);
+	//console.log("setting checkbox state for: " + id);
 
 	this.settings[id].setChecked(checked);
 }

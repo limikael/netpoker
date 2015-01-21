@@ -35196,7 +35196,7 @@ function NetPokerClientController(view) {
 	this.tableController = new TableController(this.messageSequencer, this.netPokerClientView);
 	this.interfaceController = new InterfaceController(this.messageSequencer, this.netPokerClientView);
 
-	console.log(this.netPokerClientView.getDialogView());
+	//console.log(this.netPokerClientView.getDialogView());
 
 	this.netPokerClientView.getButtonsView().on(ButtonsView.BUTTON_CLICK, this.onButtonClick, this);
 	this.netPokerClientView.getDialogView().on(DialogView.BUTTON_CLICK, this.onButtonClick, this);
@@ -36530,7 +36530,7 @@ ChipsView.prototype.setAlignment = function(align) {
  * @method setTargetPosition
  */
 ChipsView.prototype.setTargetPosition = function(position) {
-	console.log("setting target position: " + JSON.stringify(position));
+	//console.log("setting target position: " + JSON.stringify(position));
 
 	this.targetPosition = position;
 	this.position.x = position.x;
@@ -38200,7 +38200,7 @@ function SettingsView(viewConfig, resources) {
 
 	this.settings = {};
 
-	console.log("setting up settings, viewconfig=" + this.viewConfig);
+	//console.log("setting up settings, viewconfig=" + this.viewConfig);
 
 	this.createMenuSetting("playAnimations", "Play animations", 40, this.viewConfig.getPlayAnimations());
 	this.createMenuSetting(CheckboxMessage.AUTO_MUCK_LOSING, "Muck losing hands", 65);
@@ -38385,7 +38385,7 @@ SettingsView.prototype.setVisibleButtons = function(buttons) {
  * @method setCheckboxChecked
  */
 SettingsView.prototype.setCheckboxChecked = function(id, checked) {
-	console.log("setting checkbox state for: " + id);
+	//console.log("setting checkbox state for: " + id);
 
 	this.settings[id].setChecked(checked);
 }
@@ -41444,7 +41444,7 @@ Gradient.prototype.addColorStop = function(weight, color) {
  * @method createSprite
  */
 Gradient.prototype.createSprite = function() {
-	console.log("rendering gradient...");
+	//console.log("rendering gradient...");
 	var c = document.createElement("canvas");
 	c.width = this.width;
 	c.height = this.height;

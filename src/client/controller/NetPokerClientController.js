@@ -31,7 +31,7 @@ function NetPokerClientController(view) {
 	this.tableController = new TableController(this.messageSequencer, this.netPokerClientView);
 	this.interfaceController = new InterfaceController(this.messageSequencer, this.netPokerClientView);
 
-	console.log(this.netPokerClientView.getDialogView());
+	//console.log(this.netPokerClientView.getDialogView());
 
 	this.netPokerClientView.getButtonsView().on(ButtonsView.BUTTON_CLICK, this.onButtonClick, this);
 	this.netPokerClientView.getDialogView().on(DialogView.BUTTON_CLICK, this.onButtonClick, this);
