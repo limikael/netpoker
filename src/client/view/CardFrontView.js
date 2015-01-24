@@ -23,18 +23,15 @@ CardFrontView.prototype.setCardData = function(cardData) {
 
 	// cardDiamonds2 cardDiamonds3 cardDiamonds4 cardDiamonds5 ...  cardDiamondsQ  cardDiamondsK  cardDiamondsA
 	var cardTexture;
-	try {
-		cardTexture = this.resources.getTexture("card"+this.cardData.getLongSuitString()+this.cardData.getCardValueString());
-	}
-	catch(e) {
-		// Do nothing, not an error.
-	}
-	
-	if(cardTexture) {
+	var customName = "card" + this.cardData.getLongSuitString() + this.cardData.getCardValueString();
+
+	if (this.resources.keyExists(customName))
+		cardTexture = this.resources.getTexture(customName);
+
+	if (cardTexture) {
 		this.frame = new PIXI.Sprite(cardTexture);
 		this.addChild(this.frame);
-	}
-	else {
+	} else {
 		this.frame = new PIXI.Sprite(this.resources.getTexture("cardFrame"));
 		this.addChild(this.frame);
 

@@ -54,12 +54,79 @@
 		</Category>
 	</Category>
 	<Category title="Cards">
-		<Image id="cardFrame" value="images/cardFrame.png" />
-		<Image id="cardBack" value="images/cardBack.png" />
-		<Image id="suitSymbol0" value="images/suitSymbol0.png" />
-		<Image id="suitSymbol1" value="images/suitSymbol1.png" />
-		<Image id="suitSymbol2" value="images/suitSymbol2.png" />
-		<Image id="suitSymbol3" value="images/suitSymbol3.png" />
+		<Category title="Generic cards">
+			If there are no customized cards, these will be used.
+			<Image id="cardFrame" value="images/cardFrame.png" />
+			<Image id="cardBack" value="images/cardBack.png" />
+			<Image id="suitSymbol0" value="images/suitSymbol0.png" />
+			<Image id="suitSymbol1" value="images/suitSymbol1.png" />
+			<Image id="suitSymbol2" value="images/suitSymbol2.png" />
+			<Image id="suitSymbol3" value="images/suitSymbol3.png" />
+		</Category>
+		<Category title="Customized cards">
+			It's possible to specify an individual image for each card.
+			This graphics will override the generic card graphics.
+			<Category title="Diamods">
+				<Image id="cardDiamonds2"/>
+				<Image id="cardDiamonds3"/>
+				<Image id="cardDiamonds4"/>
+				<Image id="cardDiamonds5"/>
+				<Image id="cardDiamonds6"/>
+				<Image id="cardDiamonds7"/>
+				<Image id="cardDiamonds8"/>
+				<Image id="cardDiamonds9"/>
+				<Image id="cardDiamonds10"/>
+				<Image id="cardDiamondsJ"/>
+				<Image id="cardDiamondsQ"/>
+				<Image id="cardDiamondsK"/>
+				<Image id="cardDiamondsA"/>
+			</Category>
+			<Category title="Clubs">
+				<Image id="cardClubs2"/>
+				<Image id="cardClubs3"/>
+				<Image id="cardClubs4"/>
+				<Image id="cardClubs5"/>
+				<Image id="cardClubs6"/>
+				<Image id="cardClubs7"/>
+				<Image id="cardClubs8"/>
+				<Image id="cardClubs9"/>
+				<Image id="cardClubs10"/>
+				<Image id="cardClubsJ"/>
+				<Image id="cardClubsQ"/>
+				<Image id="cardClubsK"/>
+				<Image id="cardClubsA"/>
+			</Category>
+			<Category title="Hearts">
+				<Image id="cardHearts2"/>
+				<Image id="cardHearts3"/>
+				<Image id="cardHearts4"/>
+				<Image id="cardHearts5"/>
+				<Image id="cardHearts6"/>
+				<Image id="cardHearts7"/>
+				<Image id="cardHearts8"/>
+				<Image id="cardHearts9"/>
+				<Image id="cardHearts10"/>
+				<Image id="cardHeartsJ"/>
+				<Image id="cardHeartsQ"/>
+				<Image id="cardHeartsK"/>
+				<Image id="cardHeartsA"/>
+			</Category>
+			<Category title="Spades">
+				<Image id="cardSpades2"/>
+				<Image id="cardSpades3"/>
+				<Image id="cardSpades4"/>
+				<Image id="cardSpades5"/>
+				<Image id="cardSpades6"/>
+				<Image id="cardSpades7"/>
+				<Image id="cardSpades8"/>
+				<Image id="cardSpades9"/>
+				<Image id="cardSpades10"/>
+				<Image id="cardSpadesJ"/>
+				<Image id="cardSpadesQ"/>
+				<Image id="cardSpadesK"/>
+				<Image id="cardSpadesA"/>
+			</Category>
+		</Category>
 	</Category>
 
 	<Category title="Chips">

@@ -32,9 +32,9 @@
     "jitsu": "^0.14.0",
     "pixi.js": "^1.6.1",
     "pixiapp": "0.0.11",
-    "pixitextinput": "git+https://github.com/limikael/pixitextinput",
+    "pixitextinput": "git+https://github.com/limikael/pixitextinput.git#fc444f3a7827d3e2b0cb16956ab684be3dae0efc",
     "qsub": "0.0.5",
-    "resource-fiddle": "git+https://github.com/ullabrittandersson/resource-fiddle",
+    "resource-fiddle": "git+https://github.com/ullabrittandersson/resource-fiddle.git#59c7322b1d7b149344862558a96e2e5b4cbbe43b",
     "serve-static": "^1.6.1",
     "tween.js": "^0.14.0",
     "yuidocjs": "^0.3.50"
