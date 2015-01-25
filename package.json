@@ -34,7 +34,7 @@
     "pixiapp": "0.0.11",
     "pixitextinput": "git+https://github.com/limikael/pixitextinput.git#fc444f3a7827d3e2b0cb16956ab684be3dae0efc",
     "qsub": "0.0.5",
-    "resource-fiddle": "git+https://github.com/ullabrittandersson/resource-fiddle.git#59c7322b1d7b149344862558a96e2e5b4cbbe43b",
+    "resource-fiddle": "git+https://github.com/ullabrittandersson/resource-fiddle.git#b950cec71c62659fd09e4aca941f185ff7dd8282",
     "serve-static": "^1.6.1",
     "tween.js": "^0.14.0",
     "yuidocjs": "^0.3.50"
