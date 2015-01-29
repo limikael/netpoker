@@ -1,0 +1,12 @@
+{"type":"pocketCards", "seatIndex": 0, "firstIndex": 0, "cards": [26,26], "animate": false}
+{"type":"pocketCards", "seatIndex": 1, "firstIndex": 0, "cards": [27,27], "animate": false}
+{"type":"pocketCards", "seatIndex": 2, "firstIndex": 0, "cards": [28,28], "animate": false}
+{"type":"pocketCards", "seatIndex": 3, "firstIndex": 0, "cards": [29,29], "animate": false}
+{"type":"pocketCards", "seatIndex": 4, "firstIndex": 0, "cards": [30,30], "animate": false}
+{"type":"pocketCards", "seatIndex": 5, "firstIndex": 0, "cards": [31,31], "animate": false}
+{"type":"pocketCards", "seatIndex": 6, "firstIndex": 0, "cards": [32,32], "animate": false}
+{"type":"pocketCards", "seatIndex": 7, "firstIndex": 0, "cards": [33,33], "animate": false}
+{"type":"pocketCards", "seatIndex": 8, "firstIndex": 0, "cards": [-1,-1], "animate": false}
+{"type":"pocketCards", "seatIndex": 9, "firstIndex": 0, "cards": [-1,-1], "animate": false}
+{"type":"communityCards", "firstIndex": 0, "cards": [34,35,36,37,38], "animate": false}
+{"type":"stateComplete"}
