@@ -29,7 +29,7 @@
     "grunt-cli": "^0.1.13",
     "grunt-ftpush": "^0.3.3",
     "jasmine-node": "^2.0.0-beta4",
-    "jitsu": "^0.14.0",
+    "jitsu": "^0.15.0",
     "pixi.js": "^1.6.1",
     "pixiapp": "0.0.11",
     "pixitextinput": "git+https://github.com/limikael/pixitextinput.git#fc444f3a7827d3e2b0cb16956ab684be3dae0efc",
