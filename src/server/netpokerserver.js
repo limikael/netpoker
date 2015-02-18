@@ -29,13 +29,29 @@ var args = minimist(process.argv.slice(2));
 
 var netPokerServer = new NetPokerServer();
 var configurator = new NetPokerServerConfigurator(netPokerServer);
-configurator.applySettings(args);
+configurator.applySettings(args).then(
+	function() {
+		if (!netPokerServer.canStart())
+			usage();
 
-if (!netPokerServer.canStart())
+		netPokerServer.run().then(
+			function() {
+				console.log("* SERVER LISTENING TO: " + netPokerServer.getClientPort());
+			}
+		);
+	},
+
+	function(e) {
+		console.log(e);
+		usage();
+	}
+);
+
+/*if (!netPokerServer.canStart())
 	usage();
 
 netPokerServer.run().then(
 	function() {
 		console.log("* SERVER LISTENING TO: " + netPokerServer.getClientPort());
 	}
-);
+);*/

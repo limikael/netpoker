@@ -1,3 +1,7 @@
+var Thenable = require("tinp");
+var url = require("url");
+var request = require("request");
+
 /**
  * Server.
  * @module server
@@ -20,6 +24,8 @@ function NetPokerServerConfigurator(netPokerServer) {
  * @method applySetting
  */
 NetPokerServerConfigurator.prototype.applySetting = function(name, value) {
+	var thenable = new Thenable();
+
 	switch (name) {
 		case "backend":
 			this.netPokerServer.setBackend(value);
@@ -55,19 +61,23 @@ NetPokerServerConfigurator.prototype.applySetting = function(name, value) {
 			break;
 
 		case "config":
-			this.loadConfigFile(value);
+			return this.loadConfigSource(value);
 			break;
 
 		case "_":
-			if (value.length)
-				throw new Error("Error");
-
+			if (value.length) {
+				thenable.reject("Don't know what to do with those arguments...");
+				return thenable;
+			}
 			break;
 
 		default:
 			throw new Error("Unknown option: " + name);
 			break;
 	}
+
+	thenable.resolve();
+	return thenable;
 }
 
 /**
@@ -75,18 +85,97 @@ NetPokerServerConfigurator.prototype.applySetting = function(name, value) {
  * @method applySettings
  */
 NetPokerServerConfigurator.prototype.applySettings = function(settings) {
+	var thenables = [];
+
 	for (var setting in settings)
-		this.applySetting(setting, settings[setting])
+		thenables.push(this.applySetting(setting, settings[setting]));
+
+	return Thenable.all(thenables);
 }
 
 /**
- * Load config file.
+ * Load config from file or url.
  * @method loadConfigFile
+ * @private
+ */
+NetPokerServerConfigurator.prototype.loadConfigSource = function(configSource) {
+	var parsedConfigSource = url.parse(configSource);
+
+	if (parsedConfigSource.protocol)
+		return this.loadConfigUrl(configSource);
+
+	else
+		return this.loadConfigFile(configSource);
+
+	/*	fs.readFile(configFileName)
+
+		var doc = yaml.safeLoad(fs.readFileSync(configFileName));
+
+		this.applySettings(doc).then(
+			function() {
+				thenable.resolve()
+			},
+			function() {
+				thenable.reject()
+			});
+
+		return thenable;*/
+}
+
+/**
+ * Load config from file.
+ * @method loadConfigSource
+ * @private
  */
 NetPokerServerConfigurator.prototype.loadConfigFile = function(configFileName) {
+	var thenable = new Thenable();
+
 	var doc = yaml.safeLoad(fs.readFileSync(configFileName));
 
-	this.applySettings(doc);
+	this.applySettings(doc).then(
+		function() {
+			thenable.resolve()
+		},
+		function() {
+			thenable.reject()
+		}
+	);
+
+	return thenable;
+}
+
+/**
+ * Load config from url.
+ * @method loadConfigSource
+ * @private
+ */
+NetPokerServerConfigurator.prototype.loadConfigUrl = function(configUrl) {
+	var thenable = new Thenable();
+
+	var options = {
+		url: configUrl
+	};
+
+	request(options, function(error, response, body) {
+		if (error || response.statusCode != 200) {
+			thenable.reject("Error loading config from url: " + response.statusCode);
+			return;
+		}
+
+		var doc = yaml.safeLoad(body);
+
+		this.applySettings(doc).then(
+			function() {
+				thenable.resolve()
+			},
+
+			function() {
+				thenable.reject()
+			}
+		);
+	}.bind(this));
+
+	return thenable;
 }
 
 module.exports = NetPokerServerConfigurator;
