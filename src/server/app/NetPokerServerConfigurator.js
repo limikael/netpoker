@@ -60,6 +60,11 @@ NetPokerServerConfigurator.prototype.applySetting = function(name, value) {
 			this.netPokerServer.setApiOnClientPort(value);
 			break;
 
+		case "key":
+			this.netPokerServer.setApiKey(value);
+			this.netPokerServer.setBackendKey(value);
+			break;
+
 		case "config":
 			return this.loadConfigSource(value);
 			break;

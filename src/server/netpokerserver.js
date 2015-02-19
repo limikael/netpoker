@@ -12,13 +12,14 @@ function usage() {
 	console.log("Options:");
 	console.log("");
 	console.log("  --clientPort <port>      Port where to listen for incoming connections.");
-	console.log("  --clientBindAddr <port>  Bind to this address when accepting client connectins.");
+	console.log("  --clientBindAddr <port>  Bind to this address when accepting connectins.");
 	console.log("  --backend <url>          Which backend to connect to.");
-	console.log("  --backendKey <key>       Send this in the 'key' parameter when doing backend requests.");
-	console.log("  --mock                   Start a mocked server without backend.");
+	console.log("  --backendKey <key>       Use this for 'key' parameter in backend requests.");
 	console.log("  --apiPort <port>         Port where to listen to api requests.");
 	console.log("  --apiOnClientPort        Allow api requests on the main client port.");
 	console.log("  --apiKey <key>           Require this key for api requests.");
+	console.log("  --mock                   Start a mocked server without backend.");
+	console.log("  --key <key>              Use this as both apiKey and backendKey.")
 	console.log("  --config <file.yml>      Load config from yaml file.");
 	console.log("");
 
@@ -46,12 +47,3 @@ configurator.applySettings(args).then(
 		usage();
 	}
 );
-
-/*if (!netPokerServer.canStart())
-	usage();
-
-netPokerServer.run().then(
-	function() {
-		console.log("* SERVER LISTENING TO: " + netPokerServer.getClientPort());
-	}
-);*/
