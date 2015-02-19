@@ -47,12 +47,17 @@ Backend.prototype.call = function(method, params) {
 		throw new Error("method missing for backend call!");
 
 	if (!params)
-		params={};
+		params = {};
 
 	if (this.key)
-		params.key=this.key;
+		params.key = this.key;
 
-	var backendCall = new BackendCall(this.baseUrl + "/" + method, params);
+	var url = this.baseUrl;
+
+	if (url.charAt(url.length - 1) != "/")
+		url += "/";
+
+	var backendCall = new BackendCall(url + method, params);
 
 	return backendCall.perform();
 }

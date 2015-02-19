@@ -25,6 +25,15 @@ var inherits = require("inherits");
  * @extends BaseTable
  */
 function CashGameTable(services, config) {
+	var expected = [
+		"minSitInAmount", "maxSitInAmount", "stake",
+		"numseats", "id", "currency", "id", "name"
+	]
+
+	for (var i = 0; i < expected.length; i++)
+		if (!config[expected[i]])
+			throw new Error("Bad table config: missing: " + expected[i]);
+
 	if (!config.numseats ||
 		!config.id ||
 		!config.currency ||
