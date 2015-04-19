@@ -347,12 +347,22 @@ NetPokerServer.prototype.getClientPort = function() {
 }
 
 /**
- * Load config file
+ * Load config file or url.
+ * @method loadConfig
+ * @return Thenable
+ */
+NetPokerServer.prototype.loadConfig = function(fileName) {
+	var configurator = new NetPokerServerConfigurator(this);
+	return configurator.loadConfigSource(fileName);
+}
+
+/**
+ * Alias for loadConfig
  * @method loadConfigFile
+ * @return Thenable
  */
 NetPokerServer.prototype.loadConfigFile = function(fileName) {
-	var configurator = new NetPokerServerConfigurator(this);
-	configurator.loadConfigFile(fileName);
+	return this.loadConfig(fileName);
 }
 
 /**
