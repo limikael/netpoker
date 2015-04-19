@@ -61,8 +61,7 @@ NetPokerServerConfigurator.prototype.applySetting = function(name, value) {
 			break;
 
 		case "key":
-			this.netPokerServer.setApiKey(value);
-			this.netPokerServer.setBackendKey(value);
+			this.netPokerServer.setKey(value);
 			break;
 
 		case "config":

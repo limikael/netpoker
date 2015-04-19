@@ -227,6 +227,15 @@ NetPokerServer.prototype.setApiKey = function(key) {
 }
 
 /**
+ * Set api and backend key.
+ * @method setKey
+ */
+NetPokerServer.prototype.setKey = function(key) {
+	this.setApiKey(key);
+	this.setBackendKey(key);
+}
+
+/**
  * Do we have all settings required to start?
  * @method canStart
  */
