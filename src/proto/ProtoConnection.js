@@ -4,7 +4,7 @@
  */
 
 var EventDispatcher = require("yaed");
-var inherits=require("inherits");
+var inherits = require("inherits");
 
 var InitMessage = require("./messages/InitMessage");
 var StateCompleteMessage = require("./messages/StateCompleteMessage");
@@ -204,9 +204,11 @@ ProtoConnection.prototype.onConnectionMessage = function(ev) {
  * @private
  */
 ProtoConnection.prototype.onConnectionClose = function(ev) {
-	//this.connection.close();
 	this.connection.off("message", this.onConnectionMessage, this);
 	this.connection.off("close", this.onConnectionClose, this);
+
+	this.close();
+
 	this.connection = null;
 
 	this.trigger(ProtoConnection.CLOSE);
@@ -241,11 +243,17 @@ ProtoConnection.prototype.setLogMessages = function(value) {
 }
 
 /**
- * Close the underlying connection.
+ * Close the underlying connection. Only close it if the readyState is undefined,
+ * i.e. we are in a node.js environment, or if it says that it is actually open.
  * @method close
  */
 ProtoConnection.prototype.close = function() {
-	//this.connection.close();
+	if (!this.connection)
+		return;
+
+	if (this.connection.readyState === undefined ||
+		this.connection.readyState == 1)
+		this.connection.close();
 }
 
 /**
