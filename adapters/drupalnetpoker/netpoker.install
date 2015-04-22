@@ -1,0 +1,33 @@
+<?php
+
+	function netpoker_install() {
+	}
+
+	function netpoker_uninstall() {
+		$result = db_select('node', 'n')
+			->fields('n', array('nid'))
+			->condition('type', "pokergame", '=')
+			->execute();
+
+		foreach ($result as $record)
+			node_delete($record->nid);
+
+		variable_del("netpoker_gameplay_key");
+		variable_del("netpoker_cashgame_id");
+		variable_del("netpoker_gameplay_server_port");
+		variable_del("netpoker_gameplay_server_host");
+
+		field_delete_instance(array(
+			"field_name"=>"field_netpoker_players",
+			"entity_type"=>"node",
+			"bundle"=>"pokergame",
+		));
+
+		field_delete_instance(array(
+			"field_name"=>"field_netpoker_playmoney",
+			"entity_type"=>"user",
+			"bundle"=>"user",
+		));
+
+		field_purge_batch(1000);
+	}

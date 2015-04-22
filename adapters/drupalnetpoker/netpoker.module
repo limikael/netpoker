@@ -1,0 +1,256 @@
+<?php
+
+	require_once __DIR__."/netpoker.menu.php";
+
+	/**
+	 * @file
+	 * Module for integrating netpoker into drupal.
+	 *
+	 * This module can make your drupal site into a poker site.
+	 */
+
+	/**
+	 * Implements hook_node_info().
+	 *
+	 * We provide one node type for poker games.
+	 */
+	function netpoker_node_info() {
+		return array(
+			"pokergame"=>array(
+				"name"=>t("Pokergame"),
+				"base"=>"pokergame",
+				"description"=>t("Create a new poker game"),
+				"has_title"=>TRUE,
+				"title_label"=>t("Game title")
+			)
+		);
+	}
+
+	/**
+	 * Implements hook_field_access().
+	 *
+	 * Only administrators are allowed to change users' playmone balance.
+	 */
+	function netpoker_field_access($op, $field, $type, $entity) {
+		if ($op=="edit" && $field["field_name"]=="field_netpoker_playmoney") {
+			if (!user_access("administer users"))
+				return FALSE;
+		}
+	}
+
+	/**
+	 * Implements hook_enable().
+	 *
+	 * Creates variables and such.
+	 */
+	function netpoker_enable() {
+		if (!variable_get("netpoker_gameplay_key"))
+			variable_set("netpoker_gameplay_key",md5(rand().microtime()));
+
+		if (!variable_get("netpoker_cashgame_id"))
+			variable_set("netpoker_cashgame_id",1001);
+
+		if (!variable_get("netpoker_gameplay_server_port"))
+			variable_set("netpoker_gameplay_server_port",8881);
+
+		if (!field_info_field("field_netpoker_players")) {
+			$field=array(
+				"field_name"=>"field_netpoker_players",
+				"type"=>"list_integer",
+				"required"=>1,
+				"settings"=>array(
+					"allowed_values"=>array(2=>2, 4=>4, 6=>6, 10=>10)
+				),
+			);
+
+			field_create_field($field);
+		}
+
+		if (!field_info_instance("node","field_netpoker_players","pokergame")) {
+			$instance=array(
+				"field_name"=>"field_netpoker_players",
+				"entity_type"=>"node",
+				"bundle"=>"pokergame",
+				"label"=>"Number of players",
+				"required"=>1
+      		);
+
+			field_create_instance($instance);
+		}
+
+		if (!field_info_field("field_netpoker_playmoney")) {
+			$field=array(
+				"field_name"=>"field_netpoker_playmoney",
+				"type"=>"number_integer",
+			);
+
+			field_create_field($field);
+		}
+
+		if (!field_info_instance("user","field_netpoker_playmoney","user")) {
+			$instance=array(
+				"field_name"=>"field_netpoker_playmoney",
+				"entity_type"=>"user",
+				"bundle"=>"user",
+				"label"=>"Poker Playmoney",
+				"widget"=>array(
+					"type"=>"number_integer"
+				)
+			);
+
+			field_create_instance($instance);
+		}
+	}
+
+	/**
+	 * Implementation of hook_disable()
+	 */
+	function netpoker_disable() {
+		$result = db_select('node','n')
+			->fields('n',array('nid'))
+			->condition('type',"pokergame",'=')
+			->execute();
+
+		foreach ($result as $record) {
+			$node=node_load($record->nid);
+			$node->status=0;
+			node_save($node);
+		}
+
+		$instance=field_info_instance("user","field_netpoker_playmoney","user");
+		$instance["deleted"]=1;
+		field_update_instance($instance);
+
+		$instance=field_info_instance("node","field_netpoker_players","pokergame");
+		$instance["deleted"]=1;
+		field_update_instance($instance);
+
+		field_purge_batch(1000);
+	}
+
+	/**
+	 * Create the form for the pokergame node type.
+	 */
+	function pokergame_form($node, $form_state) {
+		$form=node_content_form($node, $form_state);
+
+		return $form;
+	}
+
+	/**
+	 * Implements hook_node_view().
+	 *
+	 * Makes the pokergame node show up and adds the play link.
+	 */
+	function netpoker_node_view($node, $view_mode, $langcode) {
+		if ($node->type=="pokergame") {
+			$node->content['extra_link'] = array(
+				'#weight' => 10,
+				'#theme' => 'link',
+				'#path' => 'netpoker/cashGame/'.$node->nid,
+				'#text' => t('Open table'),
+				'#options' => array(
+					'attributes' => array("target"=>"netpoker-cashgame-".$node->nid),
+					'html' => FALSE
+				),
+			);
+		}
+	}
+
+	/**
+	 * Implements hook_menu().
+	 *
+	 * Advertise extra urls available, i.e. for api calls and for configuration.
+	 */
+	function netpoker_menu() {
+		$apiCalls=array(
+			"getCashGameTableList", "getUserInfoByToken", "getUserBalance",
+			"serverConfig", "cashGame", "bin", "cashGameUserJoin", "cashGameUserLeave",
+			"gameStartForCashGame", "gameFinish", "debug"
+		);
+
+		$items=array();
+
+		foreach ($apiCalls as $apiCall) {
+			$items["netpoker/".$apiCall]=array(
+				'title' => t('registry.'),
+				'page callback' => 'netpoker_'.$apiCall,
+				'access arguments' => array('access content'),
+				'type' => MENU_CALLBACK
+			);
+		}
+
+		$items["admin/modules/netpoker"]=array(
+			'title' => 'Netpoker',
+			'description' => 'Configuration for Netpoker module',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('netpoker_config_form'),
+			'access arguments' => array('access administration pages'),
+			'type' => MENU_NORMAL_ITEM,			
+		);
+
+		return $items;
+	}
+
+	/**
+	 * Implementation of hook_user_view().
+	 * TODO: show a default value for playmoney
+	 */
+	/*function netpoker_user_view($account, $view_mode, $langcode) {
+		if (!$account->field_netpoker_playmoney) {
+			$account->field_netpoker_playmoney=array(
+				"und"=>array(array("value"=>1234))
+			);
+		}
+
+		echo "<pre>";
+		print_r($account->field_netpoker_playmoney);
+		echo "</pre>";
+	}*/
+
+	/**
+	 * The configuration form.
+	 */
+	function netpoker_config_form($form, &$form_state) {
+		global $base_url;
+
+		$form["netpoker_gameplay_server_host"]=array(
+			'#type' => 'textfield',
+			'#title' => t('Gameplay Server Host'),
+			'#default_value' => variable_get('netpoker_gameplay_server_host', ""),
+			'#description' => t('The host that runs the gameplay server. If blank the same host as the main site is assumed.'),
+		);
+
+		$form["netpoker_gameplay_server_port"]=array(
+			'#type' => 'textfield',
+			'#title' => t('Gameplay Server Port'),
+			'#default_value' => variable_get('netpoker_gameplay_server_port'),
+			'#description' => t('The port where the gameplay server is listening.'),
+			'#required' => TRUE,			
+		);
+
+		$startcmd=
+			"netpokerserver --key=".
+			variable_get("netpoker_gameplay_key").
+			" --config=".
+			$base_url."/netpoker/serverConfig";
+
+		$t=
+			"<div class='form-item'>".
+			"<b>Server Startup Command</b><br/>".
+			"<input size='60' type='text' value='$startcmd' class='form-text' disabled/>".
+			"<div class='description'>Use this command to start the server</div>".
+			"</div>";
+
+		$form["netpoker_gameplay_server_info"]=array(
+			"#markup"=>$t
+		);
+
+		return system_settings_form($form);
+	}
+
+	/**
+	 * Debug function.
+	 */
+	function netpoker_debug() {
+	}

@@ -5,10 +5,30 @@ var async = require("async");
 var fse = require("fs-extra");
 
 module.exports = function(grunt) {
-	grunt.loadNpmTasks('grunt-ftpush');
+	grunt.loadNpmTasks('grunt-contrib-compress');
 
 	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json')
+		pkg: grunt.file.readJSON('package.json'),
+
+		compress: {
+			drupalnetpoker: {
+				options: {
+					archive: "adapters/drupalnetpoker.zip"
+				},
+				files: [{
+					cwd: 'adapters/drupalnetpoker',
+					dest: 'netpoker/',
+					expand: true,
+
+					src: [
+						"netpoker.info",
+						"netpoker.module",
+						"cashgame.tpl.php",
+						"bin/*"
+					]
+				}]
+			}
+		}
 	});
 
 	grunt.registerTask("publish-doc", function() {
@@ -202,6 +222,11 @@ module.exports = function(grunt) {
 			},
 
 			function(next) {
+				fse.mkdirsSync("adapters/drupalnetpoker/bin");
+				fse.copySync("bin/netpokerclient.bundle.js", "adapters/drupalnetpoker/bin/netpokerclient.bundle.js");
+				fse.copySync("res/skin/textureFiles/custom/texture.json", "adapters/drupalnetpoker/bin/texture.json");
+				fse.copySync("res/skin/textureFiles/custom/texture0.png", "adapters/drupalnetpoker/bin/texture0.png");
+
 				fse.copySync("res/mocksite/netpokerclient.bundle.js", "res/skin/netpokerclient.bundle.js");
 
 				fse.copySync("res/skin/textureFiles/custom/texture.json", "res/mocksite/texture.json");
@@ -214,6 +239,8 @@ module.exports = function(grunt) {
 		]);
 	});
 
+	grunt.registerTask("adapter", ["browserify", "compress:drupalnetpoker"]);
+
 	grunt.registerTask("default", function() {
 		console.log("Available Tasks");
 		console.log();
@@ -222,6 +249,7 @@ module.exports = function(grunt) {
 		console.log("  deploy       - Deploy to nodejitsu.");
 		console.log("  test         - Run server tests.");
 		console.log("  doc          - Create project docs.")
-		console.log("  publish-doc  - Publish doc to http://limikael.altervista.org/netpokerdoc")
+		console.log("  publish-doc  - Publish doc to http://limikael.altervista.org/netpokerdoc");
+		console.log("  adapter      - Build client and create druapl adapter.")
 	});
 };

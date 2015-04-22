@@ -1,0 +1,605 @@
+{
+    "graphics": {
+        "textures": [
+            {
+                "id": "texture0",
+                "file": "texture0.png"
+            }
+        ],
+        "tableBackground": {
+            "filename": "images\/table.png",
+            "texture": "texture0",
+            "coords": [
+                0,
+                0,
+                772,
+                412
+            ]
+        },
+        "seatPlate": {
+            "filename": "images\/seatPlate.png",
+            "texture": "texture0",
+            "coords": [
+                774,
+                0,
+                160,
+                70
+            ]
+        },
+        "timerBackground": {
+            "filename": "images\/timerBackground.png",
+            "texture": "texture0",
+            "coords": [
+                863,
+                414,
+                32,
+                32
+            ]
+        },
+        "dealerButton": {
+            "filename": "images\/dealerButton.png",
+            "texture": "texture0",
+            "coords": [
+                610,
+                414,
+                41,
+                35
+            ]
+        },
+        "cardFrame": {
+            "filename": "images\/cardFrame.png",
+            "texture": "texture0",
+            "coords": [
+                936,
+                0,
+                87,
+                122
+            ]
+        },
+        "cardBack": {
+            "filename": "images\/cardBack.png",
+            "texture": "texture0",
+            "coords": [
+                0,
+                414,
+                87,
+                122
+            ]
+        },
+        "suitSymbol0": {
+            "filename": "images\/suitSymbol0.png",
+            "texture": "texture0",
+            "coords": [
+                62,
+                586,
+                18,
+                19
+            ]
+        },
+        "suitSymbol1": {
+            "filename": "images\/suitSymbol1.png",
+            "texture": "texture0",
+            "coords": [
+                102,
+                586,
+                18,
+                19
+            ]
+        },
+        "suitSymbol2": {
+            "filename": "images\/suitSymbol2.png",
+            "texture": "texture0",
+            "coords": [
+                82,
+                586,
+                18,
+                19
+            ]
+        },
+        "suitSymbol3": {
+            "filename": "images\/suitSymbol3.png",
+            "texture": "texture0",
+            "coords": [
+                122,
+                586,
+                18,
+                19
+            ]
+        },
+        "cardDiamonds2": {
+            "filename": ""
+        },
+        "cardDiamonds3": {
+            "filename": ""
+        },
+        "cardDiamonds4": {
+            "filename": ""
+        },
+        "cardDiamonds5": {
+            "filename": ""
+        },
+        "cardDiamonds6": {
+            "filename": ""
+        },
+        "cardDiamonds7": {
+            "filename": ""
+        },
+        "cardDiamonds8": {
+            "filename": ""
+        },
+        "cardDiamonds9": {
+            "filename": ""
+        },
+        "cardDiamonds10": {
+            "filename": ""
+        },
+        "cardDiamondsJ": {
+            "filename": ""
+        },
+        "cardDiamondsQ": {
+            "filename": ""
+        },
+        "cardDiamondsK": {
+            "filename": ""
+        },
+        "cardDiamondsA": {
+            "filename": ""
+        },
+        "cardClubs2": {
+            "filename": ""
+        },
+        "cardClubs3": {
+            "filename": ""
+        },
+        "cardClubs4": {
+            "filename": ""
+        },
+        "cardClubs5": {
+            "filename": ""
+        },
+        "cardClubs6": {
+            "filename": ""
+        },
+        "cardClubs7": {
+            "filename": ""
+        },
+        "cardClubs8": {
+            "filename": ""
+        },
+        "cardClubs9": {
+            "filename": ""
+        },
+        "cardClubs10": {
+            "filename": ""
+        },
+        "cardClubsJ": {
+            "filename": ""
+        },
+        "cardClubsQ": {
+            "filename": ""
+        },
+        "cardClubsK": {
+            "filename": ""
+        },
+        "cardClubsA": {
+            "filename": ""
+        },
+        "cardHearts2": {
+            "filename": ""
+        },
+        "cardHearts3": {
+            "filename": ""
+        },
+        "cardHearts4": {
+            "filename": ""
+        },
+        "cardHearts5": {
+            "filename": ""
+        },
+        "cardHearts6": {
+            "filename": ""
+        },
+        "cardHearts7": {
+            "filename": ""
+        },
+        "cardHearts8": {
+            "filename": ""
+        },
+        "cardHearts9": {
+            "filename": ""
+        },
+        "cardHearts10": {
+            "filename": ""
+        },
+        "cardHeartsJ": {
+            "filename": ""
+        },
+        "cardHeartsQ": {
+            "filename": ""
+        },
+        "cardHeartsK": {
+            "filename": ""
+        },
+        "cardHeartsA": {
+            "filename": ""
+        },
+        "cardSpades2": {
+            "filename": ""
+        },
+        "cardSpades3": {
+            "filename": ""
+        },
+        "cardSpades4": {
+            "filename": ""
+        },
+        "cardSpades5": {
+            "filename": ""
+        },
+        "cardSpades6": {
+            "filename": ""
+        },
+        "cardSpades7": {
+            "filename": ""
+        },
+        "cardSpades8": {
+            "filename": ""
+        },
+        "cardSpades9": {
+            "filename": ""
+        },
+        "cardSpades10": {
+            "filename": ""
+        },
+        "cardSpadesJ": {
+            "filename": ""
+        },
+        "cardSpadesQ": {
+            "filename": ""
+        },
+        "cardSpadesK": {
+            "filename": ""
+        },
+        "cardSpadesA": {
+            "filename": ""
+        },
+        "chip0": {
+            "filename": "images\/chip0.png",
+            "texture": "texture0",
+            "coords": [
+                737,
+                414,
+                40,
+                30
+            ]
+        },
+        "chip1": {
+            "filename": "images\/chip1.png",
+            "texture": "texture0",
+            "coords": [
+                821,
+                414,
+                40,
+                30
+            ]
+        },
+        "chip2": {
+            "filename": "images\/chip2.png",
+            "texture": "texture0",
+            "coords": [
+                779,
+                414,
+                40,
+                30
+            ]
+        },
+        "chip3": {
+            "filename": "images\/chip3.png",
+            "texture": "texture0",
+            "coords": [
+                653,
+                414,
+                40,
+                30
+            ]
+        },
+        "chip4": {
+            "filename": "images\/chip4.png",
+            "texture": "texture0",
+            "coords": [
+                695,
+                414,
+                40,
+                30
+            ]
+        },
+        "dividerLine": {
+            "filename": "images\/dividerLine.png",
+            "texture": "texture0",
+            "coords": [
+                1012,
+                414,
+                2,
+                170
+            ]
+        },
+        "framePlate": {
+            "filename": "images\/framePlate.png",
+            "texture": "texture0",
+            "coords": [
+                186,
+                414,
+                74,
+                76
+            ]
+        },
+        "bigButton": {
+            "filename": "images\/bigButton.png",
+            "texture": "texture0",
+            "coords": [
+                89,
+                414,
+                95,
+                94
+            ]
+        },
+        "dialogButton": {
+            "filename": "images\/dialogButton.png",
+            "texture": "texture0",
+            "coords": [
+                404,
+                414,
+                82,
+                47
+            ]
+        },
+        "textScrollbarTrack": {
+            "filename": "images\/textScrollbarTrack.png",
+            "texture": "texture0",
+            "coords": [
+                927,
+                414,
+                60,
+                10
+            ]
+        },
+        "textScrollbarThumb": {
+            "filename": "images\/textScrollbarThumb.png",
+            "texture": "texture0",
+            "coords": [
+                0,
+                586,
+                60,
+                10
+            ]
+        },
+        "wrenchIcon": {
+            "filename": "images\/wrenchIcon.png",
+            "texture": "texture0",
+            "coords": [
+                989,
+                414,
+                21,
+                21
+            ]
+        },
+        "chatBackground": {
+            "filename": "images\/chatBackground.png",
+            "texture": "texture0",
+            "coords": [
+                262,
+                414,
+                74,
+                76
+            ]
+        },
+        "checkboxBackground": {
+            "filename": "images\/checkboxBackground.png",
+            "texture": "texture0",
+            "coords": [
+                165,
+                586,
+                18,
+                18
+            ]
+        },
+        "checkboxTick": {
+            "filename": "images\/checkboxTick.png",
+            "texture": "texture0",
+            "coords": [
+                142,
+                586,
+                21,
+                16
+            ]
+        },
+        "buttonBackground": {
+            "filename": "images\/buttonBackground.png",
+            "texture": "texture0",
+            "coords": [
+                338,
+                414,
+                64,
+                64
+            ]
+        },
+        "sliderBackground": {
+            "filename": "images\/sliderBackground.png",
+            "texture": "texture0",
+            "coords": [
+                488,
+                414,
+                120,
+                30
+            ]
+        },
+        "sliderKnob": {
+            "filename": "images\/sliderKnob.png",
+            "texture": "texture0",
+            "coords": [
+                897,
+                414,
+                28,
+                28
+            ]
+        },
+        "upArrow": {
+            "filename": "images\/upArrow.png",
+            "texture": "texture0",
+            "coords": [
+                185,
+                586,
+                12,
+                8
+            ]
+        }
+    },
+    "positions": {
+        "tablePosition": [
+            "101",
+            "94"
+        ],
+        "potPosition": [
+            "485",
+            "315"
+        ],
+        "communityCardsPosition": [
+            "255",
+            "190"
+        ],
+        "seatPosition0": [
+            "287",
+            "118"
+        ],
+        "seatPosition1": [
+            "483",
+            "112"
+        ],
+        "seatPosition2": [
+            "676",
+            "118"
+        ],
+        "seatPosition3": [
+            "844",
+            "247"
+        ],
+        "seatPosition4": [
+            "817",
+            "413"
+        ],
+        "seatPosition5": [
+            "676",
+            "490"
+        ],
+        "seatPosition6": [
+            "483",
+            "495"
+        ],
+        "seatPosition7": [
+            "287",
+            "490"
+        ],
+        "seatPosition8": [
+            "140",
+            "413"
+        ],
+        "seatPosition9": [
+            "123",
+            "247"
+        ],
+        "dealerButtonPosition0": [
+            "347",
+            "133"
+        ],
+        "dealerButtonPosition1": [
+            "395",
+            "133"
+        ],
+        "dealerButtonPosition2": [
+            "574",
+            "133"
+        ],
+        "dealerButtonPosition3": [
+            "762",
+            "267"
+        ],
+        "dealerButtonPosition4": [
+            "715",
+            "358"
+        ],
+        "dealerButtonPosition5": [
+            "574",
+            "434"
+        ],
+        "dealerButtonPosition6": [
+            "536",
+            "432"
+        ],
+        "dealerButtonPosition7": [
+            "351",
+            "432"
+        ],
+        "dealerButtonPosition8": [
+            "193",
+            "362"
+        ],
+        "dealerButtonPosition9": [
+            "168",
+            "266"
+        ],
+        "betPosition0": [
+            "225",
+            "150"
+        ],
+        "betPosition1": [
+            "478",
+            "150"
+        ],
+        "betPosition2": [
+            "730",
+            "150"
+        ],
+        "betPosition3": [
+            "778",
+            "196"
+        ],
+        "betPosition4": [
+            "748",
+            "322"
+        ],
+        "betPosition5": [
+            "719",
+            "360"
+        ],
+        "betPosition6": [
+            "481",
+            "360"
+        ],
+        "betPosition7": [
+            "232",
+            "360"
+        ],
+        "betPosition8": [
+            "199",
+            "322"
+        ],
+        "betPosition9": [
+            "181",
+            "200"
+        ],
+        "bigButtonPosition": [
+            "366",
+            "575"
+        ]
+    },
+    "colors": {
+        "chipsColor0": "0x404040",
+        "chipsColor1": "0x008000",
+        "chipsColor2": "0x808000",
+        "chipsColor3": "0x000080",
+        "chipsColor4": "0xff0000"
+    },
+    "values": {
+        "communityCardMargin": "1",
+        "betAlign": "LCRRRRCLLL"
+    }
+}
