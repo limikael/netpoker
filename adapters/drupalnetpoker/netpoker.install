@@ -16,6 +16,7 @@
 		variable_del("netpoker_cashgame_id");
 		variable_del("netpoker_gameplay_server_port");
 		variable_del("netpoker_gameplay_server_host");
+		variable_del("netpoker_default_playmoney");
 
 		field_delete_instance(array(
 			"field_name"=>"field_netpoker_players",

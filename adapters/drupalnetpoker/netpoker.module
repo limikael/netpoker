@@ -26,12 +26,18 @@
 		);
 	}
 
+	/*function netpoker_field_is_empty($item, $field) {
+		echo "is empty...";
+	}*/
+
 	/**
 	 * Implements hook_field_access().
 	 *
 	 * Only administrators are allowed to change users' playmone balance.
 	 */
 	function netpoker_field_access($op, $field, $type, $entity) {
+		//echo "field access...";
+
 		if ($op=="edit" && $field["field_name"]=="field_netpoker_playmoney") {
 			if (!user_access("administer users"))
 				return FALSE;
@@ -52,6 +58,9 @@
 
 		if (!variable_get("netpoker_gameplay_server_port"))
 			variable_set("netpoker_gameplay_server_port",8881);
+
+		if (!variable_get("netpoker_default_playmoney"))
+			variable_set("netpoker_default_playmoney",1000);
 
 		if (!field_info_field("field_netpoker_players")) {
 			$field=array(
@@ -196,17 +205,40 @@
 	 * Implementation of hook_user_view().
 	 * TODO: show a default value for playmoney
 	 */
-	/*function netpoker_user_view($account, $view_mode, $langcode) {
+	function netpoker_user_view($account, $view_mode, $langcode) {
 		if (!$account->field_netpoker_playmoney) {
-			$account->field_netpoker_playmoney=array(
-				"und"=>array(array("value"=>1234))
+			$field=field_info_field("field_netpoker_players");
+			$instance=field_info_instance("user","field_netpoker_playmoney","user");
+			$default_playmoney_amount=intval(variable_get("netpoker_default_playmoney"));
+
+			$account->field_netpoker_playmoney["und"][0]["value"]=$default_playmoney_amount;
+			$account->content["field_netpoker_playmoney"]=array(
+				"#formatter" => "number_integer",
+
+				"#theme" => "field",
+				"#weight" => 0,
+				"#title" => $instance["label"],
+				"#access" => 1,
+				"#label_display" => "above",
+				"#view_mode" => "full",
+				"#language" => "und",
+				"#field_name" => "field_netpoker_playmoney",
+				"#field_type" => "number_integer",
+				"#field_translatable" => 0,
+				"#entity_type" => "user",
+				"#bundle" => "user",
+
+				"#items"=>array(
+					0=>array(
+						"value"=>$default_playmoney_amount
+					)
+				),
+				0=>array(
+					"#markup"=>number_format($default_playmoney_amount,0,"."," ")
+				)
 			);
 		}
-
-		echo "<pre>";
-		print_r($account->field_netpoker_playmoney);
-		echo "</pre>";
-	}*/
+	}
 
 	/**
 	 * The configuration form.
@@ -226,6 +258,14 @@
 			'#title' => t('Gameplay Server Port'),
 			'#default_value' => variable_get('netpoker_gameplay_server_port'),
 			'#description' => t('The port where the gameplay server is listening.'),
+			'#required' => TRUE,			
+		);
+
+		$form["netpoker_default_playmoney"]=array(
+			'#type' => 'textfield',
+			'#title' => t('Default Playmoney Amount'),
+			'#default_value' => variable_get('netpoker_default_playmoney'),
+			'#description' => t('The default amount of playmoney new users will have.'),
 			'#required' => TRUE,			
 		);
 
