@@ -189,13 +189,37 @@
 			);
 		}
 
-		$items["admin/modules/netpoker"]=array(
+		// Configuration button on the modules page.
+		/*array(
 			'title' => 'Netpoker',
-			'description' => 'Configuration for Netpoker module',
+			'description' => 'Netpoker Configuration',
 			'page callback' => 'drupal_get_form',
 			'page arguments' => array('netpoker_config_form'),
 			'access arguments' => array('access administration pages'),
-			'type' => MENU_NORMAL_ITEM,			
+			'type' => MENU_NORMAL_ITEM,
+		);*/
+
+		// Configuration section on the configuration page.
+		$items['admin/config/netpoker']=array(
+			'title' => 'Netpoker',
+			'description' => 'Netpoker Configuration Section',
+			'position' => 'left',
+			'weight' => -100,
+			'page callback' => 'system_admin_menu_block_page',
+			'access arguments' => array('administer site configuration'),
+			'file' => 'system.admin.inc',
+			'file path' => drupal_get_path('module', 'system'),
+		);
+
+		// Configuration button on the modules page, 
+		// as well as in the section on the configuration page.
+		$items["admin/modules/netpoker"]=$items['admin/config/netpoker/item']=array(
+			'title' => 'Netpoker',
+			'description' => 'Netpoker Configuration',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('netpoker_config_form'),
+			'access arguments' => array('access administration pages'),
+			'type' => MENU_NORMAL_ITEM,
 		);
 
 		return $items;
