@@ -26,6 +26,58 @@
 	}
 
 	/**
+	 * Fail hard.
+	 */
+	function netpoker_fail($message="Unknown error.") {
+		drupal_json_output(array(
+			"ok"=>0,
+			"message"=>$message
+		));
+
+		exit();
+	}
+
+	/**
+	 * Get playmoney balance for user.
+	 * If there is no entry in the database, get default.
+	 */
+	function netpoker_getPlaymoneyBalance($userId) {
+		$balance=variable_get("netpoker_default_playmoney");
+
+		$users=entity_load("user",array($userId));
+		$user=$users[$userId];
+
+		if (!$user)
+			netpoker_fail("User does not exist.");
+
+		if (isset($user->field_netpoker_playmoney[LANGUAGE_NONE][0]["value"]))
+			$balance=$user->field_netpoker_playmoney[LANGUAGE_NONE][0]["value"];
+
+		return intval($balance);
+	}
+
+	/**
+	 * Change playmoney balance for user.
+	 */
+	function netpoker_changePlaymoneyBalance($userId, $amount) {
+		$current=netpoker_getPlaymoneyBalance($userId);
+
+		if ($amount<-$current)
+			netpoker_fail("Not enough balance.");
+
+		$current+=$amount;
+
+		$users=entity_load("user",array($userId));
+		$user=$users[$userId];
+
+		if (!$user)
+			netpoker_fail("User does not exist.");
+
+		$user->field_netpoker_playmoney[LANGUAGE_NONE][0]["value"]=$current+$amount;
+		field_attach_update("user",$user);
+	}
+
+	/**
 	 * Api call: getCashGameTableList
 	 */
 	function netpoker_getCashGameTableList() {
@@ -61,6 +113,9 @@
 		));
 	}
 
+	/**
+	 * Api call: getUserInfoByToken
+	 */
 	function netpoker_getUserInfoByToken() {
 		netpoker_checkKey();
 
@@ -88,26 +143,25 @@
 		));
 	}
 
+	/**
+	 * Api call: getUserBalance
+	 */
 	function netpoker_getUserBalance() {
 		netpoker_checkKey();
 
 		$userId=$_REQUEST["userId"];
 		$currency=$_REQUEST["currency"];
-
-		$users=entity_load("user",array($userId));
-		$user=$users[$userId];
-
-		$balance=0;
-
-		if (isset($user->field_netpoker_playmoney[LANGUAGE_NONE][0]["value"]))
-			$balance=$user->field_netpoker_playmoney[LANGUAGE_NONE][0]["value"];
+		$balance=netpoker_getPlaymoneyBalance($userId);
 
 		drupal_json_output(array(
 			"ok"=>1,
-			"balance"=>intval($balance)
+			"balance"=>$balance
 		));
 	}
 
+	/**
+	 * Api call: serverConfig
+	 */
 	function netpoker_serverConfig() {
 		global $base_url;
 
@@ -116,6 +170,10 @@
 		echo "apiOnClientPort: true\n";
 	}
 
+	/**
+	 * Api call: cashGame
+	 * Serve up the cashgame html page.
+	 */
 	function netpoker_cashGame($nid) {
 		global $base_url;
 
@@ -136,10 +194,17 @@
 		echo theme_render_template($templatePath,$vars);
 	}
 
+	/**
+	 * Api call: bin
+	 * Serve binary files used by the client.
+	 */
 	function netpoker_bin($file) {
 		readfile(__DIR__."/bin/".$file);
 	}
 
+	/**
+	 * Api call: cashGameUserJoin
+	 */
 	function netpoker_cashGameUserJoin() {
 		netpoker_checkKey();
 
@@ -147,20 +212,7 @@
 		$tableId=$_REQUEST["tableId"];
 		$amount=$_REQUEST["amount"];
 
-		$users=entity_load("user",array($userId));
-		$user=$users[$userId];
-
-		if ($amount>$user->field_netpoker_playmoney[LANGUAGE_NONE][0]["value"]) {
-			drupal_json_output(array(
-				"ok"=>0,
-				"message"=>"Not enough balance."
-			));
-
-			return;
-		}
-
-		$user->field_netpoker_playmoney[LANGUAGE_NONE][0]["value"]-=$amount;
-		field_attach_update("user",$user);
+		netpoker_changePlaymoneyBalance($userId,-$amount);
 
 		watchdog("netpoker_join",
 			"userId=$userId&tableId=$tableId&amount=$amount", 
@@ -171,6 +223,9 @@
 		));
 	}
 
+	/**
+	 * Api call: cashGameUserLeave
+	 */
 	function netpoker_cashGameUserLeave() {
 		netpoker_checkKey();
 
@@ -178,11 +233,7 @@
 		$tableId=$_REQUEST["tableId"];
 		$amount=$_REQUEST["amount"];
 
-		$users=entity_load("user",array($userId));
-		$user=$users[$userId];
-
-		$user->field_netpoker_playmoney[LANGUAGE_NONE][0]["value"]+=$amount;
-		field_attach_update("user",$user);
+		netpoker_changePlaymoneyBalance($userId,$amount);
 
 		watchdog("netpoker_leave",
 			"userId=$userId&tableId=$tableId&amount=$amount", 
@@ -193,6 +244,9 @@
 		));
 	}
 
+	/**
+	 * Api call: gameStartForCashGame
+	 */
 	function netpoker_gameStartForCashGame() {
 		netpoker_checkKey();
 
@@ -223,6 +277,9 @@
 		));
 	}
 
+	/**
+	 * Api call: gameFinish
+	 */
 	function netpoker_gameFinish() {
 		netpoker_checkKey();
 
