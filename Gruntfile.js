@@ -23,6 +23,8 @@ module.exports = function(grunt) {
 					src: [
 						"netpoker.info",
 						"netpoker.module",
+						"netpoker.install",
+						"netpoker.menu.php",
 						"cashgame.tpl.php",
 						"bin/*"
 					]
