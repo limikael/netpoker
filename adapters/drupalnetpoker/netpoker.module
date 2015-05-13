@@ -75,12 +75,78 @@
 			field_create_field($field);
 		}
 
+		if (!field_info_field("field_netpoker_min_sit_in")) {
+			$field=array(
+				"field_name"=>"field_netpoker_min_sit_in",
+				"type"=>"number_integer",
+				"required"=>1
+			);
+
+			field_create_field($field);
+		}
+
+		if (!field_info_field("field_netpoker_max_sit_in")) {
+			$field=array(
+				"field_name"=>"field_netpoker_max_sit_in",
+				"type"=>"number_integer",
+				"required"=>1
+			);
+
+			field_create_field($field);
+		}
+
+		if (!field_info_field("field_netpoker_stake")) {
+			$field=array(
+				"field_name"=>"field_netpoker_stake",
+				"type"=>"number_integer",
+				"required"=>1
+			);
+
+			field_create_field($field);
+		}
+
 		if (!field_info_instance("node","field_netpoker_players","pokergame")) {
 			$instance=array(
 				"field_name"=>"field_netpoker_players",
 				"entity_type"=>"node",
 				"bundle"=>"pokergame",
 				"label"=>"Number of players",
+				"required"=>1
+      		);
+
+			field_create_instance($instance);
+		}
+
+		if (!field_info_instance("node","field_netpoker_min_sit_in","pokergame")) {
+			$instance=array(
+				"field_name"=>"field_netpoker_min_sit_in",
+				"entity_type"=>"node",
+				"bundle"=>"pokergame",
+				"label"=>"Min Sit In Amount",
+				"required"=>1
+      		);
+
+			field_create_instance($instance);
+		}
+
+		if (!field_info_instance("node","field_netpoker_max_sit_in","pokergame")) {
+			$instance=array(
+				"field_name"=>"field_netpoker_max_sit_in",
+				"entity_type"=>"node",
+				"bundle"=>"pokergame",
+				"label"=>"Max Sit In Amount",
+				"required"=>1
+      		);
+
+			field_create_instance($instance);
+		}
+
+		if (!field_info_instance("node","field_netpoker_stake","pokergame")) {
+			$instance=array(
+				"field_name"=>"field_netpoker_stake",
+				"entity_type"=>"node",
+				"bundle"=>"pokergame",
+				"label"=>"Stake (Big Blind)",
 				"required"=>1
       		);
 
@@ -127,12 +193,34 @@
 		}
 
 		$instance=field_info_instance("user","field_netpoker_playmoney","user");
-		$instance["deleted"]=1;
-		field_update_instance($instance);
+		if ($instance) {
+			$instance["deleted"]=1;
+			field_update_instance($instance);
+		}
 
 		$instance=field_info_instance("node","field_netpoker_players","pokergame");
-		$instance["deleted"]=1;
-		field_update_instance($instance);
+		if ($instance) {
+			$instance["deleted"]=1;
+			field_update_instance($instance);
+		}
+
+		$instance=field_info_instance("node","field_netpoker_min_sit_in","pokergame");
+		if ($instance) {
+			$instance["deleted"]=1;
+			field_update_instance($instance);
+		}
+
+		$instance=field_info_instance("node","field_netpoker_max_sit_in","pokergame");
+		if ($instance) {
+			$instance["deleted"]=1;
+			field_update_instance($instance);
+		}
+
+		$instance=field_info_instance("node","field_netpoker_stake","pokergame");
+		if ($instance) {
+			$instance["deleted"]=1;
+			field_update_instance($instance);
+		}
 
 		field_purge_batch(1000);
 	}
@@ -188,16 +276,6 @@
 				'type' => MENU_CALLBACK
 			);
 		}
-
-		// Configuration button on the modules page.
-		/*array(
-			'title' => 'Netpoker',
-			'description' => 'Netpoker Configuration',
-			'page callback' => 'drupal_get_form',
-			'page arguments' => array('netpoker_config_form'),
-			'access arguments' => array('access administration pages'),
-			'type' => MENU_NORMAL_ITEM,
-		);*/
 
 		// Configuration section on the configuration page.
 		$items['admin/config/netpoker']=array(

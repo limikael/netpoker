@@ -101,9 +101,9 @@
 				"numseats"=>intval($pokergame->field_netpoker_players[LANGUAGE_NONE][0]["value"]),
 				"currency"=>"PLY",
 				"name"=>$pokergame->title,
-				"minSitInAmount"=>10,
-				"maxSitInAmount"=>100,
-				"stake"=>2,
+				"minSitInAmount"=>intval($pokergame->field_netpoker_min_sit_in[LANGUAGE_NONE][0]["value"]),
+				"maxSitInAmount"=>intval($pokergame->field_netpoker_max_sit_in[LANGUAGE_NONE][0]["value"]),
+				"stake"=>intval($pokergame->field_netpoker_stake[LANGUAGE_NONE][0]["value"]),
 			);
 		}
 
