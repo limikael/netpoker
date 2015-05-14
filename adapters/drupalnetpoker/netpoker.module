@@ -1,6 +1,7 @@
 <?php
 
 	require_once __DIR__."/netpoker.menu.php";
+	require_once __DIR__."/netpoker.functions.php";
 
 	/**
 	 * @file
@@ -8,6 +9,17 @@
 	 *
 	 * This module can make your drupal site into a poker site.
 	 */
+
+	/**
+	 * Implements hook_node_insert
+	 *
+	 * Reload tables in the server on new game.
+	 */
+	function netpoker_node_insert($node) {
+		if ($node->type=="pokergame" && variable_get("netpoker_communicate_with_server")) {
+			netpoker_server_request("reloadTables");
+		}
+	}
 
 	/**
 	 * Implements hook_node_info().
@@ -25,10 +37,6 @@
 			)
 		);
 	}
-
-	/*function netpoker_field_is_empty($item, $field) {
-		echo "is empty...";
-	}*/
 
 	/**
 	 * Implements hook_field_access().
@@ -61,6 +69,9 @@
 
 		if (!variable_get("netpoker_default_playmoney"))
 			variable_set("netpoker_default_playmoney",1000);
+
+		if (!variable_get("netpoker_communicate_with_server"))
+			variable_set("netpoker_communicate_with_server",FALSE);
 
 		if (!field_info_field("field_netpoker_players")) {
 			$field=array(
@@ -369,6 +380,13 @@
 			'#default_value' => variable_get('netpoker_default_playmoney'),
 			'#description' => t('The default amount of playmoney new users will have.'),
 			'#required' => TRUE,			
+		);
+
+		$form["netpoker_communicate_with_server"]=array(
+			'#type' => 'checkbox',
+			'#title' => t('Communicate With Server'),
+			'#default_value' => variable_get('netpoker_communicate_with_server'),
+			'#description' => t('Notify the server about cash game updates. Requires the server to be up.')
 		);
 
 		$startcmd=
