@@ -17,7 +17,7 @@
 	 */
 	function netpoker_node_insert($node) {
 		if ($node->type=="pokergame" && variable_get("netpoker_communicate_with_server")) {
-			netpoker_server_request("reloadTables");
+			drupal_register_shutdown_function("netpoker_server_request","reloadTables");
 		}
 	}
 
