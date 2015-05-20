@@ -30,7 +30,13 @@ BackendCall.prototype.perform = function() {
 	for (var k in this.params)
 		components.push(k + "=" + encodeURIComponent(this.params[k]));
 
-	var url = this.url + "?" + components.join("&");
+	var url;
+
+	if (this.url.indexOf("?")>=0)
+		url = this.url + "&" + components.join("&");
+
+	else
+		url = this.url + "?" + components.join("&");
 
 	console.log("Backend request: " + url);
 	request.get(url, this.onRequestComplete.bind(this));

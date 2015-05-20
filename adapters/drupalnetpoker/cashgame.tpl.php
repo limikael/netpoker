@@ -1,6 +1,5 @@
 <html>
 	<head>
-		<base href="<?php echo $baseUrl; ?>" />
 		<title>Testing</title>
 		<script src="<?php echo $bundleUrl; ?>"></script>
 		<script>

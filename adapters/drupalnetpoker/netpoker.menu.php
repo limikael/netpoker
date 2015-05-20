@@ -163,10 +163,8 @@
 	 * Api call: serverConfig
 	 */
 	function netpoker_serverConfig() {
-		global $base_url;
-
 		echo "clientPort: ".variable_get("netpoker_gameplay_server_port")."\n";
-		echo "backend: ".$base_url."/netpoker/\n";
+		echo "backend: ".url("netpoker/",array("absolute"=>TRUE))."\n";
 		echo "apiOnClientPort: true\n";
 	}
 
@@ -183,9 +181,8 @@
 
 		$vars=array(
 			"url"=>"ws://".$host.":".variable_get("netpoker_gameplay_server_port")."/",
-			"baseUrl"=>$base_url."/netpoker/bin/",
-			"bundleUrl"=>"netpokerclient.bundle.js",
-			"skinUrl"=>"texture.json",
+			"bundleUrl"=>url("netpoker/bin/netpokerclient.bundle.js",array("absolute"=>TRUE)),
+			"skinUrl"=>url("netpoker/bin/texture.json",array("absolute"=>TRUE)),
 			"token"=>session_id(),
 			"nid"=>$nid
 		);
@@ -199,7 +196,28 @@
 	 * Serve binary files used by the client.
 	 */
 	function netpoker_bin($file) {
-		readfile(__DIR__."/bin/".$file);
+		switch (pathinfo($file,PATHINFO_EXTENSION)) {
+			case "png":
+				header("Content-type: image/png");
+				break;
+
+			case "js":
+				header("Content-type: text/javascript");
+				break;
+		}
+
+		if ($file=="texture.json") {
+			$json=json_decode(file_get_contents(__DIR__."/bin/".$file),TRUE);
+
+			$json["graphics"]["textures"][0]["file"]=
+				url("netpoker/bin/texture0.png",array("absolute"=>TRUE));
+
+			echo json_encode($json);
+		}
+
+		else {
+			readfile(__DIR__."/bin/".$file);
+		}
 	}
 
 	/**

@@ -357,8 +357,6 @@
 	 * The configuration form.
 	 */
 	function netpoker_config_form($form, &$form_state) {
-		global $base_url;
-
 		$form["netpoker_gameplay_server_host"]=array(
 			'#type' => 'textfield',
 			'#title' => t('Gameplay Server Host'),
@@ -371,6 +369,14 @@
 			'#title' => t('Gameplay Server Port'),
 			'#default_value' => variable_get('netpoker_gameplay_server_port'),
 			'#description' => t('The port where the gameplay server is listening.'),
+			'#required' => TRUE,			
+		);
+
+		$form["netpoker_gameplay_key"]=array(
+			'#type' => 'textfield',
+			'#title' => t('Gameplay Server Key'),
+			'#default_value' => variable_get('netpoker_gameplay_key'),
+			'#description' => t('The server needs to be set up with the same key.'),
 			'#required' => TRUE,			
 		);
 
@@ -392,8 +398,9 @@
 		$startcmd=
 			"netpokerserver --key=".
 			variable_get("netpoker_gameplay_key").
-			" --config=".
-			$base_url."/netpoker/serverConfig";
+			" --config=".'"'.
+			url("netpoker/serverConfig",array("absolute"=>TRUE)).
+			'"';
 
 		$t=
 			"<div class='form-item'>".
