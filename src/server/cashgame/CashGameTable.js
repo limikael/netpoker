@@ -25,38 +25,17 @@ var inherits = require("inherits");
  * @extends BaseTable
  */
 function CashGameTable(services, config) {
-	var expected = [
-		"minSitInAmount", "maxSitInAmount", "stake",
-		"numseats", "id", "currency", "id", "name"
-	]
-
-	for (var i = 0; i < expected.length; i++)
-		if (!config[expected[i]])
-			throw new Error("Bad table config: missing: " + expected[i]);
-
-	if (!config.numseats ||
-		!config.id ||
-		!config.currency ||
-		!config.name ||
-		!config.minSitInAmount ||
-		!config.maxSitInAmount ||
-		!config.stake)
-		throw new Error("Bad table config");
+	this.validateConfig(config);
 
 	this.name = config.name;
 	this.id = config.id;
 	this.currency = config.currency;
-	this.stake = parseFloat(config.stake);
-	this.minSitInAmount = parseFloat(config.minSitInAmount);
-	this.maxSitInAmount = parseFloat(config.maxSitInAmount);
+	this.stake = config.stake;
+	this.minSitInAmount = config.minSitInAmount;
+	this.maxSitInAmount = config.maxSitInAmount;
+	this.rakePercent = config.rakePercent;
 
-	if (config.rakePercent)
-		this.rakePercent = parseFloat(config.rakePercent);
-
-	else
-		this.rakePercent = 0;
-
-	this.setupSeats(parseInt(config.numseats));
+	this.setupSeats(config.numseats);
 
 	BaseTable.call(this);
 
@@ -67,6 +46,7 @@ function CashGameTable(services, config) {
 	this.stopped = false;
 
 	this.previousHandId = null;
+	this.reconfigureData = null;
 }
 
 inherits(CashGameTable, BaseTable);
@@ -82,6 +62,97 @@ CashGameTable.IDLE = "idle";
  * @event CashGameTable.IDLE
  */
 CashGameTable.NUM_PLAYERS_CHANGE = "numPlayersChange";
+
+/**
+ * Validate table config.
+ * @method validateConfig
+ */
+CashGameTable.prototype.validateConfig = function(config) {
+	if (!config)
+		throw new Error("That's not a config!");
+
+	var expected = [
+		"minSitInAmount", "maxSitInAmount", "stake",
+		"numseats", "id", "currency", "name"
+	];
+
+	for (var i = 0; i < expected.length; i++)
+		if (!config[expected[i]])
+			throw new Error("Bad table config: missing: " + expected[i]);
+
+	if (!config.rakePercent)
+		config.rakePercent = 0;
+
+	if (!config.numseats ||
+		!config.id ||
+		!config.currency ||
+		!config.name ||
+		!config.minSitInAmount ||
+		!config.maxSitInAmount ||
+		!config.stake)
+		throw new Error("Bad table config");
+
+	config.stake = parseFloat(config.stake);
+	config.minSitInAmount = parseFloat(config.minSitInAmount);
+	config.maxSitInAmount = parseFloat(config.maxSitInAmount);
+	config.rakePercent = parseFloat(config.rakePercent);
+	config.numseats = parseInt(config.numseats);
+}
+
+/**
+ * Actually perform reconfiguration.
+ * @method performReconfigure
+ */
+CashGameTable.prototype.performReconfigure = function() {
+	if (!this.reconfigureData)
+		throw new Error("performReconfigure requires data");
+
+	if (this.reconfigureData.id != this.id)
+		throw new Error("can't reconfigure with different id");
+
+	var config = this.reconfigureData;
+
+	this.reconfigureData = null;
+
+	this.validateConfig(config);
+
+	this.name = config.name;
+	this.id = config.id;
+	this.currency = config.currency;
+	this.stake = config.stake;
+	this.minSitInAmount = config.minSitInAmount;
+	this.maxSitInAmount = config.maxSitInAmount;
+	this.rakePercent = config.rakePercent;
+
+	var activeSeatIndices = TableUtil.getActiveSeatIndices(config.numseats);
+
+	for (var i = 0; i < this.tableSeats.length; i++)
+		this.tableSeats[i].setActive(activeSeatIndices.indexOf(i) >= 0);
+
+	for (var i = 0; i < this.tableSpectators.length; i++) {
+		var tableSpectator = this.tableSpectators[i];
+
+		this.sendState(tableSpectator.getProtoConnection());
+		tableSpectator.send(tableSpectator.getTableInfoMessage());
+	}
+}
+
+/**
+ * Don't allow sit in if the table is stopped, and there is
+ * no current game. This means that we are just in the state
+ * right after the last game has finished, or the table is
+ * going to be reconfigured, and players are being sat out.
+ * @method isSitInAllowed
+ */
+CashGameTable.prototype.isSitInAllowed = function() {
+	if (this.currentGame)
+		return true;
+
+	if (this.stopped || this.reconfigureData)
+		return false;
+
+	return true;
+}
 
 /**
  * Full?
@@ -140,14 +211,49 @@ CashGameTable.prototype.onTableSeatReady = function() {
 }
 
 /**
+ * Reconfigure. If a current game is in progress, it will
+ * be scheduled for after the game. If the new config is the same
+ * as the old one, nothing will happen.
+ * @method reconfigure
+ */
+CashGameTable.prototype.reconfigure = function(config) {
+	this.validateConfig(config);
+
+	if (!this.reconfigureData &&
+		this.name == config.name &&
+		this.currency == config.currency &&
+		this.stake == config.stake &&
+		this.minSitInAmount == config.minSitInAmount &&
+		this.maxSitInAmount == config.maxSitInAmount &&
+		this.rakePercent == config.rakePercent &&
+		this.getNumSeats() == config.numseats)
+		return;
+
+	this.reconfigureData = config;
+
+	if (this.isIdle()) {
+		this.performReconfigure();
+		return;
+	}
+
+	if (!this.currentGame)
+		for (i = 0; i < this.tableSeats.length; i++)
+			this.tableSeats[i].leaveTable();
+}
+
+/**
  * Table seat became idle.
  * @method onTableSeatIdle
  */
 CashGameTable.prototype.onTableSeatIdle = function() {
-	if (this.isIdle())
+	if (this.isIdle()) {
+		if (this.reconfigureData)
+			this.performReconfigure();
+
 		this.trigger({
 			type: CashGameTable.IDLE
 		});
+	}
 
 	this.trigger(CashGameTable.NUM_PLAYERS_CHANGE);
 }
@@ -333,7 +439,7 @@ CashGameTable.prototype.onCurrentGameFinished = function() {
 
 	this.send(this.getHandInfoMessage());
 
-	if (this.stopped) {
+	if (this.stopped || this.reconfigureData) {
 		for (var t = 0; t < this.tableSeats.length; t++) {
 			var tableSeat = this.tableSeats[t];
 

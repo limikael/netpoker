@@ -76,7 +76,7 @@ CashGameManager.prototype.useFixedDeck = function(deck) {
 }
 
 /**
- * Initial table fetch success.
+ * Table fetch success.
  * @method onTableListCallSuccess
  * @private
  */
@@ -92,7 +92,12 @@ CashGameManager.prototype.onTableListCallSuccess = function(result) {
 		var tableData = result.tables[i];
 		this.currentRequestedIds.push(tableData.id);
 
-		if (!this.getTableById(tableData.id)) {
+		var table = this.getTableById(tableData.id);
+
+		if (table) {
+			console.log("reconfiguring table: " + tableData.id);
+			table.reconfigure(tableData);
+		} else {
 			console.log("starting table: " + tableData.id);
 
 			var table = new CashGameTable(this.services, tableData);
@@ -129,7 +134,7 @@ CashGameManager.prototype.onTableListCallSuccess = function(result) {
 }
 
 /**
- * Initial table fetch error.
+ * Table fetch error.
  * @method onTableListCallError
  * @private
  */
@@ -139,7 +144,7 @@ CashGameManager.prototype.onTableListCallError = function(errorMessage) {
 	if (!this.initializedTriggered)
 		throw new Error("Error fetching table list: " + errorMessage);
 
-	console.log("warning, table reload failed: "+errorMessage);
+	console.log("warning, table reload failed: " + errorMessage);
 }
 
 /**

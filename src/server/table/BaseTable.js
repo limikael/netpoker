@@ -85,6 +85,20 @@ BaseTable.prototype.getNumInGame = function() {
 }
 
 /**
+ * Get number of active seats.
+ * @method getNumSeats
+ */
+BaseTable.prototype.getNumSeats = function() {
+	var cnt = 0;
+
+	for (var i = 0; i < this.tableSeats.length; i++)
+		if (this.tableSeats[i].isActive())
+			cnt++;
+
+	return cnt;
+}
+
+/**
  * Get parent id. This id is what should be used for the
  * start game call for backend. For cashgames, this will
  * represent the table id, for tournamets, it will

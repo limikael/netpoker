@@ -27,6 +27,63 @@ describe("CashGameTable", function() {
 		var t = new CashGameTable(mockServices, config);
 	});
 
+	it("can validate a config", function() {
+		var t = new CashGameTable(mockServices, config);
+
+		var newConfig = {
+			minSitInAmount: "10",
+			maxSitInAmount: 100,
+			stake: 2,
+			numseats: 4,
+			id: 1,
+			currency: "PLY",
+			name: "hello"
+		};
+
+		t.validateConfig(newConfig);
+
+		expect(newConfig.minSitInAmount).toBe(10);
+	});
+
+	it("can be reconfigured", function() {
+		var t = new CashGameTable(mockServices, config);
+
+		expect(t.tableSeats[1].isActive()).toBe(false);
+
+		spyOn(t, "performReconfigure").and.callThrough();
+
+		t.reconfigure({
+			id: 123,
+			numseats: 6,
+			currency: "PLY",
+			name: "Test Table",
+			minSitInAmount: 10,
+			maxSitInAmount: 100,
+			stake: 2
+		});
+
+		expect(t.performReconfigure).toHaveBeenCalled();
+		expect(t.tableSeats[1].isActive()).toBe(true);
+	});
+
+	it("skips reconfig if it is the same", function() {
+		var t = new CashGameTable(mockServices, config);
+
+		spyOn(t, "performReconfigure").and.callThrough();
+
+		t.reconfigure({
+			id: 123,
+			numseats: 4,
+			currency: "PLY",
+			name: "Test Table",
+			minSitInAmount: 10,
+			maxSitInAmount: 100,
+			stake: 2
+		});
+
+		expect(t.performReconfigure).not.toHaveBeenCalled();
+	});
+
 	it("has a parent id that is the same as the id", function() {
 		var t = new CashGameTable(mockServices, config);
 		expect(t.getStartGameParentId()).toBe(123);
@@ -166,23 +223,23 @@ describe("CashGameTable", function() {
 		expect(t.tableSpectators[0].getProtoConnection()).toBe(oldProtoConnection);
 	});
 
-	it("can create a hand info message",function() {
-		var t=new CashGameTable(mockServices, config);
+	it("can create a hand info message", function() {
+		var t = new CashGameTable(mockServices, config);
 
-		var mockGame={};
-		mockGame.getId=function() {
+		var mockGame = {};
+		mockGame.getId = function() {
 			return 123;
 		};
 
-		t.currentGame=mockGame;
+		t.currentGame = mockGame;
 
-		var handInfoMessage=t.getHandInfoMessage();
+		var handInfoMessage = t.getHandInfoMessage();
 		expect(handInfoMessage).toEqual(jasmine.any(HandInfoMessage));
 		expect(handInfoMessage.getText()).toBe("Current Hand: #123\n");
 
-		t.previousHandId=999;
+		t.previousHandId = 999;
 
-		handInfoMessage=t.getHandInfoMessage();
+		handInfoMessage = t.getHandInfoMessage();
 		expect(handInfoMessage).toEqual(jasmine.any(HandInfoMessage));
 		expect(handInfoMessage.getText()).toBe("Current Hand: #123\nPrevious Hand: #999");
 	});

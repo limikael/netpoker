@@ -73,7 +73,7 @@
 		if (!$user)
 			netpoker_fail("User does not exist.");
 
-		$user->field_netpoker_playmoney[LANGUAGE_NONE][0]["value"]=$current+$amount;
+		$user->field_netpoker_playmoney[LANGUAGE_NONE][0]["value"]=$current;
 		field_attach_update("user",$user);
 	}
 

@@ -47,11 +47,23 @@ CashGameTableSeat.IDLE = "idle";
  * @method isAvailable
  */
 CashGameTableSeat.prototype.isAvailable = function() {
-	if (this.active && !this.tableSeatUser)
+	if (this.active && !this.tableSeatUser && this.table.isSitInAllowed())
 		return true;
 
 	else
 		return false;
+}
+
+/**
+ * Set active. This is only done when reconfiguring the table.
+ * Not while someone is sitting there!
+ * @method setActive
+ */
+CashGameTableSeat.prototype.setActive = function(active) {
+	if (this.tableSeatUser)
+		throw new Error("Can't change active state if someone is sitting on the seat!");
+
+	this.active = active;
 }
 
 /**
