@@ -16,9 +16,49 @@
 	 * Reload tables in the server on new game.
 	 */
 	function netpoker_node_insert($node) {
-		if ($node->type=="pokergame" && variable_get("netpoker_communicate_with_server")) {
-			drupal_register_shutdown_function("netpoker_server_request","reloadTables");
+		if ($node->type!="pokergame")
+			return;
+
+		if (!variable_get("netpoker_communicate_with_server")) {
+			watchdog("netpoker","game inserted, but server communication is off",array(),WATCHDOG_WARNING);
+			return;
 		}
+
+		drupal_register_shutdown_function("netpoker_server_request","reloadTables");
+	}
+
+	/**
+	 * Implements hook_node_delete
+	 *
+	 * Reload tables in server.
+	 */
+	function netpoker_node_delete($node) {
+		if ($node->type!="pokergame")
+			return;
+
+		if (!variable_get("netpoker_communicate_with_server")) {
+			watchdog("netpoker","game deleted, but server communication is off",array(),WATCHDOG_WARNING);
+			return;
+		}
+
+		drupal_register_shutdown_function("netpoker_server_request","reloadTables");
+	}
+
+	/**
+	 * Implements hook_node_update
+	 *
+	 * Reload tables in server.
+	 */
+	function netpoker_node_update($node) {
+		if ($node->type!="pokergame")
+			return;
+
+		if (!variable_get("netpoker_communicate_with_server")) {
+			watchdog("netpoker","game updated, but server communication is off",array(),WATCHDOG_WARNING);
+			return;
+		}
+
+		drupal_register_shutdown_function("netpoker_server_request","reloadTables");
 	}
 
 	/**

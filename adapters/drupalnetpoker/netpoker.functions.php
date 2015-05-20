@@ -28,7 +28,7 @@
 		$res=curl_exec($curl);
 
 		if (!$res) {
-			watchdog("netpoker","Backend call failed: ".$method);
+			watchdog("netpoker","Backend call failed: ".$method,array(),WATCHDOG_ERROR);
 			return NULL;
 		}
 

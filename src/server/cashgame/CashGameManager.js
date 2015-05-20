@@ -136,7 +136,10 @@ CashGameManager.prototype.onTableListCallSuccess = function(result) {
 CashGameManager.prototype.onTableListCallError = function(errorMessage) {
 	this.backendCallInProgress = false;
 
-	throw new Error("Error fetching table list: " + errorMessage);
+	if (!this.initializedTriggered)
+		throw new Error("Error fetching table list: " + errorMessage);
+
+	console.log("warning, table reload failed: "+errorMessage);
 }
 
 /**

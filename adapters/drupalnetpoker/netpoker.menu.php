@@ -85,7 +85,8 @@
 
 		$ids=db_select("node","n")
 			->fields("n",array("nid"))
-			->condition("n.type","pokergame","=")
+			->condition("n.type","pokergame")
+			->condition("n.status",1)
 			->execute()
 			->fetchAll(PDO::FETCH_COLUMN,0);
 
