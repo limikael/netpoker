@@ -26,6 +26,12 @@
 		));
 
 		field_delete_instance(array(
+			"field_name"=>"field_netpoker_current_players",
+			"entity_type"=>"node",
+			"bundle"=>"pokergame",
+		));
+
+		field_delete_instance(array(
 			"field_name"=>"field_netpoker_min_sit_in",
 			"entity_type"=>"node",
 			"bundle"=>"pokergame",

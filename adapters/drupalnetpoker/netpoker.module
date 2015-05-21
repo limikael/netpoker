@@ -90,6 +90,9 @@
 			if (!user_access("administer users"))
 				return FALSE;
 		}
+
+		if ($op=="edit" && $field["field_name"]=="field_netpoker_current_players")
+			return FALSE;
 	}
 
 	/**
@@ -113,6 +116,7 @@
 		if (!variable_get("netpoker_communicate_with_server"))
 			variable_set("netpoker_communicate_with_server",FALSE);
 
+		//// Add instances to the pokergame node object. ////
 		if (!field_info_field("field_netpoker_players")) {
 			$field=array(
 				"field_name"=>"field_netpoker_players",
@@ -156,6 +160,16 @@
 			field_create_field($field);
 		}
 
+		if (!field_info_field("field_netpoker_current_players")) {
+			$field=array(
+				"field_name"=>"field_netpoker_current_players",
+				"type"=>"number_integer"
+			);
+
+			field_create_field($field);
+		}
+
+		//// Add instances to the pokergame node object. ////
 		if (!field_info_instance("node","field_netpoker_players","pokergame")) {
 			$instance=array(
 				"field_name"=>"field_netpoker_players",
@@ -173,7 +187,7 @@
 				"field_name"=>"field_netpoker_min_sit_in",
 				"entity_type"=>"node",
 				"bundle"=>"pokergame",
-				"label"=>"Min Sit In Amount",
+				"label"=>"Min sit in amount",
 				"required"=>1
       		);
 
@@ -185,7 +199,7 @@
 				"field_name"=>"field_netpoker_max_sit_in",
 				"entity_type"=>"node",
 				"bundle"=>"pokergame",
-				"label"=>"Max Sit In Amount",
+				"label"=>"Max sit in amount",
 				"required"=>1
       		);
 
@@ -197,13 +211,25 @@
 				"field_name"=>"field_netpoker_stake",
 				"entity_type"=>"node",
 				"bundle"=>"pokergame",
-				"label"=>"Stake (Big Blind)",
+				"label"=>"Stake (big blind)",
 				"required"=>1
       		);
 
 			field_create_instance($instance);
 		}
 
+		if (!field_info_instance("node","field_netpoker_current_players","pokergame")) {
+			$instance=array(
+				"field_name"=>"field_netpoker_current_players",
+				"entity_type"=>"node",
+				"bundle"=>"pokergame",
+				"label"=>"Current number of players"
+      		);
+
+			field_create_instance($instance);
+		}
+
+		//// Add fields to the user object. ////
 		if (!field_info_field("field_netpoker_playmoney")) {
 			$field=array(
 				"field_name"=>"field_netpoker_playmoney",
@@ -268,6 +294,12 @@
 		}
 
 		$instance=field_info_instance("node","field_netpoker_stake","pokergame");
+		if ($instance) {
+			$instance["deleted"]=1;
+			field_update_instance($instance);
+		}
+
+		$instance=field_info_instance("node","field_netpoker_current_players","pokergame");
 		if ($instance) {
 			$instance["deleted"]=1;
 			field_update_instance($instance);

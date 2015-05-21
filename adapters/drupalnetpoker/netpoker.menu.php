@@ -231,7 +231,19 @@
 		$tableId=$_REQUEST["tableId"];
 		$amount=$_REQUEST["amount"];
 
+		$tables=entity_load("node",array($tableId));
+		$table=$tables[$tableId];
+
+		if (!$table)
+			netpoker_fail("Table not found for join.");
+
 		netpoker_changePlaymoneyBalance($userId,-$amount);
+
+		if (!$table->field_netpoker_current_players[LANGUAGE_NONE][0]["value"])
+			$table->field_netpoker_current_players[LANGUAGE_NONE][0]["value"]=0;
+
+		$table->field_netpoker_current_players[LANGUAGE_NONE][0]["value"]+=1;
+		field_attach_update("node",$table);
 
 		watchdog("netpoker_join",
 			"userId=$userId&tableId=$tableId&amount=$amount", 
@@ -252,7 +264,19 @@
 		$tableId=$_REQUEST["tableId"];
 		$amount=$_REQUEST["amount"];
 
+		$tables=entity_load("node",array($tableId));
+		$table=$tables[$tableId];
+
+		if (!$table)
+			netpoker_fail("Table not found for join.");
+
 		netpoker_changePlaymoneyBalance($userId,$amount);
+
+		if (!$table->field_netpoker_current_players[LANGUAGE_NONE][0]["value"])
+			$table->field_netpoker_current_players[LANGUAGE_NONE][0]["value"]=0;
+
+		$table->field_netpoker_current_players[LANGUAGE_NONE][0]["value"]-=1;
+		field_attach_update("node",$table);
 
 		watchdog("netpoker_leave",
 			"userId=$userId&tableId=$tableId&amount=$amount", 
