@@ -1,4 +1,4 @@
 name = NetPoker
-description = Adaptor for netpoker
+description = Adapter for netpoker
 core = 7.x
 configure = admin/modules/netpoker

@@ -471,8 +471,12 @@
 					break;
 			}
 
-//			$output.=json_encode($res,JSON_PRETTY_PRINT);
-			$output.=json_encode($res,128); // php 5.3 compatible
+			$flags=NULL;
+
+			if (defined('JSON_PRETTY_PRINT'))
+				$flags=JSON_PRETTY_PRINT;
+
+			$output.=json_encode($res,$flags);
 		}
 
 		$items["output"]=array(
