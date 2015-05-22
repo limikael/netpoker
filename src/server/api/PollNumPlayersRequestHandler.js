@@ -22,10 +22,10 @@ PollNumPlayersRequestHandler.prototype.handleRequest = function(request, respons
 
 	this.referenceState = null;
 
-	console.log("got state for num players poll: "+parameters.state);
-
-	if (parameters && parameters.state)
+	if (parameters && parameters.state) {
+		console.log("got state for num players poll: "+parameters.state);
 		this.referenceState = JSON.parse(decodeURIComponent(parameters.state));
+	}
 
 	var state = this.getCurrentState();
 
