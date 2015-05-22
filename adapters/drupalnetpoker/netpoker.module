@@ -374,13 +374,113 @@
 
 		// Configuration button on the modules page, 
 		// as well as in the section on the configuration page.
-		$items["admin/modules/netpoker"]=$items['admin/config/netpoker/item']=array(
+		/*$items["admin/modules/netpoker"]=$items['admin/config/netpoker/item']=array(
 			'title' => 'Netpoker',
 			'description' => 'Netpoker Configuration',
 			'page callback' => 'drupal_get_form',
 			'page arguments' => array('netpoker_config_form'),
 			'access arguments' => array('access administration pages'),
 			'type' => MENU_NORMAL_ITEM,
+		);*/
+
+		$items["admin/modules/netpoker"] = $items['admin/config/netpoker/item'] = array(
+			'title' => 'Netpoker',
+			'type'=>MENU_NORMAL_ITEM,
+			'access arguments' => array('access administration pages'),
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('netpoker_config_form'),
+			'description' => 'Netpoker Configuration',
+		);
+
+		$items["admin/modules/netpoker/default"] = $items['admin/config/netpoker/item/default'] = array(
+			'type' => MENU_DEFAULT_LOCAL_TASK,
+			'title' => 'Server settings',
+			'weight' => 1,
+			'access arguments' => array('access administration pages'),
+		);
+
+		$items["admin/modules/netpoker/actions"] = $items['admin/config/netpoker/item/actions'] = array(
+			'type' => MENU_LOCAL_TASK,
+			'title' => 'Actions',
+			'weight' => 2,
+			'access arguments' => array('access administration pages'),
+			'page callback' => 'netpoker_server_actions'
+		);
+
+		return $items;
+	}
+
+	/**
+	 * Handle server actions.
+	 */
+	function netpoker_server_actions() {
+		$items=array();
+
+		$actions=array(
+			array("action"=>"check_status", "text"=>"Check Status"),
+			array("action"=>"reload_table_info", "text"=>"Reload Table Information"),
+			array("action"=>"stop_server", "text"=>"Stop Server"),
+			array("action"=>"sync_number_of_players", "text"=>"Sync Number Of Players"),
+		);
+
+		foreach ($actions as $action) {
+			$items[$action["action"]] = array(
+				'#theme' => 'link',
+				'#text' => $action["text"],
+				'#path' => "admin/modules/netpoker/actions",
+				'#options' => array(
+					'attributes' => array('class' => array('button')),
+					'html'=>false,
+					'query'=>array("action"=>$action["action"])
+				),
+			);
+		}
+
+		$output="Command Output\n==============\n\n";
+
+		if (isset($_REQUEST["action"])) {
+			$res=NULL;
+
+			$output.="** Running ".$_REQUEST["action"]." **\n\n";
+
+			switch ($_REQUEST["action"]) {
+				case "check_status":
+					$res=netpoker_server_request("info");
+					break;
+
+				case "reload_table_info":
+					$res=netpoker_server_request("reloadTables");
+					break;
+
+				case "stop_server":
+					$res=netpoker_server_request("stop");
+					break;
+
+				case "sync_number_of_players":
+					$res=netpoker_server_request("pollNumPlayers");
+					$nodes=entity_load("node",array_keys($res));
+
+					foreach ($nodes as $node) {
+						$output.="** Updating table ".$node->nid.": ".$node->title."\n";
+						$node->field_netpoker_current_players[LANGUAGE_NONE][0]["value"]=$res[$node->nid];
+						field_attach_update("node",$node);
+					}
+
+					$output.="\n";
+
+					break;
+			}
+
+			$output.=json_encode($res,JSON_PRETTY_PRINT);
+		}
+
+		$items["output"]=array(
+			'#type'=>'textarea',
+			'#value'=>$output,
+			'#attributes'=>array(
+				'readonly'=>TRUE,
+				'style'=>'background-color: #000000; color: #00ff00; font-family: monospace; height: 500px'
+			)
 		);
 
 		return $items;

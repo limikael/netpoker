@@ -32,5 +32,5 @@
 			return NULL;
 		}
 
-		return json_decode($res);
+		return json_decode($res,TRUE);
 	}

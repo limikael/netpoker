@@ -92,10 +92,10 @@ ApiServer.prototype.getMethodByRequest = function(request) {
 
 	var method = urlParts.pathname;
 
-	while (method.indexOf("/")>=0)
+	while (method.indexOf("/") >= 0)
 		method = method.replace("/", "");
 
-	console.log("method: "+method);
+	console.log("method: " + method);
 
 	return method;
 }
@@ -116,8 +116,21 @@ ApiServer.prototype.handleWebRequest = function(request, response) {
 			response.statusCode = 401;
 			response.write(JSON.stringify("Unauthorized."));
 		} else if (this.rawHandlers[method]) {
-			this.rawHandlers[method](request, response, urlParts.query);
-			return;
+			try {
+				this.rawHandlers[method](request, response, urlParts.query);
+				return;
+			} catch (e) {
+				var message;
+
+				if (e instanceof Error)
+					message = e.message;
+
+				else
+					message = e.toString();
+
+				response.statusCode = 500;
+				response.write(JSON.stringify(message));
+			}
 		} else {
 			try {
 				var result = this.handleMethod(method, urlParts.query);

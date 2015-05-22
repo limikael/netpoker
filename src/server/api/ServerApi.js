@@ -122,9 +122,10 @@ ServerApi.prototype.handleUsageRequest = function(request, response) {
 	response.write("\n");
 	response.write("Available API calls:\n");
 	response.write("\n");
-	response.write("  /info          - Get server status information.\n");
-	response.write("  /stop          - Cleanly stop the server.\n");
-	response.write("  /reloadTables  - Reload table information from backend.\n");
+	response.write("  /info            - Get server status information.\n");
+	response.write("  /stop            - Cleanly stop the server.\n");
+	response.write("  /reloadTables    - Reload table information from backend.\n");
+	response.write("  /pollNumPlayers  - Long poll for change in number of players.\n");
 	response.write("\n");
 	response.end();
 }
