@@ -10,7 +10,7 @@ jQuery(function($) {
 		}
 
 		$('.netpoker-current-players').each(function(i, el) {
-			var cashgameId=$(el).attr("cashgame-id");
+			var cashgameId = $(el).attr("cashgame-id");
 
 			if (cashgameId && data.hasOwnProperty(cashgameId))
 				$(el).text(data[cashgameId]);
@@ -36,14 +36,21 @@ jQuery(function($) {
 	 */
 	function loadNumPlayersState() {
 		var numPlayersState = {};
+		var haveElements = false;
 
 		$('.netpoker-current-players').each(function(i, el) {
+			haveElements = true;
 			numPlayersState[$(el).attr("cashgame-id")] = parseInt($(el).text());
 		});
 
+		if (!haveElements) {
+			console.log("we have no elements for numplayers update");
+			return;
+		}
+
 		var stateEncoded = encodeURIComponent(JSON.stringify(numPlayersState));
 		var url = Drupal.settings.basePath + "?q=netpoker/pollNumPlayers";
-		url+="&state="+stateEncoded;
+		url += "&state=" + stateEncoded;
 
 		$.getJSON(url, onNumPlayersStateLoaded);
 	}
