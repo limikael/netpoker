@@ -117,6 +117,7 @@ ConnectionManager.prototype.listen = function(port, bindAddr) {
  * @private
  */
 ConnectionManager.prototype.onMessageServerRequest = function(ev) {
+	console.log("message server request...");
 	this.trigger(ev);
 }
 

@@ -317,6 +317,8 @@
 		return $form;
 	}
 
+
+
 	/**
 	 * Implements hook_node_view().
 	 *
@@ -324,6 +326,8 @@
 	 */
 	function netpoker_node_view($node, $view_mode, $langcode) {
 		if ($node->type=="pokergame") {
+			drupal_add_js(drupal_get_path("module","netpoker")."/netpoker.js");
+
 			$node->content['extra_link'] = array(
 				'#weight' => 10,
 				'#theme' => 'link',
@@ -334,6 +338,12 @@
 					'html' => FALSE
 				),
 			);
+
+			if ($node->content["field_netpoker_current_players"]) {
+				$current=intval($node->content["field_netpoker_current_players"]["#items"][0]["value"]);
+				$markup='<span class="netpoker-current-players" cashgame-id="'.$node->nid.'">'.$current.'</span>';
+				$node->content["field_netpoker_current_players"][0]["#markup"]=$markup;
+			}
 		}
 	}
 
@@ -346,7 +356,7 @@
 		$apiCalls=array(
 			"getCashGameTableList", "getUserInfoByToken", "getUserBalance",
 			"serverConfig", "cashGame", "bin", "cashGameUserJoin", "cashGameUserLeave",
-			"gameStartForCashGame", "gameFinish", "debug"
+			"gameStartForCashGame", "gameFinish", "debug", "pollNumPlayers"
 		);
 
 		$items=array();
@@ -372,24 +382,15 @@
 			'file path' => drupal_get_path('module', 'system'),
 		);
 
-		// Configuration button on the modules page, 
-		// as well as in the section on the configuration page.
-		/*$items["admin/modules/netpoker"]=$items['admin/config/netpoker/item']=array(
-			'title' => 'Netpoker',
-			'description' => 'Netpoker Configuration',
-			'page callback' => 'drupal_get_form',
-			'page arguments' => array('netpoker_config_form'),
-			'access arguments' => array('access administration pages'),
-			'type' => MENU_NORMAL_ITEM,
-		);*/
-
+		// Configuration page, accessible both from the 
+		// configuration and from the modules page. 
 		$items["admin/modules/netpoker"] = $items['admin/config/netpoker/item'] = array(
 			'title' => 'Netpoker',
-			'type'=>MENU_NORMAL_ITEM,
-			'access arguments' => array('access administration pages'),
-			'page callback' => 'drupal_get_form',
-			'page arguments' => array('netpoker_config_form'),
 			'description' => 'Netpoker Configuration',
+			'page callback' => 'drupal_get_form',
+			'access arguments' => array('access administration pages'),
+			'page arguments' => array('netpoker_config_form'),
+			'type'=>MENU_NORMAL_ITEM,
 		);
 
 		$items["admin/modules/netpoker/default"] = $items['admin/config/netpoker/item/default'] = array(
@@ -591,10 +592,4 @@
 		);
 
 		return system_settings_form($form);
-	}
-
-	/**
-	 * Debug function.
-	 */
-	function netpoker_debug() {
 	}

@@ -95,7 +95,7 @@ ApiServer.prototype.getMethodByRequest = function(request) {
 	while (method.indexOf("/") >= 0)
 		method = method.replace("/", "");
 
-	console.log("method: " + method);
+	//console.log("method: " + method);
 
 	return method;
 }

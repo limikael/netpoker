@@ -16,6 +16,8 @@ PollNumPlayersRequestHandler.TIMEOUT_DELAY = 10000;
  * @method handlerRequest
  */
 PollNumPlayersRequestHandler.prototype.handleRequest = function(request, response, parameters) {
+	//console.log(request);
+
 	this.request = request;
 	this.response = response;
 	this.parameters = parameters;
@@ -23,15 +25,15 @@ PollNumPlayersRequestHandler.prototype.handleRequest = function(request, respons
 	this.referenceState = null;
 
 	if (parameters && parameters.state) {
-		console.log("got state for num players poll: "+parameters.state);
+		console.log("got state for num players poll: " + parameters.state);
 		this.referenceState = JSON.parse(decodeURIComponent(parameters.state));
+	} else {
+		console.log("got num players poll without state");
 	}
 
 	var state = this.getCurrentState();
 
-	console.log("reference state: " + this.referenceState);
-
-	if (!ObjectUtil.equals(state, this.referenceState)) {
+	if (this.shouldReturn(state)) {
 		console.log("PollNumPlayersRequestHandler: returning immediately");
 		this.response.write(JSON.stringify(state));
 		this.response.end();
@@ -52,8 +54,8 @@ PollNumPlayersRequestHandler.prototype.handleRequest = function(request, respons
 PollNumPlayersRequestHandler.prototype.onNumPlayersChange = function() {
 	var state = this.getCurrentState();
 
-	if (!ObjectUtil.equals(state, this.referenceState)) {
-		console.log("PollNumPlayersRequestHandler: returning now...");
+	if (this.shouldReturn(state)) {
+		console.log("PollNumPlayersRequestHandler: returning now: " + JSON.stringify(state));
 
 		this.netPokerServer.getCashGameManager().off(CashGameManager.NUM_PLAYERS_CHANGE, this.onNumPlayersChange, this);
 		this.response.write(JSON.stringify(state));
@@ -63,6 +65,8 @@ PollNumPlayersRequestHandler.prototype.onNumPlayersChange = function() {
 			clearTimeout(this.timeoutId);
 			this.timeoutId = null;
 		}
+
+		console.log("done returning..");
 	}
 }
 
@@ -118,6 +122,21 @@ PollNumPlayersRequestHandler.prototype.getCurrentState = function() {
 	}
 
 	return pollState;
+}
+
+/**
+ * Check if this state is should result in a return.
+ * @method shouldReturn
+ */
+PollNumPlayersRequestHandler.prototype.shouldReturn = function(state) {
+	if (!this.referenceState)
+		return true;
+
+	for (var key in this.referenceState)
+		if (this.referenceState[key] != state[key])
+			return true;
+
+	return false;
 }
 
 module.exports = PollNumPlayersRequestHandler

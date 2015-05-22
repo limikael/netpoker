@@ -339,3 +339,25 @@
 			"ok"=>1
 		));
 	}
+
+	/**
+	 * Poll number of players from server.
+	 */
+	function netpoker_pollNumPlayers() {
+		drupal_session_commit();
+
+		$params=array();
+
+		if (isset($_REQUEST["state"]))
+			$params["state"]=$_REQUEST["state"];
+
+		$res=netpoker_server_request("pollNumPlayers",$params);
+
+		drupal_json_output($res);
+	}
+
+	/**
+	 * Debug function.
+	 */
+	function netpoker_debug() {
+	}

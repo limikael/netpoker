@@ -99,4 +99,29 @@ describe("PollNumPlayersRequestHandler", function() {
 
 		expect(mockResponse.written).toEqual('{"table_0":5,"table_1":1}');
 	});
+
+	it("can check only those tables that are interesting", function() {
+		var handler = new PollNumPlayersRequestHandler(mockNetPokerServer);
+
+		handler.referenceState = null;
+		expect(handler.shouldReturn()).toBe(true);
+
+		handler.referenceState = {};
+		expect(handler.shouldReturn()).toBe(false);
+
+		handler.referenceState = {
+			a: 5
+		};
+
+		expect(handler.shouldReturn({})).toBe(true);
+
+		expect(handler.shouldReturn({
+			a: 5
+		})).toBe(false);
+
+		expect(handler.shouldReturn({
+			a: 4,
+			b: 5
+		})).toBe(true);
+	});
 });
