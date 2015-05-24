@@ -29,6 +29,7 @@
     "grunt-cli": "^0.1.13",
     "grunt-contrib-compress": "^0.13.0",
     "grunt-ftpush": "^0.3.3",
+    "grunt-spritesmith": "git+https://github.com/limikael/grunt-spritesmith.git#6fc189ebc9f3c0353c650a0274807b782490edde",
     "jasmine-node": "^2.0.0-beta4",
     "jitsu": "^0.15.0",
     "pixi.js": "^1.6.1",

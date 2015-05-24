@@ -1,0 +1,247 @@
+{
+    "frames": {
+        "bigButton.png": {
+            "frame": {
+                "x": 174,
+                "y": 482,
+                "w": 95,
+                "h": 94
+            }
+        },
+        "buttonBackground.png": {
+            "frame": {
+                "x": 160,
+                "y": 412,
+                "w": 64,
+                "h": 64
+            }
+        },
+        "cardBack.png": {
+            "frame": {
+                "x": 87,
+                "y": 482,
+                "w": 87,
+                "h": 122
+            }
+        },
+        "cardFrame.png": {
+            "frame": {
+                "x": 0,
+                "y": 482,
+                "w": 87,
+                "h": 122
+            }
+        },
+        "chatBackground.png": {
+            "frame": {
+                "x": 343,
+                "y": 482,
+                "w": 74,
+                "h": 76
+            }
+        },
+        "checkboxBackground.png": {
+            "frame": {
+                "x": 583,
+                "y": 482,
+                "w": 18,
+                "h": 18
+            }
+        },
+        "checkboxTick.png": {
+            "frame": {
+                "x": 306,
+                "y": 442,
+                "w": 21,
+                "h": 16
+            }
+        },
+        "chip0.png": {
+            "frame": {
+                "x": 466,
+                "y": 412,
+                "w": 40,
+                "h": 30
+            }
+        },
+        "chip1.png": {
+            "frame": {
+                "x": 426,
+                "y": 412,
+                "w": 40,
+                "h": 30
+            }
+        },
+        "chip2.png": {
+            "frame": {
+                "x": 506,
+                "y": 412,
+                "w": 40,
+                "h": 30
+            }
+        },
+        "chip3.png": {
+            "frame": {
+                "x": 546,
+                "y": 412,
+                "w": 40,
+                "h": 30
+            }
+        },
+        "chip4.png": {
+            "frame": {
+                "x": 586,
+                "y": 412,
+                "w": 40,
+                "h": 30
+            }
+        },
+        "dealerButton.png": {
+            "frame": {
+                "x": 417,
+                "y": 482,
+                "w": 41,
+                "h": 35
+            }
+        },
+        "dialogButton.png": {
+            "frame": {
+                "x": 224,
+                "y": 412,
+                "w": 82,
+                "h": 47
+            }
+        },
+        "dividerLine.png": {
+            "frame": {
+                "x": 772,
+                "y": 0,
+                "w": 2,
+                "h": 170
+            }
+        },
+        "framePlate.png": {
+            "frame": {
+                "x": 269,
+                "y": 482,
+                "w": 74,
+                "h": 76
+            }
+        },
+        "seatPlate.png": {
+            "frame": {
+                "x": 0,
+                "y": 412,
+                "w": 160,
+                "h": 70
+            }
+        },
+        "sliderBackground.png": {
+            "frame": {
+                "x": 306,
+                "y": 412,
+                "w": 120,
+                "h": 30
+            }
+        },
+        "sliderKnob.png": {
+            "frame": {
+                "x": 626,
+                "y": 412,
+                "w": 28,
+                "h": 28
+            }
+        },
+        "suitSymbol0.png": {
+            "frame": {
+                "x": 565,
+                "y": 482,
+                "w": 18,
+                "h": 19
+            }
+        },
+        "suitSymbol1.png": {
+            "frame": {
+                "x": 547,
+                "y": 482,
+                "w": 18,
+                "h": 19
+            }
+        },
+        "suitSymbol2.png": {
+            "frame": {
+                "x": 511,
+                "y": 482,
+                "w": 18,
+                "h": 19
+            }
+        },
+        "suitSymbol3.png": {
+            "frame": {
+                "x": 529,
+                "y": 482,
+                "w": 18,
+                "h": 19
+            }
+        },
+        "table.png": {
+            "frame": {
+                "x": 0,
+                "y": 0,
+                "w": 772,
+                "h": 412
+            }
+        },
+        "textScrollbarThumb.png": {
+            "frame": {
+                "x": 654,
+                "y": 412,
+                "w": 60,
+                "h": 10
+            }
+        },
+        "textScrollbarTrack.png": {
+            "frame": {
+                "x": 654,
+                "y": 422,
+                "w": 60,
+                "h": 10
+            }
+        },
+        "timerBackground.png": {
+            "frame": {
+                "x": 458,
+                "y": 482,
+                "w": 32,
+                "h": 32
+            }
+        },
+        "upArrow.png": {
+            "frame": {
+                "x": 714,
+                "y": 412,
+                "w": 12,
+                "h": 8
+            }
+        },
+        "wrenchIcon.png": {
+            "frame": {
+                "x": 490,
+                "y": 482,
+                "w": 21,
+                "h": 21
+            }
+        }
+    },
+    "meta": {
+        "app": "spritesheet-templates",
+        "version": "9.5.0",
+        "image": "netpokerclient.spritesheet.png",
+        "format": "RGBA8888",
+        "scale": 1,
+        "size": {
+            "w": 774,
+            "h": 604
+        }
+    }
+}

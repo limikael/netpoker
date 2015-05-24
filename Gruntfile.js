@@ -6,6 +6,7 @@ var fse = require("fs-extra");
 
 module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-compress');
+	grunt.loadNpmTasks('grunt-spritesmith');
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -31,6 +32,15 @@ module.exports = function(grunt) {
 						"bin/*"
 					]
 				}]
+			}
+		},
+
+		sprite: {
+			main: {
+				src: "res/skin/images/*.png",
+				dest: "bin/netpokerclient.spritesheet.png",
+				destCss: "bin/netpokerclient.spritesheet.json",
+				cssFormat: "jsonTexture"
 			}
 		}
 	});

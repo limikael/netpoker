@@ -92,23 +92,6 @@ NetPokerClient.prototype.setSkin = function(skin, noCache) {
  * @method run
  */
 NetPokerClient.prototype.run = function() {
-	/*
-	var assets = [
-		"table.png",
-		"components.png"
-	];
-	if ((this.resources.skin != null) && (this.resources.skin.textures != null)) {
-		for (var i = 0; i < this.resources.skin.textures.length; i++) {
-			assets.push(this.resources.skin.textures[i].file);
-			console.log("add to load list: " + this.resources.skin.textures[i].file);
-		}
-	}
-
-	this.assetLoader = new PIXI.AssetLoader(assets);
-	this.assetLoader.addEventListener("onComplete", this.onAssetLoaderComplete.bind(this));
-	this.assetLoader.load();
-	*/
-
 	if (!this.haveSkin)
 		this.resources.addSource("texture.json");
 
@@ -117,6 +100,19 @@ NetPokerClient.prototype.run = function() {
 	} else {
 		this.onResourcesLoaded();
 	}
+
+	/*this.resources.load().then(
+		this.onResourcesLoaded.bind(this),
+		this.onResourcesError.bind(this)
+	);*/
+}
+
+/**
+ * Error while loading resources.
+ * @method onResourcesError
+ */
+NetPokerClient.prototype.onResourcesError = function() {
+	this.loadingScreen.show("ERROR LOADING RESOURCES");
 }
 
 /**
