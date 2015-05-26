@@ -7,7 +7,6 @@ var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
 var Button = require("../../utils/Button");
 var NineSlice = require("../../utils/NineSlice");
-var Resources = require("resource-fiddle");
 var EventDispatcher = require("yaed");
 var SettingsCheckbox = require("./SettingsCheckbox");
 var RaiseShortcutButton = require("./RaiseShortcutButton");

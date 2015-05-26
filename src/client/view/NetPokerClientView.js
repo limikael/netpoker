@@ -5,7 +5,6 @@
 
 var PIXI = require("pixi.js");
 var EventDispatcher = require("yaed");
-var Resources = require("resource-fiddle");
 var SeatView = require("./SeatView");
 var CardView = require("./CardView");
 var ChatView = require("./ChatView");

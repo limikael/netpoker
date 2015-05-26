@@ -13,11 +13,13 @@ var ProtoConnection = require("../../proto/ProtoConnection");
 var LoadingScreen = require("../view/LoadingScreen");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 var InitMessage = require("../../proto/messages/InitMessage");
-var Resources = require("resource-fiddle");
+var Resources = require("../resources/Resources");
 var ViewConfig = require("../resources/ViewConfig");
 var url = require("url");
 var TWEEN = require("tween.js");
 var inherits = require("inherits");
+var UrlUtil = require("../../utils/UrlUtil");
+var DefaultSkin = require("../resources/DefaultSkin");
 
 /**
  * Main entry point for client.
@@ -30,7 +32,8 @@ function NetPokerClient() {
 
 	this.haveSkin = false;
 	this.resources = new Resources();
-	//this.resources.addSource(DefaultSkin);
+	this.resources.addSkinSource(DefaultSkin);
+	this.resources.addSpriteSheet("netpokerclient.spritesheet.json");
 
 	this.loadingScreen = new LoadingScreen();
 	this.addChild(this.loadingScreen);
@@ -79,12 +82,27 @@ NetPokerClient.prototype.setToken = function(token) {
 }
 
 /**
- * Set token.
- * @method setSkin
+ * Add skin source.
+ * @method addSkinSource
  */
-NetPokerClient.prototype.setSkin = function(skin, noCache) {
-	this.haveSkin = true;
-	this.resources.addSource(skin, noCache);
+NetPokerClient.prototype.addSkinSource = function(skin) {
+	this.resources.addSkinSource(skin);
+}
+
+/**
+ * Add sprite sheet.
+ * @method addSpriteSheet
+ */
+NetPokerClient.prototype.addSpriteSheet = function(spriteSheet) {
+	this.resources.addSpriteSheet(spriteSheet);
+}
+
+/**
+ * Set sprite sheet.
+ * @method setSpriteSheet
+ */
+NetPokerClient.prototype.setSpriteSheet = function(spriteSheet) {
+	this.resources.setSpriteSheet(spriteSheet);
 }
 
 /**
@@ -92,19 +110,10 @@ NetPokerClient.prototype.setSkin = function(skin, noCache) {
  * @method run
  */
 NetPokerClient.prototype.run = function() {
-	if (!this.haveSkin)
-		this.resources.addSource("texture.json");
-
-	if (this.resources.isLoading()) {
-		this.resources.on(Resources.Loaded, this.onResourcesLoaded, this);
-	} else {
-		this.onResourcesLoaded();
-	}
-
-	/*this.resources.load().then(
+	this.resources.load().then(
 		this.onResourcesLoaded.bind(this),
 		this.onResourcesError.bind(this)
-	);*/
+	);
 }
 
 /**
@@ -143,15 +152,8 @@ NetPokerClient.prototype.connect = function() {
 
 	var parsedUrl = url.parse(this.url);
 
-	//console.log("protocol: " + parsedUrl.protocol);
-
-	if (!parsedUrl.protocol) {
-		console.log("window.location.href is: " + window.location.href);
-		var path = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
-		this.url = path + this.url;
-		this.connection = new MessageRequestConnection();
-	} else if (parsedUrl.protocol == "http:" ||
-		parsedUrl.protocol == "https:") {
+	if (!parsedUrl.protocol || parsedUrl.protocol == "http" || parsedUrl.protocol == "https") {
+		this.url = UrlUtil.makeAbsolute(this.url);
 		this.connection = new MessageRequestConnection();
 	} else {
 		this.connection = new MessageWebSocketConnection();

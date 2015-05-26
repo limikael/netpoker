@@ -1,0 +1,54 @@
+{
+    "frames": {
+        "a.png": {
+            "frame": {
+                "x": 0,
+                "y": 0,
+                "w": 89,
+                "h": 134
+            }
+        },
+        "cardBack.png": {
+            "frame": {
+                "x": 91,
+                "y": 0,
+                "w": 89,
+                "h": 134
+            }
+        },
+        "king.png": {
+            "frame": {
+                "x": 182,
+                "y": 0,
+                "w": 89,
+                "h": 134
+            }
+        },
+        "queen.png": {
+            "frame": {
+                "x": 0,
+                "y": 136,
+                "w": 89,
+                "h": 134
+            }
+        },
+        "queen_small.png": {
+            "frame": {
+                "x": 91,
+                "y": 136,
+                "w": 89,
+                "h": 134
+            }
+        }
+    },
+    "meta": {
+        "app": "spritesheet-templates",
+        "version": "9.5.0",
+        "image": "custom.spritesheet.png",
+        "scale": 1,
+        "size": {
+            "w": 271,
+            "h": 270
+        }
+    }
+}

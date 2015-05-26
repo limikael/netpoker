@@ -5,7 +5,6 @@
 
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
-var Resources = require("resource-fiddle");
 var EventDispatcher = require("yaed");
 var PresetButton = require("./PresetButton");
 var inherits = require("inherits");

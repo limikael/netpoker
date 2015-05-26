@@ -5,7 +5,6 @@
 
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
-var Resources = require("resource-fiddle");
 var EventDispatcher = require("yaed");
 var inherits = require("inherits");
 
@@ -20,7 +19,7 @@ function ChipsView(viewConfig, resources, showToolTip) {
 	this.viewConfig = viewConfig;
 	this.resources = resources;
 
-	this.align = this.resources.Align.Left;
+	this.align = "left";
 
 	this.value = 0;
 
@@ -135,20 +134,23 @@ ChipsView.prototype.setValue = function(value) {
 	}
 
 	switch (this.align) {
-		case this.resources.Align.Left:
+		case "left":
 		case "L":
 			this.holder.x = 0;
 			break;
 
-		case this.resources.Align.Center:
+		case "center":
 		case "C":
 			this.holder.x = -this.holder.width / 2;
 			break;
 
-		case this.resources.Align.Right:
+		case "right":
 		case "R":
 			this.holder.x = -this.holder.width;
 			break;
+
+		default:
+			throw new Error("unknown align: " + this.align);
 	}
 }
 
@@ -207,19 +209,23 @@ ChipsView.prototype.animateIn = function() {
 	};
 
 	switch (this.align) {
-		case this.resources.Align.Left:
+		case "left":
 		case "L":
 			o.x = this.resources.getPoint("potPosition").x - this.width / 2;
 			break;
 
-		case this.resources.Align.Center:
+		case "center":
 		case "C":
 			o.x = this.resources.getPoint("potPosition").x;
 			break;
 
-		case this.resources.Align.Right:
+		case "right":
 		case "R":
 			o.x = this.resources.getPoint("potPosition").x + this.width / 2;
+			break;
+
+		default:
+			throw new Error("unknown align: " + this.align);
 			break;
 	}
 
@@ -254,19 +260,23 @@ ChipsView.prototype.animateOut = function() {
 	this.position.y = this.resources.getPoint("potPosition").y;
 
 	switch (this.align) {
-		case this.resources.Align.Left:
+		case "left":
 		case "L":
 			this.position.x = this.resources.getPoint("potPosition").x - this.width / 2;
 			break;
 
-		case this.resources.Align.Center:
+		case "center":
 		case "C":
 			this.position.x = this.resources.getPoint("potPosition").x;
 			break;
 
-		case this.resources.Align.Right:
+		case "right":
 		case "R":
 			this.position.x = this.resources.getPoint("potPosition").x + this.width / 2;
+			break;
+
+		default:
+			throw new Error("unknown align: " + this.align);
 			break;
 	}
 

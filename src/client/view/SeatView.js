@@ -5,7 +5,6 @@
 
 var PIXI = require("pixi.js");
 var TWEEN = require("tween.js");
-var Resources = require("resource-fiddle");
 var Button = require("../../utils/Button");
 var inherits = require("inherits");
 

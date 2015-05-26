@@ -9,7 +9,6 @@ var Button = require("../../utils/Button");
 var Slider = require("../../utils/Slider");
 var NineSlice = require("../../utils/NineSlice");
 var BigButton = require("./BigButton");
-var Resources = require("resource-fiddle");
 var RaiseShortcutButton = require("./RaiseShortcutButton");
 var inherits = require("inherits");
 

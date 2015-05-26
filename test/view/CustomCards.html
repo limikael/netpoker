@@ -1,0 +1,25 @@
+<html>
+	<script src="res/netpokerclient.test.bundle.js"></script>
+	<script>
+		var NetPokerClient=require("NetPokerClient");
+
+		function run() {
+			var netPokerClient = new NetPokerClient();
+
+			netPokerClient.setSpriteSheet("res/netpokerclient.spritesheet.json");
+			netPokerClient.addSpriteSheet("res/custom.spritesheet.json")
+
+			netPokerClient.addSkinSource({
+				"cardDiamondsQ": "queen.png",
+				"cardClubsQ": "queen.png",
+				"cardDiamondsK": "king.png",
+				"cardBack": "cardBack.png",
+				"cardDiamondsA": "a.png"
+			});
+
+			netPokerClient.setUrl("res/full_of_stuff.json");
+			netPokerClient.run();
+		}
+	</script>
+	<body onload="run()"></body>
+</html>

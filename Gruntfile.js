@@ -3,10 +3,13 @@ var Q = require("q");
 var fs = require("fs");
 var async = require("async");
 var fse = require("fs-extra");
+var path = require("path");
 
 module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-compress');
 	grunt.loadNpmTasks('grunt-spritesmith');
+	grunt.loadNpmTasks('grunt-browserify');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -35,12 +38,88 @@ module.exports = function(grunt) {
 			}
 		},
 
+		copy: {
+			main: {
+				files: [{
+					src: "bin/netpokerclient.spritesheet.json",
+					dest: "res/mocksite/netpokerclient.spritesheet.json"
+				}, {
+					src: "bin/netpokerclient.spritesheet.png",
+					dest: "res/mocksite/netpokerclient.spritesheet.png"
+				}, {
+					src: "bin/netpokerclient.bundle.js",
+					dest: "res/mocksite/netpokerclient.bundle.js"
+				}, {
+					expand: true,
+					src: "bin/**",
+					dest: "adapters/drupalnetpoker"
+				}]
+			},
+
+			test: {
+				files: [{
+					src: "bin/netpokerclient.spritesheet.json",
+					dest: "test/view/res/netpokerclient.spritesheet.json"
+				}, {
+					src: "bin/netpokerclient.spritesheet.png",
+					dest: "test/view/res/netpokerclient.spritesheet.png"
+				}]
+			}
+		},
+
 		sprite: {
 			main: {
-				src: "res/skin/images/*.png",
+				src: "res/images/*.png",
 				dest: "bin/netpokerclient.spritesheet.png",
 				destCss: "bin/netpokerclient.spritesheet.json",
-				cssFormat: "jsonTexture"
+				padding: 2,
+				cssFormat: "json_texture",
+				cssVarMap: function(sprite) {
+					sprite.name = path.basename(sprite.source_image);
+				}
+			},
+
+			test: {
+				src: "test/view/images/*.png",
+				dest: "test/view/res/custom.spritesheet.png",
+				destCss: "test/view/res/custom.spritesheet.json",
+				padding: 2,
+				cssFormat: "json_texture",
+				cssVarMap: function(sprite) {
+					sprite.name = path.basename(sprite.source_image);
+				}
+			}
+		},
+
+		browserify: {
+			main: {
+				options: {
+					browserifyOptions: {
+						standalone: "NetPokerClient"
+					},
+				},
+				src: "src/client/app/NetPokerClient.js",
+				dest: "bin/netpokerclient.bundle.js",
+			},
+
+			test: {
+				options: {
+					browserifyOptions: {
+						debug: true,
+					},
+					require: [
+						["./src/client/resources/Resources", {
+							expose: "Resources"
+						}],
+						["./src/client/app/NetPokerClient", {
+							expose: "NetPokerClient"
+						}],
+						"pixiapp",
+						"pixi.js"
+					]
+				},
+				src: [],
+				dest: "test/view/res/netpokerclient.test.bundle.js",
 			}
 		}
 	});
@@ -177,88 +256,90 @@ module.exports = function(grunt) {
 		que.done();
 	});
 
-	grunt.registerTask("browserify-test", function() {
-		done = this.async();
+	/*	grunt.registerTask("browserify-test", function() {
+			done = this.async();
 
-		async.series([
+			async.series([
 
-			function(next) {
-				var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
-				job.arg("test/view/gradient/test.bundle.js", "test/view/gradient/test.js");
-				job.show().expect(0);
-				job.run().then(next);
-			},
+				function(next) {
+					var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
+					job.arg("test/view/gradient/test.bundle.js", "test/view/gradient/test.js");
+					job.show().expect(0);
+					job.run().then(next);
+				},
 
-			function(next) {
-				var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
-				job.arg("test/view/nineslice/test.bundle.js", "test/view/nineslice/test.js");
-				job.show().expect(0);
-				job.run().then(next);
-			},
+				function(next) {
+					var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
+					job.arg("test/view/nineslice/test.bundle.js", "test/view/nineslice/test.js");
+					job.show().expect(0);
+					job.run().then(next);
+				},
 
-			function(next) {
-				var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
-				job.arg("test/view/button/test.bundle.js", "test/view/button/test.js");
-				job.show().expect(0);
-				job.run().then(next);
-			},
+				function(next) {
+					var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
+					job.arg("test/view/button/test.bundle.js", "test/view/button/test.js");
+					job.show().expect(0);
+					job.run().then(next);
+				},
 
-			function(next) {
-				var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
-				job.arg("test/view/thenable/test.bundle.js", "test/view/thenable/test.js");
-				job.show().expect(0);
-				job.run().then(next);
-			},
+				function(next) {
+					var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
+					job.arg("test/view/thenable/test.bundle.js", "test/view/thenable/test.js");
+					job.show().expect(0);
+					job.run().then(next);
+				},
 
-			function(next) {
-				done();
-			}
-		]);
-	});
+				function(next) {
+					done();
+				}
+			]);
+		});
 
-	grunt.registerTask("browserify", function() {
-		var done = this.async();
+		grunt.registerTask("browserify", function() {
+			var done = this.async();
 
-		async.series([
+			async.series([
 
-			function(next) {
-				var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
-				job.arg("res/mocksite/netpokerclient.bundle.js", "src/client/netpokerclient.js");
-				job.show().expect(0);
-				job.run().then(next);
-			},
+				function(next) {
+					var job = qsub("./node_modules/.bin/browserify").arg("-d", "-o");
+					job.arg("res/mocksite/netpokerclient.bundle.js", "src/client/netpokerclient.js");
+					job.show().expect(0);
+					job.run().then(next);
+				},
 
-			function(next) {
-				var job = qsub("./node_modules/.bin/browserify").arg("-o");
-				job.arg("bin/netpokerclient.bundle.js", "src/client/netpokerclient.js");
-				job.show().expect(0);
-				job.run().then(next);
-			},
+				function(next) {
+					var job = qsub("./node_modules/.bin/browserify").arg("-o");
+					job.arg("bin/netpokerclient.bundle.js", "src/client/netpokerclient.js");
+					job.show().expect(0);
+					job.run().then(next);
+				},
 
-			function(next) {
-				fse.mkdirsSync("adapters/drupalnetpoker/bin");
-				fse.copySync("bin/netpokerclient.bundle.js", "adapters/drupalnetpoker/bin/netpokerclient.bundle.js");
-				fse.copySync("res/skin/textureFiles/custom/texture.json", "adapters/drupalnetpoker/bin/texture.json");
-				fse.copySync("res/skin/textureFiles/custom/texture0.png", "adapters/drupalnetpoker/bin/texture0.png");
+				function(next) {
+					fse.mkdirsSync("adapters/drupalnetpoker/bin");
+					fse.copySync("bin/netpokerclient.bundle.js", "adapters/drupalnetpoker/bin/netpokerclient.bundle.js");
+					fse.copySync("res/skin/textureFiles/custom/texture.json", "adapters/drupalnetpoker/bin/texture.json");
+					fse.copySync("res/skin/textureFiles/custom/texture0.png", "adapters/drupalnetpoker/bin/texture0.png");
 
-				fse.copySync("res/mocksite/netpokerclient.bundle.js", "res/skin/netpokerclient.bundle.js");
+					fse.copySync("res/mocksite/netpokerclient.bundle.js", "res/skin/netpokerclient.bundle.js");
 
-				fse.copySync("res/skin/textureFiles/custom/texture.json", "res/mocksite/texture.json");
-				fse.copySync("res/skin/textureFiles/custom/texture0.png", "res/mocksite/texture0.png");
+					fse.copySync("res/skin/textureFiles/custom/texture.json", "res/mocksite/texture.json");
+					fse.copySync("res/skin/textureFiles/custom/texture0.png", "res/mocksite/texture0.png");
 
-				fse.copySync("res/skin/textureFiles/custom/texture.json", "bin/texture.json");
-				fse.copySync("res/skin/textureFiles/custom/texture0.png", "bin/texture0.png");
-				done();
-			}
-		]);
-	});
+					fse.copySync("res/skin/textureFiles/custom/texture.json", "bin/texture.json");
+					fse.copySync("res/skin/textureFiles/custom/texture0.png", "bin/texture0.png");
+					done();
+				}
+			]);
+		});*/
 
-	grunt.registerTask("adapter", ["browserify", "compress:drupalnetpoker"]);
+	grunt.registerTask("build", ["sprite", "browserify", "copy"]);
+
+	grunt.registerTask("adapter", ["browserify:main", "copy:main", "compress:drupalnetpoker"]);
 
 	grunt.registerTask("default", function() {
 		console.log("Available Tasks");
 		console.log();
-		console.log("  browserify   - Build client bundle.");
+		console.log("  build        - Build client bundle.");
 		console.log("  mockserver   - Start mock server.");
 		console.log("  deploy       - Deploy to nodejitsu.");
 		console.log("  test         - Run server tests.");

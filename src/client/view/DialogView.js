@@ -5,7 +5,6 @@
 
 var PIXI = require("pixi.js");
 var NineSlice = require("../../utils/NineSlice");
-var Resources = require("resource-fiddle");
 var DialogButton = require("./DialogButton");
 var ButtonData = require("../../proto/data/ButtonData");
 var PixiTextInput = require("pixitextinput");

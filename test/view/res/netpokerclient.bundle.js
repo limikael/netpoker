@@ -35080,27 +35080,12 @@ NetPokerClient.prototype.setToken = function(token) {
 }
 
 /**
- * Add skin source.
- * @method addSkinSource
+ * Set token.
+ * @method setSkin
  */
-NetPokerClient.prototype.addSkinSource = function(skin) {
-	this.resources.addSkinSource(skin);
-}
-
-/**
- * Add sprite sheet.
- * @method addSpriteSheet
- */
-NetPokerClient.prototype.addSpriteSheet = function(spriteSheet) {
-	this.resources.addSpriteSheet(spriteSheet);
-}
-
-/**
- * Set sprite sheet.
- * @method setSpriteSheet
- */
-NetPokerClient.prototype.setSpriteSheet = function(spriteSheet) {
-	this.resources.setSpriteSheet(spriteSheet);
+NetPokerClient.prototype.setSkin = function(skin, noCache) {
+	this.haveSkin = true;
+	this.resources.addSource(skin, noCache);
 }
 
 /**
@@ -36025,14 +36010,6 @@ function Resources() {
 }
 
 /**
- * Set sprite sheet.
- * @method setSpriteSheet
- */
-Resources.prototype.setSpriteSheet = function(spriteSheet) {
-	this.spriteSheets = [spriteSheet];
-}
-
-/**
  * Add a sprite sheet.
  * @method addSpriteSheet
  */
@@ -36074,12 +36051,6 @@ Resources.prototype.getString = function(id) {
  * @method getValue
  */
 Resources.prototype.getValue = Resources.prototype.getString;
-
-/**
- * Get color.
- * @method getValue
- */
-Resources.prototype.getColor = Resources.prototype.getString;
 
 /**
  * Get Texture.
@@ -37297,23 +37268,19 @@ ChipsView.prototype.animateIn = function() {
 	};
 
 	switch (this.align) {
-		case "left":
+		case this.resources.Align.Left:
 		case "L":
 			o.x = this.resources.getPoint("potPosition").x - this.width / 2;
 			break;
 
-		case "center":
+		case this.resources.Align.Center:
 		case "C":
 			o.x = this.resources.getPoint("potPosition").x;
 			break;
 
-		case "right":
+		case this.resources.Align.Right:
 		case "R":
 			o.x = this.resources.getPoint("potPosition").x + this.width / 2;
-			break;
-
-		default:
-			throw new Error("unknown align: " + this.align);
 			break;
 	}
 

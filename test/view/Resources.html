@@ -1,0 +1,33 @@
+<html>
+	<script src="res/netpokerclient.test.bundle.js"></script>
+	<script>
+		var Resources=require("Resources");
+		var PixiApp=require("pixiapp");
+		var PIXI=require("pixi.js");
+
+		var app=new PixiApp(800,600);
+
+		var resources=new Resources();
+		resources.addSpriteSheet("res/netpokerclient.spritesheet.json");
+		resources.addSkinSource("res/testskin.json");
+
+		resources.addSkinSource({
+			mypoint: [400,200]
+		});
+
+		resources.load().then(
+			function() {
+				var tx=resources.getTexture("mytexture");
+				var s=new PIXI.Sprite(tx);
+
+				s.position=resources.getPoint("mypoint");
+
+				app.addChild(s);
+			},
+
+			function(e) {
+				console.log("load error: "+e);
+			}
+		);
+	</script>
+</html>
