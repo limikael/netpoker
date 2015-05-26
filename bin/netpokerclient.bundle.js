@@ -35107,6 +35107,7 @@ NetPokerClient.prototype.setSpriteSheet = function(spriteSheet) {
  * @method run
  */
 NetPokerClient.prototype.run = function() {
+	//console.log("loading resources.....");
 	this.resources.load().then(
 		this.onResourcesLoaded.bind(this),
 		this.onResourcesError.bind(this)
@@ -35118,6 +35119,8 @@ NetPokerClient.prototype.run = function() {
  * @method onResourcesError
  */
 NetPokerClient.prototype.onResourcesError = function() {
+	console.log("resource error");
+
 	this.loadingScreen.show("ERROR LOADING RESOURCES");
 }
 
@@ -35127,7 +35130,7 @@ NetPokerClient.prototype.onResourcesError = function() {
  * @private
  */
 NetPokerClient.prototype.onResourcesLoaded = function() {
-	console.log("resources loaded complete...");
+	//console.log("resources loaded complete...");
 
 	this.netPokerClientView = new NetPokerClientView(this.viewConfig, this.resources);
 	this.addChildAt(this.netPokerClientView, 0);
@@ -36122,6 +36125,7 @@ Resources.prototype.load = function() {
 	if (this.spriteSheets.length) {
 		this.assetLoader = new PIXI.AssetLoader(this.spriteSheets);
 		this.assetLoader.on("onComplete", this.onAssetLoaderComplete.bind(this));
+		//console.log("loading assets: "+this.spriteSheets);
 		this.assetLoader.load();
 	} else {
 		this.loadNextSkinSource();
@@ -36135,6 +36139,7 @@ Resources.prototype.load = function() {
  * @method onAssetLoaderComplete
  */
 Resources.prototype.onAssetLoaderComplete = function() {
+	//console.log("asset loader complete, loading skin");
 	this.loadNextSkinSource();
 }
 
@@ -36145,6 +36150,7 @@ Resources.prototype.onAssetLoaderComplete = function() {
  */
 Resources.prototype.loadNextSkinSource = function() {
 	if (this.skinSourceIndex >= this.skinSources.length) {
+		//console.log("resolving thenable...");
 		this.loadThenable.resolve();
 		return;
 	}

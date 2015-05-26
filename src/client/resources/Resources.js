@@ -114,6 +114,7 @@ Resources.prototype.load = function() {
 	if (this.spriteSheets.length) {
 		this.assetLoader = new PIXI.AssetLoader(this.spriteSheets);
 		this.assetLoader.on("onComplete", this.onAssetLoaderComplete.bind(this));
+		//console.log("loading assets: "+this.spriteSheets);
 		this.assetLoader.load();
 	} else {
 		this.loadNextSkinSource();
@@ -127,6 +128,7 @@ Resources.prototype.load = function() {
  * @method onAssetLoaderComplete
  */
 Resources.prototype.onAssetLoaderComplete = function() {
+	//console.log("asset loader complete, loading skin");
 	this.loadNextSkinSource();
 }
 
@@ -137,6 +139,7 @@ Resources.prototype.onAssetLoaderComplete = function() {
  */
 Resources.prototype.loadNextSkinSource = function() {
 	if (this.skinSourceIndex >= this.skinSources.length) {
+		//console.log("resolving thenable...");
 		this.loadThenable.resolve();
 		return;
 	}

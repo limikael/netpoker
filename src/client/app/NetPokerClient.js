@@ -109,6 +109,7 @@ NetPokerClient.prototype.setSpriteSheet = function(spriteSheet) {
  * @method run
  */
 NetPokerClient.prototype.run = function() {
+	//console.log("loading resources.....");
 	this.resources.load().then(
 		this.onResourcesLoaded.bind(this),
 		this.onResourcesError.bind(this)
@@ -120,6 +121,8 @@ NetPokerClient.prototype.run = function() {
  * @method onResourcesError
  */
 NetPokerClient.prototype.onResourcesError = function() {
+	console.log("resource error");
+
 	this.loadingScreen.show("ERROR LOADING RESOURCES");
 }
 
@@ -129,7 +132,7 @@ NetPokerClient.prototype.onResourcesError = function() {
  * @private
  */
 NetPokerClient.prototype.onResourcesLoaded = function() {
-	console.log("resources loaded complete...");
+	//console.log("resources loaded complete...");
 
 	this.netPokerClientView = new NetPokerClientView(this.viewConfig, this.resources);
 	this.addChildAt(this.netPokerClientView, 0);

@@ -183,7 +183,7 @@
 		$vars=array(
 			"url"=>"ws://".$host.":".variable_get("netpoker_gameplay_server_port")."/",
 			"bundleUrl"=>url("netpoker/bin/netpokerclient.bundle.js",array("absolute"=>TRUE)),
-			"skinUrl"=>url("netpoker/bin/texture.json",array("absolute"=>TRUE)),
+			"skinUrl"=>url("netpoker/bin/netpokerclient.spritesheet.json",array("absolute"=>TRUE)),
 			"token"=>session_id(),
 			"nid"=>$nid
 		);
@@ -205,20 +205,13 @@
 			case "js":
 				header("Content-type: text/javascript");
 				break;
+
+			case "json":
+				header("Content-type: application/json");
+				break;
 		}
 
-		if ($file=="texture.json") {
-			$json=json_decode(file_get_contents(__DIR__."/bin/".$file),TRUE);
-
-			$json["graphics"]["textures"][0]["file"]=
-				url("netpoker/bin/texture0.png",array("absolute"=>TRUE));
-
-			echo json_encode($json);
-		}
-
-		else {
-			readfile(__DIR__."/bin/".$file);
-		}
+		readfile(__DIR__."/bin/".$file);
 	}
 
 	/**
