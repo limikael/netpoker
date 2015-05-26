@@ -35028,7 +35028,6 @@ function NetPokerClient() {
 
 	this.verticalAlign = PixiApp.TOP;
 
-	this.haveSkin = false;
 	this.resources = new Resources();
 	this.resources.addSkinSource(DefaultSkin);
 	this.resources.addSpriteSheet("netpokerclient.spritesheet.json");
