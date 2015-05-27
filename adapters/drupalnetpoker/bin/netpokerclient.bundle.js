@@ -51331,7 +51331,7 @@ NetPokerClient.prototype.connect = function() {
 
 	console.log("Connecting to: " + this.url);
 
-	this.enterAppState("CONNECTING", 70);
+	this.enterAppState("CONNECTING", 65);
 	this.connection.connect(this.url);
 }
 
@@ -51345,7 +51345,7 @@ NetPokerClient.prototype.onConnectionConnect = function() {
 	this.protoConnection = new ProtoConnection(this.connection);
 	this.protoConnection.addMessageHandler(StateCompleteMessage, this.onStateCompleteMessage, this);
 	this.netPokerClientController.setProtoConnection(this.protoConnection);
-	this.enterAppState("INITIALIZING", 90);
+	this.enterAppState("INITIALIZING", 80);
 
 	var initMessage = new InitMessage(this.token);
 
