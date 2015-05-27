@@ -25,6 +25,15 @@
 				netPokerClient.setSpriteSheet("<?php echo $skinUrl; ?>");
 				netPokerClient.setToken("<?php echo $token; ?>");
 				netPokerClient.setTableId(<?php echo $nid; ?>);
+
+				<?php if ($skinSource) { ?>
+					netPokerClient.addSkinSource(<?php echo json_encode($skinSource); ?>);
+				<?php } ?>
+
+				<?php foreach ($spriteSheets as $spriteSheet) { ?>
+					netPokerClient.addSpriteSheet("<?php echo $spriteSheet; ?>");
+				<?php } ?>
+
 				netPokerClient.run();
 			};
 		</script>

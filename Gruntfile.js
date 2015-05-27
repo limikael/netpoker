@@ -79,7 +79,7 @@ module.exports = function(grunt) {
 				padding: 2,
 				cssFormat: "json_texture",
 				cssVarMap: function(sprite) {
-					sprite.name = path.basename(sprite.source_image);
+					sprite.name = "__" + path.basename(sprite.source_image);
 				}
 			},
 

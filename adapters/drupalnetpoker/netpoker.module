@@ -317,8 +317,6 @@
 		return $form;
 	}
 
-
-
 	/**
 	 * Implements hook_node_view().
 	 *
@@ -339,7 +337,7 @@
 				),
 			);
 
-			if ($node->content["field_netpoker_current_players"]) {
+			if (isset($node->content["field_netpoker_current_players"])) {
 				$current=intval($node->content["field_netpoker_current_players"]["#items"][0]["value"]);
 				$markup='<span class="netpoker-current-players" cashgame-id="'.$node->nid.'">'.$current.'</span>';
 				$node->content["field_netpoker_current_players"][0]["#markup"]=$markup;

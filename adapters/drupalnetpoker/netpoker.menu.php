@@ -174,7 +174,11 @@
 	 * Serve up the cashgame html page.
 	 */
 	function netpoker_cashGame($nid) {
-		global $base_url;
+		$skinVariables=array(
+			"spritesheets"=>array(),
+		);
+
+		drupal_alter("netpoker_skin",$skinVariables);
 
 		$host=variable_get("netpoker_gameplay_server_host");
 		if (!$host)
@@ -187,6 +191,8 @@
 			"bundleUrl"=>$modulePath."/bin/netpokerclient.bundle.js?nocache=".rand(),
 			"skinUrl"=>$modulePath."/bin/netpokerclient.spritesheet.json?nocache=".rand(),
 			"bundleLoaderUrl"=>$modulePath."/bundleloader.min.js",
+			"skinSource"=>$skinVariables,
+			"spriteSheets"=>$skinVariables["spritesheets"],
 			"token"=>session_id(),
 			"nid"=>$nid
 		);

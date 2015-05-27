@@ -1,6 +1,6 @@
 {
     "frames": {
-        "bigButton.png": {
+        "__bigButton.png": {
             "frame": {
                 "x": 178,
                 "y": 486,
@@ -8,7 +8,7 @@
                 "h": 94
             }
         },
-        "buttonBackground.png": {
+        "__buttonBackground.png": {
             "frame": {
                 "x": 162,
                 "y": 414,
@@ -16,7 +16,7 @@
                 "h": 64
             }
         },
-        "cardBack.png": {
+        "__cardBack.png": {
             "frame": {
                 "x": 89,
                 "y": 486,
@@ -24,7 +24,7 @@
                 "h": 122
             }
         },
-        "cardFrame.png": {
+        "__cardFrame.png": {
             "frame": {
                 "x": 0,
                 "y": 486,
@@ -32,7 +32,7 @@
                 "h": 122
             }
         },
-        "chatBackground.png": {
+        "__chatBackground.png": {
             "frame": {
                 "x": 351,
                 "y": 486,
@@ -40,7 +40,7 @@
                 "h": 76
             }
         },
-        "checkboxBackground.png": {
+        "__checkboxBackground.png": {
             "frame": {
                 "x": 427,
                 "y": 523,
@@ -48,7 +48,7 @@
                 "h": 18
             }
         },
-        "checkboxTick.png": {
+        "__checkboxTick.png": {
             "frame": {
                 "x": 607,
                 "y": 486,
@@ -56,7 +56,7 @@
                 "h": 16
             }
         },
-        "chip0.png": {
+        "__chip0.png": {
             "frame": {
                 "x": 476,
                 "y": 414,
@@ -64,7 +64,7 @@
                 "h": 30
             }
         },
-        "chip1.png": {
+        "__chip1.png": {
             "frame": {
                 "x": 434,
                 "y": 414,
@@ -72,7 +72,7 @@
                 "h": 30
             }
         },
-        "chip2.png": {
+        "__chip2.png": {
             "frame": {
                 "x": 518,
                 "y": 414,
@@ -80,7 +80,7 @@
                 "h": 30
             }
         },
-        "chip3.png": {
+        "__chip3.png": {
             "frame": {
                 "x": 560,
                 "y": 414,
@@ -88,7 +88,7 @@
                 "h": 30
             }
         },
-        "chip4.png": {
+        "__chip4.png": {
             "frame": {
                 "x": 602,
                 "y": 414,
@@ -96,7 +96,7 @@
                 "h": 30
             }
         },
-        "dealerButton.png": {
+        "__dealerButton.png": {
             "frame": {
                 "x": 427,
                 "y": 486,
@@ -104,7 +104,7 @@
                 "h": 35
             }
         },
-        "dialogButton.png": {
+        "__dialogButton.png": {
             "frame": {
                 "x": 228,
                 "y": 414,
@@ -112,7 +112,7 @@
                 "h": 47
             }
         },
-        "dividerLine.png": {
+        "__dividerLine.png": {
             "frame": {
                 "x": 774,
                 "y": 0,
@@ -120,7 +120,7 @@
                 "h": 170
             }
         },
-        "framePlate.png": {
+        "__framePlate.png": {
             "frame": {
                 "x": 275,
                 "y": 486,
@@ -128,7 +128,7 @@
                 "h": 76
             }
         },
-        "seatPlate.png": {
+        "__seatPlate.png": {
             "frame": {
                 "x": 0,
                 "y": 414,
@@ -136,7 +136,7 @@
                 "h": 70
             }
         },
-        "sliderBackground.png": {
+        "__sliderBackground.png": {
             "frame": {
                 "x": 312,
                 "y": 414,
@@ -144,7 +144,7 @@
                 "h": 30
             }
         },
-        "sliderKnob.png": {
+        "__sliderKnob.png": {
             "frame": {
                 "x": 644,
                 "y": 414,
@@ -152,7 +152,7 @@
                 "h": 28
             }
         },
-        "suitSymbol0.png": {
+        "__suitSymbol0.png": {
             "frame": {
                 "x": 587,
                 "y": 486,
@@ -160,7 +160,7 @@
                 "h": 19
             }
         },
-        "suitSymbol1.png": {
+        "__suitSymbol1.png": {
             "frame": {
                 "x": 567,
                 "y": 486,
@@ -168,7 +168,7 @@
                 "h": 19
             }
         },
-        "suitSymbol2.png": {
+        "__suitSymbol2.png": {
             "frame": {
                 "x": 527,
                 "y": 486,
@@ -176,7 +176,7 @@
                 "h": 19
             }
         },
-        "suitSymbol3.png": {
+        "__suitSymbol3.png": {
             "frame": {
                 "x": 547,
                 "y": 486,
@@ -184,7 +184,7 @@
                 "h": 19
             }
         },
-        "table.png": {
+        "__table.png": {
             "frame": {
                 "x": 0,
                 "y": 0,
@@ -192,7 +192,7 @@
                 "h": 412
             }
         },
-        "textScrollbarThumb.png": {
+        "__textScrollbarThumb.png": {
             "frame": {
                 "x": 674,
                 "y": 414,
@@ -200,7 +200,7 @@
                 "h": 10
             }
         },
-        "textScrollbarTrack.png": {
+        "__textScrollbarTrack.png": {
             "frame": {
                 "x": 674,
                 "y": 426,
@@ -208,7 +208,7 @@
                 "h": 10
             }
         },
-        "timerBackground.png": {
+        "__timerBackground.png": {
             "frame": {
                 "x": 470,
                 "y": 486,
@@ -216,7 +216,7 @@
                 "h": 32
             }
         },
-        "upArrow.png": {
+        "__upArrow.png": {
             "frame": {
                 "x": 736,
                 "y": 414,
@@ -224,7 +224,7 @@
                 "h": 8
             }
         },
-        "wrenchIcon.png": {
+        "__wrenchIcon.png": {
             "frame": {
                 "x": 504,
                 "y": 486,
