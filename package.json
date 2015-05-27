@@ -21,6 +21,7 @@
   "devDependencies": {
     "async": "^0.9.0",
     "browserify": "^5.9.1",
+    "bundleloader": "git+https://github.com/limikael/bundleloader.git#aaaa9582bb15773f27ca4b6f43c8aaf37d4e5880",
     "connect": "^3.1.1",
     "escape-html": "^1.0.1",
     "fs-extra": "^0.14.0",

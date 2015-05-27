@@ -36,6 +36,7 @@ function NetPokerClient() {
 
 	this.loadingScreen = new LoadingScreen();
 	this.addChild(this.loadingScreen);
+	this.enterAppState("LOADING", 0);
 	this.loadingScreen.show("LOADING");
 
 	this.url = null;
@@ -110,6 +111,8 @@ NetPokerClient.prototype.setSpriteSheet = function(spriteSheet) {
  */
 NetPokerClient.prototype.run = function() {
 	//console.log("loading resources.....");
+	this.enterAppState("LOADING RESOURCES", 50);
+
 	this.resources.load().then(
 		this.onResourcesLoaded.bind(this),
 		this.onResourcesError.bind(this)
@@ -123,7 +126,7 @@ NetPokerClient.prototype.run = function() {
 NetPokerClient.prototype.onResourcesError = function() {
 	console.log("resource error");
 
-	this.loadingScreen.show("ERROR LOADING RESOURCES");
+	this.enterAppState("ERROR LOADING RESOURCES");
 }
 
 /**
@@ -148,7 +151,7 @@ NetPokerClient.prototype.onResourcesLoaded = function() {
  */
 NetPokerClient.prototype.connect = function() {
 	if (!this.url) {
-		this.loadingScreen.show("NEED URL");
+		this.enterAppState("NEED URL");
 		return;
 	}
 
@@ -166,7 +169,7 @@ NetPokerClient.prototype.connect = function() {
 
 	console.log("Connecting to: " + this.url);
 
-	this.loadingScreen.show("CONNECTING");
+	this.enterAppState("CONNECTING", 70);
 	this.connection.connect(this.url);
 }
 
@@ -180,7 +183,7 @@ NetPokerClient.prototype.onConnectionConnect = function() {
 	this.protoConnection = new ProtoConnection(this.connection);
 	this.protoConnection.addMessageHandler(StateCompleteMessage, this.onStateCompleteMessage, this);
 	this.netPokerClientController.setProtoConnection(this.protoConnection);
-	this.loadingScreen.show("INITIALIZING");
+	this.enterAppState("INITIALIZING", 90);
 
 	var initMessage = new InitMessage(this.token);
 
@@ -199,7 +202,7 @@ NetPokerClient.prototype.onConnectionConnect = function() {
  * @private
  */
 NetPokerClient.prototype.onStateCompleteMessage = function() {
-	this.loadingScreen.hide();
+	this.enterAppState(null);
 }
 
 /**
@@ -214,8 +217,27 @@ NetPokerClient.prototype.onConnectionClose = function() {
 
 	this.protoConnection = null;
 	this.netPokerClientController.setProtoConnection(null);
-	this.loadingScreen.show("CONNECTION ERROR");
+	this.enterAppState("CONNECTION ERROR");
 	setTimeout(this.connect.bind(this), 3000);
+}
+
+/**
+ * Enter app state.
+ * @method enterAppState
+ * @private
+ */
+NetPokerClient.prototype.enterAppState = function(message, progress) {
+	if (message)
+		this.loadingScreen.show(message);
+
+	else
+		this.loadingScreen.hide();
+
+	this.trigger({
+		type: "appStateChange",
+		message: message,
+		progress: progress
+	});
 }
 
 /**

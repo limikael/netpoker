@@ -114,6 +114,7 @@ Resources.prototype.load = function() {
 	if (this.spriteSheets.length) {
 		this.assetLoader = new PIXI.AssetLoader(this.spriteSheets);
 		this.assetLoader.on("onComplete", this.onAssetLoaderComplete.bind(this));
+		this.assetLoader.on("onProgress", this.onAssetLoaderProgress.bind(this));
 		//console.log("loading assets: "+this.spriteSheets);
 		this.assetLoader.load();
 	} else {
@@ -121,6 +122,23 @@ Resources.prototype.load = function() {
 	}
 
 	return this.loadThenable;
+}
+
+/**
+ * Asset loader progress.
+ * @method onAssetLoaderProgress
+ */
+Resources.prototype.onAssetLoaderProgress = function(ev) {
+	console.log("asset loader progress");
+/*	console.log(ev);
+
+	ev.loader.ajaxRequest.onprogress = function() {
+		console.log("request progres...");
+	};
+
+	ev.loader.ajaxRequest.addEventListener("progress", function() {
+		console.log("progress...");
+	});*/
 }
 
 /**

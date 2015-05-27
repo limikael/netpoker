@@ -180,14 +180,13 @@
 		if (!$host)
 			$host=$_SERVER["HTTP_HOST"];
 
-		$binPath=base_path().drupal_get_path("module","netpoker")."/bin/";
-
-		$skinUrl=netpokerclient.spriteshee;
+		$modulePath=base_path().drupal_get_path("module","netpoker");
 
 		$vars=array(
 			"url"=>"ws://".$host.":".variable_get("netpoker_gameplay_server_port")."/",
-			"bundleUrl"=>$binPath."netpokerclient.bundle.js",
-			"skinUrl"=>$binPath."netpokerclient.spritesheet.json",
+			"bundleUrl"=>$modulePath."/bin/netpokerclient.bundle.js?nocache=".rand(),
+			"skinUrl"=>$modulePath."/bin/netpokerclient.spritesheet.json?nocache=".rand(),
+			"bundleLoaderUrl"=>$modulePath."/bundleloader.min.js",
 			"token"=>session_id(),
 			"nid"=>$nid
 		);

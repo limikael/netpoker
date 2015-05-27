@@ -32,6 +32,7 @@ module.exports = function(grunt) {
 						"netpoker.functions.php",
 						"cashgame.tpl.php",
 						"netpoker.js",
+						"bundleloader.min.js",
 						"bin/*"
 					]
 				}]
@@ -53,6 +54,9 @@ module.exports = function(grunt) {
 					expand: true,
 					src: "bin/**",
 					dest: "adapters/drupalnetpoker"
+				}, {
+					src: "node_modules/bundleloader/bundleloader.min.js",
+					dest: "adapters/drupalnetpoker/bundleloader.min.js"
 				}]
 			},
 
