@@ -52159,6 +52159,7 @@ module.exports = {
 	"tablePosition": [101, 94],
 	"potPosition": [485, 315],
 
+	"timerOffset": [55, -30],
 	"communityCardsPosition": [255, 190],
 
 	"seatPosition0": [287, 118],
@@ -55323,14 +55324,14 @@ function TimerView(viewConfig, resources) {
 	PIXI.DisplayObjectContainer.call(this);
 
 	this.resources = resources
-	
+
 	this.timerClip = new PIXI.Sprite(this.resources.getTexture("timerBackground"));
 	this.addChild(this.timerClip);
 
 
 	this.canvas = new PIXI.Graphics();
-	this.canvas.x = this.timerClip.width*0.5;
-	this.canvas.y = this.timerClip.height*0.5;
+	this.canvas.x = this.timerClip.width * 0.5;
+	this.canvas.y = this.timerClip.height * 0.5;
 	this.timerClip.addChild(this.canvas);
 
 	this.timerClip.visible = false;
@@ -55357,10 +55358,14 @@ TimerView.prototype.hide = function() {
  * @method show
  */
 TimerView.prototype.show = function(seatIndex) {
-	
+
 	this.timerClip.visible = true;
-	this.timerClip.x = this.resources.getPoint("seatPosition"+seatIndex).x + 55;
-	this.timerClip.y = this.resources.getPoint("seatPosition"+seatIndex).y - 30;
+
+	var seatPosition = this.resources.getPoint("seatPosition" + seatIndex);
+	var timerOffset = this.resources.getPoint("timerOffset");
+
+	this.timerClip.x = seatPosition.x + timerOffset.x;
+	this.timerClip.y = seatPosition.y + timerOffset.y;
 
 	this.stop();
 
@@ -55371,7 +55376,7 @@ TimerView.prototype.show = function(seatIndex) {
  * @method stop
  */
 TimerView.prototype.stop = function(seatIndex) {
-	if(this.tween != null)
+	if (this.tween != null)
 		this.tween.stop();
 
 }
@@ -55390,11 +55395,15 @@ TimerView.prototype.countdown = function(totalTime, timeLeft) {
 	this.startAt = time + timeLeft - totalTime;
 	this.stopAt = time + timeLeft;
 
-	this.tween = new TWEEN.Tween({time: time})
-						.to({time: this.stopAt}, timeLeft)
-						.onUpdate(this.onUpdate.bind(this))
-						.onComplete(this.onComplete.bind(this))
-						.start();
+	this.tween = new TWEEN.Tween({
+			time: time
+		})
+		.to({
+			time: this.stopAt
+		}, timeLeft)
+		.onUpdate(this.onUpdate.bind(this))
+		.onComplete(this.onComplete.bind(this))
+		.start();
 
 }
 
@@ -55404,9 +55413,9 @@ TimerView.prototype.countdown = function(totalTime, timeLeft) {
  */
 TimerView.prototype.onUpdate = function() {
 	var time = Date.now();
-	var percent = 100*(time - this.startAt)/(this.stopAt - this.startAt);
+	var percent = 100 * (time - this.startAt) / (this.stopAt - this.startAt);
 
-//	console.log("p = " + percent);
+	//	console.log("p = " + percent);
 
 	this.showPercent(percent);
 }
@@ -55436,19 +55445,19 @@ TimerView.prototype.showPercent = function(value) {
 	this.canvas.clear();
 
 	this.canvas.beginFill(0xc00000);
-	this.canvas.drawCircle(0,0,10);
+	this.canvas.drawCircle(0, 0, 10);
 	this.canvas.endFill();
 
 	this.canvas.beginFill(0xffffff);
-	this.canvas.moveTo(0,0);
-	for(var i = 0; i < 33; i++) {
+	this.canvas.moveTo(0, 0);
+	for (var i = 0; i < 33; i++) {
 		this.canvas.lineTo(
-							10*Math.cos(i*value*2*Math.PI/(32*100) - Math.PI/2),
-							10*Math.sin(i*value*2*Math.PI/(32*100) - Math.PI/2)
-						);
+			10 * Math.cos(i * value * 2 * Math.PI / (32 * 100) - Math.PI / 2),
+			10 * Math.sin(i * value * 2 * Math.PI / (32 * 100) - Math.PI / 2)
+		);
 	}
 
-	this.canvas.lineTo(0,0);
+	this.canvas.lineTo(0, 0);
 	this.canvas.endFill();
 
 }

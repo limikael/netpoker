@@ -41,6 +41,7 @@ module.exports = {
 	"tablePosition": [101, 94],
 	"potPosition": [485, 315],
 
+	"timerOffset": [55, -30],
 	"communityCardsPosition": [255, 190],
 
 	"seatPosition0": [287, 118],
