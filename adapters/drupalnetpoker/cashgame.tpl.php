@@ -23,14 +23,20 @@
 
 				netPokerClient.setUrl("<?php echo $url; ?>");
 				netPokerClient.setSpriteSheet("<?php echo $skinUrl; ?>");
-				netPokerClient.setToken("<?php echo $token; ?>");
-				netPokerClient.setTableId(<?php echo $nid; ?>);
+
+				<?php if (isset($token)) { ?>
+					netPokerClient.setToken("<?php echo $token; ?>");
+				<?php } ?>
+
+				<?php if (isset($tableId)) { ?>
+					netPokerClient.setTableId(<?php echo $tableId; ?>);
+				<?php } ?>
 
 				<?php if ($skinSource) { ?>
 					netPokerClient.addSkinSource(<?php echo json_encode($skinSource); ?>);
-				<?php } ?>
+				<?php } ?>
 
-				<?php foreach ($spriteSheets as $spriteSheet) { ?>
+				<?php foreach ($spriteSheets as $spriteSheet) { ?>
 					netPokerClient.addSpriteSheet("<?php echo $spriteSheet; ?>");
 				<?php } ?>
 

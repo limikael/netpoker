@@ -51319,7 +51319,9 @@ NetPokerClient.prototype.connect = function() {
 
 	var parsedUrl = url.parse(this.url);
 
-	if (!parsedUrl.protocol || parsedUrl.protocol == "http" || parsedUrl.protocol == "https") {
+	console.log(parsedUrl);
+
+	if (!parsedUrl.protocol || parsedUrl.protocol == "http:" || parsedUrl.protocol == "https:") {
 		this.url = UrlUtil.makeAbsolute(this.url);
 		this.connection = new MessageRequestConnection();
 	} else {
@@ -59023,11 +59025,19 @@ UrlUtil.makeAbsolute = function(target) {
 	var parsedUrl = url.parse(target);
 
 	if (parsedUrl.protocol)
-		return url;
+		return target;
 
-	var path = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
+	if (target.charAt(0) == "/") {
+		var u = url.parse(window.location.href);
 
-	return path + target;
+		u.pathname = target;
+
+		return url.format(u);
+	} else {
+		var path;
+		path = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
+		return path + target;
+	}
 }
 
 module.exports = UrlUtil;

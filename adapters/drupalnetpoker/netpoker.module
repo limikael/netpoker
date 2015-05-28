@@ -258,6 +258,8 @@
 	 * Implementation of hook_disable()
 	 */
 	function netpoker_disable() {
+		variable_set("netpoker_communicate_with_server", FALSE);
+
 		$result = db_select('node','n')
 			->fields('n',array('nid'))
 			->condition('type',"pokergame",'=')
@@ -354,7 +356,7 @@
 		$apiCalls=array(
 			"getCashGameTableList", "getUserInfoByToken", "getUserBalance",
 			"serverConfig", "cashGame", "bin", "cashGameUserJoin", "cashGameUserLeave",
-			"gameStartForCashGame", "gameFinish", "debug", "pollNumPlayers"
+			"gameStartForCashGame", "gameFinish", "debug", "pollNumPlayers", "skinTest"
 		);
 
 		$items=array();
@@ -393,7 +395,7 @@
 
 		$items["admin/modules/netpoker/default"] = $items['admin/config/netpoker/item/default'] = array(
 			'type' => MENU_DEFAULT_LOCAL_TASK,
-			'title' => 'Server settings',
+			'title' => 'Server Settings',
 			'weight' => 1,
 			'access arguments' => array('access administration pages'),
 		);
@@ -406,7 +408,43 @@
 			'page callback' => 'netpoker_server_actions'
 		);
 
+		$items["admin/modules/netpoker/skin_test"] = $items['admin/config/netpoker/item/skin_test'] = array(
+			'type' => MENU_LOCAL_TASK,
+			'title' => 'Skin Test',
+			'weight' => 2,
+			'access arguments' => array('access administration pages'),
+			'page callback' => 'netpoker_skin_test_list'
+		);
+
 		return $items;
+	}
+
+	/**
+	 * Test the skin.
+	 */
+	function netpoker_skin_test_list() {
+		$list = array();
+		$list['type'] = 'ul';
+		$list['title'] = 'Test Cases';
+		$list['attributes'] = array('class' => array('list-of-nodes'));
+		$list['items'] = array();
+
+		$files=scandir(__DIR__."/viewcases");
+
+		foreach ($files as $file) {
+			if (!is_dir(__DIR__."/viewcases/".$file)) {
+				$list["items"][]=l($file,"netpoker/skinTest",
+					array(
+						"attributes"=>array("target"=>"netpoker_skin_test"),
+						"query"=>array(
+							"case"=>$file
+						)
+					)
+				);
+			}
+		}
+
+		return theme("item_list", $list);
 	}
 
 	/**

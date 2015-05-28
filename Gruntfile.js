@@ -33,7 +33,8 @@ module.exports = function(grunt) {
 						"cashgame.tpl.php",
 						"netpoker.js",
 						"bundleloader.min.js",
-						"bin/*"
+						"bin/*",
+						"viewcases/*"
 					]
 				}]
 			}
@@ -57,6 +58,12 @@ module.exports = function(grunt) {
 				}, {
 					src: "node_modules/bundleloader/bundleloader.min.js",
 					dest: "adapters/drupalnetpoker/bundleloader.min.js"
+				}, {
+					filter: 'isFile',
+					flatten: true,
+					expand: true,
+					src: "res/viewcases/**",
+					dest: "adapters/drupalnetpoker/viewcases"
 				}]
 			},
 
@@ -79,7 +86,7 @@ module.exports = function(grunt) {
 				padding: 2,
 				cssFormat: "json_texture",
 				cssVarMap: function(sprite) {
-					sprite.name = "__" + path.basename(sprite.source_image);
+					sprite.frame_name = "__" + path.basename(sprite.source_image);
 				}
 			},
 

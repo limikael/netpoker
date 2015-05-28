@@ -92,8 +92,6 @@
 
 		$pokergames=entity_load("node",$ids);
 
-		//echo "<pre>"; print_r($pokergames);
-
 		$tables=array();
 
 		foreach ($pokergames as $pokergame) {
@@ -174,28 +172,51 @@
 	 * Serve up the cashgame html page.
 	 */
 	function netpoker_cashGame($nid) {
+		$host=variable_get("netpoker_gameplay_server_host");
+		if (!$host)
+			$host=$_SERVER["HTTP_HOST"];
+
+		$vars=array(
+			"tableId"=>$nid,
+			"url"=>"ws://".$host.":".variable_get("netpoker_gameplay_server_port")."/",
+			"token"=>session_id(),
+		);
+
+		netpoker_showTable($vars);
+	}
+
+	/**
+	 * Test skin.
+	 */
+	function netpoker_skinTest() {
+		$modulePath=base_path().drupal_get_path("module","netpoker");
+
+		$url=$modulePath."/viewcases/".$_REQUEST["case"];
+
+		$vars=array(
+			"url"=>"http://localhost".$url
+		);
+
+		netpoker_showTable($vars);
+	}
+
+	/**
+	 * Show the table.
+	 */
+	function netpoker_showTable($vars) {
 		$skinVariables=array(
 			"spritesheets"=>array(),
 		);
 
 		drupal_alter("netpoker_skin",$skinVariables);
 
-		$host=variable_get("netpoker_gameplay_server_host");
-		if (!$host)
-			$host=$_SERVER["HTTP_HOST"];
-
 		$modulePath=base_path().drupal_get_path("module","netpoker");
 
-		$vars=array(
-			"url"=>"ws://".$host.":".variable_get("netpoker_gameplay_server_port")."/",
-			"bundleUrl"=>$modulePath."/bin/netpokerclient.bundle.js?nocache=".rand(),
-			"skinUrl"=>$modulePath."/bin/netpokerclient.spritesheet.json?nocache=".rand(),
-			"bundleLoaderUrl"=>$modulePath."/bundleloader.min.js",
-			"skinSource"=>$skinVariables,
-			"spriteSheets"=>$skinVariables["spritesheets"],
-			"token"=>session_id(),
-			"nid"=>$nid
-		);
+		$vars["bundleUrl"]=$modulePath."/bin/netpokerclient.bundle.js?nocache=".rand();
+		$vars["skinUrl"]=$modulePath."/bin/netpokerclient.spritesheet.json?nocache=".rand();
+		$vars["bundleLoaderUrl"]=$modulePath."/bundleloader.min.js";
+		$vars["skinSource"]=$skinVariables;
+		$vars["spriteSheets"]=$skinVariables["spritesheets"];
 
 		$templatePath=drupal_get_path("module","netpoker")."/cashgame.tpl.php";
 		echo theme_render_template($templatePath,$vars);

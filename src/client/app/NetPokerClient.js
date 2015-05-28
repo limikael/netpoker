@@ -157,7 +157,9 @@ NetPokerClient.prototype.connect = function() {
 
 	var parsedUrl = url.parse(this.url);
 
-	if (!parsedUrl.protocol || parsedUrl.protocol == "http" || parsedUrl.protocol == "https") {
+	console.log(parsedUrl);
+
+	if (!parsedUrl.protocol || parsedUrl.protocol == "http:" || parsedUrl.protocol == "https:") {
 		this.url = UrlUtil.makeAbsolute(this.url);
 		this.connection = new MessageRequestConnection();
 	} else {

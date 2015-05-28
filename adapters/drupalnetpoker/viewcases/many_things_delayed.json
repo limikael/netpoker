@@ -1,0 +1,23 @@
+{"type":"stateComplete"}
+{"type":"chat","user":"debug","text":"the table should be emty now"}
+{"type":"delay", "delay": 2000}
+{"type":"chat","user":"debug","text":"populating table"}
+{"type":"interfaceState", "visibleButtons": ["sitoutNext"]}
+{"type":"checkbox", "id": "autoMuckLosing", "checked": true}
+{"type":"seatInfo", "seatIndex": 1, "name": "user", "chips": 100, "active": true}
+{"type":"seatInfo", "seatIndex": 2, "name": "user", "chips": 100, "active": true}
+{"type":"seatInfo", "seatIndex": 3, "name": "user", "chips": 100, "active": true}
+{"type":"seatInfo", "seatIndex": 4, "name": "user", "chips": 100, "active": true}
+{"type":"seatInfo", "seatIndex": 5, "name": "user", "chips": 100, "active": true}
+{"type":"pot", "values": [123]}
+{"type":"communityCards", "firstIndex": 0, "cards": [10,11,12], "animate": false}
+{"type":"pocketCards", "seatIndex": 1, "firstIndex": 0, "cards": [10,11], "animate": false}
+{"type":"pocketCards", "seatIndex": 2, "firstIndex": 0, "cards": [10,11], "animate": false}
+{"type":"pocketCards", "seatIndex": 3, "firstIndex": 0, "cards": [10,11], "animate": false}
+{"type":"pocketCards", "seatIndex": 4, "firstIndex": 0, "cards": [10,11], "animate": false}
+{"type":"pocketCards", "seatIndex": 5, "firstIndex": 0, "cards": [10,11], "animate": false}
+{"type":"bet", "seatIndex": 1, "value": 12}
+{"type":"bet", "seatIndex": 2, "value": 23}
+{"type":"bet", "seatIndex": 3, "value": 5}
+{"type":"bet", "seatIndex": 4, "value": 6}
+{"type":"bet", "seatIndex": 5, "value": 7}
