@@ -194,7 +194,7 @@
 		$url=$modulePath."/viewcases/".$_REQUEST["case"];
 
 		$vars=array(
-			"url"=>"http://localhost".$url
+			"url"=>$url
 		);
 
 		netpoker_showTable($vars);
