@@ -88,6 +88,12 @@ MockBackendServer.prototype.handleMethod = function(method, params) {
 			return {
 				gameId: 987
 			};
+
+		case Backend.TOURNAMENT_INFO:
+			return {
+				id: 666,
+				state: "registration"
+			};
 	}
 }
 

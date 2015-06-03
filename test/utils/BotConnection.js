@@ -85,10 +85,25 @@ BotConnection.prototype.onStrategyComplete = function() {
 	thenable.resolve();
 }
 
+BotConnection.prototype.connectToTournament = function(tournamentId) {
+	//console.log("settting tid: " + tournamentId);
+
+	this.initMessage = new InitMessage(this.token);
+	this.initMessage.setTournamentId(tournamentId);
+
+	this.initializeConnection();
+	return this.connectThenable;
+}
+
 BotConnection.prototype.connectToTable = function(tableId) {
 	this.initMessage = new InitMessage(this.token);
 	this.initMessage.setTableId(tableId);
 
+	this.initializeConnection();
+	return this.connectThenable;
+}
+
+BotConnection.prototype.initializeConnection = function() {
 	this.connectThenable = new Thenable();
 
 	if (this.connectionTarget instanceof PipeNetPokerServer) {
@@ -109,8 +124,6 @@ BotConnection.prototype.connectToTable = function(tableId) {
 			}
 		);
 	}
-
-	return this.connectThenable;
 }
 
 BotConnection.prototype.onConnectionConnect = function() {

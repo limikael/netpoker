@@ -5,6 +5,7 @@
 
 var ConnectionManager = require("../connection/ConnectionManager");
 var CashGameManager = require("../cashgame/CashGameManager");
+var TournamentManager = require("../tournament/TournamentManager");
 var EventDispatcher = require("yaed");
 var Thenable = require("tinp");
 var Backend = require("../backend/Backend");
@@ -45,6 +46,8 @@ function NetPokerServer() {
 
 	this.cashGameManager = new CashGameManager(this);
 	this.cashGameManager.on(CashGameManager.IDLE, this.onCashGameManagerIdle, this);
+
+	this.tournamentManager = new TournamentManager(this);
 }
 
 inherits(NetPokerServer, EventDispatcher);
@@ -94,6 +97,8 @@ NetPokerServer.prototype.useFixedDeck = function(deck) {
 NetPokerServer.prototype.onConnectionManagerConnection = function(e) {
 	var initMessage = e.getInitMessage();
 
+	//console.log("tournament id: " + initMessage.getTournamentId());
+
 	if (initMessage.getTableId() && this.cashGameManager) {
 		var table = this.cashGameManager.getTableById(initMessage.getTableId());
 
@@ -110,6 +115,18 @@ NetPokerServer.prototype.onConnectionManagerConnection = function(e) {
 			console.log("anonymous connection to table " + table.getId());
 
 		table.notifyNewConnection(e.getProtoConnection(), e.getUser());
+	} else if (initMessage.getTournamentId() && this.tournamentManager) {
+		this.tournamentManager.findTournamentById(initMessage.getTournamentId()).then(
+			function(tournament) {
+				tournament.notifyNewConnection(e.getProtoConnection(), e.getUser());
+			},
+
+			function(err) {
+				console.log("tournament not found, refusing...");
+				e.getProtoConnection().close();
+				return;
+			}
+		);
 	} else {
 		console.log("no entity to connect to, refusing...")
 		e.getProtoConnection().close();

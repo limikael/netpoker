@@ -59,9 +59,13 @@ TournamentManager.prototype.findTournamentById = function(id) {
 				return thenable;
 			}
 
-			var tournament = new scope.Tournament(data);
-			scope.manageTournament(tournament);
-			thenable.resolve(tournament);
+			if (data) {
+				var tournament = new scope.Tournament(data);
+				scope.manageTournament(tournament);
+				thenable.resolve(tournament);
+			} else {
+				thenable.reject("tournament not found");
+			}
 		},
 
 		function(e) {

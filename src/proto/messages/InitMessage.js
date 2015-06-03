@@ -10,6 +10,7 @@ function InitMessage(token) {
 	this.token = token;
 	this.tableId = null;
 	this.viewCase = null;
+	this.tournamentId = null;
 }
 
 InitMessage.TYPE = "init";
@@ -39,6 +40,22 @@ InitMessage.prototype.getTableId = function() {
 }
 
 /**
+ * Set table id.
+ * @method setTournamentId
+ */
+InitMessage.prototype.setTournamentId = function(id) {
+	this.tournamentId = id;
+}
+
+/**
+ * Get table id.
+ * @method getTournamentId
+ */
+InitMessage.prototype.getTournamentId = function() {
+	return this.tournamentId;
+}
+
+/**
  * Set view case.
  * @method setTableId
  */
@@ -62,6 +79,7 @@ InitMessage.prototype.unserialize = function(data) {
 	this.token = data.token;
 	this.tableId = data.tableId;
 	this.viewCase = data.viewCase;
+	this.tournamentId = data.tournamentId;
 }
 
 /**
@@ -72,7 +90,8 @@ InitMessage.prototype.serialize = function() {
 	return {
 		token: this.token,
 		tableId: this.tableId,
-		viewCase: this.viewCase
+		viewCase: this.viewCase,
+		tournamentId: this.tournamentId
 	};
 }
 

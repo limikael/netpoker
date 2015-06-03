@@ -21,7 +21,8 @@ describe("ProtoConnection", function() {
 			"token": "initToken",
 			"type": "init",
 			"tableId": null,
-			"viewCase": null
+			"viewCase": null,
+			"tournamentId": null
 		});
 	});
 

@@ -145,4 +145,12 @@ Tournament.prototype.onTournamentStateCanUnload = function() {
 	this.trigger(Tournament.CAN_UNLOAD);
 }
 
+/**
+ * New connection.
+ * @method notifyNewConnection
+ */
+Tournament.prototype.notifyNewConnection = function(protoConnection, user) {
+	this.tournamentState.notifyNewConnection(protoConnection, user);
+}
+
 module.exports = Tournament;
