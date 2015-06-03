@@ -41,4 +41,23 @@ describe("Tournament", function() {
 		t.removeUser(v);
 		expect(t.isUserRegistered(v)).toBe(false);
 	});
+
+	it("creates users from initial data", function() {
+		tournamentData.users = [{
+			name: "test",
+			id: 666
+		}, {
+			name: "test2",
+			id: 666
+		}];
+
+		var t = new Tournament(tournamentData);
+
+		var u = new User({
+			name: "test",
+			id: 666
+		});
+
+		expect(t.isUserRegistered(u)).toBe(true);
+	});
 });

@@ -5,6 +5,7 @@
 
 var EventDispatcher = require("yaed");
 var inherits = require("inherits");
+var User = require("../user/User");
 
 /**
  * A tournament is considered idle when there is no tournament ongoing,
@@ -22,6 +23,13 @@ function Tournament(data) {
 	this.id = data.id;
 
 	this.users = [];
+
+	if (data.users) {
+		for (var i = 0; i < data.users.length; i++) {
+			var u = new User(data.users[i]);
+			this.addUser(u);
+		}
+	}
 }
 
 inherits(Tournament, EventDispatcher);
