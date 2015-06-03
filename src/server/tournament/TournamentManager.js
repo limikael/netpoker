@@ -7,17 +7,28 @@ var inherits = require("inherits");
 var Thenable = require("tinp");
 var Tournament = require("./Tournament");
 var Backend = require("../../server/backend/Backend");
+var EventDispather = require("yaed");
 
 /**
  * Manage ongoing tournaments.
  * @class TournamentManager
  */
 function TournamentManager(services) {
+	EventDispather.call(this);
+
 	this.Tournament = Tournament;
 
 	this.services = services;
 	this.tournaments = [];
 }
+
+inherits(TournamentManager, EventDispather);
+
+/**
+ * Dispatched when all managed tournaments become idle.
+ * @event TournamentManager.IDLE
+ */
+TournamentManager.IDLE = "idle";
 
 /**
  * Get a managed tournament by id. If it is not currently managed, a
@@ -49,7 +60,7 @@ TournamentManager.prototype.findTournamentById = function(id) {
 			}
 
 			var tournament = new scope.Tournament(data);
-			scope.tournaments.push(tournament);
+			scope.manageTournament(tournament);
 			thenable.resolve(tournament);
 		},
 
@@ -59,6 +70,50 @@ TournamentManager.prototype.findTournamentById = function(id) {
 	);
 
 	return thenable;
+}
+
+/**
+ * Set up management for this tournament.
+ * @method manageTournament
+ * @private
+ */
+TournamentManager.prototype.manageTournament = function(tournament) {
+	if (this.hasLocalTournamentId(tournament.getId()))
+		throw new Error("tournament already managed");
+
+	tournament.on(Tournament.IDLE, this.onTournamentIdle, this);
+	tournament.on(Tournament.CAN_UNLOAD, this.onTournamentCanUnload, this);
+
+	this.tournaments.push(tournament);
+}
+
+/**
+ * A tournament becase idle.
+ * @method onTournamentIdle
+ * @private
+ */
+TournamentManager.prototype.onTournamentIdle = function() {
+	if (this.isIdle())
+		this.trigger(TournamentManager.IDLE);
+}
+
+/**
+ * A tournament can be unloaded.
+ * @method onTournamentCanUnload
+ * @private
+ */
+TournamentManager.prototype.onTournamentCanUnload = function(tournament) {
+	var index = this.tournaments.indexOf(tournament);
+
+	if (index < 0) {
+		console.log("strange!!! tournament can unload for non managed tournament");
+		return;
+	}
+
+	tournament.off(Tournament.IDLE, this.onTournamentIdle, this);
+	tournament.off(Tournament.CAN_UNLOAD, this.onTournamentCanUnload, this);
+
+	this.tournaments.splice(index, 1);
 }
 
 /**
@@ -85,6 +140,18 @@ TournamentManager.prototype.getLocalTournamentById = function(id) {
 			return this.tournaments[i];
 
 	throw new Error("Tournament with id " + id + " is not locally managed");
+}
+
+/**
+ * Is the tournament manager idle?
+ * @method isIdle
+ */
+TournamentManager.prototype.isIdle = function() {
+	for (var i = 0; i < this.tournaments.length; i++)
+		if (!this.tournaments[i].isIdle())
+			return false;
+
+	return true;
 }
 
 module.exports = TournamentManager;
