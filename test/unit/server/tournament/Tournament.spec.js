@@ -1,9 +1,13 @@
 var Tournament = require("../../../../src/server/tournament/Tournament");
+var TournamentState = require("../../../../src/server/tournament/TournamentState");
 var User = require("../../../../src/server/user/User");
+var EventDispatcher = require("yaed");
+var RegistrationState = require("../../../../src/server/tournament/RegistrationState");
 
 describe("Tournament", function() {
 	var tournamentData = {
-		id: 123
+		id: 123,
+		state: "registration"
 	};
 
 	it("validates data on creation, and can get data", function() {
@@ -59,5 +63,35 @@ describe("Tournament", function() {
 		});
 
 		expect(t.isUserRegistered(u)).toBe(true);
+	});
+
+	it("has a state that can be set, and will re-dispatch events from the state", function() {
+		var t = new Tournament(tournamentData);
+
+		var idleSpy = jasmine.createSpy();
+		t.on(Tournament.IDLE, idleSpy);
+
+		var state = new EventDispatcher();
+		state.setTournament = jasmine.createSpy();
+		state.run = jasmine.createSpy();
+		t.setTournamentState(state)
+
+		expect(state.setTournament).toHaveBeenCalled();
+		expect(state.run).toHaveBeenCalled();
+
+		state.trigger(TournamentState.IDLE);
+		expect(idleSpy).toHaveBeenCalled();
+	});
+
+	it("sets the right state depending on data", function() {
+		tournamentData.state = "registration";
+
+		var t = new Tournament(tournamentData);
+		expect(t.tournamentState).toEqual(jasmine.any(RegistrationState));
+
+		tournamentData.state = "something_else";
+		expect(function() {
+			var t = new Tournament(tournamentData);
+		}).toThrow();
 	});
 });

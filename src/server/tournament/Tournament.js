@@ -1,3 +1,6 @@
+var TournamentState = require("./TournamentState");
+var RegistrationState = require("./RegistrationState");
+
 /**
  * Server.
  * @module server
@@ -30,6 +33,17 @@ function Tournament(data) {
 			var u = new User(data.users[i]);
 			this.addUser(u);
 		}
+	}
+
+	switch (data.state) {
+		case "registration":
+			var state = new RegistrationState();
+			this.setTournamentState(state);
+			break;
+
+		default:
+			throw new Error("Can't manage this tournament: state=" + data.state);
+			break;
 	}
 }
 
@@ -92,6 +106,43 @@ Tournament.prototype.removeUser = function(u) {
 			this.users.splice(i, 1);
 			return;
 		}
+}
+
+/**
+ * Set and run current tournament state.
+ * @method setTournamentState
+ * @private
+ */
+Tournament.prototype.setTournamentState = function(tournamentState) {
+	if (this.tournamentState) {
+		this.tournamentState.setTournament(null);
+		this.tournamentState.off(TournamentState.IDLE, this.onTournamentStateIdle, this);
+		this.tournamentState.off(TournamentState.CAN_UNLOAD, this.onTournamentStateCanUnload, this);
+	}
+
+	this.tournamentState = tournamentState;
+	this.tournamentState.setTournament(this);
+	this.tournamentState.on(TournamentState.IDLE, this.onTournamentStateIdle, this);
+	this.tournamentState.on(TournamentState.CAN_UNLOAD, this.onTournamentStateCanUnload, this);
+	this.tournamentState.run();
+}
+
+/**
+ * Tournament state idle.
+ * @method onTournamentStateIdle
+ * @private
+ */
+Tournament.prototype.onTournamentStateIdle = function() {
+	this.trigger(Tournament.IDLE);
+}
+
+/**
+ * Tournament state can unload.
+ * @method onTournamentStateIdle
+ * @private
+ */
+Tournament.prototype.onTournamentStateCanUnload = function() {
+	this.trigger(Tournament.CAN_UNLOAD);
 }
 
 module.exports = Tournament;
