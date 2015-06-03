@@ -23,6 +23,9 @@ function CashGameManager(services) {
 	this.backendCallInProgress = false;
 	this.currentRequestedIds = [];
 	this.stopping = false;
+
+	// Override for testing.
+	this.CashGameTable = CashGameTable;
 }
 
 inherits(CashGameManager, EventDispatcher);
@@ -100,7 +103,7 @@ CashGameManager.prototype.onTableListCallSuccess = function(result) {
 		} else {
 			console.log("starting table: " + tableData.id);
 
-			var table = new CashGameTable(this.services, tableData);
+			var table = new this.CashGameTable(this.services, tableData);
 			table.on(CashGameTable.IDLE, this.onTableIdle, this);
 			table.on(CashGameTable.NUM_PLAYERS_CHANGE, this.onTableNumPlayersChange, this);
 

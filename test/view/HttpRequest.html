@@ -1,0 +1,23 @@
+<html>
+	<script src="res/netpokerclient.test.bundle.js"></script>
+	<script>
+		var HttpRequest=require("HttpRequest");
+
+		var httpRequest=new HttpRequest();
+
+		httpRequest.setUrl("res/custom.spritesheet.json");
+		//httpRequest.setUrl("res/netpokerclient.test.bundle.js");
+		httpRequest.setResultType("json");
+
+		httpRequest.send().then(
+			function(res) {
+				console.log("loaded:");
+				console.log(res);
+			},
+
+			function(e) {
+				console.log("error: "+e);
+			}
+		);
+	</script>
+</html>

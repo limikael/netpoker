@@ -4,9 +4,9 @@
  */
 
 var Thenable = require("tinp");
-var request = require("request");
 var inherits = require("inherits");
 var EventDispatcher = require("yaed");
+var HttpRequest = require("../utils/HttpRequest");
 
 /**
  * A "connection" that loads its messages from a json file rather than
@@ -29,22 +29,19 @@ MessageRequestConnection.CLOSE = "close";
  * @method connect
  */
 MessageRequestConnection.prototype.connect = function(url) {
-	request.get(url, this.onRequestComplete.bind(this));
+	var request = new HttpRequest(url);
+
+	request.send().then(
+		this.onRequestComplete.bind(this),
+		this.onRequestError.bind(this)
+	);
 }
 
 /**
  * @method onRequestComplete
  * @private
  */
-MessageRequestConnection.prototype.onRequestComplete = function(e, r, body) {
-	if (e) {
-		console.log("error in request connection");
-		console.log(e);
-		this.trigger(MessageRequestConnection.CLOSE);
-		return;
-	}
-
-	//console.log("MessageRequestConnection: loaded");
+MessageRequestConnection.prototype.onRequestComplete = function(body) {
 	this.trigger(MessageRequestConnection.CONNECT);
 
 	var lines = body.toString().split("\n");
@@ -64,6 +61,16 @@ MessageRequestConnection.prototype.onRequestComplete = function(e, r, body) {
 			});
 		}
 	}
+}
+
+/**
+ * @method onRequestComplete
+ * @private
+ */
+MessageRequestConnection.prototype.onRequestError = function(e) {
+	console.log("error in request connection");
+	console.log(e);
+	this.trigger(MessageRequestConnection.CLOSE);
 }
 
 /**

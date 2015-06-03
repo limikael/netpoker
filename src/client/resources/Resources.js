@@ -1,7 +1,7 @@
 var Thenable = require("tinp");
 var PIXI = require("pixi.js");
-var request = require("request");
 var UrlUtil = require("../../utils/UrlUtil");
+var HttpRequest = require("../../utils/HttpRequest");
 
 /**
  * Resources
@@ -130,15 +130,15 @@ Resources.prototype.load = function() {
  */
 Resources.prototype.onAssetLoaderProgress = function(ev) {
 	console.log("asset loader progress");
-/*	console.log(ev);
+	/*	console.log(ev);
 
-	ev.loader.ajaxRequest.onprogress = function() {
-		console.log("request progres...");
-	};
+		ev.loader.ajaxRequest.onprogress = function() {
+			console.log("request progres...");
+		};
 
-	ev.loader.ajaxRequest.addEventListener("progress", function() {
-		console.log("progress...");
-	});*/
+		ev.loader.ajaxRequest.addEventListener("progress", function() {
+			console.log("progress...");
+		});*/
 }
 
 /**
@@ -169,9 +169,12 @@ Resources.prototype.loadNextSkinSource = function() {
 		return;
 	}
 
-	request(
-		UrlUtil.makeAbsolute(o),
-		this.onSkinSourceLoaded.bind(this)
+	var request = new HttpRequest(UrlUtil.makeAbsolute(o));
+	request.setResultType("json");
+
+	request.send().then(
+		this.onSkinSourceLoaded.bind(this),
+		this.onSkinSourceLoadError.bind(this)
 	);
 }
 
@@ -179,19 +182,16 @@ Resources.prototype.loadNextSkinSource = function() {
  * Skin source loaded.
  * @method onSkinSourceLoaded
  */
-Resources.prototype.onSkinSourceLoaded = function(error, response, body) {
-	if (error) {
-		this.loadThenable.reject(error);
-		return;
-	}
-
-	if (response.statusCode != 200) {
-		this.loadThenable.reject(response.statusCode);
-		return;
-	}
-
-	var data = JSON.parse(body);
+Resources.prototype.onSkinSourceLoaded = function(data) {
 	this.processSkinData(data);
+}
+
+/**
+ * Skin source load error.
+ * @method onSkinSourceLoadError
+ */
+Resources.prototype.onSkinSourceLoadError = function(error) {
+	this.loadThenable.reject(error);
 }
 
 /**

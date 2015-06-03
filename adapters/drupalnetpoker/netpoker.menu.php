@@ -212,7 +212,7 @@
 
 		$modulePath=base_path().drupal_get_path("module","netpoker");
 
-		$vars["bundleUrl"]=$modulePath."/bin/netpokerclient.bundle.js?nocache=".rand();
+		$vars["bundleUrl"]=$modulePath."/bin/netpokerclient.bundle.min.js?nocache=".rand();
 		$vars["skinUrl"]=$modulePath."/bin/netpokerclient.spritesheet.json?nocache=".rand();
 		$vars["bundleLoaderUrl"]=$modulePath."/bundleloader.min.js";
 		$vars["skinSource"]=$skinVariables;

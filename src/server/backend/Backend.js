@@ -21,6 +21,7 @@ Backend.SIT_IN = "cashGameUserJoin";
 Backend.SIT_OUT = "cashGameUserLeave";
 Backend.START_CASH_GAME = "gameStartForCashGame";
 Backend.FINISH_GAME = "gameFinish";
+Backend.TOURNAMENT_INFO = "tournamentInfo";
 
 /**
  * Set base url.

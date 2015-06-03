@@ -2,6 +2,8 @@ var MessageRequestConnection = require("../../../src/utils/MessageRequestConnect
 var connect = require("connect");
 var serveStatic = require("serve-static");
 
+XMLHttpRequest = require("xhr2");
+
 describe("MessageRequestConnection", function() {
 	it("can load messages", function(done) {
 		var app = connect();

@@ -10,6 +10,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-spritesmith');
 	grunt.loadNpmTasks('grunt-browserify');
 	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -125,12 +126,27 @@ module.exports = function(grunt) {
 						["./src/client/app/NetPokerClient", {
 							expose: "NetPokerClient"
 						}],
+						["./src/utils/HttpRequest", {
+							expose: "HttpRequest"
+						}],
 						"pixiapp",
 						"pixi.js"
 					]
 				},
 				src: [],
 				dest: "test/view/res/netpokerclient.test.bundle.js",
+			},
+		},
+
+		uglify: {
+			main: {
+				options: {
+					//mangleProperties: true
+				},
+
+				files: {
+					"bin/netpokerclient.bundle.min.js": "bin/netpokerclient.bundle.js"
+				}
 			}
 		}
 	});
@@ -267,9 +283,9 @@ module.exports = function(grunt) {
 		que.done();
 	});
 
-	grunt.registerTask("build", ["sprite", "browserify", "copy"]);
+	grunt.registerTask("build", ["sprite", "browserify", "copy", "uglify"]);
 
-	grunt.registerTask("adapter", ["browserify:main", "copy:main", "compress:drupalnetpoker"]);
+	grunt.registerTask("adapter", ["browserify:main", "uglify", "copy:main", "compress:drupalnetpoker"]);
 
 	grunt.registerTask("default", function() {
 		console.log("Available Tasks");
