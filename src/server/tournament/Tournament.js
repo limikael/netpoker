@@ -14,9 +14,14 @@ var inherits = require("inherits");
  * event.
  * @class Tournament
  */
-function Tournament() {
+function Tournament(data) {
 	EventDispatcher.call(this);
-	throw new Error("not implemented");
+
+	if (!data.id) throw new Error("id missing");
+
+	this.id = data.id;
+
+	this.users = [];
 }
 
 inherits(Tournament, EventDispatcher);
@@ -33,5 +38,51 @@ Tournament.IDLE = "idle";
  * @event Tournament.CAN_UNLOAD
  */
 Tournament.CAN_UNLOAD = "canUnload";
+
+/**
+ * Get id.
+ * @method getId
+ */
+Tournament.prototype.getId = function() {
+	return this.id;
+}
+
+/**
+ * Is this user registered?
+ * @method isUserRegistered
+ */
+Tournament.prototype.isUserRegistered = function(u) {
+	for (var i = 0; i < this.users.length; i++)
+		if (this.users[i].getId() == u.getId())
+			return true;
+
+	return false;
+}
+
+/**
+ * Add a user.
+ * @method addUser
+ */
+Tournament.prototype.addUser = function(u) {
+	if (this.isUserRegistered(u))
+		return;
+
+	this.users.push(u);
+}
+
+/**
+ * Remove a user.
+ * @method addUser
+ */
+Tournament.prototype.removeUser = function(u) {
+	if (!this.isUserRegistered(u))
+		return;
+
+	for (var i = 0; i < this.users.length; i++)
+		if (this.users[i].getId() == u.getId()) {
+			this.users.splice(i, 1);
+			return;
+		}
+}
 
 module.exports = Tournament;
