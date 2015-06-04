@@ -93,6 +93,8 @@ InterfaceController.prototype.onTableInfoMessage = function(m) {
 	var tableInfoView = this.view.getTableInfoView();
 
 	tableInfoView.setTableInfoText(m.getText());
+	tableInfoView.setJoinButtonVisible(m.getShowJoinButton());
+	tableInfoView.setLeaveButtonVisible(m.getShowLeaveButton());
 }
 
 /**

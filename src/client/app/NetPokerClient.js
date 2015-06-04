@@ -41,6 +41,7 @@ function NetPokerClient() {
 
 	this.url = null;
 	this.tableId = null;
+	this.tournamentId = null;
 	this.viewConfig = new ViewConfig();
 
 	this.on("frame", TWEEN.update);
@@ -62,6 +63,14 @@ NetPokerClient.prototype.setUrl = function(url) {
  */
 NetPokerClient.prototype.setTableId = function(tableId) {
 	this.tableId = tableId;
+}
+
+/**
+ * Set tournament id.
+ * @method setTournamentId
+ */
+NetPokerClient.prototype.setTournamentId = function(tournamentId) {
+	this.tournamentId = tournamentId;
 }
 
 /**
@@ -191,6 +200,9 @@ NetPokerClient.prototype.onConnectionConnect = function() {
 
 	if (this.tableId)
 		initMessage.setTableId(this.tableId);
+
+	if (this.tournamentId)
+		initMessage.setTournamentId(this.tournamentId);
 
 	if (this.viewCase)
 		initMessage.setViewCase(this.viewCase);

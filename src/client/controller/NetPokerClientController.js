@@ -11,6 +11,7 @@ var SeatClickMessage = require("../../proto/messages/SeatClickMessage");
 var PresetButtonClickMessage = require("../../proto/messages/PresetButtonClickMessage");
 var NetPokerClientView = require("../view/NetPokerClientView");
 var DialogView = require("../view/DialogView");
+var TableInfoView = require("../view/TableInfoView");
 var SettingsView = require("../view/SettingsView");
 var TableController = require("./TableController");
 var InterfaceController = require("./InterfaceController");
@@ -34,6 +35,7 @@ function NetPokerClientController(view) {
 	//console.log(this.netPokerClientView.getDialogView());
 
 	this.netPokerClientView.getButtonsView().on(ButtonsView.BUTTON_CLICK, this.onButtonClick, this);
+	this.netPokerClientView.getTableInfoView().on(TableInfoView.BUTTON_CLICK, this.onButtonClick, this);
 	this.netPokerClientView.getDialogView().on(DialogView.BUTTON_CLICK, this.onButtonClick, this);
 	this.netPokerClientView.on(NetPokerClientView.SEAT_CLICK, this.onSeatClick, this);
 

@@ -20134,6 +20134,7 @@ function NetPokerClient() {
 
 	this.url = null;
 	this.tableId = null;
+	this.tournamentId = null;
 	this.viewConfig = new ViewConfig();
 
 	this.on("frame", TWEEN.update);
@@ -20155,6 +20156,14 @@ NetPokerClient.prototype.setUrl = function(url) {
  */
 NetPokerClient.prototype.setTableId = function(tableId) {
 	this.tableId = tableId;
+}
+
+/**
+ * Set tournament id.
+ * @method setTournamentId
+ */
+NetPokerClient.prototype.setTournamentId = function(tournamentId) {
+	this.tournamentId = tournamentId;
 }
 
 /**
@@ -20284,6 +20293,9 @@ NetPokerClient.prototype.onConnectionConnect = function() {
 
 	if (this.tableId)
 		initMessage.setTableId(this.tableId);
+
+	if (this.tournamentId)
+		initMessage.setTournamentId(this.tournamentId);
 
 	if (this.viewCase)
 		initMessage.setViewCase(this.viewCase);
@@ -20456,6 +20468,8 @@ InterfaceController.prototype.onTableInfoMessage = function(m) {
 	var tableInfoView = this.view.getTableInfoView();
 
 	tableInfoView.setTableInfoText(m.getText());
+	tableInfoView.setJoinButtonVisible(m.getShowJoinButton());
+	tableInfoView.setLeaveButtonVisible(m.getShowLeaveButton());
 }
 
 /**
@@ -20654,6 +20668,7 @@ var SeatClickMessage = require("../../proto/messages/SeatClickMessage");
 var PresetButtonClickMessage = require("../../proto/messages/PresetButtonClickMessage");
 var NetPokerClientView = require("../view/NetPokerClientView");
 var DialogView = require("../view/DialogView");
+var TableInfoView = require("../view/TableInfoView");
 var SettingsView = require("../view/SettingsView");
 var TableController = require("./TableController");
 var InterfaceController = require("./InterfaceController");
@@ -20677,6 +20692,7 @@ function NetPokerClientController(view) {
 	//console.log(this.netPokerClientView.getDialogView());
 
 	this.netPokerClientView.getButtonsView().on(ButtonsView.BUTTON_CLICK, this.onButtonClick, this);
+	this.netPokerClientView.getTableInfoView().on(TableInfoView.BUTTON_CLICK, this.onButtonClick, this);
 	this.netPokerClientView.getDialogView().on(DialogView.BUTTON_CLICK, this.onButtonClick, this);
 	this.netPokerClientView.on(NetPokerClientView.SEAT_CLICK, this.onSeatClick, this);
 
@@ -20789,7 +20805,7 @@ NetPokerClientController.prototype.onCheckboxChange = function(ev) {
 }
 
 module.exports = NetPokerClientController;
-},{"../../proto/ProtoConnection":44,"../../proto/data/ButtonData":45,"../../proto/messages/ButtonClickMessage":50,"../../proto/messages/ChatMessage":52,"../../proto/messages/CheckboxMessage":53,"../../proto/messages/PresetButtonClickMessage":67,"../../proto/messages/SeatClickMessage":69,"../view/ButtonsView":25,"../view/DialogView":32,"../view/NetPokerClientView":34,"../view/PresetButtonsView":37,"../view/SettingsView":41,"./InterfaceController":16,"./MessageSequencer":18,"./TableController":20}],20:[function(require,module,exports){
+},{"../../proto/ProtoConnection":44,"../../proto/data/ButtonData":45,"../../proto/messages/ButtonClickMessage":50,"../../proto/messages/ChatMessage":52,"../../proto/messages/CheckboxMessage":53,"../../proto/messages/PresetButtonClickMessage":67,"../../proto/messages/SeatClickMessage":69,"../view/ButtonsView":25,"../view/DialogView":32,"../view/NetPokerClientView":34,"../view/PresetButtonsView":37,"../view/SettingsView":41,"../view/TableInfoView":42,"./InterfaceController":16,"./MessageSequencer":18,"./TableController":20}],20:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24157,14 +24173,19 @@ module.exports = SettingsView;
 
 var PIXI = require("pixi.js");
 var EventDispatcher = require("yaed");
+var DialogButton = require("./DialogButton");
 var inherits = require("inherits");
+var ButtonData = require("../../proto/data/ButtonData");
 
 /**
  * Show table info.
  * @class TableInfoView
  */
-function TableInfoView() {
+function TableInfoView(viewConfig, resources) {
 	PIXI.DisplayObjectContainer.call(this);
+
+	this.viewConfig = viewConfig;
+	this.resources = resources;
 
 	var style = {
 		font: "bold 24px Times New Roman",
@@ -24183,7 +24204,7 @@ function TableInfoView() {
 	this.tableInfoText.position.y = 540;
 	this.addChild(this.tableInfoText);
 
-	var style={
+	var style = {
 		font: "bold 12px Arial",
 		fill: "#ffffff",
 		dropShadow: true,
@@ -24193,14 +24214,30 @@ function TableInfoView() {
 		strokeThickness: 1,
 	};
 
-	this.handInfoText=new PIXI.Text("<HandInfoText>",style);
-	this.handInfoText.position.y=10;
-	this.handInfoText.position.x=960-this.handInfoText.width;
+	this.handInfoText = new PIXI.Text("<HandInfoText>", style);
+	this.handInfoText.position.y = 10;
+	this.handInfoText.position.x = 960 - this.handInfoText.width;
 	this.addChild(this.handInfoText);
+
+	this.joinButton = new DialogButton(this.resources);
+	this.joinButton.position.x = 355;
+	this.joinButton.setText("JOIN");
+	this.joinButton.visible = false;
+	this.joinButton.on("click", this.onButtonClick, this);
+	this.addChild(this.joinButton);
+
+	this.leaveButton = new DialogButton(this.resources);
+	this.leaveButton.position.x = 355;
+	this.leaveButton.setText("LEAVE");
+	this.leaveButton.visible = false;
+	this.leaveButton.on("click", this.onButtonClick, this);
+	this.addChild(this.leaveButton);
 }
 
 inherits(TableInfoView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(TableInfoView);
+
+TableInfoView.BUTTON_CLICK = "buttonClick";
 
 /**
  * Set table info text.
@@ -24208,9 +24245,27 @@ EventDispatcher.init(TableInfoView);
  */
 TableInfoView.prototype.setTableInfoText = function(s) {
 	if (!s)
-		s="";
+		s = "";
 
 	this.tableInfoText.setText(s);
+	this.joinButton.position.y = this.tableInfoText.position.y + this.tableInfoText.height + 5;
+	this.leaveButton.position.y = this.tableInfoText.position.y + this.tableInfoText.height + 5;
+}
+
+/**
+ * Join button.
+ * @method setJoinButtonVisible
+ */
+TableInfoView.prototype.setJoinButtonVisible = function(value) {
+	this.joinButton.visible = value;
+}
+
+/**
+ * Join button
+ * @method setLeaveButtonVisible
+ */
+TableInfoView.prototype.setLeaveButtonVisible = function(value) {
+	this.leaveButton.visible = value;
 }
 
 /**
@@ -24219,11 +24274,11 @@ TableInfoView.prototype.setTableInfoText = function(s) {
  */
 TableInfoView.prototype.setHandInfoText = function(s) {
 	if (!s)
-		s="";
+		s = "";
 
 	this.handInfoText.setText(s);
 	this.handInfoText.updateTransform();
-	this.handInfoText.position.x=960-this.handInfoText.width-10;
+	this.handInfoText.position.x = 960 - this.handInfoText.width - 10;
 }
 
 /**
@@ -24235,8 +24290,31 @@ TableInfoView.prototype.clear = function() {
 	this.handInfoText.setText("");
 }
 
+/**
+ * Button click
+ * @method onButtonClick
+ * @private
+ */
+TableInfoView.prototype.onButtonClick = function(e) {
+	this.joinButton.visible = false;
+	this.leaveButton.visible = false;
+
+	var ev = {
+		type: TableInfoView.BUTTON_CLICK
+	};
+
+	if (e.target == this.joinButton)
+		ev.button = ButtonData.JOIN_TOURNAMENT;
+
+	if (e.target == this.leaveButton)
+		ev.button = ButtonData.LEAVE_TOURNAMENT;
+
+	console.log("button click");
+	this.trigger(ev);
+}
+
 module.exports = TableInfoView;
-},{"inherits":7,"pixi.js":8,"yaed":14}],43:[function(require,module,exports){
+},{"../../proto/data/ButtonData":45,"./DialogButton":31,"inherits":7,"pixi.js":8,"yaed":14}],43:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -25795,6 +25873,7 @@ function InitMessage(token) {
 	this.token = token;
 	this.tableId = null;
 	this.viewCase = null;
+	this.tournamentId = null;
 }
 
 InitMessage.TYPE = "init";
@@ -25824,6 +25903,22 @@ InitMessage.prototype.getTableId = function() {
 }
 
 /**
+ * Set table id.
+ * @method setTournamentId
+ */
+InitMessage.prototype.setTournamentId = function(id) {
+	this.tournamentId = id;
+}
+
+/**
+ * Get table id.
+ * @method getTournamentId
+ */
+InitMessage.prototype.getTournamentId = function() {
+	return this.tournamentId;
+}
+
+/**
  * Set view case.
  * @method setTableId
  */
@@ -25847,6 +25942,7 @@ InitMessage.prototype.unserialize = function(data) {
 	this.token = data.token;
 	this.tableId = data.tableId;
 	this.viewCase = data.viewCase;
+	this.tournamentId = data.tournamentId;
 }
 
 /**
@@ -25857,7 +25953,8 @@ InitMessage.prototype.serialize = function() {
 	return {
 		token: this.token,
 		tableId: this.tableId,
-		viewCase: this.viewCase
+		viewCase: this.viewCase,
+		tournamentId: this.tournamentId
 	};
 }
 
