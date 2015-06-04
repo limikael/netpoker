@@ -24,6 +24,7 @@ function Tournament(services, data) {
 
 	if (!data.id) throw new Error("id missing");
 	if (!data.seatsPerTable) throw new Error("missing seats per table for tournament");
+	if (!data.startChips) throw new Error("missing start chips for tournament");
 
 	this.id = data.id;
 	this.info = data.info;
@@ -205,6 +206,22 @@ Tournament.prototype.getNumRegistrations = function() {
  */
 Tournament.prototype.getRequiredRegistrations = function() {
 	return this.requiredRegistrations;
+}
+
+/**
+ * Get users.
+ * @method getUsers
+ */
+Tournament.prototype.getUsers = function() {
+	return this.users;
+}
+
+/**
+ * Get start chips.
+ * @method getStartChips
+ */
+Tournament.prototype.getStartChips = function() {
+	return this.startChips;
 }
 
 module.exports = Tournament;

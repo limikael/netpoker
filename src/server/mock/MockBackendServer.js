@@ -101,7 +101,8 @@ MockBackendServer.prototype.tournamentInfo = function(params) {
 		state: "registration",
 		info: "Welcome to the tournament...",
 		requiredRegistrations: 3,
-		seatsPerTable: 10
+		seatsPerTable: 10,
+		startChips: 1000
 	};
 }
 

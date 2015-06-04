@@ -1,5 +1,6 @@
 var TournamentState = require("./TournamentState");
 var TournamentTable = require("./TournamentTable");
+var ArrayUtil = require("../../utils/ArrayUtil");
 var inherits = require("inherits");
 
 /**
@@ -29,6 +30,14 @@ PlayState.prototype.run = function() {
 		var t = new TournamentTable(this, i);
 		this.tournamentTables.push(t);
 	}
+
+	var users = this.tournament.getUsers();
+	ArrayUtil.shuffle(users);
+
+	var startChips = this.tournament.getStartChips();
+
+	for (var i = 0; i < users.length; i++)
+		this.tournamentTables[i % this.tournamentTables.length].sitInUser(users[i], startChips);
 }
 
 /**

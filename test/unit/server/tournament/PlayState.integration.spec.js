@@ -63,6 +63,7 @@ describe("PlayState.integration", function() {
 
 				var playState = tournamentState;
 				expect(playState.tournamentTables.length).toBe(1);
+				expect(playState.tournamentTables[0].getNumSeatsUsed()).toBe(3);
 				next();
 			}
 		).then(done);

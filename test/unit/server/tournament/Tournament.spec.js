@@ -8,7 +8,8 @@ describe("Tournament", function() {
 	var tournamentData = {
 		id: 123,
 		state: "registration",
-		seatsPerTable: 10
+		seatsPerTable: 10,
+		startChips: 1000
 	};
 
 	it("validates data on creation, and can get data", function() {

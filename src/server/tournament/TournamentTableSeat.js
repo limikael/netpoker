@@ -4,6 +4,7 @@
  */
 
 var BaseTableSeat = require("../table/BaseTableSeat");
+var inherits = require("inherits");
 
 /**
  * A table seat. This class represents a seat in a tournament.
@@ -12,6 +13,39 @@ var BaseTableSeat = require("../table/BaseTableSeat");
  */
 function TournamentTableSeat(tournamentTable, seatIndex, active) {
 	BaseTableSeat.call(this, tournamentTable, seatIndex, active);
+
+	this.user = null;
+	this.chips = 0;
+}
+
+inherits(TournamentTableSeat, BaseTableSeat);
+
+/**
+ * Is tihs seat available?
+ * @method isAvailable
+ */
+TournamentTableSeat.prototype.isAvailable = function() {
+	return this.isActive() && !this.user;
+}
+
+/**
+ * Sit in user.
+ * @method sitInUser
+ */
+TournamentTableSeat.prototype.sitInUser = function(user, chips) {
+	if (this.user)
+		throw new Error("seat is already taken");
+
+	this.user = user;
+	this.chips = chips;
+}
+
+/**
+ * Get user.
+ * @method getUser
+ */
+TournamentTableSeat.prototype.getUser = function() {
+	return this.user;
 }
 
 module.exports = TournamentTableSeat;
