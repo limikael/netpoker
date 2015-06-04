@@ -44,9 +44,9 @@ PreTournamentInfoMessage.prototype.unserialize = function(data) {
  * @method serialize
  */
 PreTournamentInfoMessage.prototype.serialize = function() {
-	if(this.countdown < 0)
+	if (this.countdown < 0)
 		this.countdown = 0;
-	
+
 	return {
 		text: this.text,
 		countdown: this.countdown

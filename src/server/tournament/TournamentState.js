@@ -34,6 +34,17 @@ TournamentState.prototype.setTournament = function(tournament) {
 }
 
 /**
+ * Get tournament that we are a state for.
+ * @method getTournament
+ */
+TournamentState.prototype.getTournament = function() {
+	if (!this.tournament)
+		throw new Error("tournament is not set yet");
+
+	return this.tournament;
+}
+
+/**
  * Notify new connection.
  * @method notifyNewConnection
  */

@@ -12,15 +12,15 @@ describe("Tournament", function() {
 
 	it("validates data on creation, and can get data", function() {
 		expect(function() {
-			var t = new Tournament();
+			var t = new Tournament(null);
 		}).toThrow();
 
-		t = new Tournament(tournamentData);
+		t = new Tournament(null, tournamentData);
 		expect(t.getId()).toBe(123);
 	});
 
 	it("can add and remove users", function() {
-		var t = new Tournament(tournamentData);
+		var t = new Tournament(null, tournamentData);
 
 		var u = new User({
 			name: "test",
@@ -55,7 +55,7 @@ describe("Tournament", function() {
 			id: 666
 		}];
 
-		var t = new Tournament(tournamentData);
+		var t = new Tournament(null, tournamentData);
 
 		var u = new User({
 			name: "test",
@@ -66,7 +66,7 @@ describe("Tournament", function() {
 	});
 
 	it("has a state that can be set, and will re-dispatch events from the state", function() {
-		var t = new Tournament(tournamentData);
+		var t = new Tournament(null, tournamentData);
 
 		var idleSpy = jasmine.createSpy();
 		t.on(Tournament.IDLE, idleSpy);
@@ -86,12 +86,12 @@ describe("Tournament", function() {
 	it("sets the right state depending on data", function() {
 		tournamentData.state = "registration";
 
-		var t = new Tournament(tournamentData);
+		var t = new Tournament(null, tournamentData);
 		expect(t.tournamentState).toEqual(jasmine.any(RegistrationState));
 
 		tournamentData.state = "something_else";
 		expect(function() {
-			var t = new Tournament(tournamentData);
+			var t = new Tournament(null, tournamentData);
 		}).toThrow();
 	});
 });

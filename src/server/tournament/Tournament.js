@@ -19,12 +19,13 @@ var User = require("../user/User");
  * event.
  * @class Tournament
  */
-function Tournament(data) {
+function Tournament(services, data) {
 	EventDispatcher.call(this);
 
 	if (!data.id) throw new Error("id missing");
 
 	this.id = data.id;
+	this.info = data.info;
 
 	this.users = [];
 
@@ -45,6 +46,8 @@ function Tournament(data) {
 			throw new Error("Can't manage this tournament: state=" + data.state);
 			break;
 	}
+
+	this.services = services;
 }
 
 inherits(Tournament, EventDispatcher);
@@ -151,6 +154,22 @@ Tournament.prototype.onTournamentStateCanUnload = function() {
  */
 Tournament.prototype.notifyNewConnection = function(protoConnection, user) {
 	this.tournamentState.notifyNewConnection(protoConnection, user);
+}
+
+/**
+ * Get info.
+ * @method getInfo
+ */
+Tournament.prototype.getInfo = function() {
+	return this.info;
+}
+
+/**
+ * Get backend.
+ * @method getBackend
+ */
+Tournament.prototype.getBackend = function() {
+	return this.services.getBackend();
 }
 
 module.exports = Tournament;

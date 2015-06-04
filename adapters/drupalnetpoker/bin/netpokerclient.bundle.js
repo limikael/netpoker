@@ -20386,6 +20386,7 @@ var HandInfoMessage = require("../../proto/messages/HandInfoMessage");
 var PresetButtonsMessage = require("../../proto/messages/PresetButtonsMessage");
 var InterfaceStateMessage = require("../../proto/messages/InterfaceStateMessage");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
+var PreTournamentInfoMessage = require("../../proto/messages/PreTournamentInfoMessage");
 
 /**
  * Control user interface.
@@ -20402,6 +20403,7 @@ function InterfaceController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(HandInfoMessage.TYPE, this.onHandInfoMessage, this);
 	this.messageSequencer.addMessageHandler(InterfaceStateMessage.TYPE, this.onInterfaceStateMessage, this);
 	this.messageSequencer.addMessageHandler(CheckboxMessage.TYPE, this.onCheckboxMessage, this);
+	this.messageSequencer.addMessageHandler(PreTournamentInfoMessage.TYPE, this.onPreTournamentInfoMessage, this);
 
 	this.messageSequencer.addMessageHandler(PresetButtonsMessage.TYPE, this.onPresetButtons, this);
 }
@@ -20504,8 +20506,18 @@ InterfaceController.prototype.onCheckboxMessage = function(m) {
 	settingsView.setCheckboxChecked(m.getId(), m.getChecked());
 }
 
+/**
+ * Handle pre torunament info message.
+ * @method onPreTournamentInfoMessage
+ */
+InterfaceController.prototype.onPreTournamentInfoMessage = function(m) {
+	var tableInfoView = this.view.getTableInfoView();
+
+	tableInfoView.setPreTournamentInfoText(m.getText());
+}
+
 module.exports = InterfaceController;
-},{"../../proto/messages/ButtonsMessage":51,"../../proto/messages/ChatMessage":52,"../../proto/messages/CheckboxMessage":53,"../../proto/messages/HandInfoMessage":60,"../../proto/messages/InterfaceStateMessage":62,"../../proto/messages/PresetButtonsMessage":68,"../../proto/messages/ShowDialogMessage":71,"../../proto/messages/TableInfoMessage":75}],17:[function(require,module,exports){
+},{"../../proto/messages/ButtonsMessage":51,"../../proto/messages/ChatMessage":52,"../../proto/messages/CheckboxMessage":53,"../../proto/messages/HandInfoMessage":60,"../../proto/messages/InterfaceStateMessage":62,"../../proto/messages/PreTournamentInfoMessage":66,"../../proto/messages/PresetButtonsMessage":68,"../../proto/messages/ShowDialogMessage":71,"../../proto/messages/TableInfoMessage":75}],17:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24205,6 +24217,19 @@ function TableInfoView(viewConfig, resources) {
 	this.addChild(this.tableInfoText);
 
 	var style = {
+		font: "bold 24px Times New Roman",
+		fill: "#ffffff",
+		align: "center"
+	};
+
+	this.preTournamentInfoText = new PIXI.Text("<PreTournamentInfoText>", style);
+	this.preTournamentInfoText.position.y = 360;
+	//this.preTournamentInfoText.position.y = 280;
+	this.preTournamentInfoText.position.x = Math.round(960 - 300) / 2;
+	this.preTournamentInfoText.alpha = .25;
+	this.addChild(this.preTournamentInfoText);
+
+	var style = {
 		font: "bold 12px Arial",
 		fill: "#ffffff",
 		dropShadow: true,
@@ -24253,6 +24278,18 @@ TableInfoView.prototype.setTableInfoText = function(s) {
 }
 
 /**
+ * Set pre tournament info text.
+ * @method setPreTournamentInfoText
+ */
+TableInfoView.prototype.setPreTournamentInfoText = function(s) {
+	if (!s)
+		s = "";
+
+	this.preTournamentInfoText.setText(s);
+	this.preTournamentInfoText.position.x = 960 / 2 - this.preTournamentInfoText.width / 2;
+}
+
+/**
  * Join button.
  * @method setJoinButtonVisible
  */
@@ -24288,6 +24325,9 @@ TableInfoView.prototype.setHandInfoText = function(s) {
 TableInfoView.prototype.clear = function() {
 	this.tableInfoText.setText("");
 	this.handInfoText.setText("");
+	this.preTournamentInfoText.setText("");
+	this.joinButton.visible = false;
+	this.leaveButton.visible = false;
 }
 
 /**
@@ -26260,9 +26300,9 @@ PreTournamentInfoMessage.prototype.unserialize = function(data) {
  * @method serialize
  */
 PreTournamentInfoMessage.prototype.serialize = function() {
-	if(this.countdown < 0)
+	if (this.countdown < 0)
 		this.countdown = 0;
-	
+
 	return {
 		text: this.text,
 		countdown: this.countdown
@@ -26878,6 +26918,22 @@ TableInfoMessage.prototype.getShowLeaveButton = function() {
 }
 
 /**
+ * Setter.
+ * @method getShowJoinButton
+ */
+TableInfoMessage.prototype.setShowJoinButton = function(value) {
+	this.showJoinButton = value;
+}
+
+/**
+ * Setter.
+ * @method getShowLeaveButton
+ */
+TableInfoMessage.prototype.setShowLeaveButton = function(value) {
+	this.showLeaveButton = value;
+}
+
+/**
  * Getter.
  * @method getInfoLink
  */
@@ -26898,22 +26954,22 @@ TableInfoMessage.prototype.getInfoLinkText = function() {
  * @method unserialize
  */
 TableInfoMessage.prototype.unserialize = function(data) {
-	if(data.text != null)
+	if (data.text != null)
 		this.text = data.text;
 
-	if(data.countdown != null)
+	if (data.countdown != null)
 		this.countdown = data.countdown;
 
-	if(data.showJoinButton != null)
+	if (data.showJoinButton != null)
 		this.showJoinButton = data.showJoinButton;
 
-	if(data.showLeaveButton != null)
+	if (data.showLeaveButton != null)
 		this.showLeaveButton = data.showLeaveButton;
 
-	if(data.infoLink != null)
+	if (data.infoLink != null)
 		this.infoLink = data.infoLink;
 
-	if(data.infoLinkText != null)
+	if (data.infoLinkText != null)
 		this.infoLinkText = data.infoLinkText;
 }
 

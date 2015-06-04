@@ -28,7 +28,8 @@ RegistrationState.prototype.notifyNewConnection = function(protoConnection, user
  * Spectator done.
  * @method onRegistrationSpectatorDone
  */
-RegistrationState.prototype.onRegistrationSpectatorDone = function(rs) {
+RegistrationState.prototype.onRegistrationSpectatorDone = function(ev) {
+	var rs = ev.target;
 	rs.off(RegistrationSpectator.DONE, this.onRegistrationSpectatorDone, this);
 
 	var index = this.registrationSpectators.indexOf(rs);

@@ -98,9 +98,15 @@ MockBackendServer.prototype.gameStartForCashGame = function(params) {
 MockBackendServer.prototype.tournamentInfo = function(params) {
 	return {
 		id: 666,
-		state: "registration"
+		state: "registration",
+		info: "Welcome to the tournament...",
 	};
+}
 
+MockBackendServer.prototype.tournamentRegister = function(params) {
+	return {
+		ok: 1
+	};
 }
 
 /**

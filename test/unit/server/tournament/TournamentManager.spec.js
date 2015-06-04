@@ -9,7 +9,7 @@ describe("TournamentManager", function() {
 	var mockServices;
 
 	beforeEach(function() {
-		MockTournament = function(data) {
+		MockTournament = function(services, data) {
 			EventDispatcher.call(this);
 			this.id = data ? data.id : null;
 		};

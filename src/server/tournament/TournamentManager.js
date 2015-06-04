@@ -60,7 +60,7 @@ TournamentManager.prototype.findTournamentById = function(id) {
 			}
 
 			if (data) {
-				var tournament = new scope.Tournament(data);
+				var tournament = new scope.Tournament(scope.services, data);
 				scope.manageTournament(tournament);
 				thenable.resolve(tournament);
 			} else {

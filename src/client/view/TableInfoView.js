@@ -37,6 +37,19 @@ function TableInfoView(viewConfig, resources) {
 	this.addChild(this.tableInfoText);
 
 	var style = {
+		font: "bold 24px Times New Roman",
+		fill: "#ffffff",
+		align: "center"
+	};
+
+	this.preTournamentInfoText = new PIXI.Text("<PreTournamentInfoText>", style);
+	this.preTournamentInfoText.position.y = 360;
+	//this.preTournamentInfoText.position.y = 280;
+	this.preTournamentInfoText.position.x = Math.round(960 - 300) / 2;
+	this.preTournamentInfoText.alpha = .25;
+	this.addChild(this.preTournamentInfoText);
+
+	var style = {
 		font: "bold 12px Arial",
 		fill: "#ffffff",
 		dropShadow: true,
@@ -85,6 +98,18 @@ TableInfoView.prototype.setTableInfoText = function(s) {
 }
 
 /**
+ * Set pre tournament info text.
+ * @method setPreTournamentInfoText
+ */
+TableInfoView.prototype.setPreTournamentInfoText = function(s) {
+	if (!s)
+		s = "";
+
+	this.preTournamentInfoText.setText(s);
+	this.preTournamentInfoText.position.x = 960 / 2 - this.preTournamentInfoText.width / 2;
+}
+
+/**
  * Join button.
  * @method setJoinButtonVisible
  */
@@ -120,6 +145,9 @@ TableInfoView.prototype.setHandInfoText = function(s) {
 TableInfoView.prototype.clear = function() {
 	this.tableInfoText.setText("");
 	this.handInfoText.setText("");
+	this.preTournamentInfoText.setText("");
+	this.joinButton.visible = false;
+	this.leaveButton.visible = false;
 }
 
 /**

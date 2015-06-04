@@ -52,6 +52,22 @@ TableInfoMessage.prototype.getShowLeaveButton = function() {
 }
 
 /**
+ * Setter.
+ * @method getShowJoinButton
+ */
+TableInfoMessage.prototype.setShowJoinButton = function(value) {
+	this.showJoinButton = value;
+}
+
+/**
+ * Setter.
+ * @method getShowLeaveButton
+ */
+TableInfoMessage.prototype.setShowLeaveButton = function(value) {
+	this.showLeaveButton = value;
+}
+
+/**
  * Getter.
  * @method getInfoLink
  */
@@ -72,22 +88,22 @@ TableInfoMessage.prototype.getInfoLinkText = function() {
  * @method unserialize
  */
 TableInfoMessage.prototype.unserialize = function(data) {
-	if(data.text != null)
+	if (data.text != null)
 		this.text = data.text;
 
-	if(data.countdown != null)
+	if (data.countdown != null)
 		this.countdown = data.countdown;
 
-	if(data.showJoinButton != null)
+	if (data.showJoinButton != null)
 		this.showJoinButton = data.showJoinButton;
 
-	if(data.showLeaveButton != null)
+	if (data.showLeaveButton != null)
 		this.showLeaveButton = data.showLeaveButton;
 
-	if(data.infoLink != null)
+	if (data.infoLink != null)
 		this.infoLink = data.infoLink;
 
-	if(data.infoLinkText != null)
+	if (data.infoLinkText != null)
 		this.infoLinkText = data.infoLinkText;
 }
 
