@@ -29,6 +29,7 @@ function RegistrationSpectator(registrationState, protoConnection, user) {
 
 	this.send(this.getTableInfoMessage());
 	this.send(new StateCompleteMessage());
+	this.send(this.registrationState.getPreTournamentInfoMessage());
 
 	this.backendCallInProgress = false;
 }
@@ -145,6 +146,7 @@ RegistrationSpectator.prototype.onButtonClickMessage = function(m) {
 RegistrationSpectator.prototype.onTournamentRegisterSuccess = function(r) {
 	this.tournament.addUser(this.user);
 	this.send(this.getTableInfoMessage());
+	this.registrationState.send(this.registrationState.getPreTournamentInfoMessage());
 	this.notifyCallComplete();
 }
 
@@ -166,6 +168,7 @@ RegistrationSpectator.prototype.onTournamentRegisterError = function(r) {
 RegistrationSpectator.prototype.onTournamentUnregisterSuccess = function(r) {
 	this.tournament.removeUser(this.user);
 	this.send(this.getTableInfoMessage());
+	this.registrationState.send(this.registrationState.getPreTournamentInfoMessage());
 	this.notifyCallComplete();
 }
 

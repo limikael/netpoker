@@ -1,6 +1,7 @@
 var TournamentState = require("./TournamentState");
 var inherits = require("inherits");
 var RegistrationSpectator = require("./RegistrationSpectator");
+var PreTournamentInfoMessage = require("../../proto/messages/PreTournamentInfoMessage");
 
 /**
  * Before the game has started.
@@ -38,6 +39,33 @@ RegistrationState.prototype.onRegistrationSpectatorDone = function(ev) {
 
 	if (!this.registrationSpectators.length)
 		this.trigger(TournamentState.CAN_UNLOAD);
+}
+
+/**
+ * Get pre tournament message.
+ * @method getPreTournamentInfoMessage
+ */
+RegistrationState.prototype.getPreTournamentInfoMessage = function() {
+	/*	var now: Int = Math.round(Date.now().getTime() / 1000);
+		var startingIn: Int = Math.round(tournament.startTime - now);
+		var m: PreTournamentInfoMessage = new PreTournamentInfoMessage();
+
+		m.countdown = startingIn;*/
+
+	var text = "Registrations: " + this.tournament.getNumRegistrations() + "\n\nStarting in: ??:??";
+
+	var m = new PreTournamentInfoMessage(text);
+
+	return m;
+}
+
+/**
+ * Sent to all connected users.
+ * @method send
+ */
+RegistrationState.prototype.send = function(m) {
+	for (var i = 0; i < this.registrationSpectators.length; i++)
+		this.registrationSpectators[i].send(m);
 }
 
 /**

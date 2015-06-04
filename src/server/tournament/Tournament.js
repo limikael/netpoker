@@ -172,4 +172,12 @@ Tournament.prototype.getBackend = function() {
 	return this.services.getBackend();
 }
 
+/**
+ * Get number of registrations.
+ * @method getNumRegistrations
+ */
+Tournament.prototype.getNumRegistrations = function() {
+	return this.users.length;
+}
+
 module.exports = Tournament;
