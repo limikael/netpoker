@@ -22,79 +22,96 @@ MockBackendServer.prototype.setListenPort = function(port) {
 	this.listenPort = port;
 }
 
+MockBackendServer.prototype.getUserInfoByToken = function(params) {
+	switch (params.token) {
+		case "user1":
+			return {
+				id: "101",
+				name: "olle"
+			};
+
+		case "user2":
+			return {
+				id: "102",
+				name: "kalle"
+			};
+
+		case "user3":
+			return {
+				id: "103",
+				name: "pelle"
+			};
+
+		case "user4":
+			return {
+				id: "104",
+				name: "lisa"
+			};
+
+		case "anon":
+			return {
+				not: "logged in"
+			};
+	}
+}
+
+MockBackendServer.prototype.getCashGameTableList = function(params) {
+	return {
+		"tables": [{
+			id: 123,
+			numseats: 10,
+			currency: "PLY",
+			name: "Test Table",
+			minSitInAmount: 10,
+			maxSitInAmount: 100,
+			stake: 2
+		}]
+	};
+}
+
+MockBackendServer.prototype.getUserBalance = function(params) {
+	return {
+		"tables": [{
+			id: 123,
+			numseats: 10,
+			currency: "PLY",
+			name: "Test Table",
+			minSitInAmount: 10,
+			maxSitInAmount: 100,
+			stake: 2
+		}]
+	};
+}
+
+MockBackendServer.prototype.cashGameUserJoin = function(params) {
+	return {
+		ok: 1
+	};
+}
+
+MockBackendServer.prototype.gameStartForCashGame = function(params) {
+	return {
+		gameId: 987
+	};
+}
+
+MockBackendServer.prototype.tournamentInfo = function(params) {
+	return {
+		id: 666,
+		state: "registration"
+	};
+
+}
+
 /**
  * Handle method.
  * @method handleMethod
  */
 MockBackendServer.prototype.handleMethod = function(method, params) {
-	switch (method) {
-		case Backend.GET_USER_INFO_BY_TOKEN:
-			switch (params.token) {
-				case "user1":
-					return {
-						id: "101",
-						name: "olle"
-					};
+	console.log("MockBackend: " + method);
 
-				case "user2":
-					return {
-						id: "102",
-						name: "kalle"
-					};
-
-				case "user3":
-					return {
-						id: "103",
-						name: "pelle"
-					};
-
-				case "user4":
-					return {
-						id: "104",
-						name: "lisa"
-					};
-
-				case "anon":
-					return {
-						not: "logged in"
-					};
-			}
-			break;
-
-		case Backend.GET_CASHGAME_TABLE_LIST:
-			return {
-				"tables": [{
-					id: 123,
-					numseats: 10,
-					currency: "PLY",
-					name: "Test Table",
-					minSitInAmount: 10,
-					maxSitInAmount: 100,
-					stake: 2
-				}]
-			};
-
-		case Backend.GET_USER_BALANCE:
-			return {
-				"balance": 10000
-			};
-
-		case Backend.SIT_IN:
-			return {
-				ok: 1
-			};
-
-		case Backend.START_CASH_GAME:
-			return {
-				gameId: 987
-			};
-
-		case Backend.TOURNAMENT_INFO:
-			return {
-				id: 666,
-				state: "registration"
-			};
-	}
+	if (this[method])
+		return this[method](params);
 }
 
 /**

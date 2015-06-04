@@ -142,7 +142,7 @@ Tournament.prototype.onTournamentStateIdle = function() {
  * @private
  */
 Tournament.prototype.onTournamentStateCanUnload = function() {
-	this.trigger(Tournament.CAN_UNLOAD);
+	this.trigger(Tournament.CAN_UNLOAD, this);
 }
 
 /**

@@ -306,6 +306,14 @@ NetPokerServer.prototype.getCashGameManager = function() {
 }
 
 /**
+ * Get tournament manager.
+ * @method getTournamentManager
+ */
+NetPokerServer.prototype.getTournamentManager = function() {
+	return this.tournamentManager;
+}
+
+/**
  * Stop.
  * @method stop
  */

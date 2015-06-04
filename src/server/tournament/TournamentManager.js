@@ -118,6 +118,8 @@ TournamentManager.prototype.onTournamentCanUnload = function(tournament) {
 	tournament.off(Tournament.CAN_UNLOAD, this.onTournamentCanUnload, this);
 
 	this.tournaments.splice(index, 1);
+
+	console.log("tournament unloaded, managed tournaments=" + this.tournaments.length);
 }
 
 /**

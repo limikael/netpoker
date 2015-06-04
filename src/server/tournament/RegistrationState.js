@@ -28,8 +28,15 @@ RegistrationState.prototype.notifyNewConnection = function(protoConnection, user
  * Spectator done.
  * @method onRegistrationSpectatorDone
  */
-RegistrationState.prototype.onRegistrationSpectatorDone = function(ev) {
-	throw new Error("not impl..");
+RegistrationState.prototype.onRegistrationSpectatorDone = function(rs) {
+	rs.off(RegistrationSpectator.DONE, this.onRegistrationSpectatorDone, this);
+
+	var index = this.registrationSpectators.indexOf(rs);
+	if (index >= 0)
+		this.registrationSpectators.splice(index, 1);
+
+	if (!this.registrationSpectators.length)
+		this.trigger(TournamentState.CAN_UNLOAD);
 }
 
 /**
