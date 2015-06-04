@@ -23,10 +23,12 @@ function Tournament(services, data) {
 	EventDispatcher.call(this);
 
 	if (!data.id) throw new Error("id missing");
+	if (!data.seatsPerTable) throw new Error("missing seats per table for tournament");
 
 	this.id = data.id;
 	this.info = data.info;
 	this.requiredRegistrations = data.requiredRegistrations;
+	this.seatsPerTable = data.seatsPerTable;
 
 	this.users = [];
 
@@ -113,6 +115,14 @@ Tournament.prototype.removeUser = function(u) {
 }
 
 /**
+ * Get seats per table
+ * @method getSeatsPerTable
+ */
+Tournament.prototype.getSeatsPerTable = function() {
+	return this.seatsPerTable;
+}
+
+/**
  * Set and run current tournament state.
  * @method setTournamentState
  * @private
@@ -129,6 +139,14 @@ Tournament.prototype.setTournamentState = function(tournamentState) {
 	this.tournamentState.on(TournamentState.IDLE, this.onTournamentStateIdle, this);
 	this.tournamentState.on(TournamentState.CAN_UNLOAD, this.onTournamentStateCanUnload, this);
 	this.tournamentState.run();
+}
+
+/**
+ * Get tournament state.
+ * @method getTournamentState
+ */
+Tournament.prototype.getTournamentState = function() {
+	return this.tournamentState;
 }
 
 /**

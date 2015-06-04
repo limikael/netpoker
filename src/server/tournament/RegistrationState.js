@@ -1,7 +1,9 @@
 var TournamentState = require("./TournamentState");
+var PlayState = require("./PlayState");
 var inherits = require("inherits");
 var RegistrationSpectator = require("./RegistrationSpectator");
 var PreTournamentInfoMessage = require("../../proto/messages/PreTournamentInfoMessage");
+var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 
 /**
  * Before the game has started.
@@ -105,9 +107,46 @@ RegistrationState.prototype.checkStart = function() {
 	}
 
 	if (this.tournament.getRequiredRegistrations() &&
-		this.tournament.getNumRegistrations() >= this.tournament.getRequiredRegistrations()) {
-		console.log("we can start...");
+		this.tournament.getNumRegistrations() >= this.tournament.getRequiredRegistrations())
+		this.start();
+}
+
+/**
+ * Actually start.
+ * @method start
+ * @private
+ */
+RegistrationState.prototype.start = function() {
+	console.log("staring now...");
+
+	var p = new PlayState();
+	this.tournament.setTournamentState(p);
+	this.moveConnectionsToState(p);
+}
+
+/**
+ * Move all connections to a new state.
+ * @method moveConnectionsToState
+ * @private
+ */
+RegistrationState.prototype.moveConnectionsToState = function(newState) {
+	for (var i = 0; i < this.registrationSpectators.length; i++) {
+		var rs = this.registrationSpectators[i];
+
+		rs.send(new PreTournamentInfoMessage());
+		rs.send(new TableInfoMessage());
+
+		rs.off(RegistrationSpectator.DONE, this.onRegistrationSpectatorDone, this);
+		rs.off(RegistrationSpectator.BACKEND_CALL_COMPLETE, this.onSpectatorBackendCallComplete, this);
+
+		var protoConnection = rs.getProtoConnection();
+		var user = rs.getUser();
+
+		if (protoConnection)
+			newState.notifyNewConnection(protoConnection, user);
 	}
+
+	this.registrationSpectators = [];
 }
 
 module.exports = RegistrationState;

@@ -9,75 +9,25 @@ var ButtonData = require("../../../../src/proto/data/ButtonData");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
 var Thenable = require("tinp");
 
-describe("Tournament.integration", function() {
+describe("PlayState.integration", function() {
 	var netPokerServer;
 	var mockBackendServer;
+	var bot1, bot2, bot3;
 
 	beforeEach(function(done) {
 		mockBackendServer = new MockBackendServer();
 
 		netPokerServer = new PipeNetPokerServer();
 		netPokerServer.setBackend(mockBackendServer);
-		netPokerServer.run().then(done);
-	});
-
-	afterEach(function() {
-		netPokerServer.close();
-	})
-
-	it("a bot can connect to a torunament", function(done) {
-		var bot = new BotConnection(netPokerServer, "user1");
 
 		AsyncSequence.run(
 			function(next) {
-				bot.connectToTournament(666).then(next);
+				netPokerServer.run().then(next);
 			},
 			function(next) {
-				bot.waitForMessage(StateCompleteMessage).then(next);
-			},
-			function(next) {
-				expect(netPokerServer.getTournamentManager().hasLocalTournamentId(666)).toBe(true);
-				bot.close();
-				next();
-			},
-			function(next) {
-				expect(netPokerServer.getTournamentManager().hasLocalTournamentId(666)).toBe(false);
-				next();
-			}
-		).then(done);
-	});
-
-	it("a bot can register for a tournament", function(done) {
-		var bot = new BotConnection(netPokerServer, "user1");
-
-		spyOn(mockBackendServer, "tournamentRegister").and.callThrough();
-
-		AsyncSequence.run(
-			function(next) {
-				bot.connectToTournament(666).then(next);
-			},
-			function(next) {
-				bot.waitForMessage(StateCompleteMessage).then(next);
-			},
-			function(next) {
-				expect(netPokerServer.getTournamentManager().hasLocalTournamentId(666)).toBe(true);
-				bot.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
-				TickLoopRunner.runTicks().then(next);
-			},
-			function(next) {
-				expect(mockBackendServer.tournamentRegister).toHaveBeenCalled();
-				next();
-			}
-		).then(done);
-	});
-
-	it("can start a sit and go tournament", function(done) {
-		var bot1 = new BotConnection(netPokerServer, "user1");
-		var bot2 = new BotConnection(netPokerServer, "user2");
-		var bot3 = new BotConnection(netPokerServer, "user3");
-
-		AsyncSequence.run(
-			function(next) {
+				bot1 = new BotConnection(netPokerServer, "user1");
+				bot2 = new BotConnection(netPokerServer, "user2");
+				bot3 = new BotConnection(netPokerServer, "user3");
 				Thenable.all(
 					bot1.connectToTournament(666),
 					bot2.connectToTournament(666),
@@ -90,7 +40,16 @@ describe("Tournament.integration", function() {
 					bot2.waitForMessage(StateCompleteMessage),
 					bot3.waitForMessage(StateCompleteMessage)
 				).then(next);
-			},
+			}
+		).then(done);
+	});
+
+	afterEach(function() {
+		netPokerServer.close();
+	});
+
+	it("enters the state", function(done) {
+		AsyncSequence.run(
 			function(next) {
 				bot1.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
 				bot2.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
@@ -101,6 +60,9 @@ describe("Tournament.integration", function() {
 				var tournament = netPokerServer.getTournamentManager().getLocalTournamentById(666);
 				var tournamentState = tournament.getTournamentState();
 				expect(tournamentState).toEqual(jasmine.any(PlayState));
+
+				var playState = tournamentState;
+				expect(playState.tournamentTables.length).toBe(1);
 				next();
 			}
 		).then(done);

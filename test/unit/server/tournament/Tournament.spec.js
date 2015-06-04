@@ -7,7 +7,8 @@ var RegistrationState = require("../../../../src/server/tournament/RegistrationS
 describe("Tournament", function() {
 	var tournamentData = {
 		id: 123,
-		state: "registration"
+		state: "registration",
+		seatsPerTable: 10
 	};
 
 	it("validates data on creation, and can get data", function() {

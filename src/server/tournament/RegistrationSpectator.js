@@ -95,6 +95,22 @@ RegistrationSpectator.prototype.setProtoConnection = function(protoConnection) {
 }
 
 /**
+ * Get connection.
+ * @method getProtoConnection
+ */
+RegistrationSpectator.prototype.getProtoConnection = function() {
+	return this.protoConnection;
+}
+
+/**
+ * Get user.
+ * @method getUser
+ */
+RegistrationSpectator.prototype.getUser = function() {
+	return this.user;
+}
+
+/**
  * The connection was closed.
  * @method onProtoConnectionClose
  * @private
