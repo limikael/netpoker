@@ -26,6 +26,7 @@ function Tournament(services, data) {
 
 	this.id = data.id;
 	this.info = data.info;
+	this.requiredRegistrations = data.requiredRegistrations;
 
 	this.users = [];
 
@@ -178,6 +179,14 @@ Tournament.prototype.getBackend = function() {
  */
 Tournament.prototype.getNumRegistrations = function() {
 	return this.users.length;
+}
+
+/**
+ * Get required registrations to start.
+ * @method getRequiredRegistrations
+ */
+Tournament.prototype.getRequiredRegistrations = function() {
+	return this.requiredRegistrations;
 }
 
 module.exports = Tournament;

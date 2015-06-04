@@ -22,6 +22,7 @@ inherits(RegistrationState, TournamentState);
 RegistrationState.prototype.notifyNewConnection = function(protoConnection, user) {
 	var rs = new RegistrationSpectator(this, protoConnection, user);
 	rs.on(RegistrationSpectator.DONE, this.onRegistrationSpectatorDone, this);
+	rs.on(RegistrationSpectator.BACKEND_CALL_COMPLETE, this.onSpectatorBackendCallComplete, this);
 	this.registrationSpectators.push(rs);
 }
 
@@ -32,6 +33,7 @@ RegistrationState.prototype.notifyNewConnection = function(protoConnection, user
 RegistrationState.prototype.onRegistrationSpectatorDone = function(ev) {
 	var rs = ev.target;
 	rs.off(RegistrationSpectator.DONE, this.onRegistrationSpectatorDone, this);
+	rs.off(RegistrationSpectator.BACKEND_CALL_COMPLETE, this.onSpectatorBackendCallComplete, this);
 
 	var index = this.registrationSpectators.indexOf(rs);
 	if (index >= 0)
@@ -52,7 +54,15 @@ RegistrationState.prototype.getPreTournamentInfoMessage = function() {
 
 		m.countdown = startingIn;*/
 
-	var text = "Registrations: " + this.tournament.getNumRegistrations() + "\n\nStarting in: ??:??";
+	var text;
+
+	if (this.tournament.getRequiredRegistrations())
+		text = "Registrations: " +
+		this.tournament.getNumRegistrations() + " / " +
+		this.tournament.getRequiredRegistrations();
+
+	else
+		text = "Registrations: " + this.tournament.getNumRegistrations() + "\n\nStarting in: ??:??";
 
 	var m = new PreTournamentInfoMessage(text);
 
@@ -69,9 +79,35 @@ RegistrationState.prototype.send = function(m) {
 }
 
 /**
+ * Backend call complete.
+ * @method onRegistrationSpectatorBackendCallComplete
+ */
+RegistrationState.prototype.onSpectatorBackendCallComplete = function() {
+	this.checkStart();
+}
+
+/**
  * Run state.
  * @method run
  */
-RegistrationState.prototype.run = function() {}
+RegistrationState.prototype.run = function() {
+	this.checkStart();
+}
+
+/**
+ * Check if we are ready to start.
+ * @method checkStart
+ */
+RegistrationState.prototype.checkStart = function() {
+	for (var i = 0; i < this.registrationSpectators.length; i++) {
+		if (this.registrationSpectators[i].isBackendCallInProgress())
+			return;
+	}
+
+	if (this.tournament.getRequiredRegistrations() &&
+		this.tournament.getNumRegistrations() >= this.tournament.getRequiredRegistrations()) {
+		console.log("we can start...");
+	}
+}
 
 module.exports = RegistrationState;

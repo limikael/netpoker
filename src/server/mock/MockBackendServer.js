@@ -100,6 +100,7 @@ MockBackendServer.prototype.tournamentInfo = function(params) {
 		id: 666,
 		state: "registration",
 		info: "Welcome to the tournament...",
+		requiredRegistrations: 3
 	};
 }
 

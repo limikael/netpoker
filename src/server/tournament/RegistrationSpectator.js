@@ -43,6 +43,12 @@ inherits(RegistrationSpectator, EventDispatcher);
 RegistrationSpectator.DONE = "done";
 
 /**
+ * Dispatched when a backend call is complete.
+ * @event RegistrationSpectator.BACKEND_CALL_COMPLETE
+ */
+RegistrationSpectator.BACKEND_CALL_COMPLETE = "backendCallComplete";
+
+/**
  * Send.
  * @method send
  */
@@ -190,8 +196,18 @@ RegistrationSpectator.prototype.onTournamentUnregisterError = function(r) {
 RegistrationSpectator.prototype.notifyCallComplete = function(r) {
 	this.backendCallInProgress = false;
 
+	this.trigger(RegistrationSpectator.BACKEND_CALL_COMPLETE);
+
 	if (!this.protoConnection)
 		this.trigger(RegistrationSpectator.DONE);
+}
+
+/**
+ * Do we have a backend call in progress?
+ * @method isBackendCallInProgress
+ */
+RegistrationSpectator.prototype.isBackendCallInProgress = function() {
+	return this.backendCallInProgress;
 }
 
 module.exports = RegistrationSpectator;
