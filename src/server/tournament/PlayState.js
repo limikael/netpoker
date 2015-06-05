@@ -35,6 +35,9 @@ PlayState.prototype.run = function() {
 
 	var numTables = Math.ceil(this.tournament.getNumRegistrations() / this.tournament.getSeatsPerTable());
 
+	/*console.log("******* numTables: " + numTables);
+	console.log("******* pertable: " + this.tournament.getSeatsPerTable());*/
+
 	for (i = 0; i < numTables; i++) {
 		var t = new TournamentTable(this, i);
 		this.tournamentTables.push(t);

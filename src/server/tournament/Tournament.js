@@ -131,6 +131,8 @@ Tournament.prototype.removeUser = function(u) {
  * @method getSeatsPerTable
  */
 Tournament.prototype.getSeatsPerTable = function() {
+	//console.log("********* retiurning seats per table: " + this.seatsPerTable);
+
 	return this.seatsPerTable;
 }
 
