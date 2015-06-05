@@ -361,6 +361,7 @@ NetPokerServer.prototype.closeAndExit = function() {
 NetPokerServer.prototype.close = function() {
 	this.connectionManager.close();
 	this.cashGameManager.close();
+	this.tournamentManager.close();
 	this.serverApi.close();
 }
 

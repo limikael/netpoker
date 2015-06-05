@@ -102,7 +102,20 @@ MockBackendServer.prototype.tournamentInfo = function(params) {
 		info: "Welcome to the tournament...",
 		requiredRegistrations: 3,
 		seatsPerTable: 10,
-		startChips: 1000
+		startChips: 1000,
+		blindStructure: [{
+			time: 100,
+			stake: 2,
+			ante: 0,
+		}, {
+			time: 100,
+			stake: 4,
+			ante: 1,
+		}, {
+			time: 100,
+			stake: 6,
+			ante: 2,
+		}]
 	};
 }
 

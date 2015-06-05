@@ -76,4 +76,12 @@ TournamentState.prototype.isIdle = function() {
 	throw new Error("abstract");
 }
 
+/**
+ * Hard close.
+ * @method close
+ */
+TournamentState.prototype.close = function() {
+
+}
+
 module.exports = TournamentState;

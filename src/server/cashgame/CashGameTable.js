@@ -461,14 +461,6 @@ CashGameTable.prototype.onCurrentGameFinished = function() {
 }
 
 /**
- * Get current game for this table.
- * @method getCurrentGame
- */
-CashGameTable.prototype.getCurrentGame = function() {
-	return this.currentGame;
-}
-
-/**
  * Get parent id.
  * @method getStartGameParentId
  */

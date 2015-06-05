@@ -61,9 +61,23 @@ PlayState.prototype.run = function() {
 /**
  * Start complete.
  * @method onStartComplete
+ * @private
  */
 PlayState.prototype.onStartComplete = function(c) {
-	console.log("start complete!");
+	this.blindLevel = 0;
+	this.enterLevel();
+
+	for (var t = 0; t < this.tournamentTables.length; t++)
+		this.tournamentTables[t].startGame();
+}
+
+/**
+ * Enter the current blind level
+ * @method enterLevel
+ * @private
+ */
+PlayState.prototype.enterLevel = function() {
+
 }
 
 /**
@@ -179,6 +193,31 @@ PlayState.prototype.clearForFinish = function(protoConnection) {
  */
 PlayState.prototype.isIdle = function() {
 	return false;
+}
+
+/**
+ * Get current stake.
+ * @method getCurrentStake
+ */
+PlayState.prototype.getCurrentStake = function() {
+	return this.tournament.getBlindStructureForLevel(this.blindLevel).getStake();
+}
+
+/**
+ * Get current ante.
+ * @method getCurrentAnte
+ */
+PlayState.prototype.getCurrentAnte = function() {
+	return this.tournament.getBlindStructureForLevel(this.blindLevel).getAnte();
+}
+
+/**
+ * Close
+ * @method close
+ */
+PlayState.prototype.close = function() {
+	for (var t = 0; t < this.tournamentTables.length; t++)
+		this.tournamentTables[t].close();
 }
 
 module.exports = PlayState;

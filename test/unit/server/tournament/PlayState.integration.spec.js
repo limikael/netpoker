@@ -109,4 +109,26 @@ describe("PlayState.integration", function() {
 			}
 		).then(done);
 	});
+
+	it("starts the game", function(done) {
+		spyOn(mockBackendServer, "tournamentStart").and.callThrough();
+
+		AsyncSequence.run(
+			function(next) {
+				bot1.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
+				bot2.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
+				bot3.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
+				TickLoopRunner.runTicks().then(next);
+			},
+			function(next) {
+				var tournament = netPokerServer.getTournamentManager().getLocalTournamentById(666);
+				var tournamentState = tournament.getTournamentState();
+				expect(mockBackendServer.tournamentStart).toHaveBeenCalled();
+				expect(tournamentState).toEqual(jasmine.any(PlayState));
+
+				expect(tournamentState.tournamentTables[0].getCurrentGame()).not.toBeFalsy();
+				next();
+			}
+		).then(done);
+	});
 });

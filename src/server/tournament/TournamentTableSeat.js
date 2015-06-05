@@ -58,4 +58,16 @@ TournamentTableSeat.prototype.getSettings = function() {
 	return this.settings;
 }
 
+/**
+ * In game?
+ * @method isInGame
+ */
+TournamentTableSeat.prototype.isInGame = function() {
+	if (this.user)
+		return true;
+
+	else
+		return false;
+}
+
 module.exports = TournamentTableSeat;

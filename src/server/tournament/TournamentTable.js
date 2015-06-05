@@ -8,6 +8,9 @@ var inherits = require("inherits");
 var TableUtil = require("../table/TableUtil");
 var TournamentTableSeat = require("./TournamentTableSeat");
 var ArrayUtil = require("../../utils/ArrayUtil");
+var Game = require("../game/Game");
+var Backend = require("../backend/Backend");
+var HandInfoMessage = require("../../proto/messages/HandInfoMessage");
 
 /**
  * Tournament table.
@@ -77,6 +80,120 @@ TournamentTable.prototype.sitInUser = function(user, chips) {
  */
 TournamentTable.prototype.sendState = function(protoConnection) {
 
+}
+
+/**
+ * Start game.
+ * @method startGame
+ */
+TournamentTable.prototype.startGame = function() {
+	if (this.currentGame)
+		throw new Error("the is already a game");
+
+	this.stake = this.playState.getCurrentStake();
+	this.ante = this.playState.getCurrentAnte();
+
+	this.currentGame = new Game(this);
+	this.currentGame.on(Game.FINISHED, this.onCurrentGameFinished, this);
+	this.currentGame.start();
+}
+
+/**
+ * Game finished.
+ * @method onGameFinished
+ * @private
+ */
+TournamentTable.prototype.onCurrentGameFinished = function() {
+	console.log("game finished!")
+}
+
+/**
+ * Get parent id when reporting start game.
+ * @method getStartGameParentId
+ */
+TournamentTable.prototype.getStartGameParentId = function() {
+	return this.tournament.getId();
+}
+
+/**
+ * Get function to call on game start.
+ * @method getStartGameFunctionName
+ */
+TournamentTable.prototype.getStartGameFunctionName = function() {
+	return Backend.START_CASH_GAME;
+}
+
+/**
+ * Get services.
+ * @method getServices
+ */
+TournamentTable.prototype.getServices = function() {
+	return this.tournament.getServices();
+}
+
+/**
+ * Send a message to all connections.
+ * @method send
+ */
+TournamentTable.prototype.send = function(message) {
+	var i;
+
+	/*for (i = 0; i < this.tableSpectators.length; i++)
+		this.tableSpectators[i].send(message);*/
+
+	for (i = 0; i < this.tableSeats.length; i++)
+		this.tableSeats[i].send(message);
+}
+
+/**
+ * Get hand info message.
+ * @method getHandInfoMessage
+ */
+TournamentTable.prototype.getHandInfoMessage = function() {
+	var s = "";
+
+	s += "Tournament: #" + this.tournament.getId() + "\n";
+
+	if (this.currentGame && this.currentGame.getId())
+		s += "Current Hand: #" + this.currentGame.getId() + "\n";
+
+	if (this.previousHandId != null)
+		s += "Previous Hand: #" + this.previousHandId + "\n";
+
+	//trace("ps: "+playState);
+
+	/*s += "\n";
+	s += "Blinds: " + playState.getCurrentStake() / 2 + "/" + playState.getCurrentStake() + "\n";
+
+	if (playState.getCurrentAnte() > 0)
+		s += "Ante: " + playState.getCurrentAnte() + "\n";
+
+	var t: Int = playState.getTimeUntilNextLevel();
+	if (t >= 0) {
+		hm.countdown = t;
+		s += "Next Level: %t";
+	}*/
+
+	return new HandInfoMessage(s);
+}
+
+/**
+ * Get stake.
+ * @method getStake
+ */
+TournamentTable.prototype.getStake = function() {
+	return this.stake;
+}
+
+/**
+ * Close.
+ * @method close
+ */
+TournamentTable.prototype.close = function() {
+	if (this.currentGame) {
+		this.currentGame.close();
+		this.currentGame = null;
+	}
 }
 
 module.exports = TournamentTable;

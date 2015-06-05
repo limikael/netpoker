@@ -11,7 +11,7 @@ var ChatMessage = require("../../proto/messages/ChatMessage");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 var TableSeatSettings = require("./TableSeatSettings");
 var PresetButtonClickMessage = require("../../proto/messages/PresetButtonClickMessage");
-var inherits=require("inherits");
+var inherits = require("inherits");
 
 /**
  * Base table seat. This is an abstract class representing a seat at a table.
@@ -264,6 +264,14 @@ BaseTableSeat.prototype.onCheckboxMessage = function(m) {
 
 	this.getSettings().set(m.getId(), m.getChecked());
 	this.trigger(BaseTableSeat.SETTINGS_CHANGED);
+}
+
+/**
+ * Is this seat in the game?
+ * @method isInGame
+ */
+BaseTableSeat.prototype.isInGame = function() {
+	throw new Error("abstract");
 }
 
 module.exports = BaseTableSeat;

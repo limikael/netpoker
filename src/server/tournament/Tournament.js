@@ -8,6 +8,7 @@ var RegistrationState = require("./RegistrationState");
 var EventDispatcher = require("yaed");
 var inherits = require("inherits");
 var User = require("../user/User");
+var BlindStructureData = require("./BlindStructureData");
 
 /**
  * Represents a managed tournament.
@@ -24,11 +25,21 @@ function Tournament(services, data) {
 	if (!data.id) throw new Error("id missing");
 	if (!data.seatsPerTable) throw new Error("missing seats per table for tournament");
 	if (!data.startChips) throw new Error("missing start chips for tournament");
+	if (!data.blindStructure || !data.blindStructure.length) throw new Error("no blind structure");
 
 	this.id = data.id;
 	this.info = data.info;
 	this.requiredRegistrations = data.requiredRegistrations;
 	this.seatsPerTable = data.seatsPerTable;
+	this.blindStructure = [];
+
+	for (var i = 0; i < data.blindStructure.length; i++) {
+		this.blindStructure.push(new BlindStructureData(
+			data.blindStructure[i].time,
+			data.blindStructure[i].stake,
+			data.blindStructure[i].ante
+		));
+	}
 
 	this.users = [];
 
@@ -192,6 +203,14 @@ Tournament.prototype.getBackend = function() {
 }
 
 /**
+ * Get services.
+ * @method getServices
+ */
+Tournament.prototype.getServices = function() {
+	return this.services;
+}
+
+/**
  * Get number of registrations.
  * @method getNumRegistrations
  */
@@ -229,6 +248,28 @@ Tournament.prototype.getStartChips = function() {
  */
 Tournament.prototype.isIdle = function() {
 	return this.tournamentState.isIdle();
+}
+
+/**
+ * Get blind structure for level
+ * @method getBlindStructureForLevel
+ */
+Tournament.prototype.getBlindStructureForLevel = function(level) {
+	if (level >= this.blindStructure.length)
+		throw new Error("there are not that many levels");
+
+	return this.blindStructure[level];
+}
+
+/**
+ * Hard close.
+ * @method close
+ */
+Tournament.prototype.close = function() {
+	if (!this.isIdle())
+		console.log("warning, closing non idle tournament");
+
+	this.tournamentState.close();
 }
 
 module.exports = Tournament;

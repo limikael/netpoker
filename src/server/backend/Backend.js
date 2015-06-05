@@ -20,6 +20,7 @@ Backend.GET_USER_BALANCE = "getUserBalance";
 Backend.SIT_IN = "cashGameUserJoin";
 Backend.SIT_OUT = "cashGameUserLeave";
 Backend.START_CASH_GAME = "gameStartForCashGame";
+Backend.START_TOURNAMENT_GAME = "gameStartForTournament";
 Backend.FINISH_GAME = "gameFinish";
 Backend.TOURNAMENT_INFO = "tournamentInfo";
 Backend.TOURNAMENT_REGISTER = "tournamentRegister";

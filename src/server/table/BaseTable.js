@@ -106,7 +106,7 @@ BaseTable.prototype.getNumSeats = function() {
  * @method getStartGameParentId
  */
 BaseTable.prototype.getStartGameParentId = function() {
-	throw "abstract";
+	throw new Error("abstract");
 }
 
 /**
@@ -114,7 +114,7 @@ BaseTable.prototype.getStartGameParentId = function() {
  * @method getStartGameFunctionName
  */
 BaseTable.prototype.getStartGameFunctionName = function() {
-	throw "abstract";
+	throw new Error("abstract");
 }
 
 /**
@@ -216,7 +216,7 @@ BaseTable.prototype.getDealerButtonIndex = function() {
  * @method getStake
  */
 BaseTable.prototype.getStake = function() {
-	throw "abstract";
+	throw new Error("abstract");
 }
 
 /**
@@ -224,7 +224,7 @@ BaseTable.prototype.getStake = function() {
  * @method send
  */
 BaseTable.prototype.send = function(m) {
-	throw "abstract";
+	throw new Error("abstract");
 }
 
 /**
@@ -268,6 +268,39 @@ BaseTable.prototype.getTableSeatByUser = function(user) {
 	}
 
 	return null;
+}
+
+/**
+ * Get current game for this table.
+ * @method getCurrentGame
+ */
+BaseTable.prototype.getCurrentGame = function() {
+	return this.currentGame;
+}
+
+/**
+ * Start game.
+ * @method startGame
+ * @protected
+ */
+BaseTable.prototype.startGame = function() {
+	throw new Error("abstract");
+}
+
+/**
+ * Get services.
+ * @method getServices
+ */
+BaseTable.prototype.getServices = function() {
+	throw new Error("abstract");
+}
+
+/**
+ * Get hand info message.
+ * @method getHandInfoMessage
+ */
+BaseTable.prototype.getHandInfoMessage = function() {
+	throw new Error("abstract");
 }
 
 module.exports = BaseTable;

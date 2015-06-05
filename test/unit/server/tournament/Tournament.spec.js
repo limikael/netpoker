@@ -5,12 +5,29 @@ var EventDispatcher = require("yaed");
 var RegistrationState = require("../../../../src/server/tournament/RegistrationState");
 
 describe("Tournament", function() {
-	var tournamentData = {
-		id: 123,
-		state: "registration",
-		seatsPerTable: 10,
-		startChips: 1000
-	};
+	var tournamentData;
+
+	beforeEach(function() {
+		tournamentData = {
+			id: 123,
+			state: "registration",
+			seatsPerTable: 10,
+			startChips: 1000,
+			blindStructure: [{
+				time: 100,
+				stake: 2,
+				ante: 0,
+			}, {
+				time: 100,
+				stake: 4,
+				ante: 1,
+			}, {
+				time: 100,
+				stake: 6,
+				ante: 2,
+			}]
+		};
+	});
 
 	it("validates data on creation, and can get data", function() {
 		expect(function() {
@@ -95,5 +112,12 @@ describe("Tournament", function() {
 		expect(function() {
 			var t = new Tournament(null, tournamentData);
 		}).toThrow();
+	});
+
+	it("reads blind levels", function() {
+		var t = new Tournament(null, tournamentData);
+
+		var b = t.getBlindStructureForLevel(0);
+		expect(b.getTime()).toBe(100);
 	});
 });

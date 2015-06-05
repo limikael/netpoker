@@ -160,4 +160,13 @@ TournamentManager.prototype.isIdle = function() {
 	return true;
 }
 
+/**
+ * Close.
+ * @method close
+ */
+TournamentManager.prototype.close = function() {
+	for (var i = 0; i < this.tournaments.length; i++)
+		this.tournaments[i].close();
+}
+
 module.exports = TournamentManager;
