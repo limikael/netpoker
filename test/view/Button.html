@@ -1,0 +1,35 @@
+<html>
+	<script src="res/netpokerclient.test.bundle.js"></script>
+	<script>
+		var PIXI=require("pixi.js");
+		var PixiApp=require("pixiapp");
+		var Button=require("Button");
+
+		var app=new PixiApp(800,600);
+
+		var loader=new PIXI.AssetLoader(["res/netpokerclient.spritesheet.json"]);
+		loader.on("onComplete",function() {
+			console.log("loaded");
+
+			var content = new PIXI.DisplayObjectContainer();
+			var s = new PIXI.Sprite.fromImage("__bigButton.png");
+			content.addChild(s);
+
+			var textfield = new PIXI.Text("hello");
+			textfield.position.x = 15;
+			textfield.position.y = 30;
+			content.addChild(textfield);
+
+			var button = new Button(content);
+			button.position.x = 100;
+			button.position.y = 100;
+			app.addChild(button);
+
+			button.on(Button.CLICK, function() {
+				console.log("button clicked...");
+			});
+		});
+
+		loader.load();
+	</script>
+</html>

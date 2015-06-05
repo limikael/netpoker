@@ -129,6 +129,9 @@ module.exports = function(grunt) {
 						["./src/utils/HttpRequest", {
 							expose: "HttpRequest"
 						}],
+						["./src/utils/Button", {
+							expose: "Button"
+						}],
 						"pixiapp",
 						"pixi.js"
 					]
