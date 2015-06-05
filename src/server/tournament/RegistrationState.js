@@ -154,4 +154,12 @@ RegistrationState.prototype.moveConnectionsToState = function(newState) {
 	this.registrationSpectators = [];
 }
 
+/**
+ * Are we idle?
+ * @method isIdle
+ */
+RegistrationState.prototype.isIdle = function() {
+	return true;
+}
+
 module.exports = RegistrationState;

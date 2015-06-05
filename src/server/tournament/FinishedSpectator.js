@@ -6,6 +6,7 @@
 var inherits = require("inherits");
 var EventDispatcher = require("yaed");
 var ProtoConnection = require("../../proto/ProtoConnection");
+var MessagePipeConnection = require("../../../test/utils/MessagePipeConnection");
 
 /**
  * A spectator in the play state.
@@ -41,6 +42,7 @@ FinishedSpectator.prototype.setProtoConnection = function(protoConnection) {
 		this.protoConnection.on(ProtoConnection.CLOSE, this.onProtoConnectionClose, this);
 	}
 }
+
 /**
  * Connection was closed.
  * @method onProtoConnectionClose

@@ -6,6 +6,8 @@
 var TournamentState = require("./TournamentState");
 var FinishedSpectator = require("./FinishedSpectator");
 var inherits = require("inherits");
+var Backend = require("../backend/Backend");
+var ArrayUtil = require("../../utils/ArrayUtil");
 
 /**
  * Finished state.
@@ -35,7 +37,46 @@ FinishedState.prototype.setCanceled = function(message) {
  * @method run
  */
 FinishedState.prototype.run = function() {
+	if (this.canceled) {
+		backendCallInProgress = true;
+		var p = {
+			tournamentId: this.tournament.id,
+			cancelMessage: this.cancelMessage
+		}
+		this.tournament.getBackend().call(Backend.TOURNAMENT_CANCEL, p).then(
+			this.onFinishCallComplete.bind(this),
+			this.onFinishCallError.bind(this)
+		);
+		return;
+	}
+}
 
+/**
+ * Finish call response.
+ * @method onFinishCallComplete
+ */
+FinishedState.prototype.onFinishCallComplete = function(res) {
+	this.backendCallInProgress = false;
+
+	if (!this.finishedSpectators.length)
+		this.trigger(TournamentState.CAN_UNLOAD);
+
+	this.trigger(TournamentState.IDLE);
+}
+
+/**
+ * Finish call response.
+ * @method onFinishCallError
+ */
+FinishedState.prototype.onFinishCallError = function(err) {
+	this.backendCallInProgress = false;
+
+	console.log("WARNING! cancel tournament call failed: " + err);
+
+	if (!this.finishedSpectators.length)
+		this.trigger(TournamentState.CAN_UNLOAD);
+
+	this.trigger(TournamentState.IDLE);
 }
 
 /**
@@ -60,6 +101,18 @@ FinishedState.prototype.onFinishedSpectatorDone = function(ev) {
 
 	if (!this.finishedSpectators.length && !this.backendCallInProgress)
 		this.trigger(TournamentState.CAN_UNLOAD);
+}
+
+/**
+ * Are we idle?
+ * @method isIdle
+ */
+FinishedState.prototype.isIdle = function() {
+	if (this.backendCallInProgress)
+		return false;
+
+	else
+		return true;
 }
 
 module.exports = FinishedState;

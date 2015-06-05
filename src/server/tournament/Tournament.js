@@ -223,4 +223,12 @@ Tournament.prototype.getStartChips = function() {
 	return this.startChips;
 }
 
+/**
+ * Idle?
+ * @method isIdle
+ */
+Tournament.prototype.isIdle = function() {
+	return this.tournamentState.isIdle();
+}
+
 module.exports = Tournament;

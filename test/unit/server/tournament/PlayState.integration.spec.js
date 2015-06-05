@@ -88,11 +88,11 @@ describe("PlayState.integration", function() {
 
 	it("handles failing start calls", function(done) {
 		mockBackendServer.tournamentStart = function() {
-			console.log("******** returning false");
 			return false;
 		};
 
 		spyOn(mockBackendServer, "tournamentStart").and.callThrough();
+		spyOn(mockBackendServer, "tournamentCancel").and.callThrough();
 
 		AsyncSequence.run(
 			function(next) {
@@ -108,6 +108,16 @@ describe("PlayState.integration", function() {
 				expect(mockBackendServer.tournamentStart).toHaveBeenCalled();
 				expect(tournamentState.finishedSpectators.length).toBe(4);
 				expect(tournamentState.canceled).toBe(true);
+				expect(mockBackendServer.tournamentCancel).toHaveBeenCalled();
+
+				bot1.close();
+				bot2.close();
+				bot3.close();
+				botSpectator.close();
+				TickLoopRunner.runTicks().then(next);
+			},
+			function(next) {
+				expect(netPokerServer.getTournamentManager().hasLocalTournamentId(666)).toBe(false);
 				next();
 			}
 		).then(done);

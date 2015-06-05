@@ -173,4 +173,12 @@ PlayState.prototype.clearForFinish = function(protoConnection) {
 
 }
 
+/**
+ * Are we idle?
+ * @method isIdle
+ */
+PlayState.prototype.isIdle = function() {
+	return false;
+}
+
 module.exports = PlayState;

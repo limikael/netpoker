@@ -5,8 +5,8 @@ var AsyncSequence = require("../../../src/utils/AsyncSequence");
 describe("MessagePipeConnection", function() {
 
 	it("can be send and recv", function(done) {
-		c1 = new MessagePipeConnection();
-		c2 = c1.createConnection();
+		var c1 = new MessagePipeConnection();
+		var c2 = c1.createConnection();
 
 		var recv;
 
@@ -39,5 +39,16 @@ describe("MessagePipeConnection", function() {
 				done();
 			}
 		);
+	});
+
+	it("can detect close", function() {
+		var c1 = new MessagePipeConnection();
+		var c2 = c1.createConnection();
+
+		var closeSpy = createSpy();
+		c2.on("close",closeSpy);
+		c1.close();
+
+		expect(closeSpy).toHaveBeenCalled();
 	});
 });

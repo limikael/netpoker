@@ -118,6 +118,12 @@ MockBackendServer.prototype.tournamentStart = function(params) {
 	};
 }
 
+MockBackendServer.prototype.tournamentCancel = function(params) {
+	return {
+		ok: 1
+	};
+}
+
 /**
  * Handle method.
  * @method handleMethod

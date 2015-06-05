@@ -20049,8 +20049,12 @@ EventDispatcher.prototype.dispatchEvent = function(event /* ... */ ) {
 	if (!this.listenerMap.hasOwnProperty(eventType))
 		return;
 
-	for (var i in this.listenerMap[eventType]) {
-		var listenerObj = this.listenerMap[eventType][i];
+	var map = [];
+	for (var i = 0; i < this.listenerMap[eventType].length; i++)
+		map.push(this.listenerMap[eventType][i])
+
+	for (var i = 0; i < map.length; i++) {
+		var listenerObj = map[i];
 		listenerObj.listener.apply(listenerObj.scope, listenerParams);
 	}
 }

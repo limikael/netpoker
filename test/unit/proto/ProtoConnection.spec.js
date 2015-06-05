@@ -1,5 +1,6 @@
 var ProtoConnection = require("../../../src/proto/ProtoConnection");
 var InitMessage = require("../../../src/proto/messages/InitMessage");
+var MessagePipeConnection = require("../../utils/MessagePipeConnection");
 var EventDispatcher = require("yaed");
 
 describe("ProtoConnection", function() {
@@ -65,5 +66,20 @@ describe("ProtoConnection", function() {
 		});
 
 		mockConnection.trigger(ProtoConnection.CLOSE);
+	});
+
+	it("works with a pipe connection", function() {
+		var m = new MessagePipeConnection();
+		var n = m.createConnection();
+		var p = new ProtoConnection(m);
+
+		var spy1 = jasmine.createSpy();
+		m.on("close", spy1)
+		var spy2 = jasmine.createSpy();
+		p.on("close", spy2);
+		n.close();
+
+		expect(spy1).toHaveBeenCalled();
+		expect(spy2).toHaveBeenCalled();
 	});
 });
