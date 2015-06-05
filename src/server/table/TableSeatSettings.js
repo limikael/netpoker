@@ -15,6 +15,8 @@ function TableSeatSettings() {
 	this.settings[CheckboxMessage.AUTO_POST_BLINDS] = false;
 	this.settings[CheckboxMessage.AUTO_MUCK_LOSING] = true;
 	this.settings[CheckboxMessage.SITOUT_NEXT] = false;
+
+	this.alwaysPayBlinds = false;
 }
 
 TableSeatSettings.AVAILALBE_SETTINGS = [
@@ -22,6 +24,14 @@ TableSeatSettings.AVAILALBE_SETTINGS = [
 	CheckboxMessage.AUTO_MUCK_LOSING,
 	CheckboxMessage.SITOUT_NEXT
 ];
+
+/**
+ * Set always pay blinds mode.
+ * @method setAlwaysPayBlinds
+ */
+TableSeatSettings.prototype.setAlwaysPayBlinds = function(value) {
+	this.alwaysPayBlinds = value;
+}
 
 /**
  * Get setting.
@@ -33,6 +43,9 @@ TableSeatSettings.prototype.get = function(id) {
 
 	if (!TableSeatSettings.isSettingIdValid(id))
 		throw new Error("setting not available");
+
+	if (id == CheckboxMessage.AUTO_POST_BLINDS && this.alwaysPayBlinds)
+		return true;
 
 	return this.settings[id];
 }
@@ -47,6 +60,9 @@ TableSeatSettings.prototype.set = function(id, value) {
 
 	if (!TableSeatSettings.isSettingIdValid(id))
 		throw new Error("setting not available");
+
+	if (id == CheckboxMessage.AUTO_POST_BLINDS && this.alwaysPayBlinds)
+		throw new Error("Can't change that setting...");
 
 	this.settings[id] = value;
 }

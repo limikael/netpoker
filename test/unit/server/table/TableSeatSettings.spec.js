@@ -22,4 +22,15 @@ describe("TableSeatSettings", function() {
 		settings.set(CheckboxMessage.AUTO_MUCK_LOSING, false)
 		expect(settings.get(CheckboxMessage.AUTO_MUCK_LOSING)).toBe(false);
 	});
+
+	it("has an 'always pay blinds' mode", function() {
+		var settings = new TableSeatSettings();
+
+		settings.setAlwaysPayBlinds(true);
+		expect(settings.get(CheckboxMessage.AUTO_POST_BLINDS)).toBe(true);
+
+		expect(function() {
+			settings.set(CheckboxMessage.AUTO_POST_BLINDS, false);
+		}).toThrow();
+	});
 });
