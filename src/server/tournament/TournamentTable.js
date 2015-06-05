@@ -71,4 +71,12 @@ TournamentTable.prototype.sitInUser = function(user, chips) {
 	return tableSeat;
 }
 
+/**
+ * Send state to connection.
+ * @method sendState
+ */
+TournamentTable.prototype.sendState = function(protoConnection) {
+
+}
+
 module.exports = TournamentTable;

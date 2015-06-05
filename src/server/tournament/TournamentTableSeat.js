@@ -4,6 +4,7 @@
  */
 
 var BaseTableSeat = require("../table/BaseTableSeat");
+var TableSeatSettings = require("../table/TableSeatSettings");
 var inherits = require("inherits");
 
 /**
@@ -16,6 +17,7 @@ function TournamentTableSeat(tournamentTable, seatIndex, active) {
 
 	this.user = null;
 	this.chips = 0;
+	this.settings = new TableSeatSettings();
 }
 
 inherits(TournamentTableSeat, BaseTableSeat);
@@ -46,6 +48,14 @@ TournamentTableSeat.prototype.sitInUser = function(user, chips) {
  */
 TournamentTableSeat.prototype.getUser = function() {
 	return this.user;
+}
+
+/**
+ * Get settings.
+ * @method getSettings
+ */
+TournamentTableSeat.prototype.getSettings = function() {
+	return this.settings;
 }
 
 module.exports = TournamentTableSeat;

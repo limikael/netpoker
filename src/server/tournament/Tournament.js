@@ -1,11 +1,10 @@
-var TournamentState = require("./TournamentState");
-var RegistrationState = require("./RegistrationState");
-
 /**
  * Server.
  * @module server
  */
 
+var TournamentState = require("./TournamentState");
+var RegistrationState = require("./RegistrationState");
 var EventDispatcher = require("yaed");
 var inherits = require("inherits");
 var User = require("../user/User");

@@ -76,6 +76,8 @@ describe("Tournament.integration", function() {
 		var bot2 = new BotConnection(netPokerServer, "user2");
 		var bot3 = new BotConnection(netPokerServer, "user3");
 
+		spyOn(mockBackendServer, "tournamentStart").and.callThrough();
+
 		AsyncSequence.run(
 			function(next) {
 				Thenable.all(
@@ -101,6 +103,7 @@ describe("Tournament.integration", function() {
 				var tournament = netPokerServer.getTournamentManager().getLocalTournamentById(666);
 				var tournamentState = tournament.getTournamentState();
 				expect(tournamentState).toEqual(jasmine.any(PlayState));
+				expect(mockBackendServer.tournamentStart).toHaveBeenCalled();
 				next();
 			}
 		).then(done);

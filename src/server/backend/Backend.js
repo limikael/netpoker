@@ -24,6 +24,9 @@ Backend.FINISH_GAME = "gameFinish";
 Backend.TOURNAMENT_INFO = "tournamentInfo";
 Backend.TOURNAMENT_REGISTER = "tournamentRegister";
 Backend.TOURNAMENT_UNREGISTER = "tournamentUnregister";
+Backend.TOURNAMENT_START = "tournamentStart";
+Backend.TOURNAMENT_CANCEL = "tournamentCancel";
+Backend.TOURNAMENT_FINISH = "tournamentFinish";
 
 /**
  * Set base url.

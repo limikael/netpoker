@@ -6,7 +6,7 @@
 var EventDispatcher = require("yaed");
 var ChatMessage = require("../../proto/messages/ChatMessage");
 var DealerButtonMessage = require("../../proto/messages/DealerButtonMessage");
-var inherits=require("inherits");
+var inherits = require("inherits");
 
 /**
  * Base class for cash game and tournament tables.
@@ -250,6 +250,24 @@ BaseTable.prototype.getLogState = function() {
 	}
 
 	return JSON.stringify(o);
+}
+
+/**
+ * Get table seat by user.
+ * @method getTableSeatByUser
+ */
+BaseTable.prototype.getTableSeatByUser = function(user) {
+	if (!user)
+		throw new Error("trying to get table seat for null user");
+
+	for (var t = 0; t < this.tableSeats.length; t++) {
+		var tableSeat = this.tableSeats[t];
+
+		if (tableSeat.getUser() && tableSeat.getUser().getId() == user.getId())
+			return tableSeat;
+	}
+
+	return null;
 }
 
 module.exports = BaseTable;

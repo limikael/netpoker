@@ -1,3 +1,8 @@
+/**
+ * Server.
+ * @module server
+ */
+
 var TournamentState = require("./TournamentState");
 var PlayState = require("./PlayState");
 var inherits = require("inherits");
