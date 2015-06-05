@@ -26,6 +26,7 @@ function BotConnection(connectionTarget, token) {
 	this.runningStrategy = null;
 	this.strategyCompleteThenable = null;
 	this.messageDispatcher = new EventDispatcher();
+	this.waitForStateComplete = false;
 }
 
 /**
@@ -91,20 +92,19 @@ BotConnection.prototype.connectToTournament = function(tournamentId) {
 	this.initMessage = new InitMessage(this.token);
 	this.initMessage.setTournamentId(tournamentId);
 
-	this.initializeConnection();
-	return this.connectThenable;
+	return this.initializeConnection();
 }
 
 BotConnection.prototype.connectToTable = function(tableId) {
 	this.initMessage = new InitMessage(this.token);
 	this.initMessage.setTableId(tableId);
 
-	this.initializeConnection();
-	return this.connectThenable;
+	return this.initializeConnection();
 }
 
 BotConnection.prototype.initializeConnection = function() {
 	this.connectThenable = new Thenable();
+	var thenable = this.connectThenable;
 
 	if (this.connectionTarget instanceof PipeNetPokerServer) {
 		this.connection = this.connectionTarget.createMessagePipeConnection();
@@ -124,11 +124,17 @@ BotConnection.prototype.initializeConnection = function() {
 			}
 		);
 	}
+
+	return thenable;
 }
 
 BotConnection.prototype.onConnectionConnect = function() {
 	this.protoConnection.send(this.initMessage);
-	this.connectThenable.resolve();
+
+	if (this.waitForStateComplete) {
+		this.connectThenable.resolve();
+		this.connectThenable = null;
+	}
 }
 
 BotConnection.prototype.clearMessages = function() {
@@ -194,6 +200,11 @@ BotConnection.prototype.onProtoConnectionMessage = function(e) {
 		this.waitThenable = null;
 
 		thenable.resolve(e.message);
+	}
+
+	if (this.connectThenable && e.message.type == "stateComplete") {
+		this.connectThenable.resolve();
+		this.connectThenable = null;
 	}
 }
 

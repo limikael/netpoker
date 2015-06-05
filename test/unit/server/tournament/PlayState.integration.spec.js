@@ -23,30 +23,17 @@ describe("PlayState.integration", function() {
 		netPokerServer = new PipeNetPokerServer();
 		netPokerServer.setBackend(mockBackendServer);
 
-		AsyncSequence.run(
-			function(next) {
-				netPokerServer.run().then(next);
-			},
-			function(next) {
-				bot1 = new BotConnection(netPokerServer, "user1");
-				bot2 = new BotConnection(netPokerServer, "user2");
-				bot3 = new BotConnection(netPokerServer, "user3");
-				botSpectator = new BotConnection(netPokerServer, "anon");
-				Thenable.all(
-					bot1.connectToTournament(666),
-					bot2.connectToTournament(666),
-					bot3.connectToTournament(666),
-					botSpectator.connectToTournament(666)
-				).then(next);
-			},
-			function(next) {
-				Thenable.all(
-					bot1.waitForMessage(StateCompleteMessage),
-					bot2.waitForMessage(StateCompleteMessage),
-					bot3.waitForMessage(StateCompleteMessage),
-					botSpectator.waitForMessage(StateCompleteMessage)
-				).then(next);
-			}
+		bot1 = new BotConnection(netPokerServer, "user1");
+		bot2 = new BotConnection(netPokerServer, "user2");
+		bot3 = new BotConnection(netPokerServer, "user3");
+		botSpectator = new BotConnection(netPokerServer, "anon");
+
+		Thenable.all(
+			netPokerServer.run(),
+			bot1.connectToTournament(666),
+			bot2.connectToTournament(666),
+			bot3.connectToTournament(666),
+			botSpectator.connectToTournament(666)
 		).then(done);
 	});
 

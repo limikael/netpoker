@@ -33,9 +33,6 @@ describe("Tournament.integration", function() {
 				bot.connectToTournament(666).then(next);
 			},
 			function(next) {
-				bot.waitForMessage(StateCompleteMessage).then(next);
-			},
-			function(next) {
 				expect(netPokerServer.getTournamentManager().hasLocalTournamentId(666)).toBe(true);
 				bot.close();
 				next();
@@ -55,9 +52,6 @@ describe("Tournament.integration", function() {
 		AsyncSequence.run(
 			function(next) {
 				bot.connectToTournament(666).then(next);
-			},
-			function(next) {
-				bot.waitForMessage(StateCompleteMessage).then(next);
 			},
 			function(next) {
 				expect(netPokerServer.getTournamentManager().hasLocalTournamentId(666)).toBe(true);
@@ -84,13 +78,6 @@ describe("Tournament.integration", function() {
 					bot1.connectToTournament(666),
 					bot2.connectToTournament(666),
 					bot3.connectToTournament(666)
-				).then(next);
-			},
-			function(next) {
-				Thenable.all(
-					bot1.waitForMessage(StateCompleteMessage),
-					bot2.waitForMessage(StateCompleteMessage),
-					bot3.waitForMessage(StateCompleteMessage)
 				).then(next);
 			},
 			function(next) {
