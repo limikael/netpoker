@@ -314,8 +314,6 @@ CashGameTable.prototype.sendState = function(protoConnection) {
 	for (i = 0; i < this.tableSeats.length; i++)
 		protoConnection.send(this.tableSeats[i].getSeatInfoMessage());
 
-	protoConnection.send(new StateCompleteMessage());
-
 	var b = new DealerButtonMessage(this.dealerButtonIndex);
 	protoConnection.send(b);
 
@@ -326,6 +324,8 @@ CashGameTable.prototype.sendState = function(protoConnection) {
 
 	if (this.currentGame != null)
 		this.currentGame.sendState(protoConnection);
+
+	protoConnection.send(new StateCompleteMessage());
 }
 
 /**

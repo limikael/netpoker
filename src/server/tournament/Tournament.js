@@ -32,6 +32,7 @@ function Tournament(services, data) {
 	this.requiredRegistrations = data.requiredRegistrations;
 	this.seatsPerTable = data.seatsPerTable;
 	this.blindStructure = [];
+	this.startChips = data.startChips;
 
 	for (var i = 0; i < data.blindStructure.length; i++) {
 		this.blindStructure.push(new BlindStructureData(

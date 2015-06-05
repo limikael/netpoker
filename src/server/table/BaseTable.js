@@ -228,6 +228,14 @@ BaseTable.prototype.send = function(m) {
 }
 
 /**
+ * Send except seat.
+ * @method sendExceptSeat
+ */
+BaseTable.prototype.sendExceptSeat = function(m, tableSeat) {
+	throw new Error("abstract");
+}
+
+/**
  * Get string for logging.
  * @method getLogState
  */
@@ -300,6 +308,22 @@ BaseTable.prototype.getServices = function() {
  * @method getHandInfoMessage
  */
 BaseTable.prototype.getHandInfoMessage = function() {
+	throw new Error("abstract");
+}
+
+/**
+ * Send table info messages to all connections.
+ * @method sendTableInfoMessages
+ */
+BaseTable.prototype.sendTableInfoMessages = function() {
+	throw new Error("abstract");
+}
+
+/**
+ * Rake percent.
+ * @method getRakePercent
+ */
+BaseTable.prototype.getRakePercent = function() {
 	throw new Error("abstract");
 }
 

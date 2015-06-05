@@ -274,4 +274,12 @@ BaseTableSeat.prototype.isInGame = function() {
 	throw new Error("abstract");
 }
 
+/**
+ * Add chips.
+ * @method addChips
+ */
+BaseTableSeat.prototype.addChips = function() {
+	throw new Error("abstract");
+}
+
 module.exports = BaseTableSeat;

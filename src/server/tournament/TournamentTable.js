@@ -11,6 +11,8 @@ var ArrayUtil = require("../../utils/ArrayUtil");
 var Game = require("../game/Game");
 var Backend = require("../backend/Backend");
 var HandInfoMessage = require("../../proto/messages/HandInfoMessage");
+var DealerButtonMessage = require("../../proto/messages/DealerButtonMessage");
+var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 
 /**
  * Tournament table.
@@ -79,7 +81,28 @@ TournamentTable.prototype.sitInUser = function(user, chips) {
  * @method sendState
  */
 TournamentTable.prototype.sendState = function(protoConnection) {
+	if (!protoConnection)
+		return;
 
+	for (i = 0; i < this.tableSeats.length; i++)
+		protoConnection.send(this.tableSeats[i].getSeatInfoMessage());
+
+	var b = new DealerButtonMessage(this.dealerButtonIndex);
+	protoConnection.send(b);
+
+	for (var i = 0; i < this.chatLines.length; i++)
+		protoConnection.send(new ChatMessage(this.chatLines[i].user, this.chatLines[i].text));
+
+	protoConnection.send(this.getHandInfoMessage());
+
+	if (this.currentGame)
+		this.currentGame.sendState(protoConnection);
+
+	/*var m=playState.getTableButtonsMessage();
+	m.setCurrentIndex(this.tableIndex);
+	protoConnection.send(m);*/
+
+	protoConnection.send(new StateCompleteMessage());
 }
 
 /**
@@ -146,6 +169,21 @@ TournamentTable.prototype.send = function(message) {
 }
 
 /**
+ * Send a message to all connections.
+ * @method send
+ */
+TournamentTable.prototype.sendExceptSeat = function(message, exceptTableSeat) {
+	var i;
+
+	/*for (i = 0; i < this.tableSpectators.length; i++)
+		this.tableSpectators[i].send(message);*/
+
+	for (i = 0; i < this.tableSeats.length; i++)
+		if (this.tableSeats[i] != exceptTableSeat)
+			this.tableSeats[i].send(message);
+}
+
+/**
  * Get hand info message.
  * @method getHandInfoMessage
  */
@@ -194,6 +232,22 @@ TournamentTable.prototype.close = function() {
 		this.currentGame.close();
 		this.currentGame = null;
 	}
+}
+
+/**
+ * Table info messages are not used for tournaments.
+ * @method sendTableInfoMessages
+ */
+TournamentTable.prototype.sendTableInfoMessages = function() {
+
+}
+
+/**
+ * Rake doesn't apply to tournament tables.
+ * @method getRakePercent
+ */
+TournamentTable.prototype.getRakePercent = function() {
+	return 0;
 }
 
 module.exports = TournamentTable;

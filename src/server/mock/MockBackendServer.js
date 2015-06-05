@@ -89,6 +89,12 @@ MockBackendServer.prototype.cashGameUserJoin = function(params) {
 	};
 }
 
+MockBackendServer.prototype.gameFinish = function(params) {
+	return {
+		ok: 1
+	};
+}
+
 MockBackendServer.prototype.gameStartForCashGame = function(params) {
 	return {
 		gameId: 987

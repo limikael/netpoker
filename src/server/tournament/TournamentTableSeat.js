@@ -18,6 +18,8 @@ function TournamentTableSeat(tournamentTable, seatIndex, active) {
 	this.user = null;
 	this.chips = 0;
 	this.settings = new TableSeatSettings();
+	this.settings.setAlwaysPayBlinds(true);
+	this.sitout = false;
 }
 
 inherits(TournamentTableSeat, BaseTableSeat);
@@ -37,6 +39,12 @@ TournamentTableSeat.prototype.isAvailable = function() {
 TournamentTableSeat.prototype.sitInUser = function(user, chips) {
 	if (this.user)
 		throw new Error("seat is already taken");
+
+	if (!user)
+		throw new Error("can't sit in a null user");
+
+	if (!chips)
+		throw new Error("can't sit in a user without chips");
 
 	this.user = user;
 	this.chips = chips;
@@ -68,6 +76,32 @@ TournamentTableSeat.prototype.isInGame = function() {
 
 	else
 		return false;
+}
+
+/**
+ * Add chips.
+ * @method addChips
+ */
+TournamentTableSeat.prototype.addChips = function(value) {
+	this.chips += value;
+	if (this.chips < 0)
+		throw new Error("Negative chips amount!");
+}
+
+/**
+ * Get current chips amount.
+ * @method getChips
+ */
+TournamentTableSeat.prototype.getChips = function() {
+	return this.chips;
+}
+
+/**
+ * Sitout?
+ * @method isSitout
+ */
+TournamentTableSeat.prototype.isSitout = function() {
+	return this.sitout;
 }
 
 module.exports = TournamentTableSeat;
