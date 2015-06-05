@@ -132,6 +132,9 @@ module.exports = function(grunt) {
 						["./src/utils/Button", {
 							expose: "Button"
 						}],
+						["./src/utils/NineSlice", {
+							expose: "NineSlice"
+						}],
 						"pixiapp",
 						"pixi.js"
 					]
