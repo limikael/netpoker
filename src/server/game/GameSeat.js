@@ -243,6 +243,9 @@ GameSeat.prototype.makeBet = function(value) {
 
 	//console.log("********** making bet");
 
+	if (value > this.tableSeat.getChips())
+		throw new Error("trying to bet too much!");
+
 	this.bet += value;
 	this.tableSeat.addChips(-value);
 

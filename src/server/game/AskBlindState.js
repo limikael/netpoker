@@ -83,7 +83,16 @@ AskBlindState.prototype.onPromptComplete = function() {
 	this.prompt = null;
 
 	if (button == ButtonData.POST_BB || button == ButtonData.POST_SB) {
-		gameSeat.makeBet(this.getCurrentBlindAmount());
+		if (!gameSeat.getTableSeat().getChips())
+			throw new Error("the user doesn't have any money!");
+
+		var blindAmount = this.getCurrentBlindAmount();
+
+		if (blindAmount > gameSeat.getTableSeat().getChips())
+			blindAmount = gameSeat.getTableSeat().getChips();
+
+		gameSeat.makeBet(blindAmount);
+
 		//gameSeat.getTableSeat().notifyBigBlindPaid();
 		this.game.addGameSeat(gameSeat);
 	} else {

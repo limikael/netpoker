@@ -32,6 +32,10 @@ describe("Game", function() {
 				return false;
 			};
 
+			mockTableSeat.getChips = function() {
+				return 1000;
+			}
+
 			mockTableSeats.push(mockTableSeat);
 		}
 

@@ -17,6 +17,9 @@ describe("GameSeat", function() {
 		mockTableSeat.getSeatIndex = function() {
 			return 1;
 		}
+		mockTableSeat.getChips = function() {
+			return this.chips;
+		}
 
 		mockTableSeat.getSeatInfoMessage = function() {};
 		mockTableSeat.send = jasmine.createSpy();
