@@ -15,6 +15,8 @@ var MessagePipeConnection = require("../../../test/utils/MessagePipeConnection")
 function FinishedSpectator(finishedState, protoConnection, user) {
 	EventDispatcher.call(this);
 
+	this.finishedState = finishedState;
+
 	this.setProtoConnection(protoConnection);
 }
 
@@ -40,6 +42,9 @@ FinishedSpectator.prototype.setProtoConnection = function(protoConnection) {
 
 	if (this.protoConnection) {
 		this.protoConnection.on(ProtoConnection.CLOSE, this.onProtoConnectionClose, this);
+
+		if (this.finishedState.getTournamentResultMessage())
+			this.protoConnection.send(this.finishedState.getTournamentResultMessage());
 	}
 }
 

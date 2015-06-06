@@ -8,6 +8,7 @@ var FinishedSpectator = require("./FinishedSpectator");
 var inherits = require("inherits");
 var Backend = require("../backend/Backend");
 var ArrayUtil = require("../../utils/ArrayUtil");
+var TournamentResultMessage = require("../../proto/messages/TournamentResultMessage");
 
 /**
  * Finished state.
@@ -19,6 +20,8 @@ function FinishedState() {
 	this.cancelMessage = null;
 	this.finishedSpectators = [];
 	this.backendCallInProgress = false;
+	this.finishOrder = null;
+	this.tournamentResultMessage = null;
 }
 
 inherits(FinishedState, TournamentState);
@@ -49,6 +52,11 @@ FinishedState.prototype.run = function() {
 		);
 		return;
 	}
+
+	var left = "hello";
+	var right = "world";
+
+	this.tournamentResultMessage = new TournamentResultMessage(left, right);
 }
 
 /**
@@ -113,6 +121,22 @@ FinishedState.prototype.isIdle = function() {
 
 	else
 		return true;
+}
+
+/**
+ * Set finish order.
+ * @method setFinishOrder
+ */
+FinishedState.prototype.setFinishOrder = function(order) {
+	this.finishOrder = order;
+}
+
+/**
+ * Get tournament result message.
+ * @method getTournamentResultMessage
+ */
+FinishedState.prototype.getTournamentResultMessage = function() {
+	return this.tournamentResultMessage;
 }
 
 module.exports = FinishedState;

@@ -13,6 +13,7 @@ var Backend = require("../backend/Backend");
 var HandInfoMessage = require("../../proto/messages/HandInfoMessage");
 var DealerButtonMessage = require("../../proto/messages/DealerButtonMessage");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
+var ChatMessage = require("../../proto/messages/ChatMessage");
 var PlaySpectator = require("./PlaySpectator");
 
 /**
@@ -24,6 +25,7 @@ function TournamentTable(playState, tableIndex) {
 	this.playState = playState;
 	this.tableIndex = tableIndex;
 	this.tournament = playState.getTournament();
+	this.active = true;
 
 	var activeSeatIndices = TableUtil.getActiveSeatIndices(this.tournament.getSeatsPerTable());
 	this.tableSeats = [];
@@ -162,13 +164,57 @@ TournamentTable.prototype.onCurrentGameFinished = function() {
 			this.clearSeat(tableSeat);
 	}
 
-	//	if (playState.getNu)
+	if (this.playState.getTotalNumberOfPlayers() == 1) {
+		for (var t = 0; t < this.tableSeats.length; t++) {
+			var tableSeat = this.tableSeats[t];
 
-	if (this.getNumSeatsUsed() >= 2) {
+			if (tableSeat.isInGame())
+				this.clearSeat(tableSeat);
+		}
+
+		this.playState.notifyComplete();
+		return;
+	}
+
+	if (this.playState.getNumAvailableSeatsOnOther(this) >= this.getNumSeatsUsed()) {
+		this.breakTable();
+	} else if (this.getNumSeatsUsed() >= 2) {
 		this.startGame();
 	} else {
+		console.log("********* player will have to wait...");
 		this.dealerButtonIndex = -1;
 		this.send(new DealerButtonMessage(this.dealerButtonIndex));
+	}
+}
+
+/**
+ * Break table.
+ * @method breakTable
+ */
+TournamentTable.prototype.breakTable = function() {
+	this.active = false;
+
+	console.log("breaking table...");
+
+	for (var t = 0; t < this.tableSeats.length; t++) {
+		var tableSeat = this.tableSeats[t];
+
+		if (tableSeat.getUser()) {
+			var newTable = this.playState.getTableWithMostAvailableSeats();
+			console.log("moving user " + tableSeat.getUser().getName());
+
+			var newSeat = newTable.sitInUser(tableSeat.getUser(), tableSeat.getChips());
+			newSeat.setProtoConnection(tableSeat.getProtoConnection());
+			tableSeat.setProtoConnection(null);
+
+			newTable.sendState(newSeat.getProtoConnection());
+
+			tableSeat.removeUser();
+
+			//start game on new table
+			if (!newTable.getCurrentGame())
+				newTable.startGame();
+		}
 	}
 }
 
@@ -298,6 +344,14 @@ TournamentTable.prototype.getRakePercent = function() {
  */
 TournamentTable.prototype.getHandFinishDelay = function() {
 	return this.tournament.getHandFinishDelay();
+}
+
+/**
+ * Is tihs table active in the tournament?
+ * @method isActive
+ */
+TournamentTable.prototype.isActive = function() {
+	return this.active;
 }
 
 module.exports = TournamentTable;

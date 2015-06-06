@@ -31,7 +31,7 @@ describe("TournamentTable.integration", function() {
 		netPokerServer.close();
 	});
 
-	/*it("plays a tournament", function(done) {
+	it("plays a tournament", function(done) {
 		mockBackendServer.tournamentInfo = function() {
 			return {
 				id: 666,
@@ -114,10 +114,10 @@ describe("TournamentTable.integration", function() {
 			function(next) {
 				var tournament = netPokerServer.getTournamentManager().getLocalTournamentById(666);
 				var finishedState = tournament.getTournamentState();
-				expect(playState).toEqual(jasmine.any(FinishedState));
+				expect(finishedState).toEqual(jasmine.any(FinishedState));
 
 				next();
 			}
 		).then(done);
-	});*/
+	});
 });

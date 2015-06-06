@@ -88,8 +88,8 @@ PlayState.prototype.enterLevel = function() {
  * @method notifyUserFinished
  */
 PlayState.prototype.notifyUserFinished = function(user) {
-	console.log("********* user finished: "+user.getName());
-	this.finishedUsers.push(user);
+	console.log("********* user finished: " + user.getName());
+	this.finishedUsers.unshift(user);
 }
 
 /**
@@ -238,6 +238,70 @@ PlayState.prototype.getCurrentAnte = function() {
 PlayState.prototype.close = function() {
 	for (var t = 0; t < this.tournamentTables.length; t++)
 		this.tournamentTables[t].close();
+}
+
+/**
+ * Number of seats available on other tables.
+ * @method getNumAvailableSeatsOnOther
+ */
+PlayState.prototype.getNumAvailableSeatsOnOther = function(thisTable) {
+	var available = 0;
+
+	for (var t = 0; t < this.tournamentTables.length; t++) {
+		var tournamentTable = this.tournamentTables[t];
+
+		if (tournamentTable.isActive() && tournamentTable != thisTable)
+			available += tournamentTable.getNumAvailableSeats();
+	}
+
+	return available;
+}
+
+/**
+ * Get table that has most seats available.
+ * @method getTableWithMostAvailableSeats
+ */
+PlayState.prototype.getTableWithMostAvailableSeats = function() {
+	var cand = null;
+
+	for (var t = 0; t < this.tournamentTables.length; t++) {
+		var tournamentTable = this.tournamentTables[t];
+
+		if (tournamentTable.isActive() &&
+			(!cand || tournamentTable.getNumAvailableSeats() > cand.getNumAvailableSeats()))
+			cand = tournamentTable;
+	}
+
+	return cand;
+}
+
+/**
+ * Get total number of players still in the game.
+ * @method getTotalNumberOfPlayers
+ */
+PlayState.prototype.getTotalNumberOfPlayers = function() {
+	var used = 0;
+
+	for (var t = 0; t < this.tournamentTables.length; t++)
+		used += this.tournamentTables[t].getNumInGame();
+
+	return used;
+}
+
+/**
+ * Tournament complete.
+ * @method notifyComplete
+ */
+PlayState.prototype.notifyComplete = function() {
+	// handle blind timer!!!
+
+	if (this.finishedUsers.length != this.tournament.getNumRegistrations())
+		throw new Error("lost a user during tournament");
+
+	var finishedState = new FinishedState();
+	finishedState.setFinishOrder(this.finishedUsers);
+	this.tournament.setTournamentState(finishedState);
+	this.moveConnectionsToState(finishedState);
 }
 
 module.exports = PlayState;
