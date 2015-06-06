@@ -1,0 +1,18 @@
+<html>
+	<script src="res/netpokerclient.test.bundle.js"></script>
+	<script>
+		var PixiApp=require("pixiapp");
+		var PIXI=require("pixi.js");
+		var CountdownText=require("CountDownText");
+		var app=new PixiApp(800,600);
+
+		var t=new CountdownText("hello");
+
+		t.setText("time left: %t");
+
+		t.setTimeLeft(10);
+		t.setTimeLeft(3600);
+
+		app.addChild(t);
+	</script>
+</html>

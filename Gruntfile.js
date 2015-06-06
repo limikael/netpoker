@@ -138,6 +138,9 @@ module.exports = function(grunt) {
 						["./src/utils/Gradient", {
 							expose: "Gradient"
 						}],
+						["./src/utils/CountdownText", {
+							expose: "CountDownText"
+						}],
 						"pixiapp",
 						"pixi.js",
 						"tinp"
