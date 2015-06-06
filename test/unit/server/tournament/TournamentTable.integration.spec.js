@@ -39,7 +39,7 @@ describe("TournamentTable.integration", function() {
 				info: "Welcome to the tournament...",
 				requiredRegistrations: 4,
 				seatsPerTable: 2,
-				startChips: 1000,
+				startChips: 10,
 				handFinishDelay: 0,
 				blindStructure: [{
 					time: 100,
@@ -56,6 +56,10 @@ describe("TournamentTable.integration", function() {
 				}]
 			};
 		};
+
+		mockBackendServer.gameStartForCashGame = function() {
+			throw new Error("should not be called in tournaments!");
+		}
 
 		bots.push(new BotConnection(netPokerServer, "user1"));
 		bots.push(new BotConnection(netPokerServer, "user2"));
@@ -86,7 +90,15 @@ describe("TournamentTable.integration", function() {
 				for (var i = 0; i < bots.length; i++) {
 					var stragety = new BotPriorityActStrategy();
 					stragety.setFinishMessage(TournamentResultMessage);
-					if (!i) {
+
+					if (i <= 0)
+						stragety.addAction(ButtonData.BET);
+
+					if (i <= 1) {
+						stragety.addAction(ButtonData.RAISE);
+					}
+
+					if (i <= 2) {
 						stragety.addAction(ButtonData.CALL);
 						stragety.addAction(ButtonData.CHECK);
 					}

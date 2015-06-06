@@ -23,7 +23,7 @@ var inherits = require("inherits");
 function Game(table) {
 	EventDispatcher.call(this);
 
-	console.log("***** creating game...");
+	//console.log("***** creating game...");
 
 	this.table = table;
 	this.id = null;
@@ -156,7 +156,7 @@ Game.prototype.setGameState = function(gameState) {
  * @method notifyFinished
  */
 Game.prototype.notifyFinished = function() {
-	console.log("game finished: " + this.id);
+	//console.log("game finished: " + this.id);
 
 	var params = {
 		gameId: this.id,
@@ -180,7 +180,7 @@ Game.prototype.notifyFinished = function() {
  * @private
  */
 Game.prototype.onFinishCallComplete = function() {
-	console.log("*********** finish call complete...");
+	//console.log("*********** finish call complete...");
 	this.trigger(Game.FINISHED);
 }
 
@@ -377,6 +377,21 @@ Game.prototype.getNumPlayersRemaining = function() {
 }
 
 /**
+ * Get total bets on table.
+ * @method getTotalBets
+ */
+Game.prototype.getTotalBets = function() {
+	var total = 0;
+
+	for (var g = 0; g < this.gameSeats.length; g++) {
+		var gameSeat = this.gameSeats[g];
+		total += gameSeat.getBet();
+	}
+
+	return total;
+}
+
+/**
  * Get pots.
  * @method getPots
  */
@@ -421,9 +436,17 @@ Game.prototype.getUnfoldedPotContribs = function() {
 	for (var g = 0; g < this.gameSeats.length; g++) {
 		var gameSeat = this.gameSeats[g];
 
-		if (!gameSeat.isFolded())
-			if (contribs.indexOf(gameSeat.getPotContrib()) < 0)
+		if (!gameSeat.isFolded()) {
+			var contrib = gameSeat.getPotContrib();
+
+			if (isNaN(contrib)) {
+				console.log(gameSeat.getTableSeat().getUser());
+				throw new Error("contrib is nan!");
+			}
+
+			if (contribs.indexOf(contrib) < 0)
 				contribs.push(gameSeat.getPotContrib());
+		}
 	}
 
 	//console.log("contribs are: " + contribs);

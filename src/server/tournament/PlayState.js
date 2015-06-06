@@ -84,6 +84,15 @@ PlayState.prototype.enterLevel = function() {
 }
 
 /**
+ * A user finished.
+ * @method notifyUserFinished
+ */
+PlayState.prototype.notifyUserFinished = function(user) {
+	console.log("********* user finished: "+user.getName());
+	this.finishedUsers.push(user);
+}
+
+/**
  * Start failed.
  * @method onStartFailed
  */
@@ -113,9 +122,17 @@ PlayState.prototype.notifyNewConnection = function(protoConnection, user) {
 		tableSeat.getTable().sendState(protoConnection);
 	} else {
 		var playSpectator = new PlaySpectator(this, protoConnection, user);
-		playSpectator.on(PlaySpectator.DONE, this.onPlaySpectatorDone, this);
-		this.playSpectators.push(playSpectator);
+		this.manageSpectator(playSpectator);
 	}
+}
+
+/**
+ * Manage a spectator.
+ * @method manageSpectator
+ */
+PlayState.prototype.manageSpectator = function(playSpectator) {
+	playSpectator.on(PlaySpectator.DONE, this.onPlaySpectatorDone, this);
+	this.playSpectators.push(playSpectator);
 }
 
 /**

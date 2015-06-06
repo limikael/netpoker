@@ -51,6 +51,20 @@ TournamentTableSeat.prototype.sitInUser = function(user, chips) {
 }
 
 /**
+ * Remove user.
+ * @method removeUser
+ */
+TournamentTableSeat.prototype.removeUser = function() {
+	if (!this.user)
+		throw new Error("can't remove, no user");
+
+	if (this.chips)
+		throw new Error("trying to remove a user with chips");
+
+	this.user = null;
+}
+
+/**
  * Get user.
  * @method getUser
  */

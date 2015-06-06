@@ -167,9 +167,16 @@ ShowMuckState.prototype.mustShow = function(thisSeat) {
  * @private
  */
 ShowMuckState.prototype.payOut = function() {
+	var bets = this.game.getTotalBets();
+	if (bets)
+		throw new Error("The are bets left when paying out!!!");
+
 	var payOutMessage = new PayOutMessage();
 	var winning = [];
 	var limits = this.game.getUnfoldedPotContribs();
+
+	console.log("********* limits: " + limits);
+
 	var last = 0;
 	var totalRake = 0;
 	var rakePercent = this.game.getTable().getRakePercent();
@@ -199,7 +206,10 @@ ShowMuckState.prototype.payOut = function() {
 		last = limit;
 	}
 
-	console.log("**** RAKE is: " + totalRake);
+	//console.log("**** RAKE is: " + totalRake);
+	if (isNaN(totalRake))
+		throw new Error("rake is not a number");
+
 	this.game.setRake(totalRake);
 
 	this.game.send(new DelayMessage(1000));

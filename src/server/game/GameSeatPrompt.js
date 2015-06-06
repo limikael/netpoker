@@ -187,6 +187,9 @@ GameSeatPrompt.prototype.getButton = function() {
  * @method getValue
  */
 GameSeatPrompt.prototype.getValue = function() {
+	if (isNaN(this.value))
+		return 0;
+
 	return this.value;
 }
 

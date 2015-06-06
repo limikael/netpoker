@@ -59,6 +59,11 @@ RoundState.prototype.run = function() {
 	// In case there is only one player left with chips, i.e. all others
 	// are all in, just go to the next state.
 	if (this.getNumberOfPlayersWithChips() < 2) {
+		if (this.game.getTotalBets()) {
+			this.returnExcessiveBets();
+			this.betsToPot();
+		}
+
 		if (this.game.getCommunityCards().length == 5)
 			this.game.setGameState(new ShowMuckState());
 
@@ -83,6 +88,8 @@ RoundState.prototype.run = function() {
  * @method ask
  */
 RoundState.prototype.ask = function() {
+	//console.log("********** asking");
+
 	var gameSeat = this.game.getGameSeats()[this.gameSeatIndexToSpeak];
 
 	if (!gameSeat.getChips()) {
@@ -198,6 +205,9 @@ RoundState.prototype.onPromptComplete = function() {
 		this.spokenAtCurrentBet = [gameSeat];
 
 		var value = prompt.getValue();
+		if (isNaN(value))
+			value = this.getMinRaiseTo(gameSeat);
+
 		if (value < this.getMinRaiseTo(gameSeat))
 			value = this.getMinRaiseTo(gameSeat);
 
@@ -302,7 +312,7 @@ RoundState.prototype.getNumberOfPlayersWithChips = function() {
  * @method dealPocketCards
  */
 RoundState.prototype.dealPocketCards = function() {
-	console.log("dealing pocket cards");
+	//console.log("dealing pocket cards");
 
 	for (var i = 0; i < 2; i++) {
 		for (var g = 0; g < this.game.getGameSeats().length; g++) {
@@ -333,7 +343,7 @@ RoundState.prototype.dealPocketCards = function() {
  * @method dealCommunityCards
  */
 RoundState.prototype.dealCommunityCards = function() {
-	console.log("dealing community cards");
+	//console.log("dealing community cards");
 
 	var numCards = 0;
 

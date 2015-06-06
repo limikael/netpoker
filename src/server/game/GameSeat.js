@@ -241,6 +241,9 @@ GameSeat.prototype.makeBet = function(value) {
 	if (value < 0)
 		throw new Error("Trying to make negative bet");
 
+	if (isNaN(value))
+		throw new Error("Trying to make NaN bet");
+
 	//console.log("********** making bet");
 
 	if (value > this.tableSeat.getChips())
@@ -297,6 +300,9 @@ GameSeat.prototype.getBet = function() {
  * @method betToPot
  */
 GameSeat.prototype.betToPot = function() {
+	if (isNaN(this.bet))
+		throw new Error("bet is nan");
+
 	this.potContrib += this.bet;
 	this.bet = 0;
 }

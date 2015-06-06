@@ -71,15 +71,7 @@ MockBackendServer.prototype.getCashGameTableList = function(params) {
 
 MockBackendServer.prototype.getUserBalance = function(params) {
 	return {
-		"tables": [{
-			id: 123,
-			numseats: 10,
-			currency: "PLY",
-			name: "Test Table",
-			minSitInAmount: 10,
-			maxSitInAmount: 100,
-			stake: 2
-		}]
+		balance: 123
 	};
 }
 
@@ -98,6 +90,12 @@ MockBackendServer.prototype.gameFinish = function(params) {
 MockBackendServer.prototype.gameStartForCashGame = function(params) {
 	return {
 		gameId: 987
+	};
+}
+
+MockBackendServer.prototype.gameStartForTournament = function(params) {
+	return {
+		gameId: 988
 	};
 }
 

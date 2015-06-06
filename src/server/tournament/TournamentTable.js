@@ -13,6 +13,7 @@ var Backend = require("../backend/Backend");
 var HandInfoMessage = require("../../proto/messages/HandInfoMessage");
 var DealerButtonMessage = require("../../proto/messages/DealerButtonMessage");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
+var PlaySpectator = require("./PlaySpectator");
 
 /**
  * Tournament table.
@@ -122,6 +123,27 @@ TournamentTable.prototype.startGame = function() {
 }
 
 /**
+ * Clear seat.
+ * @method clearSeat
+ */
+TournamentTable.prototype.clearSeat = function(tableSeat) {
+	var connection = tableSeat.getProtoConnection();
+	var user = tableSeat.getUser();
+
+	this.playState.notifyUserFinished(user);
+
+	if (connection) {
+		var spectator = new PlaySpectator(this.playState, connection, user, this);
+		this.playState.manageSpectator(spectator);
+	}
+
+	tableSeat.setProtoConnection(null);
+	tableSeat.removeUser();
+
+	this.send(tableSeat.getSeatInfoMessage());
+}
+
+/**
  * Game finished.
  * @method onGameFinished
  * @private
@@ -133,7 +155,21 @@ TournamentTable.prototype.onCurrentGameFinished = function() {
 	this.currentGame.off(Game.FINISHED, this.onCurrentGameFinished, this);
 	this.currentGame = null;
 
-	this.startGame();
+	for (var t = 0; t < this.tableSeats.length; t++) {
+		var tableSeat = this.tableSeats[t];
+
+		if (tableSeat.isInGame() && !tableSeat.getChips())
+			this.clearSeat(tableSeat);
+	}
+
+	//	if (playState.getNu)
+
+	if (this.getNumSeatsUsed() >= 2) {
+		this.startGame();
+	} else {
+		this.dealerButtonIndex = -1;
+		this.send(new DealerButtonMessage(this.dealerButtonIndex));
+	}
 }
 
 /**
@@ -149,7 +185,7 @@ TournamentTable.prototype.getStartGameParentId = function() {
  * @method getStartGameFunctionName
  */
 TournamentTable.prototype.getStartGameFunctionName = function() {
-	return Backend.START_CASH_GAME;
+	return Backend.START_TOURNAMENT_GAME;
 }
 
 /**
