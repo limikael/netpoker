@@ -136,7 +136,7 @@ ShowMuckState.prototype.mustShow = function(thisSeat) {
 
 	var bestSoFar = null;
 
-	console.log("must show, remaining: " + this.game.getNumPlayersRemaining());
+	//console.log("must show, remaining: " + this.game.getNumPlayersRemaining());
 
 	if (this.game.getNumPlayersRemaining() < 2)
 		return false;
@@ -175,7 +175,7 @@ ShowMuckState.prototype.payOut = function() {
 	var winning = [];
 	var limits = this.game.getUnfoldedPotContribs();
 
-	console.log("********* limits: " + limits);
+	//console.log("********* limits: " + limits);
 
 	var last = 0;
 	var totalRake = 0;

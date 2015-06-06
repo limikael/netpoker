@@ -182,7 +182,7 @@ BaseTable.prototype.rawChat = function(user, string) {
 	var message = new ChatMessage(user, string);
 	this.send(message);
 
-	console.log("user = " + user + ", string = " + string);
+	//console.log("user = " + user + ", string = " + string);
 
 	this.chatLines.push({
 		user: user,

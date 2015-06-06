@@ -25,7 +25,7 @@ inherits(FinishedState, GameState);
  * @method run
  */
 FinishedState.prototype.run = function() {
-	console.log("**** finished state");
+	//console.log("**** finished state");
 	this.timeoutId = setTimeout(this.onTimout.bind(this), this.game.getHandFinishDelay());
 }
 
@@ -35,7 +35,7 @@ FinishedState.prototype.run = function() {
  * @private
  */
 FinishedState.prototype.onTimout = function() {
-	console.log("finished state timeout");
+	//console.log("finished state timeout");
 	this.timeoutId = null;
 
 	var clear = [
