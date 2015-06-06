@@ -20,7 +20,7 @@ function FinishedState() {
 	this.cancelMessage = null;
 	this.finishedSpectators = [];
 	this.backendCallInProgress = false;
-	this.finishOrder = null;
+	this.finishOrder = [];
 	this.tournamentResultMessage = null;
 }
 
@@ -57,6 +57,23 @@ FinishedState.prototype.run = function() {
 	var right = "world";
 
 	this.tournamentResultMessage = new TournamentResultMessage(left, right);
+
+	var order = [];
+
+	for (var u = 0; u < this.finishOrder.length; u++)
+		order.push(this.finishOrder[u].getId());
+
+	var p = {
+		tournamentId: this.tournament.getId(),
+		finishorder: JSON.stringify(u),
+		//payouts:
+	}
+
+	this.backendCallInProgress = true;
+	this.tournament.getBackend().call(Backend.TOURNAMENT_FINISH, p).then(
+		this.onFinishCallComplete.bind(this),
+		this.onFinishCallError.bind(this)
+	);
 }
 
 /**
@@ -79,7 +96,7 @@ FinishedState.prototype.onFinishCallComplete = function(res) {
 FinishedState.prototype.onFinishCallError = function(err) {
 	this.backendCallInProgress = false;
 
-	console.log("WARNING! cancel tournament call failed: " + err);
+	console.log("WARNING! tournament finish call failed: " + err);
 
 	if (!this.finishedSpectators.length)
 		this.trigger(TournamentState.CAN_UNLOAD);

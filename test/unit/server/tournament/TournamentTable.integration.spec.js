@@ -61,6 +61,9 @@ describe("TournamentTable.integration", function() {
 			throw new Error("should not be called in tournaments!");
 		}
 
+		spyOn(mockBackendServer, "tournamentStart").and.callThrough();
+		spyOn(mockBackendServer, "tournamentFinish").and.callThrough();
+
 		bots.push(new BotConnection(netPokerServer, "user1"));
 		bots.push(new BotConnection(netPokerServer, "user2"));
 		bots.push(new BotConnection(netPokerServer, "user3"));
@@ -116,6 +119,17 @@ describe("TournamentTable.integration", function() {
 				var finishedState = tournament.getTournamentState();
 				expect(finishedState).toEqual(jasmine.any(FinishedState));
 
+				expect(mockBackendServer.tournamentStart).toHaveBeenCalled();
+				expect(mockBackendServer.tournamentFinish).toHaveBeenCalled();
+
+				for (var i = 0; i < bots.length; i++)
+					bots[i].close();
+
+				TickLoopRunner.runTicks().then(next);
+			},
+			function(next) {
+				var have = netPokerServer.getTournamentManager().hasLocalTournamentId(666);
+				expect(have).toBe(false);
 				next();
 			}
 		).then(done);
