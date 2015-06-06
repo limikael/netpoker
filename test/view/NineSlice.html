@@ -1,0 +1,30 @@
+<html>
+	<script src="res/netpokerclient.test.bundle.js"></script>
+	<script>
+		var PIXI=require("pixi.js");
+		var PixiApp=require("pixiapp");
+		var NineSlice=require("NineSlice");
+
+		var app=new PixiApp(800,600);
+		app.scaleMode=PixiApp.NO_SCALE;
+		app.verticalAlign=PixiApp.TOP;
+		app.horizontalAlign=PixiApp.LEFT;
+		app.backgroundColor=0x808080
+
+		var loader=new PIXI.AssetLoader(["res/netpokerclient.spritesheet.json"]);
+		loader.on("onComplete",function() {
+			console.log("loaded");
+
+			var texture = PIXI.Texture.fromImage("__framePlate.png");
+			var s = new NineSlice(texture, 10);
+			app.addChild(s);
+
+			s.x=100;
+			s.y=100;
+
+			s.setLocalSize(500,50);
+		});
+
+		loader.load();
+	</script>
+</html>
