@@ -56,7 +56,7 @@ describe("NetPokerServer - sitout", function() {
 			},
 
 			function(next) {
-				jasmine.clock().tick(FinishedState.FINISH_DELAY);
+				jasmine.clock().tick(5000);
 				TickLoopRunner.runTicks().then(next);
 			},
 
@@ -109,7 +109,7 @@ describe("NetPokerServer - sitout", function() {
 			},
 
 			function(next) {
-				jasmine.clock().tick(FinishedState.FINISH_DELAY);
+				jasmine.clock().tick(5000);
 				TickLoopRunner.runTicks().then(next);
 			},
 

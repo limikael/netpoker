@@ -20,8 +20,6 @@ function FinishedState() {
 
 inherits(FinishedState, GameState);
 
-FinishedState.FINISH_DELAY = 5000;
-
 /**
  * Run the state.
  * @method run

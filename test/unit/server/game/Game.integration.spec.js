@@ -93,7 +93,7 @@ describe("Game.integration", function() {
 					return new Thenable();
 				};
 
-				jasmine.clock().tick(FinishedState.FINISH_DELAY);
+				jasmine.clock().tick(5000);
 			}
 		).then(done);
 	});
