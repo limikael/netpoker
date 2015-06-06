@@ -1,0 +1,19 @@
+<html>
+	<script src="res/netpokerclient.test.bundle.js"></script>
+	<script>
+		var PixiApp=require("pixiapp");
+		var Gradient=require("Gradient");
+		var app=new PixiApp(800,600);
+
+		var g = new Gradient();
+		g.setSize(200, 100);
+		g.addColorStop(0, "red");
+		g.addColorStop(.5, "green");
+		g.addColorStop(1, "blue");
+		var s = g.createSprite();
+
+		s.height = 600;
+		s.width = 200;
+		app.addChild(s);
+	</script>
+</html>
