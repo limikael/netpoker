@@ -127,7 +127,13 @@ TournamentTable.prototype.startGame = function() {
  * @private
  */
 TournamentTable.prototype.onCurrentGameFinished = function() {
-	console.log("game finished!")
+	console.log("tournament game finished...");
+	this.previousHandId = this.currentGame.getId();
+
+	this.currentGame.off(Game.FINISHED, this.onCurrentGameFinished, this);
+	this.currentGame = null;
+
+	this.startGame();
 }
 
 /**
@@ -248,6 +254,14 @@ TournamentTable.prototype.sendTableInfoMessages = function() {
  */
 TournamentTable.prototype.getRakePercent = function() {
 	return 0;
+}
+
+/**
+ * Get hand finish delay.
+ * @method getHandFinishDelay
+ */
+TournamentTable.prototype.getHandFinishDelay = function() {
+	return this.tournament.getHandFinishDelay();
 }
 
 module.exports = TournamentTable;

@@ -31,7 +31,7 @@ function RoundState() {
 	this.spokenAtCurrentBet = [];
 	this.raiseTimes = 0;
 
-	console.log("********* entering round state...");
+	//console.log("********* entering round state...");
 
 	this.hasRun = false;
 }

@@ -47,6 +47,10 @@ function CashGameTable(services, config) {
 
 	this.previousHandId = null;
 	this.reconfigureData = null;
+
+	this.handFinishDelay = config.handFinishDelay;
+	if (!this.handFinishDelay)
+		this.handFinishDelay = 5000;
 }
 
 inherits(CashGameTable, BaseTable);
@@ -626,6 +630,14 @@ CashGameTable.prototype.getHandInfoMessage = function() {
  */
 CashGameTable.prototype.isStopped = function() {
 	return this.stopped;
+}
+
+/**
+ * Get hand finish delay.
+ * @method getHandFinishDelay
+ */
+CashGameTable.prototype.getHandFinishDelay = function() {
+	return this.handFinishDelay;
 }
 
 module.exports = CashGameTable;

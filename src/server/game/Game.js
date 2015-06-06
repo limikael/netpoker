@@ -516,4 +516,12 @@ Game.prototype.getGameSeatByProtoConnection = function(protoConnection) {
 	return null;
 }
 
+/**
+ * Get time to wait after games until starting the next one.
+ * @method getFinishDelay
+ */
+Game.prototype.getHandFinishDelay = function() {
+	return this.table.getHandFinishDelay();
+}
+
 module.exports = Game;

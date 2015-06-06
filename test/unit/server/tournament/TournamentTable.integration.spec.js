@@ -7,6 +7,7 @@ var ButtonData = require("../../../../src/proto/data/ButtonData");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
 var ButtonClickMessage = require("../../../../src/proto/messages/ButtonClickMessage");
 var PlayState = require("../../../../src/server/tournament/PlayState");
+var FinishedState = require("../../../../src/server/tournament/FinishedState");
 var TournamentResultMessage = require("../../../../src/proto/messages/TournamentResultMessage");
 var Thenable = require("tinp");
 
@@ -39,6 +40,7 @@ describe("TournamentTable.integration", function() {
 				requiredRegistrations: 4,
 				seatsPerTable: 2,
 				startChips: 1000,
+				handFinishDelay: 0,
 				blindStructure: [{
 					time: 100,
 					stake: 2,
@@ -96,6 +98,13 @@ describe("TournamentTable.integration", function() {
 				}
 
 				Thenable.all(thenables).then(next);
+			},
+			function(next) {
+				var tournament = netPokerServer.getTournamentManager().getLocalTournamentById(666);
+				var finishedState = tournament.getTournamentState();
+				expect(playState).toEqual(jasmine.any(FinishedState));
+
+				next();
 			}
 		).then(done);
 	});*/

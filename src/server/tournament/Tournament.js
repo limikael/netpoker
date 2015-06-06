@@ -34,6 +34,12 @@ function Tournament(services, data) {
 	this.blindStructure = [];
 	this.startChips = data.startChips;
 
+	if (data.hasOwnProperty("handFinishDelay"))
+		this.handFinishDelay = data.handFinishDelay;
+
+	else
+		this.handFinishDelay = 5000;
+
 	for (var i = 0; i < data.blindStructure.length; i++) {
 		this.blindStructure.push(new BlindStructureData(
 			data.blindStructure[i].time,
@@ -273,6 +279,14 @@ Tournament.prototype.close = function() {
 		console.log("warning, closing non idle tournament");
 
 	this.tournamentState.close();
+}
+
+/**
+ * Get hand finish delay.
+ * @method getHandFinishDelay
+ */
+Tournament.prototype.getHandFinishDelay = function() {
+	return this.handFinishDelay;
 }
 
 module.exports = Tournament;

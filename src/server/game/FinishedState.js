@@ -28,8 +28,7 @@ FinishedState.FINISH_DELAY = 5000;
  */
 FinishedState.prototype.run = function() {
 	console.log("**** finished state");
-	//this.game.getTable().send(new DelayMessage(FinishedState.FINISH_DELAY));
-	this.timeoutId = setTimeout(this.onTimout.bind(this), FinishedState.FINISH_DELAY);
+	this.timeoutId = setTimeout(this.onTimout.bind(this), this.game.getHandFinishDelay());
 }
 
 /**
@@ -38,6 +37,7 @@ FinishedState.prototype.run = function() {
  * @private
  */
 FinishedState.prototype.onTimout = function() {
+	console.log("finished state timeout");
 	this.timeoutId = null;
 
 	var clear = [
