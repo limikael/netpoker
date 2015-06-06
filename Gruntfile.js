@@ -139,7 +139,8 @@ module.exports = function(grunt) {
 							expose: "Gradient"
 						}],
 						"pixiapp",
-						"pixi.js"
+						"pixi.js",
+						"tinp"
 					]
 				},
 				src: [],

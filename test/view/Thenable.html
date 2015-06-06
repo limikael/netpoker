@@ -1,0 +1,14 @@
+<html>
+	<script src="res/netpokerclient.test.bundle.js"></script>
+	<script>
+		var Thenable=require("tinp");
+
+		thenable = new Thenable();
+
+		thenable.then(function() {
+			console.log("thenable resolved");
+		});
+
+		thenable.resolve();
+	</script>
+</html>
