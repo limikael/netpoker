@@ -1,5 +1,5 @@
 var TournamentManager = require("../../../../src/server/tournament/TournamentManager");
-var MockBackend = require("../../../utils/MockBackend");
+var MockBackendServer = require("../../../../src/server/mock/MockBackendServer");
 var EventDispatcher = require("yaed");
 var inherits = require("inherits");
 
@@ -24,7 +24,7 @@ describe("TournamentManager", function() {
 			return this.idle;
 		}
 
-		mockBackend = new MockBackend();
+		mockBackend = new MockBackendServer();
 
 		mockServices = {};
 		mockServices.getBackend = function() {
