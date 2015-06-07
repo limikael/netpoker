@@ -150,7 +150,7 @@ NetPokerClientController.prototype.onCheckboxChange = function(ev) {
 
 /**
  * Table button click.
- * @mehod onTableButtonClick
+ * @method onTableButtonClick
  */
 NetPokerClientController.prototype.onTableButtonClick = function(index) {
 	this.protoConnection.send(new TableButtonClickMessage(index));
