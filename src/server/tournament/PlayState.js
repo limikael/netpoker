@@ -128,10 +128,28 @@ PlayState.prototype.notifyNewConnection = function(protoConnection, user) {
 }
 
 /**
+ * Get finish place for user.
+ * @method getUserFinishPlace
+ */
+PlayState.prototype.getUserFinishPlace = function(user) {
+	if (!user)
+		return -1;
+
+	for (var i = 0; i < this.finishedUsers.length; i++)
+		if (this.finishedUsers[i].getId() == user.getId())
+			return i;
+
+	return -1;
+}
+
+/**
  * Manage a spectator.
  * @method manageSpectator
  */
 PlayState.prototype.manageSpectator = function(playSpectator) {
+	if (this.playSpectators.indexOf(playSpectator) >= 0)
+		throw new Error("this spectator is already managed");
+
 	playSpectator.on(PlaySpectator.DONE, this.onPlaySpectatorDone, this);
 	this.playSpectators.push(playSpectator);
 }
@@ -270,6 +288,24 @@ PlayState.prototype.getTableWithMostAvailableSeats = function() {
 
 		if (tournamentTable.isActive() &&
 			(!cand || tournamentTable.getNumAvailableSeats() > cand.getNumAvailableSeats()))
+			cand = tournamentTable;
+	}
+
+	return cand;
+}
+
+/**
+ * Get table that has the most players.
+ * @method getTableWithMostPlayers
+ */
+PlayState.prototype.getTableWithMostPlayers = function() {
+	var cand = null;
+
+	for (var t = 0; t < this.tournamentTables.length; t++) {
+		var tournamentTable = this.tournamentTables[t];
+
+		if (tournamentTable.isActive() &&
+			(!cand || tournamentTable.getNumInGame() > cand.getNumInGame()))
 			cand = tournamentTable;
 	}
 

@@ -12,7 +12,10 @@ var url = require("url");
  * Backend with static data.
  * @class MockBackendServer
  */
-function MockBackendServer() {}
+function MockBackendServer() {
+	this.tournamentSeatsPerTable = 10;
+	this.tournamentRequiredRegistrations = 3;
+}
 
 /**
  * Set listen port.
@@ -104,8 +107,8 @@ MockBackendServer.prototype.tournamentInfo = function(params) {
 		id: 666,
 		state: "registration",
 		info: "Welcome to the tournament...",
-		requiredRegistrations: 3,
-		seatsPerTable: 10,
+		requiredRegistrations: this.tournamentRequiredRegistrations,
+		seatsPerTable: this.tournamentSeatsPerTable,
 		startChips: 1000,
 		blindStructure: [{
 			time: 100,

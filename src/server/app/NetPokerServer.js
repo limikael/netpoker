@@ -406,7 +406,14 @@ NetPokerServer.prototype.loadConfigFile = function(fileName) {
  */
 NetPokerServer.prototype.useMock = function() {
 	this.serveViewCases(__dirname + "/../../../res/viewcases");
-	this.setBackend(new MockBackendServer());
+
+	var mockBackend = new MockBackendServer();
+	mockBackend.tournamentSeatsPerTable = 2;
+	mockBackend.tournamentRequiredRegistrations = 4;
+	this.setBackend(mockBackend);
+
+
+//	this.setBackend(new MockBackendServer());
 	this.setWebRequestHandler(new MockWebRequestHandler());
 }
 

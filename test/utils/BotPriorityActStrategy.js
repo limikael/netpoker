@@ -73,6 +73,9 @@ BotPriorityActStrategy.prototype.onButtonsMessage = function() {
  * @method act
  */
 BotPriorityActStrategy.prototype.act = function() {
+	if (!this.botConnection.getButtons().length)
+		return;
+
 	for (var i = 0; i < this.actions.length; i++) {
 		if (this.botConnection.isActionAvailable(this.actions[i])) {
 			this.botConnection.act(this.actions[i]);

@@ -36,9 +36,26 @@ function TournamentTable(playState, tableIndex) {
 	}
 
 	BaseTable.call(this);
+	this.playSpectators = [];
 }
 
 inherits(TournamentTable, BaseTable);
+
+/**
+ * Add play spectator.
+ * @method addPlaySpectator
+ */
+TournamentTable.prototype.addPlaySpectator = function(ps) {
+	this.playSpectators.push(ps);
+}
+
+/**
+ * Remove play spectator.
+ * @method removePlaySpectator
+ */
+TournamentTable.prototype.removePlaySpectator = function(ps) {
+	ArrayUtil.remove(this.playSpectators, ps);
+}
 
 /**
  * Get number of seats used.
@@ -249,8 +266,8 @@ TournamentTable.prototype.getServices = function() {
 TournamentTable.prototype.send = function(message) {
 	var i;
 
-	/*for (i = 0; i < this.tableSpectators.length; i++)
-		this.tableSpectators[i].send(message);*/
+	for (i = 0; i < this.playSpectators.length; i++)
+		this.playSpectators[i].send(message);
 
 	for (i = 0; i < this.tableSeats.length; i++)
 		this.tableSeats[i].send(message);
@@ -263,8 +280,8 @@ TournamentTable.prototype.send = function(message) {
 TournamentTable.prototype.sendExceptSeat = function(message, exceptTableSeat) {
 	var i;
 
-	/*for (i = 0; i < this.tableSpectators.length; i++)
-		this.tableSpectators[i].send(message);*/
+	for (i = 0; i < this.playSpectators.length; i++)
+		this.playSpectators[i].send(message);
 
 	for (i = 0; i < this.tableSeats.length; i++)
 		if (this.tableSeats[i] != exceptTableSeat)
