@@ -16,8 +16,12 @@ function SelectTableButton(viewConfig) {
 
 	Button.call(this);
 
-	var s = new PIXI.Sprite(this.resources.getTexture("selectTableButton"));
-	this.addChild(s);
+	this.background = new PIXI.Sprite(this.resources.getTexture("selectTableButton"));
+	this.addChild(this.background);
+
+	this.selectedBackground = new PIXI.Sprite(this.resources.getTexture("selectedTableButton"));
+	this.addChild(this.selectedBackground);
+
 
 	var style = {
 		font: "bold 12px Times New Roman",
@@ -33,6 +37,9 @@ function SelectTableButton(viewConfig) {
 	this.eleminatedIcon.x = this.width / 2 - this.eleminatedIcon.width / 2;
 	this.eleminatedIcon.y = this.height / 2 - this.eleminatedIcon.height / 2;
 	this.addChild(this.eleminatedIcon);
+
+	this.setCurrent(false);
+
 }
 
 inherits(SelectTableButton, Button);
@@ -56,6 +63,14 @@ SelectTableButton.prototype.setEnabled = function(enabled) {
 	this.eleminatedIcon.visible = !enabled;
 
 	this.alpha = enabled ? 1 : .5;
+}
+
+/**
+ * Set current.
+ * @method setEnabled
+ */
+SelectTableButton.prototype.setCurrent = function(current) {
+	this.selectedBackground.visible = current;
 }
 
 module.exports = SelectTableButton;

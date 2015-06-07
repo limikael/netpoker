@@ -21,6 +21,8 @@ var TableInfoView = require("../view/TableInfoView");
 var PresetButtonsView = require("../view/PresetButtonsView");
 var TableButtonsView = require("./TableButtonsView");
 var inherits = require("inherits");
+var TWEEN = require("tween.js");
+var FadeTableMessage = require("../../proto/messages/FadeTableMessage");
 
 /**
  * Net poker client view.
@@ -54,13 +56,13 @@ function NetPokerClientView(viewConfig, resources) {
 	this.addChild(this.buttonsView);
 
 	this.dealerButtonView = new DealerButtonView(this.viewConfig, this.resources);
-	this.addChild(this.dealerButtonView);
+	this.tableContainer.addChild(this.dealerButtonView);
 
 	this.tableInfoView = new TableInfoView(this.viewConfig, this.resources);
 	this.addChild(this.tableInfoView);
 
 	this.potView = new PotView(this.viewConfig, this.resources);
-	this.addChild(this.potView);
+	this.tableContainer.addChild(this.potView);
 	this.potView.position.x = this.resources.getPoint("potPosition").x;
 	this.potView.position.y = this.resources.getPoint("potPosition").y;
 
@@ -77,12 +79,15 @@ function NetPokerClientView(viewConfig, resources) {
 	this.addChild(this.tableButtonsView);
 
 	this.setupChips();
+
+	this.fadeTableTween = null;
 }
 
 inherits(NetPokerClientView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(NetPokerClientView);
 
 NetPokerClientView.SEAT_CLICK = "seatClick";
+NetPokerClientView.FADE_TABLE_COMPLETE = "fadeTableComplete";
 
 /**
  * Setup background.
@@ -281,11 +286,86 @@ NetPokerClientView.prototype.getTableButtonsView = function() {
 }
 
 /**
- * Clear everything to an empty state.
- * @method clear
+ * Fade table.
+ * @method fadeTable
  */
-NetPokerClientView.prototype.clear = function() {
-	var i;
+NetPokerClientView.prototype.fadeTable = function(visible, direction) {
+	if (this.fadeTableTween) {
+		this.fadeTableTween.stop();
+		this.fadeTableTween = null;
+	}
+
+	this.fadeTableTween = new TWEEN.Tween(this.tableContainer);
+	this.fadeTableTween.easing(TWEEN.Easing.Quadratic.InOut);
+
+	var dirMultiplier = 0;
+
+	switch (direction) {
+		case FadeTableMessage.LEFT:
+			dirMultiplier = -1;
+			break;
+
+		case FadeTableMessage.RIGHT:
+			dirMultiplier = 1;
+			break;
+
+		default:
+			throw new Error("unknown fade direction: " + direction);
+			break;
+	}
+
+	var target = {};
+	var completeFunction;
+
+	if (visible) {
+		this.tableContainer.alpha = 0;
+		this.tableContainer.x = -100 * dirMultiplier;
+		target.alpha = 1;
+		target.x = 0;
+		completeFunction = this.onFadeInComplete.bind(this);
+	} else {
+		this.tableContainer.alpha = 1;
+		this.tableContainer.x = 0;
+		target.alpha = 0;
+		target.x = 100 * dirMultiplier;
+		completeFunction = this.onFadeOutComplete.bind(this);
+	}
+
+	//	console.log("fading table...");
+
+	this.fadeTableTween.to(target, this.viewConfig.scaleAnimationTime(250));
+	this.fadeTableTween.onComplete(completeFunction);
+	this.fadeTableTween.start();
+}
+
+/**
+ * Fade out complete
+ * @method onFadeOutComplete
+ * @private
+ */
+NetPokerClientView.prototype.onFadeOutComplete = function() {
+	this.fadeTableTween = null;
+	this.clearTableContents();
+	this.trigger(NetPokerClientView.FADE_TABLE_COMPLETE);
+}
+
+/**
+ * Fade in complete
+ * @method onFadeInComplete
+ * @private
+ */
+NetPokerClientView.prototype.onFadeInComplete = function() {
+	this.fadeTableTween = null;
+	this.trigger(NetPokerClientView.FADE_TABLE_COMPLETE);
+}
+
+/**
+ * Clear the contents of the table.
+ * @method clearTableContents
+ * @private
+ */
+NetPokerClientView.prototype.clearTableContents = function() {
+	this.dealerButtonView.hide();
 
 	for (i = 0; i < this.communityCards.length; i++)
 		this.communityCards[i].hide();
@@ -295,10 +375,20 @@ NetPokerClientView.prototype.clear = function() {
 
 	this.timerView.hide();
 	this.potView.setValues(new Array());
-	this.dealerButtonView.hide();
-	this.chatView.clear();
+}
+
+/**
+ * Clear everything to an empty state.
+ * @method clear
+ */
+NetPokerClientView.prototype.clear = function() {
+	var i;
+
+	this.clearTableContents();
 
 	this.presetButtonsView.hide();
+
+	this.chatView.clear();
 
 	this.dialogView.hide();
 	this.buttonsView.clear();
@@ -306,6 +396,14 @@ NetPokerClientView.prototype.clear = function() {
 	this.tableInfoView.clear();
 	this.settingsView.clear();
 	this.tableButtonsView.clear();
+
+	if (this.fadeTableTween) {
+		this.fadeTableTween.stop();
+		this.fadeTableTween = null;
+	}
+
+	this.tableContainer.alpha = 1;
+	this.tableContainer.x = 0;
 }
 
 module.exports = NetPokerClientView;

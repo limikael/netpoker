@@ -29,6 +29,7 @@ module.exports = {
 	"sliderKnob": "__sliderKnob.png",
 	"upArrow": "__upArrow.png",
 	"selectTableButton": "__selectTableButton.png",
+	"selectedTableButton": "__selectedTableButton.png",
 	"eleminatedTableIcon": "__eleminatedTableIcon.png",
 
 	"chipsColor0": 0x404040,

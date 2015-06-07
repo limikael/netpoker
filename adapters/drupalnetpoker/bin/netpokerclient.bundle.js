@@ -20713,7 +20713,7 @@ var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 var TableButtonClickMessage = require("../../proto/messages/TableButtonClickMessage");
 var ButtonData = require("../../proto/data/ButtonData");
 var PresetButtonsView = require("../view/PresetButtonsView");
-var TableButtonsView=require("../view/TableButtonsView");
+var TableButtonsView = require("../view/TableButtonsView");
 
 /**
  * Main controller
@@ -20870,6 +20870,7 @@ var DelayMessage = require("../../proto/messages/DelayMessage");
 var EventDispatcher = require("yaed");
 var ClearMessage = require("../../proto/messages/ClearMessage");
 var PayOutMessage = require("../../proto/messages/PayOutMessage");
+var FadeTableMessage = require("../../proto/messages/FadeTableMessage");
 
 /**
  * Control the table
@@ -20892,8 +20893,18 @@ function TableController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(DelayMessage.TYPE, this.onDelay, this);
 	this.messageSequencer.addMessageHandler(ClearMessage.TYPE, this.onClear, this);
 	this.messageSequencer.addMessageHandler(PayOutMessage.TYPE, this.onPayOut, this);
+	this.messageSequencer.addMessageHandler(FadeTableMessage.TYPE, this.onFadeTableMessage, this);
 }
 EventDispatcher.init(TableController);
+
+/**
+ * Fade table.
+ * @method onFadeTableMessage
+ */
+TableController.prototype.onFadeTableMessage = function(m) {
+	this.view.fadeTable(m.getVisible(), m.getDirection());
+	this.messageSequencer.waitFor(this.view, "fadeTableComplete");
+}
 
 /**
  * Seat info message.
@@ -20928,7 +20939,7 @@ TableController.prototype.onCommunityCardsMessage = function(m) {
 	if (m.getCards().length > 0) {
 		var cardData = m.getCards()[m.getCards().length - 1];
 		var cardView = this.view.getCommunityCards()[m.getFirstIndex() + m.getCards().length - 1];
-		if(m.animate)
+		if (m.animate)
 			this.messageSequencer.waitFor(cardView, "animationDone");
 	}
 }
@@ -20945,7 +20956,7 @@ TableController.prototype.onPocketCardsMessage = function(m) {
 		var cardData = m.getCards()[i];
 		var cardView = seatView.getPocketCards()[m.getFirstIndex() + i];
 
-		if(m.animate)
+		if (m.animate)
 			this.messageSequencer.waitFor(cardView, "animationDone");
 		cardView.setCardData(cardData);
 		cardView.show(m.animate, 10);
@@ -21045,7 +21056,6 @@ TableController.prototype.onFoldCards = function(m) {
 TableController.prototype.onDelay = function(m) {
 	console.log("delay for  = " + m.delay);
 
-
 	this.messageSequencer.waitFor(this, "timerDone");
 	setTimeout(this.dispatchEvent.bind(this, "timerDone"), m.delay);
 
@@ -21056,37 +21066,40 @@ TableController.prototype.onDelay = function(m) {
  * @method onClear
  */
 TableController.prototype.onClear = function(m) {
-
 	var components = m.getComponents();
 
-	for(var i = 0; i < components.length; i++) {
-		switch(components[i]) {
-			case ClearMessage.POT: {
-				this.view.potView.setValues([]);
-				break;
-			}
-			case ClearMessage.BETS: {
-				for(var s = 0; s < this.view.seatViews.length; s++) {
-					this.view.seatViews[s].betChips.setValue(0);
+	for (var i = 0; i < components.length; i++) {
+		switch (components[i]) {
+			case ClearMessage.POT:
+				{
+					this.view.potView.setValues([]);
+					break;
 				}
-				break;
-			}
-			case ClearMessage.CARDS: {
-				for(var s = 0; s < this.view.seatViews.length; s++) {
-					for(var c = 0; c < this.view.seatViews[s].pocketCards.length; c++) {
-						this.view.seatViews[s].pocketCards[c].hide();
+			case ClearMessage.BETS:
+				{
+					for (var s = 0; s < this.view.seatViews.length; s++) {
+						this.view.seatViews[s].betChips.setValue(0);
 					}
+					break;
 				}
+			case ClearMessage.CARDS:
+				{
+					for (var s = 0; s < this.view.seatViews.length; s++) {
+						for (var c = 0; c < this.view.seatViews[s].pocketCards.length; c++) {
+							this.view.seatViews[s].pocketCards[c].hide();
+						}
+					}
 
-				for(var c = 0; c < this.view.communityCards.length; c++) {
-					this.view.communityCards[c].hide();
+					for (var c = 0; c < this.view.communityCards.length; c++) {
+						this.view.communityCards[c].hide();
+					}
+					break;
 				}
-				break;
-			}
-			case ClearMessage.CHAT: {
-				this.view.chatView.clear();
-				break;
-			}
+			case ClearMessage.CHAT:
+				{
+					this.view.chatView.clear();
+					break;
+				}
 		}
 	}
 }
@@ -21107,7 +21120,7 @@ TableController.prototype.onPayOut = function(m) {
 
 
 module.exports = TableController;
-},{"../../proto/messages/ActionMessage":49,"../../proto/messages/BetMessage":50,"../../proto/messages/BetsToPotMessage":51,"../../proto/messages/ClearMessage":56,"../../proto/messages/CommunityCardsMessage":57,"../../proto/messages/DealerButtonMessage":58,"../../proto/messages/DelayMessage":59,"../../proto/messages/FoldCardsMessage":61,"../../proto/messages/PayOutMessage":65,"../../proto/messages/PocketCardsMessage":66,"../../proto/messages/PotMessage":67,"../../proto/messages/SeatInfoMessage":72,"../../proto/messages/TimerMessage":79,"yaed":14}],21:[function(require,module,exports){
+},{"../../proto/messages/ActionMessage":49,"../../proto/messages/BetMessage":50,"../../proto/messages/BetsToPotMessage":51,"../../proto/messages/ClearMessage":56,"../../proto/messages/CommunityCardsMessage":57,"../../proto/messages/DealerButtonMessage":58,"../../proto/messages/DelayMessage":59,"../../proto/messages/FadeTableMessage":60,"../../proto/messages/FoldCardsMessage":61,"../../proto/messages/PayOutMessage":65,"../../proto/messages/PocketCardsMessage":66,"../../proto/messages/PotMessage":67,"../../proto/messages/SeatInfoMessage":72,"../../proto/messages/TimerMessage":79,"yaed":14}],21:[function(require,module,exports){
 module.exports = {
 	"tableBackground": "__table.png",
 	"seatPlate": "__seatPlate.png",
@@ -21139,6 +21152,7 @@ module.exports = {
 	"sliderKnob": "__sliderKnob.png",
 	"upArrow": "__upArrow.png",
 	"selectTableButton": "__selectTableButton.png",
+	"selectedTableButton": "__selectedTableButton.png",
 	"eleminatedTableIcon": "__eleminatedTableIcon.png",
 
 	"chipsColor0": 0x404040,
@@ -23010,6 +23024,8 @@ var TableInfoView = require("../view/TableInfoView");
 var PresetButtonsView = require("../view/PresetButtonsView");
 var TableButtonsView = require("./TableButtonsView");
 var inherits = require("inherits");
+var TWEEN = require("tween.js");
+var FadeTableMessage = require("../../proto/messages/FadeTableMessage");
 
 /**
  * Net poker client view.
@@ -23043,13 +23059,13 @@ function NetPokerClientView(viewConfig, resources) {
 	this.addChild(this.buttonsView);
 
 	this.dealerButtonView = new DealerButtonView(this.viewConfig, this.resources);
-	this.addChild(this.dealerButtonView);
+	this.tableContainer.addChild(this.dealerButtonView);
 
 	this.tableInfoView = new TableInfoView(this.viewConfig, this.resources);
 	this.addChild(this.tableInfoView);
 
 	this.potView = new PotView(this.viewConfig, this.resources);
-	this.addChild(this.potView);
+	this.tableContainer.addChild(this.potView);
 	this.potView.position.x = this.resources.getPoint("potPosition").x;
 	this.potView.position.y = this.resources.getPoint("potPosition").y;
 
@@ -23066,12 +23082,15 @@ function NetPokerClientView(viewConfig, resources) {
 	this.addChild(this.tableButtonsView);
 
 	this.setupChips();
+
+	this.fadeTableTween = null;
 }
 
 inherits(NetPokerClientView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(NetPokerClientView);
 
 NetPokerClientView.SEAT_CLICK = "seatClick";
+NetPokerClientView.FADE_TABLE_COMPLETE = "fadeTableComplete";
 
 /**
  * Setup background.
@@ -23270,11 +23289,86 @@ NetPokerClientView.prototype.getTableButtonsView = function() {
 }
 
 /**
- * Clear everything to an empty state.
- * @method clear
+ * Fade table.
+ * @method fadeTable
  */
-NetPokerClientView.prototype.clear = function() {
-	var i;
+NetPokerClientView.prototype.fadeTable = function(visible, direction) {
+	if (this.fadeTableTween) {
+		this.fadeTableTween.stop();
+		this.fadeTableTween = null;
+	}
+
+	this.fadeTableTween = new TWEEN.Tween(this.tableContainer);
+	this.fadeTableTween.easing(TWEEN.Easing.Quadratic.InOut);
+
+	var dirMultiplier = 0;
+
+	switch (direction) {
+		case FadeTableMessage.LEFT:
+			dirMultiplier = -1;
+			break;
+
+		case FadeTableMessage.RIGHT:
+			dirMultiplier = 1;
+			break;
+
+		default:
+			throw new Error("unknown fade direction: " + direction);
+			break;
+	}
+
+	var target = {};
+	var completeFunction;
+
+	if (visible) {
+		this.tableContainer.alpha = 0;
+		this.tableContainer.x = -100 * dirMultiplier;
+		target.alpha = 1;
+		target.x = 0;
+		completeFunction = this.onFadeInComplete.bind(this);
+	} else {
+		this.tableContainer.alpha = 1;
+		this.tableContainer.x = 0;
+		target.alpha = 0;
+		target.x = 100 * dirMultiplier;
+		completeFunction = this.onFadeOutComplete.bind(this);
+	}
+
+	//	console.log("fading table...");
+
+	this.fadeTableTween.to(target, this.viewConfig.scaleAnimationTime(250));
+	this.fadeTableTween.onComplete(completeFunction);
+	this.fadeTableTween.start();
+}
+
+/**
+ * Fade out complete
+ * @method onFadeOutComplete
+ * @private
+ */
+NetPokerClientView.prototype.onFadeOutComplete = function() {
+	this.fadeTableTween = null;
+	this.clearTableContents();
+	this.trigger(NetPokerClientView.FADE_TABLE_COMPLETE);
+}
+
+/**
+ * Fade in complete
+ * @method onFadeInComplete
+ * @private
+ */
+NetPokerClientView.prototype.onFadeInComplete = function() {
+	this.fadeTableTween = null;
+	this.trigger(NetPokerClientView.FADE_TABLE_COMPLETE);
+}
+
+/**
+ * Clear the contents of the table.
+ * @method clearTableContents
+ * @private
+ */
+NetPokerClientView.prototype.clearTableContents = function() {
+	this.dealerButtonView.hide();
 
 	for (i = 0; i < this.communityCards.length; i++)
 		this.communityCards[i].hide();
@@ -23284,10 +23378,20 @@ NetPokerClientView.prototype.clear = function() {
 
 	this.timerView.hide();
 	this.potView.setValues(new Array());
-	this.dealerButtonView.hide();
-	this.chatView.clear();
+}
+
+/**
+ * Clear everything to an empty state.
+ * @method clear
+ */
+NetPokerClientView.prototype.clear = function() {
+	var i;
+
+	this.clearTableContents();
 
 	this.presetButtonsView.hide();
+
+	this.chatView.clear();
 
 	this.dialogView.hide();
 	this.buttonsView.clear();
@@ -23295,10 +23399,18 @@ NetPokerClientView.prototype.clear = function() {
 	this.tableInfoView.clear();
 	this.settingsView.clear();
 	this.tableButtonsView.clear();
+
+	if (this.fadeTableTween) {
+		this.fadeTableTween.stop();
+		this.fadeTableTween = null;
+	}
+
+	this.tableContainer.alpha = 1;
+	this.tableContainer.x = 0;
 }
 
 module.exports = NetPokerClientView;
-},{"../../utils/Gradient":83,"../../utils/Point":89,"../view/PresetButtonsView":37,"../view/SettingsView":42,"../view/TableInfoView":44,"./ButtonsView":25,"./CardView":27,"./ChatView":28,"./ChipsView":29,"./DealerButtonView":30,"./DialogView":32,"./PotView":35,"./SeatView":39,"./TableButtonsView":43,"./TimerView":45,"inherits":7,"pixi.js":8,"yaed":14}],35:[function(require,module,exports){
+},{"../../proto/messages/FadeTableMessage":60,"../../utils/Gradient":83,"../../utils/Point":89,"../view/PresetButtonsView":37,"../view/SettingsView":42,"../view/TableInfoView":44,"./ButtonsView":25,"./CardView":27,"./ChatView":28,"./ChipsView":29,"./DealerButtonView":30,"./DialogView":32,"./PotView":35,"./SeatView":39,"./TableButtonsView":43,"./TimerView":45,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],35:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23919,8 +24031,12 @@ function SelectTableButton(viewConfig) {
 
 	Button.call(this);
 
-	var s = new PIXI.Sprite(this.resources.getTexture("selectTableButton"));
-	this.addChild(s);
+	this.background = new PIXI.Sprite(this.resources.getTexture("selectTableButton"));
+	this.addChild(this.background);
+
+	this.selectedBackground = new PIXI.Sprite(this.resources.getTexture("selectedTableButton"));
+	this.addChild(this.selectedBackground);
+
 
 	var style = {
 		font: "bold 12px Times New Roman",
@@ -23936,6 +24052,9 @@ function SelectTableButton(viewConfig) {
 	this.eleminatedIcon.x = this.width / 2 - this.eleminatedIcon.width / 2;
 	this.eleminatedIcon.y = this.height / 2 - this.eleminatedIcon.height / 2;
 	this.addChild(this.eleminatedIcon);
+
+	this.setCurrent(false);
+
 }
 
 inherits(SelectTableButton, Button);
@@ -23959,6 +24078,14 @@ SelectTableButton.prototype.setEnabled = function(enabled) {
 	this.eleminatedIcon.visible = !enabled;
 
 	this.alpha = enabled ? 1 : .5;
+}
+
+/**
+ * Set current.
+ * @method setEnabled
+ */
+SelectTableButton.prototype.setCurrent = function(current) {
+	this.selectedBackground.visible = current;
 }
 
 module.exports = SelectTableButton;
@@ -24346,6 +24473,10 @@ TableButtonsView.prototype.showButtons = function(enabled, currentIndex) {
 		button.y = Math.floor(i / 4) * 24;
 		button.setEnabled(enabled[i]);
 		button.setTableIndex(i);
+
+		if (i == currentIndex)
+			button.setCurrent(true);
+
 		this.buttons.push(button);
 		this.holder.addChild(button);
 	}
@@ -25963,6 +26094,9 @@ function FadeTableMessage(visible, direction) {
 }
 
 FadeTableMessage.TYPE = "fadeTable";
+
+FadeTableMessage.LEFT = "left";
+FadeTableMessage.RIGHT = "right";
 
 /**
  * Getter.

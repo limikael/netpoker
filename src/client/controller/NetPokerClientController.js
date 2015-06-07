@@ -20,7 +20,7 @@ var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 var TableButtonClickMessage = require("../../proto/messages/TableButtonClickMessage");
 var ButtonData = require("../../proto/data/ButtonData");
 var PresetButtonsView = require("../view/PresetButtonsView");
-var TableButtonsView=require("../view/TableButtonsView");
+var TableButtonsView = require("../view/TableButtonsView");
 
 /**
  * Main controller

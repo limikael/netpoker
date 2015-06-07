@@ -14,6 +14,9 @@ function FadeTableMessage(visible, direction) {
 
 FadeTableMessage.TYPE = "fadeTable";
 
+FadeTableMessage.LEFT = "left";
+FadeTableMessage.RIGHT = "right";
+
 /**
  * Getter.
  * @method getVisible

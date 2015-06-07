@@ -47,6 +47,10 @@ TableButtonsView.prototype.showButtons = function(enabled, currentIndex) {
 		button.y = Math.floor(i / 4) * 24;
 		button.setEnabled(enabled[i]);
 		button.setTableIndex(i);
+
+		if (i == currentIndex)
+			button.setCurrent(true);
+
 		this.buttons.push(button);
 		this.holder.addChild(button);
 	}

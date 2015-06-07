@@ -17,6 +17,7 @@ var DelayMessage = require("../../proto/messages/DelayMessage");
 var EventDispatcher = require("yaed");
 var ClearMessage = require("../../proto/messages/ClearMessage");
 var PayOutMessage = require("../../proto/messages/PayOutMessage");
+var FadeTableMessage = require("../../proto/messages/FadeTableMessage");
 
 /**
  * Control the table
@@ -39,8 +40,18 @@ function TableController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(DelayMessage.TYPE, this.onDelay, this);
 	this.messageSequencer.addMessageHandler(ClearMessage.TYPE, this.onClear, this);
 	this.messageSequencer.addMessageHandler(PayOutMessage.TYPE, this.onPayOut, this);
+	this.messageSequencer.addMessageHandler(FadeTableMessage.TYPE, this.onFadeTableMessage, this);
 }
 EventDispatcher.init(TableController);
+
+/**
+ * Fade table.
+ * @method onFadeTableMessage
+ */
+TableController.prototype.onFadeTableMessage = function(m) {
+	this.view.fadeTable(m.getVisible(), m.getDirection());
+	this.messageSequencer.waitFor(this.view, "fadeTableComplete");
+}
 
 /**
  * Seat info message.
@@ -75,7 +86,7 @@ TableController.prototype.onCommunityCardsMessage = function(m) {
 	if (m.getCards().length > 0) {
 		var cardData = m.getCards()[m.getCards().length - 1];
 		var cardView = this.view.getCommunityCards()[m.getFirstIndex() + m.getCards().length - 1];
-		if(m.animate)
+		if (m.animate)
 			this.messageSequencer.waitFor(cardView, "animationDone");
 	}
 }
@@ -92,7 +103,7 @@ TableController.prototype.onPocketCardsMessage = function(m) {
 		var cardData = m.getCards()[i];
 		var cardView = seatView.getPocketCards()[m.getFirstIndex() + i];
 
-		if(m.animate)
+		if (m.animate)
 			this.messageSequencer.waitFor(cardView, "animationDone");
 		cardView.setCardData(cardData);
 		cardView.show(m.animate, 10);
@@ -192,7 +203,6 @@ TableController.prototype.onFoldCards = function(m) {
 TableController.prototype.onDelay = function(m) {
 	console.log("delay for  = " + m.delay);
 
-
 	this.messageSequencer.waitFor(this, "timerDone");
 	setTimeout(this.dispatchEvent.bind(this, "timerDone"), m.delay);
 
@@ -203,37 +213,40 @@ TableController.prototype.onDelay = function(m) {
  * @method onClear
  */
 TableController.prototype.onClear = function(m) {
-
 	var components = m.getComponents();
 
-	for(var i = 0; i < components.length; i++) {
-		switch(components[i]) {
-			case ClearMessage.POT: {
-				this.view.potView.setValues([]);
-				break;
-			}
-			case ClearMessage.BETS: {
-				for(var s = 0; s < this.view.seatViews.length; s++) {
-					this.view.seatViews[s].betChips.setValue(0);
+	for (var i = 0; i < components.length; i++) {
+		switch (components[i]) {
+			case ClearMessage.POT:
+				{
+					this.view.potView.setValues([]);
+					break;
 				}
-				break;
-			}
-			case ClearMessage.CARDS: {
-				for(var s = 0; s < this.view.seatViews.length; s++) {
-					for(var c = 0; c < this.view.seatViews[s].pocketCards.length; c++) {
-						this.view.seatViews[s].pocketCards[c].hide();
+			case ClearMessage.BETS:
+				{
+					for (var s = 0; s < this.view.seatViews.length; s++) {
+						this.view.seatViews[s].betChips.setValue(0);
 					}
+					break;
 				}
+			case ClearMessage.CARDS:
+				{
+					for (var s = 0; s < this.view.seatViews.length; s++) {
+						for (var c = 0; c < this.view.seatViews[s].pocketCards.length; c++) {
+							this.view.seatViews[s].pocketCards[c].hide();
+						}
+					}
 
-				for(var c = 0; c < this.view.communityCards.length; c++) {
-					this.view.communityCards[c].hide();
+					for (var c = 0; c < this.view.communityCards.length; c++) {
+						this.view.communityCards[c].hide();
+					}
+					break;
 				}
-				break;
-			}
-			case ClearMessage.CHAT: {
-				this.view.chatView.clear();
-				break;
-			}
+			case ClearMessage.CHAT:
+				{
+					this.view.chatView.clear();
+					break;
+				}
 		}
 	}
 }
