@@ -19,6 +19,7 @@ var TimerView = require("./TimerView");
 var SettingsView = require("../view/SettingsView");
 var TableInfoView = require("../view/TableInfoView");
 var PresetButtonsView = require("../view/PresetButtonsView");
+var TableButtonsView = require("./TableButtonsView");
 var inherits = require("inherits");
 
 /**
@@ -71,6 +72,9 @@ function NetPokerClientView(viewConfig, resources) {
 
 	this.presetButtonsView = new PresetButtonsView(this.viewConfig, this.resources);
 	this.addChild(this.presetButtonsView);
+
+	this.tableButtonsView = new TableButtonsView(this.viewConfig);
+	this.addChild(this.tableButtonsView);
 
 	this.setupChips();
 }
@@ -160,7 +164,7 @@ NetPokerClientView.prototype.setupChips = function() {
 		this.seatViews[i].setBetChipsView(chipsView);
 
 		chipsView.setAlignment(this.resources.getValue("betAlign").charAt(i));
-		chipsView.setTargetPosition(this.resources.getPoint("betPosition"+i));
+		chipsView.setTargetPosition(this.resources.getPoint("betPosition" + i));
 		this.tableContainer.addChild(chipsView);
 	}
 }
@@ -269,6 +273,14 @@ NetPokerClientView.prototype.getSettingsView = function() {
 }
 
 /**
+ * Get table buttons view.
+ * @method getTableButtonsView
+ */
+NetPokerClientView.prototype.getTableButtonsView = function() {
+	return this.tableButtonsView;
+}
+
+/**
  * Clear everything to an empty state.
  * @method clear
  */
@@ -293,6 +305,7 @@ NetPokerClientView.prototype.clear = function() {
 
 	this.tableInfoView.clear();
 	this.settingsView.clear();
+	this.tableButtonsView.clear();
 }
 
 module.exports = NetPokerClientView;

@@ -50,7 +50,7 @@
         },
         "__checkboxTick.png": {
             "frame": {
-                "x": 607,
+                "x": 637,
                 "y": 486,
                 "w": 21,
                 "h": 16
@@ -58,7 +58,7 @@
         },
         "__chip0.png": {
             "frame": {
-                "x": 476,
+                "x": 602,
                 "y": 414,
                 "w": 40,
                 "h": 30
@@ -66,7 +66,7 @@
         },
         "__chip1.png": {
             "frame": {
-                "x": 434,
+                "x": 476,
                 "y": 414,
                 "w": 40,
                 "h": 30
@@ -74,7 +74,7 @@
         },
         "__chip2.png": {
             "frame": {
-                "x": 518,
+                "x": 434,
                 "y": 414,
                 "w": 40,
                 "h": 30
@@ -82,7 +82,7 @@
         },
         "__chip3.png": {
             "frame": {
-                "x": 560,
+                "x": 518,
                 "y": 414,
                 "w": 40,
                 "h": 30
@@ -90,7 +90,7 @@
         },
         "__chip4.png": {
             "frame": {
-                "x": 602,
+                "x": 560,
                 "y": 414,
                 "w": 40,
                 "h": 30
@@ -120,6 +120,14 @@
                 "h": 170
             }
         },
+        "__eleminatedTableIcon.png": {
+            "frame": {
+                "x": 312,
+                "y": 446,
+                "w": 13,
+                "h": 13
+            }
+        },
         "__framePlate.png": {
             "frame": {
                 "x": 275,
@@ -136,6 +144,14 @@
                 "h": 70
             }
         },
+        "__selectTableButton.png": {
+            "frame": {
+                "x": 644,
+                "y": 414,
+                "w": 39,
+                "h": 22
+            }
+        },
         "__sliderBackground.png": {
             "frame": {
                 "x": 312,
@@ -146,15 +162,15 @@
         },
         "__sliderKnob.png": {
             "frame": {
-                "x": 644,
-                "y": 414,
+                "x": 504,
+                "y": 486,
                 "w": 28,
                 "h": 28
             }
         },
         "__suitSymbol0.png": {
             "frame": {
-                "x": 587,
+                "x": 617,
                 "y": 486,
                 "w": 18,
                 "h": 19
@@ -162,7 +178,7 @@
         },
         "__suitSymbol1.png": {
             "frame": {
-                "x": 567,
+                "x": 597,
                 "y": 486,
                 "w": 18,
                 "h": 19
@@ -170,7 +186,7 @@
         },
         "__suitSymbol2.png": {
             "frame": {
-                "x": 527,
+                "x": 557,
                 "y": 486,
                 "w": 18,
                 "h": 19
@@ -178,7 +194,7 @@
         },
         "__suitSymbol3.png": {
             "frame": {
-                "x": 547,
+                "x": 577,
                 "y": 486,
                 "w": 18,
                 "h": 19
@@ -194,16 +210,16 @@
         },
         "__textScrollbarThumb.png": {
             "frame": {
-                "x": 674,
-                "y": 414,
+                "x": 685,
+                "y": 426,
                 "w": 60,
                 "h": 10
             }
         },
         "__textScrollbarTrack.png": {
             "frame": {
-                "x": 674,
-                "y": 426,
+                "x": 685,
+                "y": 414,
                 "w": 60,
                 "h": 10
             }
@@ -218,7 +234,7 @@
         },
         "__upArrow.png": {
             "frame": {
-                "x": 736,
+                "x": 747,
                 "y": 414,
                 "w": 12,
                 "h": 8
@@ -226,7 +242,7 @@
         },
         "__wrenchIcon.png": {
             "frame": {
-                "x": 504,
+                "x": 534,
                 "y": 486,
                 "w": 21,
                 "h": 21
@@ -235,7 +251,7 @@
     },
     "meta": {
         "app": "spritesheet-templates",
-        "version": "9.5.0",
+        "version": "9.6.1",
         "image": "netpokerclient.spritesheet.png",
         "scale": 1,
         "size": {

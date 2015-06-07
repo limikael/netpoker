@@ -8,7 +8,7 @@
  * @class TableButtonsMessage
  */
 function TableButtonsMessage() {
-	this.enabled = new Array();
+	this.enabled = [];
 	this.currentIndex = -1;
 	this.playerIndex = -1;
 	this.infoLink = "";
@@ -36,9 +36,9 @@ TableButtonsMessage.prototype.getCurrentIndex = function() {
  * Getter.
  * @method getPlayerIndex
  */
-TableButtonsMessage.prototype.getPlayerIndex = function() {
+/*TableButtonsMessage.prototype.getPlayerIndex = function() {
 	return this.playerIndex;
-}
+}*/
 
 /**
  * Getter.

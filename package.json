@@ -33,7 +33,7 @@
     "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-ftpush": "^0.3.3",
-    "grunt-spritesmith": "git+https://github.com/limikael/grunt-spritesmith.git#79f196126eda0fffa7da6f6c10c3ce1c4cdeecf9",
+    "grunt-spritesmith": "4.7.1",
     "jasmine-node": "^2.0.0-beta4",
     "jitsu": "^0.15.0",
     "pixi.js": "^1.6.1",

@@ -61,7 +61,7 @@ function TableInfoView(viewConfig, resources) {
 
 	this.handInfoText = new PIXI.Text("<HandInfoText>", style);
 	this.handInfoText.position.y = 10;
-	this.handInfoText.position.x = 960 - this.handInfoText.width;
+	this.handInfoText.position.x = 10; //960 - this.handInfoText.width;
 	this.addChild(this.handInfoText);
 
 	this.joinButton = new DialogButton(this.resources);
@@ -135,7 +135,7 @@ TableInfoView.prototype.setHandInfoText = function(s) {
 
 	this.handInfoText.setText(s);
 	this.handInfoText.updateTransform();
-	this.handInfoText.position.x = 960 - this.handInfoText.width - 10;
+	//this.handInfoText.position.x = 960 - this.handInfoText.width - 10;
 }
 
 /**

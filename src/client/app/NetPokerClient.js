@@ -42,7 +42,7 @@ function NetPokerClient() {
 	this.url = null;
 	this.tableId = null;
 	this.tournamentId = null;
-	this.viewConfig = new ViewConfig();
+	this.viewConfig = new ViewConfig(this.resources);
 
 	this.on("frame", TWEEN.update);
 }
@@ -166,7 +166,7 @@ NetPokerClient.prototype.connect = function() {
 
 	var parsedUrl = url.parse(this.url);
 
-	console.log(parsedUrl);
+	//console.log(parsedUrl);
 
 	if (!parsedUrl.protocol || parsedUrl.protocol == "http:" || parsedUrl.protocol == "https:") {
 		this.url = UrlUtil.makeAbsolute(this.url);

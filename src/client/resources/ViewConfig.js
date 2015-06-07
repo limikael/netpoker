@@ -7,8 +7,9 @@
  * View configuration.
  * @class ViewConfig
  */
-function ViewConfig() {
+function ViewConfig(resources) {
 	this.playAnimations = true;
+	this.resources = resources;
 }
 
 /**
@@ -36,6 +37,14 @@ ViewConfig.prototype.scaleAnimationTime = function(millis) {
 		return millis;
 
 	return 1;
+}
+
+/**
+ * Get resources.
+ * @method getResources
+ */
+ViewConfig.prototype.getResources = function() {
+	return this.resources;
 }
 
 module.exports = ViewConfig;

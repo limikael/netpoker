@@ -12,6 +12,7 @@ var PresetButtonsMessage = require("../../proto/messages/PresetButtonsMessage");
 var InterfaceStateMessage = require("../../proto/messages/InterfaceStateMessage");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 var PreTournamentInfoMessage = require("../../proto/messages/PreTournamentInfoMessage");
+var TableButtonsMessage = require("../../proto/messages/TableButtonsMessage");
 
 /**
  * Control user interface.
@@ -29,8 +30,17 @@ function InterfaceController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(InterfaceStateMessage.TYPE, this.onInterfaceStateMessage, this);
 	this.messageSequencer.addMessageHandler(CheckboxMessage.TYPE, this.onCheckboxMessage, this);
 	this.messageSequencer.addMessageHandler(PreTournamentInfoMessage.TYPE, this.onPreTournamentInfoMessage, this);
+	this.messageSequencer.addMessageHandler(TableButtonsMessage.TYPE, this.onTableButtonsMessage, this);
 
 	this.messageSequencer.addMessageHandler(PresetButtonsMessage.TYPE, this.onPresetButtons, this);
+}
+
+/**
+ * Table buttons message.
+ * @method onTableButtonsMessage
+ */
+InterfaceController.prototype.onTableButtonsMessage = function(m) {
+	console.log("table buttons...");
 }
 
 /**
@@ -139,6 +149,16 @@ InterfaceController.prototype.onPreTournamentInfoMessage = function(m) {
 	var tableInfoView = this.view.getTableInfoView();
 
 	tableInfoView.setPreTournamentInfoText(m.getText());
+}
+
+/**
+ * Table buttons message.
+ * @method onTableButtonsMessage
+ */
+InterfaceController.prototype.onTableButtonsMessage = function(m) {
+	var tableButtonsView = this.view.getTableButtonsView();
+
+	tableButtonsView.showButtons(m.getEnabled(), m.getCurrentIndex());
 }
 
 module.exports = InterfaceController;

@@ -86,4 +86,18 @@ Button.prototype.onClick = function() {
 	this.trigger(Button.CLICK);
 }
 
+/**
+ * Enabled.
+ * @method setEnabled
+ */
+Button.prototype.setEnabled = function(value) {
+	if (value) {
+		this.interactive = true;
+		this.buttonMode = true;
+	} else {
+		this.interactive = false;
+		this.buttonMode = false;
+	}
+}
+
 module.exports = Button;

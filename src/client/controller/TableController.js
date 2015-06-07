@@ -63,7 +63,7 @@ TableController.prototype.onCommunityCardsMessage = function(m) {
 	var i;
 
 	console.log("got community cards!");
-	console.log(m);
+	//console.log(m);
 
 	for (i = 0; i < m.getCards().length; i++) {
 		var cardData = m.getCards()[i];

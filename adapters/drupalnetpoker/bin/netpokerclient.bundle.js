@@ -20139,7 +20139,7 @@ function NetPokerClient() {
 	this.url = null;
 	this.tableId = null;
 	this.tournamentId = null;
-	this.viewConfig = new ViewConfig();
+	this.viewConfig = new ViewConfig(this.resources);
 
 	this.on("frame", TWEEN.update);
 }
@@ -20263,7 +20263,7 @@ NetPokerClient.prototype.connect = function() {
 
 	var parsedUrl = url.parse(this.url);
 
-	console.log(parsedUrl);
+	//console.log(parsedUrl);
 
 	if (!parsedUrl.protocol || parsedUrl.protocol == "http:" || parsedUrl.protocol == "https:") {
 		this.url = UrlUtil.makeAbsolute(this.url);
@@ -20376,7 +20376,7 @@ NetPokerClient.getQueryStringParams = function() {
 }
 
 module.exports = NetPokerClient;
-},{"../../proto/ProtoConnection":44,"../../proto/messages/InitMessage":61,"../../proto/messages/StateCompleteMessage":72,"../../utils/MessageRequestConnection":83,"../../utils/MessageWebSocketConnection":84,"../../utils/UrlUtil":90,"../controller/NetPokerClientController":19,"../resources/DefaultSkin":21,"../resources/Resources":22,"../resources/ViewConfig":23,"../view/LoadingScreen":33,"../view/NetPokerClientView":34,"inherits":7,"pixi.js":8,"pixiapp":9,"tween.js":13,"url":6}],16:[function(require,module,exports){
+},{"../../proto/ProtoConnection":46,"../../proto/messages/InitMessage":63,"../../proto/messages/StateCompleteMessage":74,"../../utils/MessageRequestConnection":85,"../../utils/MessageWebSocketConnection":86,"../../utils/UrlUtil":92,"../controller/NetPokerClientController":19,"../resources/DefaultSkin":21,"../resources/Resources":22,"../resources/ViewConfig":23,"../view/LoadingScreen":33,"../view/NetPokerClientView":34,"inherits":7,"pixi.js":8,"pixiapp":9,"tween.js":13,"url":6}],16:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -20391,6 +20391,7 @@ var PresetButtonsMessage = require("../../proto/messages/PresetButtonsMessage");
 var InterfaceStateMessage = require("../../proto/messages/InterfaceStateMessage");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
 var PreTournamentInfoMessage = require("../../proto/messages/PreTournamentInfoMessage");
+var TableButtonsMessage = require("../../proto/messages/TableButtonsMessage");
 
 /**
  * Control user interface.
@@ -20408,8 +20409,17 @@ function InterfaceController(messageSequencer, view) {
 	this.messageSequencer.addMessageHandler(InterfaceStateMessage.TYPE, this.onInterfaceStateMessage, this);
 	this.messageSequencer.addMessageHandler(CheckboxMessage.TYPE, this.onCheckboxMessage, this);
 	this.messageSequencer.addMessageHandler(PreTournamentInfoMessage.TYPE, this.onPreTournamentInfoMessage, this);
+	this.messageSequencer.addMessageHandler(TableButtonsMessage.TYPE, this.onTableButtonsMessage, this);
 
 	this.messageSequencer.addMessageHandler(PresetButtonsMessage.TYPE, this.onPresetButtons, this);
+}
+
+/**
+ * Table buttons message.
+ * @method onTableButtonsMessage
+ */
+InterfaceController.prototype.onTableButtonsMessage = function(m) {
+	console.log("table buttons...");
 }
 
 /**
@@ -20520,8 +20530,18 @@ InterfaceController.prototype.onPreTournamentInfoMessage = function(m) {
 	tableInfoView.setPreTournamentInfoText(m.getText());
 }
 
+/**
+ * Table buttons message.
+ * @method onTableButtonsMessage
+ */
+InterfaceController.prototype.onTableButtonsMessage = function(m) {
+	var tableButtonsView = this.view.getTableButtonsView();
+
+	tableButtonsView.showButtons(m.getEnabled(), m.getCurrentIndex());
+}
+
 module.exports = InterfaceController;
-},{"../../proto/messages/ButtonsMessage":51,"../../proto/messages/ChatMessage":52,"../../proto/messages/CheckboxMessage":53,"../../proto/messages/HandInfoMessage":60,"../../proto/messages/InterfaceStateMessage":62,"../../proto/messages/PreTournamentInfoMessage":66,"../../proto/messages/PresetButtonsMessage":68,"../../proto/messages/ShowDialogMessage":71,"../../proto/messages/TableInfoMessage":75}],17:[function(require,module,exports){
+},{"../../proto/messages/ButtonsMessage":53,"../../proto/messages/ChatMessage":54,"../../proto/messages/CheckboxMessage":55,"../../proto/messages/HandInfoMessage":62,"../../proto/messages/InterfaceStateMessage":64,"../../proto/messages/PreTournamentInfoMessage":68,"../../proto/messages/PresetButtonsMessage":70,"../../proto/messages/ShowDialogMessage":73,"../../proto/messages/TableButtonsMessage":76,"../../proto/messages/TableInfoMessage":77}],17:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -20595,7 +20615,7 @@ MessageSequenceItem.prototype.onTargetComplete = function() {
 }
 
 module.exports = MessageSequenceItem;
-},{"../../utils/Sequencer":88,"inherits":7,"yaed":14}],18:[function(require,module,exports){
+},{"../../utils/Sequencer":90,"inherits":7,"yaed":14}],18:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -20670,7 +20690,7 @@ MessageSequencer.prototype.waitFor = function(target, event) {
 }
 
 module.exports = MessageSequencer;
-},{"../../utils/Sequencer":88,"./MessageSequenceItem":17,"yaed":14}],19:[function(require,module,exports){
+},{"../../utils/Sequencer":90,"./MessageSequenceItem":17,"yaed":14}],19:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -20690,8 +20710,10 @@ var TableController = require("./TableController");
 var InterfaceController = require("./InterfaceController");
 var ChatMessage = require("../../proto/messages/ChatMessage");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
+var TableButtonClickMessage = require("../../proto/messages/TableButtonClickMessage");
 var ButtonData = require("../../proto/data/ButtonData");
 var PresetButtonsView = require("../view/PresetButtonsView");
+var TableButtonsView=require("../view/TableButtonsView");
 
 /**
  * Main controller
@@ -20705,8 +20727,6 @@ function NetPokerClientController(view) {
 	this.tableController = new TableController(this.messageSequencer, this.netPokerClientView);
 	this.interfaceController = new InterfaceController(this.messageSequencer, this.netPokerClientView);
 
-	//console.log(this.netPokerClientView.getDialogView());
-
 	this.netPokerClientView.getButtonsView().on(ButtonsView.BUTTON_CLICK, this.onButtonClick, this);
 	this.netPokerClientView.getTableInfoView().on(TableInfoView.BUTTON_CLICK, this.onButtonClick, this);
 	this.netPokerClientView.getDialogView().on(DialogView.BUTTON_CLICK, this.onButtonClick, this);
@@ -20717,6 +20737,7 @@ function NetPokerClientController(view) {
 	this.netPokerClientView.settingsView.addEventListener(SettingsView.CHECKBOX_CHANGE, this.onCheckboxChange, this);
 
 	this.netPokerClientView.getPresetButtonsView().addEventListener(PresetButtonsView.CHANGE, this.onPresetButtonsChange, this);
+	this.netPokerClientView.getTableButtonsView().on(TableButtonsView.TABLE_CLICK, this.onTableButtonClick, this);
 }
 
 
@@ -20820,8 +20841,16 @@ NetPokerClientController.prototype.onCheckboxChange = function(ev) {
 	this.protoConnection.send(new CheckboxMessage(ev.checkboxId, ev.checked));
 }
 
+/**
+ * Table button click.
+ * @mehod onTableButtonClick
+ */
+NetPokerClientController.prototype.onTableButtonClick = function(index) {
+	this.protoConnection.send(new TableButtonClickMessage(index));
+}
+
 module.exports = NetPokerClientController;
-},{"../../proto/ProtoConnection":44,"../../proto/data/ButtonData":45,"../../proto/messages/ButtonClickMessage":50,"../../proto/messages/ChatMessage":52,"../../proto/messages/CheckboxMessage":53,"../../proto/messages/PresetButtonClickMessage":67,"../../proto/messages/SeatClickMessage":69,"../view/ButtonsView":25,"../view/DialogView":32,"../view/NetPokerClientView":34,"../view/PresetButtonsView":37,"../view/SettingsView":41,"../view/TableInfoView":42,"./InterfaceController":16,"./MessageSequencer":18,"./TableController":20}],20:[function(require,module,exports){
+},{"../../proto/ProtoConnection":46,"../../proto/data/ButtonData":47,"../../proto/messages/ButtonClickMessage":52,"../../proto/messages/ChatMessage":54,"../../proto/messages/CheckboxMessage":55,"../../proto/messages/PresetButtonClickMessage":69,"../../proto/messages/SeatClickMessage":71,"../../proto/messages/TableButtonClickMessage":75,"../view/ButtonsView":25,"../view/DialogView":32,"../view/NetPokerClientView":34,"../view/PresetButtonsView":37,"../view/SettingsView":42,"../view/TableButtonsView":43,"../view/TableInfoView":44,"./InterfaceController":16,"./MessageSequencer":18,"./TableController":20}],20:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -20887,7 +20916,7 @@ TableController.prototype.onCommunityCardsMessage = function(m) {
 	var i;
 
 	console.log("got community cards!");
-	console.log(m);
+	//console.log(m);
 
 	for (i = 0; i < m.getCards().length; i++) {
 		var cardData = m.getCards()[i];
@@ -21078,7 +21107,7 @@ TableController.prototype.onPayOut = function(m) {
 
 
 module.exports = TableController;
-},{"../../proto/messages/ActionMessage":47,"../../proto/messages/BetMessage":48,"../../proto/messages/BetsToPotMessage":49,"../../proto/messages/ClearMessage":54,"../../proto/messages/CommunityCardsMessage":55,"../../proto/messages/DealerButtonMessage":56,"../../proto/messages/DelayMessage":57,"../../proto/messages/FoldCardsMessage":59,"../../proto/messages/PayOutMessage":63,"../../proto/messages/PocketCardsMessage":64,"../../proto/messages/PotMessage":65,"../../proto/messages/SeatInfoMessage":70,"../../proto/messages/TimerMessage":77,"yaed":14}],21:[function(require,module,exports){
+},{"../../proto/messages/ActionMessage":49,"../../proto/messages/BetMessage":50,"../../proto/messages/BetsToPotMessage":51,"../../proto/messages/ClearMessage":56,"../../proto/messages/CommunityCardsMessage":57,"../../proto/messages/DealerButtonMessage":58,"../../proto/messages/DelayMessage":59,"../../proto/messages/FoldCardsMessage":61,"../../proto/messages/PayOutMessage":65,"../../proto/messages/PocketCardsMessage":66,"../../proto/messages/PotMessage":67,"../../proto/messages/SeatInfoMessage":72,"../../proto/messages/TimerMessage":79,"yaed":14}],21:[function(require,module,exports){
 module.exports = {
 	"tableBackground": "__table.png",
 	"seatPlate": "__seatPlate.png",
@@ -21109,6 +21138,8 @@ module.exports = {
 	"sliderBackground": "__sliderBackground.png",
 	"sliderKnob": "__sliderKnob.png",
 	"upArrow": "__upArrow.png",
+	"selectTableButton": "__selectTableButton.png",
+	"eleminatedTableIcon": "__eleminatedTableIcon.png",
 
 	"chipsColor0": 0x404040,
 	"chipsColor1": 0x008000,
@@ -21370,7 +21401,7 @@ Resources.prototype.processSkinData = function(data) {
 }
 
 module.exports = Resources;
-},{"../../utils/HttpRequest":82,"../../utils/UrlUtil":90,"pixi.js":8,"tinp":12}],23:[function(require,module,exports){
+},{"../../utils/HttpRequest":84,"../../utils/UrlUtil":92,"pixi.js":8,"tinp":12}],23:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -21380,8 +21411,9 @@ module.exports = Resources;
  * View configuration.
  * @class ViewConfig
  */
-function ViewConfig() {
+function ViewConfig(resources) {
 	this.playAnimations = true;
+	this.resources = resources;
 }
 
 /**
@@ -21409,6 +21441,14 @@ ViewConfig.prototype.scaleAnimationTime = function(millis) {
 		return millis;
 
 	return 1;
+}
+
+/**
+ * Get resources.
+ * @method getResources
+ */
+ViewConfig.prototype.getResources = function() {
+	return this.resources;
 }
 
 module.exports = ViewConfig;
@@ -21487,7 +21527,7 @@ BigButton.prototype.setValue = function(value) {
 }
 
 module.exports = BigButton;
-},{"../../utils/Button":79,"inherits":7,"pixi.js":8}],25:[function(require,module,exports){
+},{"../../utils/Button":81,"inherits":7,"pixi.js":8}],25:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -21758,7 +21798,7 @@ ButtonsView.prototype.onButtonClick = function(e) {
 }
 
 module.exports = ButtonsView;
-},{"../../utils/Button":79,"../../utils/NineSlice":86,"../../utils/Slider":89,"./BigButton":24,"./RaiseShortcutButton":38,"inherits":7,"pixi.js":8,"yaed":14}],26:[function(require,module,exports){
+},{"../../utils/Button":81,"../../utils/NineSlice":88,"../../utils/Slider":91,"./BigButton":24,"./RaiseShortcutButton":38,"inherits":7,"pixi.js":8,"yaed":14}],26:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -22260,7 +22300,7 @@ ChatView.prototype.onChatFieldMouseMove = function(interaction_object) {
 
 module.exports = ChatView;
 
-},{"../../utils/MouseOverGroup":85,"../../utils/NineSlice":86,"../../utils/Slider":89,"inherits":7,"pixi.js":8,"pixitextinput":10,"yaed":14}],29:[function(require,module,exports){
+},{"../../utils/MouseOverGroup":87,"../../utils/NineSlice":88,"../../utils/Slider":91,"inherits":7,"pixi.js":8,"pixitextinput":10,"yaed":14}],29:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -22730,7 +22770,7 @@ DialogButton.prototype.setText = function(text) {
 }
 
 module.exports = DialogButton;
-},{"../../utils/Button":79,"inherits":7,"pixi.js":8}],32:[function(require,module,exports){
+},{"../../utils/Button":81,"inherits":7,"pixi.js":8}],32:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -22884,7 +22924,7 @@ DialogView.prototype.onButtonClick = function(e) {
 }
 
 module.exports = DialogView;
-},{"../../proto/data/ButtonData":45,"../../utils/NineSlice":86,"./DialogButton":31,"inherits":7,"pixi.js":8,"pixitextinput":10,"yaed":14}],33:[function(require,module,exports){
+},{"../../proto/data/ButtonData":47,"../../utils/NineSlice":88,"./DialogButton":31,"inherits":7,"pixi.js":8,"pixitextinput":10,"yaed":14}],33:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -22946,7 +22986,7 @@ LoadingScreen.prototype.hide = function() {
 }
 
 module.exports = LoadingScreen;
-},{"../../utils/Gradient":81,"inherits":7,"pixi.js":8}],34:[function(require,module,exports){
+},{"../../utils/Gradient":83,"inherits":7,"pixi.js":8}],34:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -22968,6 +23008,7 @@ var TimerView = require("./TimerView");
 var SettingsView = require("../view/SettingsView");
 var TableInfoView = require("../view/TableInfoView");
 var PresetButtonsView = require("../view/PresetButtonsView");
+var TableButtonsView = require("./TableButtonsView");
 var inherits = require("inherits");
 
 /**
@@ -23020,6 +23061,9 @@ function NetPokerClientView(viewConfig, resources) {
 
 	this.presetButtonsView = new PresetButtonsView(this.viewConfig, this.resources);
 	this.addChild(this.presetButtonsView);
+
+	this.tableButtonsView = new TableButtonsView(this.viewConfig);
+	this.addChild(this.tableButtonsView);
 
 	this.setupChips();
 }
@@ -23109,7 +23153,7 @@ NetPokerClientView.prototype.setupChips = function() {
 		this.seatViews[i].setBetChipsView(chipsView);
 
 		chipsView.setAlignment(this.resources.getValue("betAlign").charAt(i));
-		chipsView.setTargetPosition(this.resources.getPoint("betPosition"+i));
+		chipsView.setTargetPosition(this.resources.getPoint("betPosition" + i));
 		this.tableContainer.addChild(chipsView);
 	}
 }
@@ -23218,6 +23262,14 @@ NetPokerClientView.prototype.getSettingsView = function() {
 }
 
 /**
+ * Get table buttons view.
+ * @method getTableButtonsView
+ */
+NetPokerClientView.prototype.getTableButtonsView = function() {
+	return this.tableButtonsView;
+}
+
+/**
  * Clear everything to an empty state.
  * @method clear
  */
@@ -23242,10 +23294,11 @@ NetPokerClientView.prototype.clear = function() {
 
 	this.tableInfoView.clear();
 	this.settingsView.clear();
+	this.tableButtonsView.clear();
 }
 
 module.exports = NetPokerClientView;
-},{"../../utils/Gradient":81,"../../utils/Point":87,"../view/PresetButtonsView":37,"../view/SettingsView":41,"../view/TableInfoView":42,"./ButtonsView":25,"./CardView":27,"./ChatView":28,"./ChipsView":29,"./DealerButtonView":30,"./DialogView":32,"./PotView":35,"./SeatView":39,"./TimerView":43,"inherits":7,"pixi.js":8,"yaed":14}],35:[function(require,module,exports){
+},{"../../utils/Gradient":83,"../../utils/Point":89,"../view/PresetButtonsView":37,"../view/SettingsView":42,"../view/TableInfoView":44,"./ButtonsView":25,"./CardView":27,"./ChatView":28,"./ChipsView":29,"./DealerButtonView":30,"./DialogView":32,"./PotView":35,"./SeatView":39,"./TableButtonsView":43,"./TimerView":45,"inherits":7,"pixi.js":8,"yaed":14}],35:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23456,7 +23509,7 @@ PresetButton.prototype.getValue = function() {
 }
 
 module.exports = PresetButton;
-},{"../../proto/data/ButtonData":45,"../../utils/Checkbox":80,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],37:[function(require,module,exports){
+},{"../../proto/data/ButtonData":47,"../../utils/Checkbox":82,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],37:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23634,7 +23687,7 @@ RaiseShortcutButton.prototype.setEnabled = function(value) {
 }
 
 module.exports = RaiseShortcutButton;
-},{"../../utils/Button":79,"../../utils/Checkbox":80,"../../utils/NineSlice":86,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],39:[function(require,module,exports){
+},{"../../utils/Button":81,"../../utils/Checkbox":82,"../../utils/NineSlice":88,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],39:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23847,7 +23900,69 @@ SeatView.prototype.clear = function() {
 }
 
 module.exports = SeatView;
-},{"../../utils/Button":79,"inherits":7,"pixi.js":8,"tween.js":13}],40:[function(require,module,exports){
+},{"../../utils/Button":81,"inherits":7,"pixi.js":8,"tween.js":13}],40:[function(require,module,exports){
+/**
+ * Client.
+ * @module client
+ */
+
+var Button = require("../../utils/Button");
+var inherits = require("inherits");
+var PIXI = require("pixi.js");
+
+/**
+ * Select table button.
+ * @class SelectTableButton
+ */
+function SelectTableButton(viewConfig) {
+	this.resources = viewConfig.getResources();
+
+	Button.call(this);
+
+	var s = new PIXI.Sprite(this.resources.getTexture("selectTableButton"));
+	this.addChild(s);
+
+	var style = {
+		font: "bold 12px Times New Roman",
+		fill: "#ffffff",
+	};
+
+	this.indexField = new PIXI.Text("1", style);
+	this.indexField.y = 4;
+	this.addChild(this.indexField);
+	this.setTableIndex(0);
+
+	this.eleminatedIcon = new PIXI.Sprite(this.resources.getTexture("eleminatedTableIcon"));
+	this.eleminatedIcon.x = this.width / 2 - this.eleminatedIcon.width / 2;
+	this.eleminatedIcon.y = this.height / 2 - this.eleminatedIcon.height / 2;
+	this.addChild(this.eleminatedIcon);
+}
+
+inherits(SelectTableButton, Button);
+
+/**
+ * Set table index.
+ * @method setTableIndex
+ */
+SelectTableButton.prototype.setTableIndex = function(index) {
+	this.indexField.setText(index + 1);
+	this.indexField.x = 20 - this.indexField.width / 2;
+}
+
+/**
+ * Set enabled.
+ * @method setEnabled
+ */
+SelectTableButton.prototype.setEnabled = function(enabled) {
+	Button.prototype.setEnabled.call(this, enabled);
+
+	this.eleminatedIcon.visible = !enabled;
+
+	this.alpha = enabled ? 1 : .5;
+}
+
+module.exports = SelectTableButton;
+},{"../../utils/Button":81,"inherits":7,"pixi.js":8}],41:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23924,7 +24039,7 @@ SettingsCheckbox.prototype.setChecked = function(checked) {
 }
 
 module.exports = SettingsCheckbox;
-},{"../../utils/Button":79,"../../utils/Checkbox":80,"../../utils/NineSlice":86,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],41:[function(require,module,exports){
+},{"../../utils/Button":81,"../../utils/Checkbox":82,"../../utils/NineSlice":88,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],42:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24181,7 +24296,86 @@ SettingsView.prototype.setCheckboxChecked = function(id, checked) {
 }
 
 module.exports = SettingsView;
-},{"../../proto/data/ButtonData":45,"../../proto/messages/CheckboxMessage":53,"../../utils/Button":79,"../../utils/NineSlice":86,"./RaiseShortcutButton":38,"./SettingsCheckbox":40,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],42:[function(require,module,exports){
+},{"../../proto/data/ButtonData":47,"../../proto/messages/CheckboxMessage":55,"../../utils/Button":81,"../../utils/NineSlice":88,"./RaiseShortcutButton":38,"./SettingsCheckbox":41,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],43:[function(require,module,exports){
+/**
+ * Client.
+ * @module client
+ */
+
+var PIXI = require("pixi.js");
+var inherits = require("inherits");
+var EventDispatcher = require("yaed");
+var SelectTableButton = require("./SelectTableButton");
+var Button = require("../../utils/Button");
+
+/**
+ * Select table during tournament.
+ * @class TableButtonsView
+ */
+function TableButtonsView(viewConfig) {
+	PIXI.DisplayObjectContainer.call(this);
+
+	this.viewConfig = viewConfig;
+
+	this.holder = new PIXI.DisplayObjectContainer();
+	this.addChild(this.holder);
+
+	this.buttons = [];
+	this.holder.y = 10;
+}
+
+inherits(TableButtonsView, PIXI.DisplayObjectContainer);
+EventDispatcher.init(TableButtonsView);
+
+TableButtonsView.TABLE_CLICK = "tableClick";
+
+/**
+ * Show buttons.
+ * @method showButtons
+ */
+TableButtonsView.prototype.showButtons = function(enabled, currentIndex) {
+	for (var b = 0; b < this.buttons.length; b++)
+		this.holder.removeChild(this.buttons[b]);
+
+	this.buttons = [];
+
+	for (var i = 0; i < enabled.length; i++) {
+		var button = new SelectTableButton(this.viewConfig);
+		button.on(Button.CLICK, this.onButtonClick, this);
+		button.x = (i % 4) * 40;
+		button.y = Math.floor(i / 4) * 24;
+		button.setEnabled(enabled[i]);
+		button.setTableIndex(i);
+		this.buttons.push(button);
+		this.holder.addChild(button);
+	}
+
+	this.holder.x = 960 - 10 - this.holder.width;
+}
+
+/**
+ * Clear.
+ * @method clear
+ */
+TableButtonsView.prototype.clear = function() {
+	for (var b = 0; b < this.buttons.length; b++)
+		this.holder.removeChild(this.buttons[b]);
+
+	this.buttons = [];
+}
+
+/**
+ * Button click.
+ * @method onButtonClick
+ */
+TableButtonsView.prototype.onButtonClick = function(ev) {
+	var index = this.buttons.indexOf(ev.target);
+
+	this.trigger(TableButtonsView.TABLE_CLICK, index);
+}
+
+module.exports = TableButtonsView;
+},{"../../utils/Button":81,"./SelectTableButton":40,"inherits":7,"pixi.js":8,"yaed":14}],44:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24245,7 +24439,7 @@ function TableInfoView(viewConfig, resources) {
 
 	this.handInfoText = new PIXI.Text("<HandInfoText>", style);
 	this.handInfoText.position.y = 10;
-	this.handInfoText.position.x = 960 - this.handInfoText.width;
+	this.handInfoText.position.x = 10; //960 - this.handInfoText.width;
 	this.addChild(this.handInfoText);
 
 	this.joinButton = new DialogButton(this.resources);
@@ -24319,7 +24513,7 @@ TableInfoView.prototype.setHandInfoText = function(s) {
 
 	this.handInfoText.setText(s);
 	this.handInfoText.updateTransform();
-	this.handInfoText.position.x = 960 - this.handInfoText.width - 10;
+	//this.handInfoText.position.x = 960 - this.handInfoText.width - 10;
 }
 
 /**
@@ -24358,7 +24552,7 @@ TableInfoView.prototype.onButtonClick = function(e) {
 }
 
 module.exports = TableInfoView;
-},{"../../proto/data/ButtonData":45,"./DialogButton":31,"inherits":7,"pixi.js":8,"yaed":14}],43:[function(require,module,exports){
+},{"../../proto/data/ButtonData":47,"./DialogButton":31,"inherits":7,"pixi.js":8,"yaed":14}],45:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24516,7 +24710,7 @@ TimerView.prototype.showPercent = function(value) {
 }
 
 module.exports = TimerView;
-},{"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],44:[function(require,module,exports){
+},{"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],46:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -24784,7 +24978,7 @@ ProtoConnection.prototype.toString = function() {
 }
 
 module.exports = ProtoConnection;
-},{"./messages/ActionMessage":47,"./messages/BetMessage":48,"./messages/BetsToPotMessage":49,"./messages/ButtonClickMessage":50,"./messages/ButtonsMessage":51,"./messages/ChatMessage":52,"./messages/CheckboxMessage":53,"./messages/ClearMessage":54,"./messages/CommunityCardsMessage":55,"./messages/DealerButtonMessage":56,"./messages/DelayMessage":57,"./messages/FadeTableMessage":58,"./messages/FoldCardsMessage":59,"./messages/HandInfoMessage":60,"./messages/InitMessage":61,"./messages/InterfaceStateMessage":62,"./messages/PayOutMessage":63,"./messages/PocketCardsMessage":64,"./messages/PotMessage":65,"./messages/PreTournamentInfoMessage":66,"./messages/PresetButtonClickMessage":67,"./messages/PresetButtonsMessage":68,"./messages/SeatClickMessage":69,"./messages/SeatInfoMessage":70,"./messages/ShowDialogMessage":71,"./messages/StateCompleteMessage":72,"./messages/TableButtonClickMessage":73,"./messages/TableButtonsMessage":74,"./messages/TableInfoMessage":75,"./messages/TestCaseRequestMessage":76,"./messages/TimerMessage":77,"./messages/TournamentResultMessage":78,"inherits":7,"yaed":14}],45:[function(require,module,exports){
+},{"./messages/ActionMessage":49,"./messages/BetMessage":50,"./messages/BetsToPotMessage":51,"./messages/ButtonClickMessage":52,"./messages/ButtonsMessage":53,"./messages/ChatMessage":54,"./messages/CheckboxMessage":55,"./messages/ClearMessage":56,"./messages/CommunityCardsMessage":57,"./messages/DealerButtonMessage":58,"./messages/DelayMessage":59,"./messages/FadeTableMessage":60,"./messages/FoldCardsMessage":61,"./messages/HandInfoMessage":62,"./messages/InitMessage":63,"./messages/InterfaceStateMessage":64,"./messages/PayOutMessage":65,"./messages/PocketCardsMessage":66,"./messages/PotMessage":67,"./messages/PreTournamentInfoMessage":68,"./messages/PresetButtonClickMessage":69,"./messages/PresetButtonsMessage":70,"./messages/SeatClickMessage":71,"./messages/SeatInfoMessage":72,"./messages/ShowDialogMessage":73,"./messages/StateCompleteMessage":74,"./messages/TableButtonClickMessage":75,"./messages/TableButtonsMessage":76,"./messages/TableInfoMessage":77,"./messages/TestCaseRequestMessage":78,"./messages/TimerMessage":79,"./messages/TournamentResultMessage":80,"inherits":7,"yaed":14}],47:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -24922,7 +25116,7 @@ ButtonData.prototype.toString = function() {
 }
 
 module.exports = ButtonData;
-},{}],46:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -25118,7 +25312,7 @@ CardData.fromString = function(s) {
 }
 
 module.exports = CardData;
-},{}],47:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -25180,7 +25374,7 @@ ActionMessage.prototype.serialize = function() {
 }
 
 module.exports = ActionMessage;
-},{}],48:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -25234,7 +25428,7 @@ BetMessage.prototype.serialize = function() {
 }
 
 module.exports = BetMessage;
-},{}],49:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -25265,7 +25459,7 @@ BetsToPotMessage.prototype.serialize = function() {
 }
 
 module.exports = BetsToPotMessage;
-},{}],50:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -25322,7 +25516,7 @@ ButtonClickMessage.prototype.serialize = function() {
 }
 
 module.exports = ButtonClickMessage;
-},{}],51:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -25400,7 +25594,7 @@ ButtonsMessage.prototype.serialize = function() {
 }
 
 module.exports = ButtonsMessage;
-},{"../data/ButtonData":45}],52:[function(require,module,exports){
+},{"../data/ButtonData":47}],54:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -25454,7 +25648,7 @@ ChatMessage.prototype.serialize = function() {
 }
 
 module.exports = ChatMessage;
-},{}],53:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -25512,7 +25706,7 @@ CheckboxMessage.prototype.serialize = function() {
 }
 
 module.exports = CheckboxMessage;
-},{}],54:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -25562,7 +25756,7 @@ ClearMessage.prototype.serialize = function() {
 }
 
 module.exports = ClearMessage;
-},{}],55:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -25658,7 +25852,7 @@ CommunityCardsMessage.prototype.serialize = function() {
 }
 
 module.exports = CommunityCardsMessage;
-},{"../data/CardData":46}],56:[function(require,module,exports){
+},{"../data/CardData":48}],58:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -25711,7 +25905,7 @@ DealerButtonMessage.prototype.serialize = function() {
 }
 
 module.exports = DealerButtonMessage;
-},{}],57:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -25753,7 +25947,7 @@ DelayMessage.prototype.serialize = function() {
 }
 
 module.exports = DelayMessage;
-},{}],58:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -25807,7 +26001,7 @@ FadeTableMessage.prototype.serialize = function() {
 }
 
 module.exports = FadeTableMessage;
-},{}],59:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -25850,7 +26044,7 @@ FoldCardsMessage.prototype.serialize = function() {
 }
 
 module.exports = FoldCardsMessage;
-},{}],60:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -25904,7 +26098,7 @@ HandInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = HandInfoMessage;
-},{}],61:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -26003,7 +26197,7 @@ InitMessage.prototype.serialize = function() {
 }
 
 module.exports = InitMessage;
-},{}],62:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -26057,7 +26251,7 @@ InterfaceStateMessage.prototype.serialize = function() {
 }
 
 module.exports = InterfaceStateMessage;
-},{}],63:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -26110,7 +26304,7 @@ PayOutMessage.prototype.serialize = function() {
 }
 
 module.exports = PayOutMessage;
-},{}],64:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -26214,7 +26408,7 @@ PocketCardsMessage.prototype.serialize = function() {
 }
 
 module.exports = PocketCardsMessage;
-},{"../data/CardData":46}],65:[function(require,module,exports){
+},{"../data/CardData":48}],67:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -26257,7 +26451,7 @@ PotMessage.prototype.serialize = function() {
 }
 
 module.exports = PotMessage;
-},{}],66:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -26314,7 +26508,7 @@ PreTournamentInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = PreTournamentInfoMessage;
-},{}],67:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -26371,7 +26565,7 @@ PresetButtonClickMessage.prototype.serialize = function() {
 }
 
 module.exports = PresetButtonClickMessage;
-},{}],68:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -26461,7 +26655,7 @@ PresetButtonsMessage.prototype.serialize = function() {
 }
 
 module.exports = PresetButtonsMessage;
-},{"../data/ButtonData":45}],69:[function(require,module,exports){
+},{"../data/ButtonData":47}],71:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -26504,7 +26698,7 @@ SeatClickMessage.prototype.serialize = function() {
 }
 
 module.exports = SeatClickMessage;
-},{}],70:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -26623,7 +26817,7 @@ SeatInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = SeatInfoMessage;
-},{}],71:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -26712,7 +26906,7 @@ ShowDialogMessage.prototype.serialize = function() {
 }
 
 module.exports = ShowDialogMessage;
-},{}],72:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -26740,7 +26934,7 @@ StateCompleteMessage.prototype.serialize = function() {
 }
 
 module.exports = StateCompleteMessage;
-},{}],73:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -26783,7 +26977,7 @@ TableButtonClickMessage.prototype.serialize = function() {
 }
 
 module.exports = TableButtonClickMessage;
-},{}],74:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -26794,7 +26988,7 @@ module.exports = TableButtonClickMessage;
  * @class TableButtonsMessage
  */
 function TableButtonsMessage() {
-	this.enabled = new Array();
+	this.enabled = [];
 	this.currentIndex = -1;
 	this.playerIndex = -1;
 	this.infoLink = "";
@@ -26822,9 +27016,9 @@ TableButtonsMessage.prototype.getCurrentIndex = function() {
  * Getter.
  * @method getPlayerIndex
  */
-TableButtonsMessage.prototype.getPlayerIndex = function() {
+/*TableButtonsMessage.prototype.getPlayerIndex = function() {
 	return this.playerIndex;
-}
+}*/
 
 /**
  * Getter.
@@ -26867,7 +27061,7 @@ TableButtonsMessage.prototype.serialize = function() {
 }
 
 module.exports = TableButtonsMessage;
-},{}],75:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -26993,7 +27187,7 @@ TableInfoMessage.prototype.serialize = function() {
 }
 
 module.exports = TableInfoMessage;
-},{}],76:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27036,7 +27230,7 @@ TestCaseRequestMessage.prototype.serialize = function() {
 }
 
 module.exports = TestCaseRequestMessage;
-},{}],77:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27125,7 +27319,7 @@ TimerMessage.prototype.serialize = function() {
 }
 
 module.exports = TimerMessage;
-},{}],78:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -27179,7 +27373,7 @@ TournamentResultMessage.prototype.serialize = function() {
 }
 
 module.exports = TournamentResultMessage;
-},{}],79:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -27268,8 +27462,22 @@ Button.prototype.onClick = function() {
 	this.trigger(Button.CLICK);
 }
 
+/**
+ * Enabled.
+ * @method setEnabled
+ */
+Button.prototype.setEnabled = function(value) {
+	if (value) {
+		this.interactive = true;
+		this.buttonMode = true;
+	} else {
+		this.interactive = false;
+		this.buttonMode = false;
+	}
+}
+
 module.exports = Button;
-},{"inherits":7,"pixi.js":8,"yaed":14}],80:[function(require,module,exports){
+},{"inherits":7,"pixi.js":8,"yaed":14}],82:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -27331,7 +27539,7 @@ Checkbox.prototype.getChecked = function() {
 
 
 module.exports = Checkbox;
-},{"./Button":79,"inherits":7,"pixi.js":8,"yaed":14}],81:[function(require,module,exports){
+},{"./Button":81,"inherits":7,"pixi.js":8,"yaed":14}],83:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -27393,7 +27601,7 @@ Gradient.prototype.createSprite = function() {
 }
 
 module.exports = Gradient;
-},{"pixi.js":8}],82:[function(require,module,exports){
+},{"pixi.js":8}],84:[function(require,module,exports){
 var Thenable = require("tinp");
 
 /**
@@ -27484,7 +27692,7 @@ HttpRequest.prototype.onRequestError = function(e) {
 }
 
 module.exports = HttpRequest;
-},{"tinp":12}],83:[function(require,module,exports){
+},{"tinp":12}],85:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -27569,7 +27777,7 @@ MessageRequestConnection.prototype.send = function(m) {
 }
 
 module.exports = MessageRequestConnection;
-},{"../utils/HttpRequest":82,"inherits":7,"tinp":12,"yaed":14}],84:[function(require,module,exports){
+},{"../utils/HttpRequest":84,"inherits":7,"tinp":12,"yaed":14}],86:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -27679,7 +27887,7 @@ MessageWebSocketConnection.prototype.clearWebSocket = function() {
 }
 
 module.exports = MessageWebSocketConnection;
-},{"inherits":7,"tinp":12,"yaed":14}],85:[function(require,module,exports){
+},{"inherits":7,"tinp":12,"yaed":14}],87:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -27798,7 +28006,7 @@ MouseOverGroup.prototype.onStageMouseUp = function(interaction_object) {
 module.exports = MouseOverGroup;
 
 
-},{"inherits":7,"pixi.js":8,"yaed":14}],86:[function(require,module,exports){
+},{"inherits":7,"pixi.js":8,"yaed":14}],88:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -27923,7 +28131,7 @@ NineSlice.prototype.createTexturePart = function(x, y, width, height) {
 }
 
 module.exports = NineSlice;
-},{"inherits":7,"pixi.js":8}],87:[function(require,module,exports){
+},{"inherits":7,"pixi.js":8}],89:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -27943,7 +28151,7 @@ function Point(x, y) {
 }
 
 module.exports = Point;
-},{}],88:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -28031,7 +28239,7 @@ Sequencer.prototype.abort = function() {
 }
 
 module.exports = Sequencer;
-},{"inherits":7,"yaed":14}],89:[function(require,module,exports){
+},{"inherits":7,"yaed":14}],91:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -28201,7 +28409,7 @@ Slider.prototype.onHidden = function() {
 
 module.exports = Slider;
 
-},{"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],90:[function(require,module,exports){
+},{"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],92:[function(require,module,exports){
 var url = require("url");
 
 /**
