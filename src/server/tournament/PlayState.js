@@ -9,6 +9,7 @@ var FinishedState = require("./FinishedState");
 var ArrayUtil = require("../../utils/ArrayUtil");
 var inherits = require("inherits");
 var PlaySpectator = require("./PlaySpectator");
+var TableButtonsMessage = require("../../proto/messages/TableButtonsMessage");
 
 /**
  * Play state.
@@ -303,5 +304,25 @@ PlayState.prototype.notifyComplete = function() {
 	this.tournament.setTournamentState(finishedState);
 	this.moveConnectionsToState(finishedState);
 }
+
+/**
+ * Get table buttons message.
+ */
+PlayState.prototype.getTableButtonsMessage = function() {
+	var m = new TableButtonsMessage();
+	var enabled = [];
+
+	for (var t = 0; t < this.tournamentTables.length; t++)
+		enabled.push(this.tournamentTables[t].isActive());
+
+	m.setEnabled(enabled);
+
+	console.log(m);
+
+	//m.infoLink = "%u/tournament/info/" + tournament.id;
+
+	return m;
+}
+
 
 module.exports = PlayState;

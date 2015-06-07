@@ -33,6 +33,22 @@ TableButtonsMessage.prototype.getCurrentIndex = function() {
 }
 
 /**
+ * Setter.
+ * @method getEnabled
+ */
+TableButtonsMessage.prototype.setEnabled = function(enabled) {
+	this.enabled = enabled;
+}
+
+/**
+ * Setter.
+ * @method setCurrentIndex
+ */
+TableButtonsMessage.prototype.setCurrentIndex = function(currentIndex) {
+	this.currentIndex = currentIndex;
+}
+
+/**
  * Getter.
  * @method getPlayerIndex
  */
@@ -58,7 +74,7 @@ TableButtonsMessage.prototype.unserialize = function(data) {
 	this.infoLink = data.infoLink;
 
 	this.enabled = new Array();
-	for(var i = 0; i < data.enabled.length; i++)
+	for (var i = 0; i < data.enabled.length; i++)
 		this.enabled.push(data.enabled[i]);
 }
 
@@ -74,7 +90,7 @@ TableButtonsMessage.prototype.serialize = function() {
 		infoLink: this.infoLink
 	};
 
-	for(var i = 0; i < this.enabled.length; i++)
+	for (var i = 0; i < this.enabled.length; i++)
 		object.enabled.push(this.enabled[i]);
 
 	return object;

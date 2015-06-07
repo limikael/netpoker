@@ -101,9 +101,9 @@ TournamentTable.prototype.sendState = function(protoConnection) {
 	if (this.currentGame)
 		this.currentGame.sendState(protoConnection);
 
-	/*var m=playState.getTableButtonsMessage();
+	var m = this.playState.getTableButtonsMessage();
 	m.setCurrentIndex(this.tableIndex);
-	protoConnection.send(m);*/
+	protoConnection.send(m);
 
 	protoConnection.send(new StateCompleteMessage());
 }
