@@ -240,8 +240,17 @@ Game.prototype.getNumInGame = function() {
  * @method addGameSeat
  */
 Game.prototype.addGameSeat = function(gameSeat) {
-	if (this.getGameSeatForSeatIndex(gameSeat.getSeatIndex()))
+	var already = this.getGameSeatForSeatIndex(gameSeat.getSeatIndex());
+
+	if (already && already != gameSeat)
 		throw new Error("A game seat is already added for that index");
+
+	else if (already)
+		return;
+
+	/*	if (this.getGameSeatForSeatIndex(gameSeat.getSeatIndex()))
+			return;*/
+	//throw new Error("A game seat is already added for that index");
 
 	this.gameSeats.push(gameSeat);
 }

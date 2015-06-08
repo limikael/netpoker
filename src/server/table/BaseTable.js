@@ -28,6 +28,14 @@ function BaseTable() {
 inherits(BaseTable, EventDispatcher);
 
 /**
+ * Get ante.
+ * @method getAnte
+ */
+BaseTable.prototype.getAnte = function() {
+	return 0;
+}
+
+/**
  * Use fixed deck for debugging.
  * @method useFixedDeck
  */

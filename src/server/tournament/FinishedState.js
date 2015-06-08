@@ -53,12 +53,16 @@ FinishedState.prototype.run = function() {
 		return;
 	}
 
-	var left = "hello";
-	var right = "world";
+	var left = "";
+	var right = "";
+	var payouts = this.tournament.getPayouts();
+
+	for (var i = 0; i < payouts.length; i++) {
+		left += (i + 1) + ". " + this.finishOrder[i].getName()+"\n";
+		right += payouts[i]+"\n";
+	}
 
 	this.tournamentResultMessage = new TournamentResultMessage(left, right);
-
-	var payouts = this.tournament.getPayouts();
 
 	var order = [];
 

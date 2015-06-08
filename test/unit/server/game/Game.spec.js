@@ -44,6 +44,10 @@ describe("Game", function() {
 			return 123;
 		};
 
+		mockTable.getAnte = function() {
+			return 0;
+		};
+
 		mockTable.getStartGameFunctionName = function() {
 			return "hello";
 		};
@@ -180,9 +184,15 @@ describe("Game", function() {
 		g.addGameSeat(gameSeat);
 
 		expect(g.getGameSeatForSeatIndex(5)).toBe(gameSeat);
+		expect(g.gameSeats.length).toBe(1);
+
+		g.addGameSeat(gameSeat);
+		expect(g.gameSeats.length).toBe(1);
+
+		var newGameSeat = new GameSeat(g, 5);
 
 		expect(function() {
-			g.addGameSeat(gameSeat);
+			g.addGameSeat(newGameSeat);
 		}).toThrow();
 	});
 

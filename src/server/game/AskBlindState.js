@@ -9,6 +9,9 @@ var GameSeat = require("./GameSeat");
 var GameSeatPrompt = require("./GameSeatPrompt");
 var ButtonData = require("../../proto/data/ButtonData");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
+var ActionMessage = require("../../proto/messages/ActionMessage");
+var BetsToPotMessage = require("../../proto/messages/BetsToPotMessage");
+var PotMessage = require("../../proto/messages/PotMessage");
 var FinishedState = require("./FinishedState");
 var RoundState = require("./RoundState");
 var inherits = require("inherits");
@@ -35,9 +38,42 @@ inherits(AskBlindState, GameState);
  */
 AskBlindState.prototype.run = function() {
 	var table = this.game.getTable();
+
 	this.askTableSeatIndex = table.getNextSeatIndexInGame(table.getDealerButtonIndex());
 
+	if (table.getAnte() > 0) {
+		console.log("********** ante applies...");
+
+		var seatIndex = table.getDealerButtonIndex();
+		do {
+			seatIndex = table.getNextSeatIndexInGame(seatIndex);
+
+			var gameSeat = new GameSeat(this.game, seatIndex);
+			this.game.addGameSeat(gameSeat);
+			gameSeat.makeBet(this.getAnteAmountForSeat(gameSeat));
+			gameSeat.betToPot();
+			table.send(new ActionMessage(gameSeat.getSeatIndex(), ActionMessage.ANTE));
+		} while (seatIndex != table.getDealerButtonIndex());
+
+		table.send(new BetsToPotMessage());
+		table.send(new PotMessage(this.game.getPots()));
+	}
+
+	this.haveBlinds = 0;
 	this.askNextBlind();
+}
+
+/**
+ * Get the ante amount the seat should pay.
+ * @method getAnteAmountForSeat
+ */
+AskBlindState.prototype.getAnteAmountForSeat = function(gameSeat) {
+	var cand = this.game.getTable().getAnte();
+
+	if (cand > gameSeat.getTableSeat().getChips())
+		cand = gameSeat.getTableSeat().getChips();
+
+	return cand;
 }
 
 /**
@@ -53,7 +89,7 @@ AskBlindState.prototype.askNextBlind = function() {
 	if (!gameSeat)
 		gameSeat = new GameSeat(this.game, this.askTableSeatIndex)
 
-	if (!this.getCurrentBlindAmount()) {
+	if (!this.getCurrentBlind()) {
 		this.game.addGameSeat(gameSeat);
 		this.askDone();
 		return;
@@ -94,6 +130,7 @@ AskBlindState.prototype.onPromptComplete = function() {
 		gameSeat.makeBet(blindAmount);
 
 		//gameSeat.getTableSeat().notifyBigBlindPaid();
+		this.haveBlinds++;
 		this.game.addGameSeat(gameSeat);
 	} else {
 		gameSeat.getTableSeat().sitout();
@@ -131,7 +168,7 @@ AskBlindState.prototype.askDone = function() {
  * @private
  */
 AskBlindState.prototype.getCurrentBlind = function() {
-	switch (this.game.getNumInGame()) {
+	switch (this.haveBlinds) {
 		case 0:
 			return ButtonData.POST_SB;
 
