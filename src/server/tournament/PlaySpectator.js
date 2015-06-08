@@ -115,6 +115,9 @@ PlaySpectator.prototype.setProtoConnection = function(protoConnection) {
 PlaySpectator.prototype.changeToTable = function(tournamentTable) {
 	var dir;
 
+	if (tournamentTable == this.tournamentTable)
+		throw new Error("changing to same table");
+
 	if (tournamentTable.getTableIndex() > this.tournamentTable.getTableIndex())
 		dir = FadeTableMessage.LEFT;
 

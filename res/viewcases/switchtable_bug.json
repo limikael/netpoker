@@ -26,6 +26,16 @@
 
 {"visible":false,"direction":"left","type":"fadeTable"}
 
+//{"visible":true,"direction":"left","type":"fadeTable"}
+//{"visible":false,"direction":"left","type":"fadeTable"}
+//{"visible":true,"direction":"left","type":"fadeTable"}
+//{"visible":false,"direction":"left","type":"fadeTable"}
+//{"visible":true,"direction":"left","type":"fadeTable"}
+//{"visible":false,"direction":"left","type":"fadeTable"}
+//{"visible":true,"direction":"left","type":"fadeTable"}
+
+//{"visible":false,"direction":"left","type":"fadeTable"}
+
 {"seatIndex":0,"name":"","chips":"","sitout":false,"active":false,"type":"seatInfo"}
 {"seatIndex":1,"name":"","chips":"","sitout":false,"active":false,"type":"seatInfo"}
 {"seatIndex":2,"name":"","chips":"","sitout":false,"active":false,"type":"seatInfo"}

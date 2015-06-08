@@ -380,4 +380,15 @@ PlayState.prototype.getTournamentTableAt = function(index) {
 	return this.tournamentTables[index];
 }
 
+/**
+ * Send table button messages.
+ * @method sendTableButtonsMessages
+ */
+PlayState.prototype.sendTableButtonsMessages = function() {
+	for (var t = 0; t < this.tournamentTables.length; t++) {
+		var tournamentTable = this.tournamentTables[t];
+		tournamentTable.send(tournamentTable.getTableButtonsMessage());
+	}
+}
+
 module.exports = PlayState;

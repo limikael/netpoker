@@ -6,6 +6,7 @@
 var BaseTableSeat = require("../table/BaseTableSeat");
 var TableSeatSettings = require("../table/TableSeatSettings");
 var inherits = require("inherits");
+var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 
 /**
  * A table seat. This class represents a seat in a tournament.
@@ -113,6 +114,14 @@ TournamentTableSeat.prototype.getChips = function() {
  */
 TournamentTableSeat.prototype.isSitout = function() {
 	return this.sitout;
+}
+
+/**
+ * Get table info message.
+ * @method getTableInfoMessage
+ */
+TournamentTableSeat.prototype.getTableInfoMessage = function() {
+	return new TableInfoMessage();
 }
 
 module.exports = TournamentTableSeat;

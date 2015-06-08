@@ -20609,7 +20609,7 @@ MessageSequenceItem.prototype.waitFor = function(target, event) {
  * @private
  */
 MessageSequenceItem.prototype.onTargetComplete = function() {
-	//console.log("target is complete");
+	//console.log("target is complete: "+this.waitEvent);
 	this.waitTarget.removeEventListener(this.waitEvent, this.waitClosure);
 	this.notifyComplete();
 }
@@ -23293,13 +23293,14 @@ NetPokerClientView.prototype.getTableButtonsView = function() {
  * @method fadeTable
  */
 NetPokerClientView.prototype.fadeTable = function(visible, direction) {
+	//console.log("fading table: "+visible);
+
 	if (this.fadeTableTween) {
+		console.log("there is already a tween...");
+		this.fadeTableTween.onComplete(null);
 		this.fadeTableTween.stop();
 		this.fadeTableTween = null;
 	}
-
-	this.fadeTableTween = new TWEEN.Tween(this.tableContainer);
-	this.fadeTableTween.easing(TWEEN.Easing.Quadratic.InOut);
 
 	var dirMultiplier = 0;
 
@@ -23334,11 +23335,17 @@ NetPokerClientView.prototype.fadeTable = function(visible, direction) {
 		completeFunction = this.onFadeOutComplete.bind(this);
 	}
 
-	//	console.log("fading table...");
+	var original = {
+		x: this.tableContainer.x,
+		alpha: this.tableContainer.alpha
+	};
 
-	this.fadeTableTween.to(target, this.viewConfig.scaleAnimationTime(250));
+	this.fadeTableTween = new TWEEN.Tween(this.tableContainer);
+	this.fadeTableTween.easing(TWEEN.Easing.Quadratic.InOut);
 	this.fadeTableTween.onComplete(completeFunction);
+	this.fadeTableTween.to(target, this.viewConfig.scaleAnimationTime(250));
 	this.fadeTableTween.start();
+	TWEEN.add(this.fadeTableTween);
 }
 
 /**
@@ -23347,16 +23354,15 @@ NetPokerClientView.prototype.fadeTable = function(visible, direction) {
  * @private
  */
 NetPokerClientView.prototype.onFadeOutComplete = function() {
+	if (!this.fadeTableTween)
+		return;
+
+	this.fadeTableTween.onComplete(null);
 	this.fadeTableTween.stop();
 	this.fadeTableTween = null;
 	this.clearTableContents();
 
-	//console.log("table x: " + this.tableContainer.x);
-	var scope = this;
-
-	setTimeout(function() {
-		scope.trigger(NetPokerClientView.FADE_TABLE_COMPLETE);
-	}, 0);
+	this.trigger(NetPokerClientView.FADE_TABLE_COMPLETE);
 }
 
 /**
@@ -23365,7 +23371,13 @@ NetPokerClientView.prototype.onFadeOutComplete = function() {
  * @private
  */
 NetPokerClientView.prototype.onFadeInComplete = function() {
+	if (!this.fadeTableTween)
+		return;
+
+	this.fadeTableTween.onComplete(null);
+	this.fadeTableTween.stop();
 	this.fadeTableTween = null;
+
 	this.trigger(NetPokerClientView.FADE_TABLE_COMPLETE);
 }
 
@@ -27993,7 +28005,7 @@ MessageWebSocketConnection.prototype.onWebSocketOpen = function() {
  * @private
  */
 MessageWebSocketConnection.prototype.onWebSocketMessage = function(e) {
-	console.log(e.data);
+	//console.log(e.data);
 
 	var message = JSON.parse(e.data);
 

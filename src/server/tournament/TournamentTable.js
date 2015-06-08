@@ -14,6 +14,7 @@ var HandInfoMessage = require("../../proto/messages/HandInfoMessage");
 var DealerButtonMessage = require("../../proto/messages/DealerButtonMessage");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 var ChatMessage = require("../../proto/messages/ChatMessage");
+var FadeTableMessage = require("../../proto/messages/FadeTableMessage");
 var PlaySpectator = require("./PlaySpectator");
 
 /**
@@ -62,6 +63,8 @@ TournamentTable.prototype.addPlaySpectator = function(ps) {
  * @method removePlaySpectator
  */
 TournamentTable.prototype.removePlaySpectator = function(ps) {
+	console.log("removing...");
+
 	ArrayUtil.remove(this.playSpectators, ps);
 }
 
@@ -128,11 +131,19 @@ TournamentTable.prototype.sendState = function(protoConnection) {
 	if (this.currentGame)
 		this.currentGame.sendState(protoConnection);
 
+	protoConnection.send(this.getTableButtonsMessage());
+	protoConnection.send(new StateCompleteMessage());
+}
+
+/**
+ * Get table buttons message.
+ * @method getTableButtonsMessage
+ */
+TournamentTable.prototype.getTableButtonsMessage = function() {
 	var m = this.playState.getTableButtonsMessage();
 	m.setCurrentIndex(this.tableIndex);
-	protoConnection.send(m);
 
-	protoConnection.send(new StateCompleteMessage());
+	return m;
 }
 
 /**
@@ -228,13 +239,23 @@ TournamentTable.prototype.breakTable = function() {
 
 		if (tableSeat.getUser()) {
 			var newTable = this.playState.getTableWithMostAvailableSeats();
-			console.log("moving user " + tableSeat.getUser().getName());
+			var dir;
 
+			if (newTable.getTableIndex() > this.tableIndex)
+				dir = FadeTableMessage.LEFT;
+
+			if (newTable.getTableIndex() < this.tableIndex)
+				dir = FadeTableMessage.RIGHT;
+
+			tableSeat.send(new FadeTableMessage(false, dir));
 			var newSeat = newTable.sitInUser(tableSeat.getUser(), tableSeat.getChips());
 			newSeat.setProtoConnection(tableSeat.getProtoConnection());
 			tableSeat.setProtoConnection(null);
 
 			newTable.sendState(newSeat.getProtoConnection());
+			newSeat.send(new FadeTableMessage(true, dir));
+			newSeat.send(newSeat.getTableInfoMessage());
+			newTable.send(newSeat.getSeatInfoMessage());
 
 			tableSeat.removeUser();
 
@@ -243,6 +264,17 @@ TournamentTable.prototype.breakTable = function() {
 				newTable.startGame();
 		}
 	}
+
+	var newTable = this.playState.getTableWithMostPlayers();
+	var psCopy = ArrayUtil.copy(this.playSpectators);
+
+	for (var i = 0; i < psCopy.length; i++)
+		psCopy[i].changeToTable(newTable);
+
+	if (this.playSpectators.length)
+		throw new Error("the spectators were not removed");
+
+	this.playState.sendTableButtonsMessages();
 }
 
 /**

@@ -66,4 +66,17 @@ ArrayUtil.compareNumbers = function(a, b) {
 	return a - b;
 }
 
+/**
+ * Shallow copy.
+ * @method copy
+ */
+ArrayUtil.copy = function(array) {
+	var copy = [];
+
+	for (var i = 0; i < array.length; i++)
+		copy.push(array[i]);
+
+	return copy;
+}
+
 module.exports = ArrayUtil;

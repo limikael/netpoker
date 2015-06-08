@@ -65,7 +65,7 @@ MessageSequenceItem.prototype.waitFor = function(target, event) {
  * @private
  */
 MessageSequenceItem.prototype.onTargetComplete = function() {
-	//console.log("target is complete");
+	//console.log("target is complete: "+this.waitEvent);
 	this.waitTarget.removeEventListener(this.waitEvent, this.waitClosure);
 	this.notifyComplete();
 }
