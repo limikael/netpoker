@@ -39,4 +39,19 @@ ObjectUtil.equals = function(a, b) {
 	return true;
 }
 
+/**
+ * Shallow copy objects.
+ * @method copy
+ */
+ObjectUtil.copy = function(o) {
+	var r = {};
+
+	var props = Object.getOwnPropertyNames(o);
+
+	for (var i = 0; i < props.length; i++)
+		r[props[i]] = o[props[i]];
+
+	return r;
+}
+
 module.exports = ObjectUtil;

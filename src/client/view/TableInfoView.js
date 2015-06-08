@@ -8,6 +8,7 @@ var EventDispatcher = require("yaed");
 var DialogButton = require("./DialogButton");
 var inherits = require("inherits");
 var ButtonData = require("../../proto/data/ButtonData");
+var ObjectUtil = require("../../utils/ObjectUtil");
 
 /**
  * Show table info.
@@ -77,12 +78,51 @@ function TableInfoView(viewConfig, resources) {
 	this.leaveButton.visible = false;
 	this.leaveButton.on("click", this.onButtonClick, this);
 	this.addChild(this.leaveButton);
+
+	var style = {
+		font: "bold 24px Times New Roman",
+		fill: "#ffffff",
+		dropShadow: true,
+		dropShadowColor: "#000000",
+		dropShadowDistance: 2,
+		stroke: "#000000",
+		strokeThickness: 2
+	};
+
+	this.tournamentResultLeftField = new PIXI.Text("<left>", style);
+	this.addChild(this.tournamentResultLeftField);
+
+	var style2 = ObjectUtil.copy(style);
+	style2.align = 'right';
+
+	this.tournamentResultRightField = new PIXI.Text("<right>", style2);
+	this.addChild(this.tournamentResultRightField);
+
+	this.tournamentResultLeftField.y = 260;
+	this.tournamentResultRightField.y = 260;
 }
 
 inherits(TableInfoView, PIXI.DisplayObjectContainer);
 EventDispatcher.init(TableInfoView);
 
 TableInfoView.BUTTON_CLICK = "buttonClick";
+
+/**
+ * Set left and right column.
+ * @method setTournamentResultText
+ */
+TableInfoView.prototype.setTournamentResultText = function(left, right) {
+	this.tournamentResultLeftField.setText(left);
+	this.tournamentResultRightField.setText(right);
+
+	this.tournamentResultLeftField.x = 480 - 180;
+	this.tournamentResultRightField.x = 480 + 180 - this.tournamentResultRightField.width;
+
+	var h = this.tournamentResultLeftField.height;
+
+	this.tournamentResultLeftField.y = 300 - h / 2;
+	this.tournamentResultRightField.y = 300 - h / 2;
+}
 
 /**
  * Set table info text.
@@ -135,7 +175,6 @@ TableInfoView.prototype.setHandInfoText = function(s) {
 
 	this.handInfoText.setText(s);
 	this.handInfoText.updateTransform();
-	//this.handInfoText.position.x = 960 - this.handInfoText.width - 10;
 }
 
 /**
@@ -146,6 +185,8 @@ TableInfoView.prototype.clear = function() {
 	this.tableInfoText.setText("");
 	this.handInfoText.setText("");
 	this.preTournamentInfoText.setText("");
+	this.tournamentResultLeftField.setText("");
+	this.tournamentResultRightField.setText("");
 	this.joinButton.visible = false;
 	this.leaveButton.visible = false;
 }
