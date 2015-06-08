@@ -111,6 +111,7 @@ MockBackendServer.prototype.tournamentInfo = function(params) {
 		seatsPerTable: this.tournamentSeatsPerTable,
 		startChips: 1000,
 		payoutPercent: [70, 20],
+		fee: 10,
 		blindStructure: [{
 			time: 100,
 			stake: 2,

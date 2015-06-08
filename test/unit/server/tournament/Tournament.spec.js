@@ -14,6 +14,7 @@ describe("Tournament", function() {
 			seatsPerTable: 10,
 			startChips: 1000,
 			payoutPercent: [70, 20],
+			fee: 10,
 			blindStructure: [{
 				time: 100,
 				stake: 2,
@@ -120,5 +121,23 @@ describe("Tournament", function() {
 
 		var b = t.getBlindStructureForLevel(0);
 		expect(b.getTime()).toBe(100);
+	});
+
+	it("can generate payout amounts", function() {
+		var t = new Tournament(null, tournamentData);
+
+		expect(t.getPayouts()).toEqual([]);
+
+		t.addUser(User.fromIdAndName(123,"hello"));
+		expect(t.getPayouts()).toEqual([7]);
+
+		t.addUser(User.fromIdAndName(124,"hello2"));
+		expect(t.getPayouts()).toEqual([14, 4]);
+
+		t.addUser(User.fromIdAndName(125,"hello3"));
+		expect(t.getPayouts()).toEqual([21, 6]);
+
+		t.bonus = 10;
+		expect(t.getPayouts()).toEqual([28, 8]);
 	});
 });

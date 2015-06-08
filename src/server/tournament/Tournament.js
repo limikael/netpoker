@@ -28,6 +28,7 @@ function Tournament(services, data) {
 	if (!data.startChips) throw new Error("missing start chips for tournament");
 	if (!data.blindStructure || !data.blindStructure.length) throw new Error("no blind structure");
 	if (!data.payoutPercent) throw new Error("missing payoutPercent for tournament");
+	if (!data.fee) throw new Error("missing fee");
 
 	this.id = data.id;
 	this.info = data.info;
@@ -36,6 +37,7 @@ function Tournament(services, data) {
 	this.blindStructure = [];
 	this.startChips = data.startChips;
 	this.payoutPercent = ArrayUtil.copy(data.payoutPercent);
+	this.fee = data.fee;
 
 	if (data.hasOwnProperty("bonus"))
 		this.bonus = data.bonus;
@@ -303,7 +305,20 @@ Tournament.prototype.getHandFinishDelay = function() {
  * @method getPayouts
  */
 Tournament.prototype.getPayouts = function() {
-	return [];
+	var total = this.users.length * this.fee + this.bonus;
+
+	if (isNaN(total))
+		throw new Error("total is nan");
+
+	console.log("total: " + total);
+
+	var res = [];
+
+	for (i = 0; i < this.users.length; i++)
+		if (i < this.payoutPercent.length)
+			res.push(this.payoutPercent[i] * total / 100);
+
+	return res;
 }
 
 module.exports = Tournament;

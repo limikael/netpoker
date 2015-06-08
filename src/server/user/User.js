@@ -31,4 +31,16 @@ User.prototype.getId = function() {
 	return this.id;
 }
 
+/**
+ * Generate from id and name, for test purposes.
+ * @method fromIdAndName
+ * @static
+ */
+User.fromIdAndName = function(id, name) {
+	return new User({
+		id: id,
+		name: name
+	});
+}
+
 module.exports = User;
