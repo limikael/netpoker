@@ -68,7 +68,7 @@ FinishedState.prototype.run = function() {
 	var p = {
 		tournamentId: this.tournament.getId(),
 		finishorder: JSON.stringify(order),
-		//payouts:
+		payouts: JSON.stringify(this.tournament.getPayouts())
 	}
 
 	this.backendCallInProgress = true;

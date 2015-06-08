@@ -119,6 +119,9 @@ describe("TournamentTable.integration", function() {
 				var order = JSON.parse(args.finishorder);
 				expect(order.length).toBe(4);
 
+				var payouts = JSON.parse(args.payouts);
+				expect(payouts).toEqual([28, 8]);
+
 				TickLoopRunner.runTicks().then(next);
 			},
 			function(next) {
