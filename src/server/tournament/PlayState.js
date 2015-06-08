@@ -135,11 +135,18 @@ PlayState.prototype.getUserFinishPlace = function(user) {
 	if (!user)
 		return -1;
 
+	var place = -1;
+
 	for (var i = 0; i < this.finishedUsers.length; i++)
 		if (this.finishedUsers[i].getId() == user.getId())
-			return i;
+			place = i;
 
-	return -1;
+	if (place < 0)
+		return place;
+
+	place += this.tournament.getNumRegistrations() - this.finishedUsers.length;
+
+	return place + 1;
 }
 
 /**

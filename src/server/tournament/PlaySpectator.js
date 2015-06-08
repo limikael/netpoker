@@ -41,16 +41,23 @@ function PlaySpectator(playState, protoConnection, user, tournamentTable) {
 
 	this.tournamentTable.sendState(this.protoConnection);
 
-	// next thing to do, add message to user and so...
+	var s = "";
 
 	if (this.user) {
-		this.send(new TableInfoMessage());
-	} else {
-		var place = playState.getUserFinishPlace(user);
+		var s = "";
+		var place = this.playState.getUserFinishPlace(user);
 
+		if (place > 0)
+			s = "You finished " + this.ord(place) +
+			" out of " + this.playState.getTournament().getNumRegistrations() +
+			" players";
 
+		else if (this.playState.getTournament().isUserRegistered(user))
+			s = "You are currently logged in from another computer.\n\n" +
+			"This connection is passive, or reload the page to make this your active connection.";
 	}
 
+	this.send(new TableInfoMessage(s));
 	this.send(new StateCompleteMessage());
 
 	this.tournamentTable.addPlaySpectator(this);
@@ -63,6 +70,24 @@ inherits(PlaySpectator, EventDispatcher);
  * @event PlaySpectator.DONE
  */
 PlaySpectator.DONE = "done";
+
+/**
+ * Ord.
+ * @method ord
+ */
+PlaySpectator.prototype.ord = function(n) {
+	if (n % 10 == 1 && n != 11)
+		return n + "st";
+
+	else if (n % 10 == 2 && n != 12)
+		return n + "nd";
+
+	else if (n % 10 == 3 && n != 13)
+		return n + "rd";
+
+	else
+		return n + "th";
+}
 
 /**
  * Set connection
