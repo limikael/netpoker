@@ -114,7 +114,6 @@ describe("TournamentTable.integration", function() {
 					bots[i].close();
 
 				var args = mockBackendServer.tournamentFinish.calls.argsFor(0)[0];
-				console.log("f-order: " + args.finishorder);
 
 				var order = JSON.parse(args.finishorder);
 				expect(order.length).toBe(4);
@@ -127,12 +126,6 @@ describe("TournamentTable.integration", function() {
 			function(next) {
 				var have = netPokerServer.getTournamentManager().hasLocalTournamentId(666);
 				expect(have).toBe(false);
-
-				spectator = new BotConnection(netPokerServer, "user1");
-				spectator.connectToTournament(666).then(next);
-			},
-			function(next) {
-				expect(spectator.getLastMessageOfType(StateCompleteMessage)).not.toBeFalsy();
 				next();
 			}
 		).then(done);
