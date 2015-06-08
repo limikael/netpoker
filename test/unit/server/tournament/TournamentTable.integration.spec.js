@@ -34,29 +34,15 @@ describe("TournamentTable.integration", function() {
 	});
 
 	it("plays a tournament", function(done) {
+		var info = mockBackendServer.tournamentInfo();
+
+		info.requiredRegistrations = 4;
+		info.seatsPerTable = 2;
+		info.handFinishDelay = 0;
+		info.startChips = 10;
+
 		mockBackendServer.tournamentInfo = function() {
-			return {
-				id: 666,
-				state: "registration",
-				info: "Welcome to the tournament...",
-				requiredRegistrations: 4,
-				seatsPerTable: 2,
-				startChips: 10,
-				handFinishDelay: 0,
-				blindStructure: [{
-					time: 100,
-					stake: 2,
-					ante: 0,
-				}, {
-					time: 100,
-					stake: 4,
-					ante: 1,
-				}, {
-					time: 100,
-					stake: 6,
-					ante: 2,
-				}]
-			};
+			return info;
 		};
 
 		mockBackendServer.gameStartForCashGame = function() {
@@ -126,6 +112,12 @@ describe("TournamentTable.integration", function() {
 
 				for (var i = 0; i < bots.length; i++)
 					bots[i].close();
+
+				var args = mockBackendServer.tournamentFinish.calls.argsFor(0)[0];
+				console.log("f-order: " + args.finishorder);
+
+				var order = JSON.parse(args.finishorder);
+				expect(order.length).toBe(4);
 
 				TickLoopRunner.runTicks().then(next);
 			},

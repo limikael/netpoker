@@ -58,6 +58,8 @@ FinishedState.prototype.run = function() {
 
 	this.tournamentResultMessage = new TournamentResultMessage(left, right);
 
+	var payouts = this.tournament.getPayouts();
+
 	var order = [];
 
 	for (var u = 0; u < this.finishOrder.length; u++)
@@ -65,7 +67,7 @@ FinishedState.prototype.run = function() {
 
 	var p = {
 		tournamentId: this.tournament.getId(),
-		finishorder: JSON.stringify(u),
+		finishorder: JSON.stringify(order),
 		//payouts:
 	}
 

@@ -9,6 +9,7 @@ var EventDispatcher = require("yaed");
 var inherits = require("inherits");
 var User = require("../user/User");
 var BlindStructureData = require("./BlindStructureData");
+var ArrayUtil = require("../../utils/ArrayUtil");
 
 /**
  * Represents a managed tournament.
@@ -26,6 +27,7 @@ function Tournament(services, data) {
 	if (!data.seatsPerTable) throw new Error("missing seats per table for tournament");
 	if (!data.startChips) throw new Error("missing start chips for tournament");
 	if (!data.blindStructure || !data.blindStructure.length) throw new Error("no blind structure");
+	if (!data.payoutPercent) throw new Error("missing payoutPercent for tournament");
 
 	this.id = data.id;
 	this.info = data.info;
@@ -33,6 +35,13 @@ function Tournament(services, data) {
 	this.seatsPerTable = data.seatsPerTable;
 	this.blindStructure = [];
 	this.startChips = data.startChips;
+	this.payoutPercent = ArrayUtil.copy(data.payoutPercent);
+
+	if (data.hasOwnProperty("bonus"))
+		this.bonus = data.bonus;
+
+	else
+		this.bonus = 0;
 
 	if (data.hasOwnProperty("handFinishDelay"))
 		this.handFinishDelay = data.handFinishDelay;
@@ -287,6 +296,14 @@ Tournament.prototype.close = function() {
  */
 Tournament.prototype.getHandFinishDelay = function() {
 	return this.handFinishDelay;
+}
+
+/**
+ * Get payouts.
+ * @method getPayouts
+ */
+Tournament.prototype.getPayouts = function() {
+	return [];
 }
 
 module.exports = Tournament;

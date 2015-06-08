@@ -13,6 +13,7 @@ describe("Tournament", function() {
 			state: "registration",
 			seatsPerTable: 10,
 			startChips: 1000,
+			payoutPercent: [70, 20],
 			blindStructure: [{
 				time: 100,
 				stake: 2,
