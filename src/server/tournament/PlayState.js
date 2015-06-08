@@ -350,6 +350,7 @@ PlayState.prototype.notifyComplete = function() {
 
 /**
  * Get table buttons message.
+ * @method getTableButtonsMessage
  */
 PlayState.prototype.getTableButtonsMessage = function() {
 	var m = new TableButtonsMessage();
