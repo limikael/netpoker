@@ -20843,7 +20843,7 @@ NetPokerClientController.prototype.onCheckboxChange = function(ev) {
 
 /**
  * Table button click.
- * @mehod onTableButtonClick
+ * @method onTableButtonClick
  */
 NetPokerClientController.prototype.onTableButtonClick = function(index) {
 	this.protoConnection.send(new TableButtonClickMessage(index));
@@ -23347,9 +23347,16 @@ NetPokerClientView.prototype.fadeTable = function(visible, direction) {
  * @private
  */
 NetPokerClientView.prototype.onFadeOutComplete = function() {
+	this.fadeTableTween.stop();
 	this.fadeTableTween = null;
 	this.clearTableContents();
-	this.trigger(NetPokerClientView.FADE_TABLE_COMPLETE);
+
+	//console.log("table x: " + this.tableContainer.x);
+	var scope = this;
+
+	setTimeout(function() {
+		scope.trigger(NetPokerClientView.FADE_TABLE_COMPLETE);
+	}, 0);
 }
 
 /**
@@ -23377,7 +23384,7 @@ NetPokerClientView.prototype.clearTableContents = function() {
 		this.seatViews[i].clear();
 
 	this.timerView.hide();
-	this.potView.setValues(new Array());
+	this.potView.setValues([]);
 }
 
 /**
@@ -23883,9 +23890,7 @@ SeatView.prototype.setBetChipsView = function(value) {
  */
 SeatView.prototype.setName = function(name) {
 	this.nameField.setText(name);
-	this.nameField.updateTransform();
-
-	this.nameField.position.x = -this.nameField.canvas.width / 2;
+	this.nameField.x=-this.nameField.width/2;
 }
 
 /**
@@ -27147,6 +27152,22 @@ TableButtonsMessage.prototype.getCurrentIndex = function() {
 }
 
 /**
+ * Setter.
+ * @method getEnabled
+ */
+TableButtonsMessage.prototype.setEnabled = function(enabled) {
+	this.enabled = enabled;
+}
+
+/**
+ * Setter.
+ * @method setCurrentIndex
+ */
+TableButtonsMessage.prototype.setCurrentIndex = function(currentIndex) {
+	this.currentIndex = currentIndex;
+}
+
+/**
  * Getter.
  * @method getPlayerIndex
  */
@@ -27172,7 +27193,7 @@ TableButtonsMessage.prototype.unserialize = function(data) {
 	this.infoLink = data.infoLink;
 
 	this.enabled = new Array();
-	for(var i = 0; i < data.enabled.length; i++)
+	for (var i = 0; i < data.enabled.length; i++)
 		this.enabled.push(data.enabled[i]);
 }
 
@@ -27188,7 +27209,7 @@ TableButtonsMessage.prototype.serialize = function() {
 		infoLink: this.infoLink
 	};
 
-	for(var i = 0; i < this.enabled.length; i++)
+	for (var i = 0; i < this.enabled.length; i++)
 		object.enabled.push(this.enabled[i]);
 
 	return object;
@@ -27972,6 +27993,8 @@ MessageWebSocketConnection.prototype.onWebSocketOpen = function() {
  * @private
  */
 MessageWebSocketConnection.prototype.onWebSocketMessage = function(e) {
+	//console.log(e.data);
+
 	var message = JSON.parse(e.data);
 
 	this.trigger({

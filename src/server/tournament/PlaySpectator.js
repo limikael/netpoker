@@ -97,13 +97,51 @@ PlaySpectator.prototype.ord = function(n) {
 PlaySpectator.prototype.setProtoConnection = function(protoConnection) {
 	if (this.protoConnection) {
 		this.protoConnection.off(ProtoConnection.CLOSE, this.onProtoConnectionClose, this);
+		this.protoConnection.removeMessageHandler(TableButtonClickMessage.TYPE, this.onTableButtonClick, this);
 	}
 
 	this.protoConnection = protoConnection;
 
 	if (this.protoConnection) {
 		this.protoConnection.on(ProtoConnection.CLOSE, this.onProtoConnectionClose, this);
+		this.protoConnection.addMessageHandler(TableButtonClickMessage.TYPE, this.onTableButtonClick, this);
 	}
+}
+
+/**
+ * Change to table.
+ * @method changeToTable
+ */
+PlaySpectator.prototype.changeToTable = function(tournamentTable) {
+	var dir;
+
+	if (tournamentTable.getTableIndex() > this.tournamentTable.getTableIndex())
+		dir = FadeTableMessage.LEFT;
+
+	if (tournamentTable.getTableIndex() < this.tournamentTable.getTableIndex())
+		dir = FadeTableMessage.RIGHT;
+
+	this.send(new FadeTableMessage(false, dir));
+
+	this.tournamentTable.removePlaySpectator(this);
+	this.tournamentTable = tournamentTable;
+	this.tournamentTable.addPlaySpectator(this);
+	this.tournamentTable.sendState(this.protoConnection);
+
+	this.send(new FadeTableMessage(true, dir));
+}
+
+/**
+ * Table button click
+ * @method onTableButtonClick
+ */
+PlaySpectator.prototype.onTableButtonClick = function(m) {
+	var tournamentTable = this.playState.getTournamentTableAt(m.getTableIndex());
+
+	if (!tournamentTable ||  tournamentTable == this.tournamentTable || !tournamentTable.isActive())
+		return;
+
+	this.changeToTable(tournamentTable);
 }
 
 /**

@@ -64,7 +64,7 @@ MessageClientConnection.prototype.onWebSocketMessage = function(event) {
 		});
 	} catch (err) {
 		console.log(err);
-		console.log("MessageClientConnection received non JSON data: "+event.data);
+		console.log("MessageClientConnection received non JSON data: " + event.data);
 	}
 }
 

@@ -81,9 +81,7 @@ SeatView.prototype.setBetChipsView = function(value) {
  */
 SeatView.prototype.setName = function(name) {
 	this.nameField.setText(name);
-	this.nameField.updateTransform();
-
-	this.nameField.position.x = -this.nameField.canvas.width / 2;
+	this.nameField.x=-this.nameField.width/2;
 }
 
 /**

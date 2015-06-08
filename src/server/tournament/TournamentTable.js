@@ -42,6 +42,14 @@ function TournamentTable(playState, tableIndex) {
 inherits(TournamentTable, BaseTable);
 
 /**
+ * Get table index.
+ * @method getTableIndex
+ */
+TournamentTable.prototype.getTableIndex = function() {
+	return this.tableIndex;
+}
+
+/**
  * Add play spectator.
  * @method addPlaySpectator
  */
@@ -103,6 +111,8 @@ TournamentTable.prototype.sitInUser = function(user, chips) {
 TournamentTable.prototype.sendState = function(protoConnection) {
 	if (!protoConnection)
 		return;
+
+	console.log("send state for: " + this.tableIndex);
 
 	for (i = 0; i < this.tableSeats.length; i++)
 		protoConnection.send(this.tableSeats[i].getSeatInfoMessage());

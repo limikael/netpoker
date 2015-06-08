@@ -368,5 +368,12 @@ PlayState.prototype.getTableButtonsMessage = function() {
 	return m;
 }
 
+/**
+ * Get tournament table by index.
+ * @method getTournamentTableAt
+ */
+PlayState.prototype.getTournamentTableAt = function(index) {
+	return this.tournamentTables[index];
+}
 
 module.exports = PlayState;

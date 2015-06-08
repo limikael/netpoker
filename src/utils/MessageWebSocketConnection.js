@@ -58,6 +58,8 @@ MessageWebSocketConnection.prototype.onWebSocketOpen = function() {
  * @private
  */
 MessageWebSocketConnection.prototype.onWebSocketMessage = function(e) {
+	//console.log(e.data);
+
 	var message = JSON.parse(e.data);
 
 	this.trigger({

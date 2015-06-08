@@ -344,9 +344,16 @@ NetPokerClientView.prototype.fadeTable = function(visible, direction) {
  * @private
  */
 NetPokerClientView.prototype.onFadeOutComplete = function() {
+	this.fadeTableTween.stop();
 	this.fadeTableTween = null;
 	this.clearTableContents();
-	this.trigger(NetPokerClientView.FADE_TABLE_COMPLETE);
+
+	//console.log("table x: " + this.tableContainer.x);
+	var scope = this;
+
+	setTimeout(function() {
+		scope.trigger(NetPokerClientView.FADE_TABLE_COMPLETE);
+	}, 0);
 }
 
 /**
@@ -374,7 +381,7 @@ NetPokerClientView.prototype.clearTableContents = function() {
 		this.seatViews[i].clear();
 
 	this.timerView.hide();
-	this.potView.setValues(new Array());
+	this.potView.setValues([]);
 }
 
 /**
