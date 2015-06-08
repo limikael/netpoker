@@ -116,7 +116,11 @@ PlayState.prototype.notifyNewConnection = function(protoConnection, user) {
 
 	if (tableSeat) {
 		if (tableSeat.getProtoConnection()) {
-			throw new Error("multiple connection for same user, handle me");
+			var oldConnection = tableSeat.getProtoConnection()
+			tableSeat.setProtoConnection(null);
+
+			var playSpectator = new PlaySpectator(this, oldConnection, user, tableSeat.getTable());
+			this.manageSpectator(playSpectator);
 		}
 
 		tableSeat.setProtoConnection(protoConnection);
