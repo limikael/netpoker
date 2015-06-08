@@ -6,6 +6,8 @@
 var inherits = require("inherits");
 var EventDispatcher = require("yaed");
 var ProtoConnection = require("../../proto/ProtoConnection");
+var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
+var SeatInfoMessage = require("../../proto/messages/SeatInfoMessage");
 var MessagePipeConnection = require("../../../test/utils/MessagePipeConnection");
 
 /**
@@ -45,6 +47,14 @@ FinishedSpectator.prototype.setProtoConnection = function(protoConnection) {
 
 		if (this.finishedState.getTournamentResultMessage())
 			this.protoConnection.send(this.finishedState.getTournamentResultMessage());
+
+		for (var i = 0; i < 10; i++) {
+			var m = new SeatInfoMessage(i);
+			m.setActive(false);
+			this.protoConnection.send(m);
+		}
+
+		this.protoConnection.send(new StateCompleteMessage());
 	}
 }
 

@@ -10,6 +10,12 @@ var ArrayUtil = require("../../utils/ArrayUtil");
 var inherits = require("inherits");
 var PlaySpectator = require("./PlaySpectator");
 var TableButtonsMessage = require("../../proto/messages/TableButtonsMessage");
+var SeatInfoMessage = require("../../proto/messages/SeatInfoMessage");
+var ClearMessage = require("../../proto/messages/ClearMessage");
+var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
+var HandInfoMessage = require("../../proto/messages/HandInfoMessage");
+var InterfaceStateMessage = require("../../proto/messages/InterfaceStateMessage");
+var DealerButtonMessage = require("../../proto/messages/DealerButtonMessage");
 
 /**
  * Play state.
@@ -233,8 +239,19 @@ PlayState.prototype.moveConnectionsToState = function(newState) {
  * Clear table for finish.
  * @method clearForFinish
  */
-PlayState.prototype.clearForFinish = function(protoConnection) {
+PlayState.prototype.clearForFinish = function(c) {
+	for (var i = 0; i < 10; i++) {
+		var m = new SeatInfoMessage(i);
+		m.setActive(false);
+		c.send(m);
+	}
 
+	c.send(new ClearMessage([ClearMessage.BETS, ClearMessage.POT, ClearMessage.CARDS, ClearMessage.CHAT]));
+	c.send(new TableInfoMessage());
+	c.send(new TableButtonsMessage());
+	c.send(new HandInfoMessage());
+	c.send(new InterfaceStateMessage([]));
+	c.send(new DealerButtonMessage(-1));
 }
 
 /**

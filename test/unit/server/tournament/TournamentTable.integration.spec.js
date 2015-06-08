@@ -9,12 +9,14 @@ var ButtonClickMessage = require("../../../../src/proto/messages/ButtonClickMess
 var PlayState = require("../../../../src/server/tournament/PlayState");
 var FinishedState = require("../../../../src/server/tournament/FinishedState");
 var TournamentResultMessage = require("../../../../src/proto/messages/TournamentResultMessage");
+var StateCompleteMessage = require("../../../../src/proto/messages/StateCompleteMessage");
 var Thenable = require("tinp");
 
 describe("TournamentTable.integration", function() {
 	var netPokerServer;
 	var mockBackendServer;
 	var bots;
+	var spectator;
 
 	beforeEach(function(done) {
 		mockBackendServer = new MockBackendServer();
@@ -130,6 +132,12 @@ describe("TournamentTable.integration", function() {
 			function(next) {
 				var have = netPokerServer.getTournamentManager().hasLocalTournamentId(666);
 				expect(have).toBe(false);
+
+				spectator = new BotConnection(netPokerServer, "user1");
+				spectator.connectToTournament(666).then(next);
+			},
+			function(next) {
+				expect(spectator.getLastMessageOfType(StateCompleteMessage)).not.toBeFalsy();
 				next();
 			}
 		).then(done);
