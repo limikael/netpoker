@@ -22117,7 +22117,7 @@ function ChatView(viewConfig, resources) {
 	this.resources = resources;
 	this.margin = 5;
 
-	
+
 	var chatPlate = new NineSlice(this.resources.getTexture("framePlate"), 10);
 	chatPlate.position.x = 10;
 	chatPlate.position.y = 540;
@@ -22198,7 +22198,7 @@ function ChatView(viewConfig, resources) {
 
 
 	this.slider = new Slider(slideBack, slideKnob);
-	this.slider.rotation = Math.PI*0.5;
+	this.slider.rotation = Math.PI * 0.5;
 	this.slider.position.x = 326;
 	this.slider.position.y = 552;
 	this.slider.setValue(1);
@@ -22234,7 +22234,7 @@ EventDispatcher.init(ChatView);
  */
 ChatView.prototype.clear = function() {
 	this.chatText.setText("");
- 	this.chatText.y = -Math.round(this.slider.getValue()*(this.chatText.height + this.margin - this.chatMask.height ));
+	this.chatText.y = -Math.round(this.slider.getValue() * (this.chatText.height + this.margin - this.chatMask.height));
 	this.slider.setValue(1);
 }
 
@@ -22244,8 +22244,19 @@ ChatView.prototype.clear = function() {
  * @method clear
  */
 ChatView.prototype.addText = function(user, text) {
-	this.chatText.setText(this.chatText.text + user + ": " + text + "\n");
- 	this.chatText.y = -Math.round(this.slider.getValue()*(this.chatText.height + this.margin - this.chatMask.height ));
+	var s="";
+
+	if (user)
+		s += user + ": ";
+
+	s += text;
+
+	var old=this.chatText.text;
+	old.trim();
+
+	this.chatText.setText(old + s + "\n");
+//	this.chatText.setText(s + "\n");
+	this.chatText.y = -Math.round(this.slider.getValue() * (this.chatText.height + this.margin - this.chatMask.height));
 	this.slider.setValue(1);
 }
 
@@ -22253,27 +22264,27 @@ ChatView.prototype.addText = function(user, text) {
  * On slider value change
  * @method onSliderChange
  */
- ChatView.prototype.onSliderChange = function() {
- 	this.chatText.y = -Math.round(this.slider.getValue()*(this.chatText.height + this.margin - this.chatMask.height));
- }
+ChatView.prototype.onSliderChange = function() {
+	this.chatText.y = -Math.round(this.slider.getValue() * (this.chatText.height + this.margin - this.chatMask.height));
+}
 
 
 /**
  * On mouse over
  * @method onChatFieldMouseOver
  */
- ChatView.prototype.onChatFieldMouseOver = function() {
+ChatView.prototype.onChatFieldMouseOver = function() {
 	this.slider.show();
- }
+}
 
 
 /**
  * On mouse out
  * @method onChatFieldMouseOut
  */
- ChatView.prototype.onChatFieldMouseOut = function() {
+ChatView.prototype.onChatFieldMouseOut = function() {
 	this.slider.hide();
- }
+}
 
 /**
  * On mouse down
@@ -22306,26 +22317,27 @@ ChatView.prototype.onChatFieldMouseMove = function(interaction_object) {
 	var diff = pos - this.startMousePos;
 
 	this.slider.setValue((-(this.startPos + diff)) / (this.chatText.height + this.margin - this.chatMask.height));
- 	this.onSliderChange();
+	this.onSliderChange();
 }
 
 /**
  * On key down
  * @method onKeyDown
  */
- ChatView.prototype.onKeyDown = function(event) {
-	if(event.keyCode == 13) {
-		this.dispatchEvent("chat", {text: this.inputField.text});
-		
+ChatView.prototype.onKeyDown = function(event) {
+	if (event.keyCode == 13) {
+		this.dispatchEvent("chat", {
+			text: this.inputField.text
+		});
+
 		this.inputField.setText("");
-		
+
 	}
- }
+}
 
 
 
 module.exports = ChatView;
-
 },{"../../utils/MouseOverGroup":87,"../../utils/NineSlice":88,"../../utils/Slider":92,"inherits":7,"pixi.js":8,"pixitextinput":10,"yaed":14}],29:[function(require,module,exports){
 /**
  * Client.

@@ -85,9 +85,17 @@ PlayState.prototype.onStartComplete = function(c) {
  * Enter the current blind level
  * @method enterLevel
  * @private
+ * @todo FIX ME!!!
  */
 PlayState.prototype.enterLevel = function() {
+	var s =
+		"==== Level " + (this.blindLevel + 1) + ": " +
+		"Blinds: " + (this.getCurrentStake() / 2) + "/" + this.getCurrentStake() + " " +
+		"Ante: " + this.getCurrentAnte() + " " +
+		"====";
 
+	for (var t = 0; t < this.tournamentTables.length; t++)
+		this.tournamentTables[t].rawChat(null, s);
 }
 
 /**
