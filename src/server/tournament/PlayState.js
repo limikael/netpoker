@@ -28,6 +28,7 @@ function PlayState() {
 	this.finishedUsers = [];
 
 	this.tournamentTables = [];
+	this.blindLevel = 0;
 }
 
 inherits(PlayState, TournamentState);
@@ -88,6 +89,9 @@ PlayState.prototype.onStartComplete = function(c) {
  * @todo FIX ME!!!
  */
 PlayState.prototype.enterLevel = function() {
+	if (this.blindLevel === undefined)
+		throw new Error("blind level is undefined");
+
 	var s =
 		"==== Level " + (this.blindLevel + 1) + ": " +
 		"Blinds: " + (this.getCurrentStake() / 2) + "/" + this.getCurrentStake() + " " +
@@ -96,6 +100,43 @@ PlayState.prototype.enterLevel = function() {
 
 	for (var t = 0; t < this.tournamentTables.length; t++)
 		this.tournamentTables[t].rawChat(null, s);
+
+	if (this.blindLevel < this.tournament.getNumBlindLevels() - 1) {
+		//var t = new Date().getTime();
+		var t = Date.now();
+		var blindStrunctureData = this.tournament.getBlindStructureForLevel(this.blindLevel);
+		this.blindChangeTime = t + blindStrunctureData.getTime() * 1000;
+	} else {
+		this.blindChangeTime = 0;
+	}
+
+	this.sendHandInfoText();
+}
+
+/**
+ * Get time until next level in secs.
+ * @method getTimeUntilNextLevel
+ */
+PlayState.prototype.getTimeUntilNextLevel = function() {
+	if (!this.blindChangeTime)
+		return -1;
+
+	var t = Date.now();
+	var millis = this.blindChangeTime - t;
+	var secs = Math.round(millis / 1000);
+	if (secs < 0)
+		secs = 0;
+
+	return secs;
+}
+
+/**
+ * Send hand info text on all tables.
+ * @method sendHandInfoText
+ */
+PlayState.prototype.sendHandInfoText = function() {
+	for (var t = 0; t < this.tournamentTables.length; t++)
+		this.tournamentTables[t].send(this.tournamentTables[t].getHandInfoMessage());
 }
 
 /**

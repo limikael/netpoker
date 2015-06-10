@@ -282,6 +282,14 @@ Tournament.prototype.getBlindStructureForLevel = function(level) {
 }
 
 /**
+ * Get number of blind levels.
+ * @method getNumBlindLevels
+ */
+Tournament.prototype.getNumBlindLevels = function() {
+	return this.blindStructure.length;
+}
+
+/**
  * Hard close.
  * @method close
  */
