@@ -5,7 +5,7 @@ var BlindStructureData = require("../../../../src/server/tournament/BlindStructu
 describe("PlayState", function() {
 	beforeEach(function() {
 		jasmine.clock().install();
-		//jasmine.clock().mockDate();
+		jasmine.clock().mockDate();
 	});
 
 	afterEach(function() {

@@ -45,7 +45,7 @@ describe("MessagePipeConnection", function() {
 		var c1 = new MessagePipeConnection();
 		var c2 = c1.createConnection();
 
-		var closeSpy = createSpy();
+		var closeSpy = jasmine.createSpy();
 		c2.on("close",closeSpy);
 		c1.close();
 

@@ -8,7 +8,6 @@ var EventDispatcher = require("yaed");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 var SeatInfoMessage = require("../../proto/messages/SeatInfoMessage");
-var MessagePipeConnection = require("../../../test/utils/MessagePipeConnection");
 
 /**
  * A spectator in the play state.

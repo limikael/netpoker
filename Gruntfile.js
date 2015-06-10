@@ -11,6 +11,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-browserify');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-exec');
+	grunt.loadNpmTasks('jasmine');
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -161,6 +163,19 @@ module.exports = function(grunt) {
 					"bin/netpokerclient.bundle.min.js": "bin/netpokerclient.bundle.js"
 				}
 			}
+		},
+
+		exec: {
+			jasmine: {
+				cmd: function() {
+					var c = "./node_modules/.bin/jasmine";
+
+					if (grunt.option("filter"))
+						c += " --filter=" + grunt.option("filter");
+
+					return c;
+				}
+			}
 		}
 	});
 
@@ -271,33 +286,8 @@ module.exports = function(grunt) {
 		]);
 	});
 
-	grunt.registerTask("test", function() {
-		var done = this.async();
-		var que = Q();
-
-		que = que.then(function() {
-			var job = qsub("./node_modules/.bin/jasmine-node")
-				.arg("--captureExceptions")
-				.arg("--verbose")
-				.arg("test/unit")
-
-			if (grunt.option("match"))
-				job.arg("--match", grunt.option("match"));
-
-			job.expect(0).show();
-
-			return job.run();
-		});
-
-		que = que.then(function() {
-			done();
-		});
-
-		que.done();
-	});
-
+	grunt.registerTask("test", ["exec:jasmine"]);
 	grunt.registerTask("build", ["sprite", "browserify", "copy", "uglify"]);
-
 	grunt.registerTask("adapter", ["browserify:main", "uglify", "copy:main", "compress:drupalnetpoker"]);
 
 	grunt.registerTask("default", function() {
