@@ -3,6 +3,7 @@ var inherits = require("inherits");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 var SeatInfoMessage = require("../../proto/messages/SeatInfoMessage");
 var ButtonClickMessage = require("../../proto/messages/ButtonClickMessage");
+var ShowDialogMessage = require("../../proto/messages/ShowDialogMessage");
 var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var ButtonData = require("../../proto/data/ButtonData");
@@ -64,13 +65,11 @@ RegistrationSpectator.prototype.send = function(m) {
 RegistrationSpectator.prototype.getTableInfoMessage = function() {
 	var m = new TableInfoMessage(this.tournament.getInfo());
 
-	if (this.user) {
-		if (this.tournament.isUserRegistered(this.user))
-			m.setShowLeaveButton(true);
+	if (this.user && this.tournament.isUserRegistered(this.user))
+		m.setShowLeaveButton(true);
 
-		else
-			m.setShowJoinButton(true);
-	}
+	else
+		m.setShowJoinButton(true);
 
 	return m;
 }
@@ -130,6 +129,19 @@ RegistrationSpectator.prototype.onButtonClickMessage = function(m) {
 		return;
 
 	if (!this.user) {
+		switch (m.getButton()) {
+			case ButtonData.OK:
+				this.send(this.getTableInfoMessage());
+				return;
+
+			case ButtonData.JOIN_TOURNAMENT:
+				var m = new ShowDialogMessage();
+				m.addButton(ButtonData.OK);
+				m.setText("You need to be logged in to register for the tournament.");
+				this.send(m);
+				return;
+		}
+
 		return;
 	}
 

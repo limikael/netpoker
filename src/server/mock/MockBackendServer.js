@@ -55,6 +55,11 @@ MockBackendServer.prototype.getUserInfoByToken = function(params) {
 			return {
 				not: "logged in"
 			};
+
+		default:
+			return {
+				not: "logged in"
+			};
 	}
 }
 
