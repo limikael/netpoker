@@ -25,7 +25,7 @@ function ButtonsView(viewConfig, resources) {
 	this.addChild(this.buttonHolder);
 
 	var sliderBackground = new NineSlice(this.resources.getTexture("sliderBackground"), 20, 0, 20, 0);
-	sliderBackground.setLocalSize(300,sliderBackground.height);
+	sliderBackground.setLocalSize(300, sliderBackground.height);
 	//sliderBackground.width = 300;
 
 	var knob = new PIXI.Sprite(this.resources.getTexture("sliderKnob"));
@@ -53,13 +53,13 @@ function ButtonsView(viewConfig, resources) {
 
 	var raiseSprite = new PIXI.Sprite(this.resources.getTexture("sliderKnob"));
 	var arrowSprite = new PIXI.Sprite(this.resources.getTexture("upArrow"));
-	arrowSprite.position.x = (raiseSprite.width - arrowSprite.width)*0.5 - 0.5;
-	arrowSprite.position.y = (raiseSprite.height - arrowSprite.height)*0.5 - 2;
+	arrowSprite.position.x = (raiseSprite.width - arrowSprite.width) * 0.5 - 0.5;
+	arrowSprite.position.y = (raiseSprite.height - arrowSprite.height) * 0.5 - 2;
 	raiseSprite.addChild(arrowSprite);
 
 	this.raiseMenuButton = new Button(raiseSprite);
 	this.raiseMenuButton.addEventListener(Button.CLICK, this.onRaiseMenuButtonClick, this);
-	this.raiseMenuButton.position.x = 2*105 + 70;
+	this.raiseMenuButton.position.x = 2 * 105 + 70;
 	this.raiseMenuButton.position.y = -5;
 	this.buttonHolder.addChild(this.raiseMenuButton);
 
@@ -100,38 +100,38 @@ ButtonsView.prototype.createRaiseAmountMenu = function() {
 	};
 
 	var t = new PIXI.Text("RAISE TO", styleObject);
-	t.position.x = (125 - t.width)*0.5;
+	t.position.x = (125 - t.width) * 0.5;
 	t.position.y = 10;
 	this.raiseAmountMenu.addChild(t);
 
 	this.raiseShortcutButtons = new Array();
 
-	for(var i = 0; i < 6; i++) {
+	for (var i = 0; i < 6; i++) {
 		var b = new RaiseShortcutButton(this.resources);
 		b.addEventListener(Button.CLICK, this.onRaiseShortcutClick, this);
 		b.position.x = 10;
-		b.position.y = 35 + i*30;
+		b.position.y = 35 + i * 30;
 
 		this.raiseAmountMenu.addChild(b);
 		this.raiseShortcutButtons.push(b);
 	}
 
-/*
-	PixiTextinput should be used.
-	this.raiseAmountMenuInput=new TextField();
-	this.raiseAmountMenuInput.x=10;
-	this.raiseAmountMenuInput.y=40+30*5;
-	this.raiseAmountMenuInput.width=105;
-	this.raiseAmountMenuInput.height=19;
-	this.raiseAmountMenuInput.border=true;
-	this.raiseAmountMenuInput.borderColor=0x404040;
-	this.raiseAmountMenuInput.background=true;
-	this.raiseAmountMenuInput.multiline=false;
-	this.raiseAmountMenuInput.type=TextFieldType.INPUT;
-	this.raiseAmountMenuInput.addEventListener(Event.CHANGE,onRaiseAmountMenuInputChange);
-	this.raiseAmountMenuInput.addEventListener(KeyboardEvent.KEY_DOWN,onRaiseAmountMenuInputKeyDown);
-	this.raiseAmountMenu.addChild(this.raiseAmountMenuInput);
-	*/
+	/*
+		PixiTextinput should be used.
+		this.raiseAmountMenuInput=new TextField();
+		this.raiseAmountMenuInput.x=10;
+		this.raiseAmountMenuInput.y=40+30*5;
+		this.raiseAmountMenuInput.width=105;
+		this.raiseAmountMenuInput.height=19;
+		this.raiseAmountMenuInput.border=true;
+		this.raiseAmountMenuInput.borderColor=0x404040;
+		this.raiseAmountMenuInput.background=true;
+		this.raiseAmountMenuInput.multiline=false;
+		this.raiseAmountMenuInput.type=TextFieldType.INPUT;
+		this.raiseAmountMenuInput.addEventListener(Event.CHANGE,onRaiseAmountMenuInputChange);
+		this.raiseAmountMenuInput.addEventListener(KeyboardEvent.KEY_DOWN,onRaiseAmountMenuInputKeyDown);
+		this.raiseAmountMenu.addChild(this.raiseAmountMenuInput);
+		*/
 
 	this.raiseAmountMenu.visible = false;
 }
@@ -160,15 +160,15 @@ ButtonsView.prototype.onRaiseShortcutClick = function() {
  */
 ButtonsView.prototype.onRaiseMenuButtonClick = function() {
 	this.raiseAmountMenu.visible = !this.raiseAmountMenu.visible;
-/*
-	if(this.raiseAmountMenu.visible) {
-		this.stage.mousedown = this.onStageMouseDown.bind(this);
-		// this.raiseAmountMenuInput.focus();
-		// this.raiseAmountMenuInput.SelectAll
-	}
-	else {
-		this.stage.mousedown = null;
-	}*/
+	/*
+		if(this.raiseAmountMenu.visible) {
+			this.stage.mousedown = this.onStageMouseDown.bind(this);
+			// this.raiseAmountMenuInput.focus();
+			// this.raiseAmountMenuInput.SelectAll
+		}
+		else {
+			this.stage.mousedown = null;
+		}*/
 }
 
 /**
@@ -176,7 +176,7 @@ ButtonsView.prototype.onRaiseMenuButtonClick = function() {
  * @method onSliderChange
  */
 ButtonsView.prototype.onSliderChange = function() {
-	var newValue = Math.round(this.sliderMin + this.slider.getValue()*(this.sliderMax - this.sliderMin));
+	var newValue = Math.round(this.sliderMin + this.slider.getValue() * (this.sliderMax - this.sliderMin));
 	this.buttons[this.sliderIndex].setValue(newValue);
 	this.buttonDatas[this.sliderIndex].value = newValue;
 	console.log("newValue = " + newValue);
@@ -194,8 +194,8 @@ ButtonsView.prototype.showSlider = function(index, min, max) {
 	this.sliderMin = min;
 	this.sliderMax = max;
 
-	console.log("this.buttonDatas["+index+"] = " + this.buttonDatas[index].getValue() + ", min = " + min + ", max = " + max);
-	this.slider.setValue((this.buttonDatas[index].getValue() - min)/(max - min));
+	console.log("this.buttonDatas[" + index + "] = " + this.buttonDatas[index].getValue() + ", min = " + min + ", max = " + max);
+	this.slider.setValue((this.buttonDatas[index].getValue() - min) / (max - min));
 	console.log("this.slider.getValue() = " + this.slider.getValue());
 	this.slider.visible = true;
 	this.slider.show();
@@ -232,8 +232,11 @@ ButtonsView.prototype.setButtons = function(buttonDatas, sliderButtonIndex, min,
 
 	}
 
-	if((min >= 0) && (max >= 0))
+	if ((min >= 0) && (max >= 0))
 		this.showSlider(sliderButtonIndex, min, max);
+
+	else
+		this.slider.visible = false;
 
 	this.buttonHolder.position.x = 366;
 

@@ -118,7 +118,7 @@ InterfaceController.prototype.onTableInfoMessage = function(m) {
 InterfaceController.prototype.onHandInfoMessage = function(m) {
 	var tableInfoView = this.view.getTableInfoView();
 
-	tableInfoView.setHandInfoText(m.getText());
+	tableInfoView.setHandInfoText(m.getText(),m.getCountDown());
 }
 
 /**

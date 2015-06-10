@@ -36,6 +36,7 @@ function ChipsView(viewConfig, resources, showToolTip) {
 		this.addChild(this.toolTip);
 	}
 
+	this.tween = null;
 }
 
 inherits(ChipsView, PIXI.DisplayObjectContainer);
@@ -69,6 +70,16 @@ ChipsView.prototype.setTargetPosition = function(position) {
  * @method setValue
  */
 ChipsView.prototype.setValue = function(value) {
+	if (this.tween) {
+		this.tween.onComplete();
+		this.tween.stop();
+	}
+
+	if (this.targetPosition) {
+		this.position.x = this.targetPosition.x;
+		this.position.y = this.targetPosition.y;
+	}
+
 	this.value = value;
 
 	var sprite;
@@ -180,7 +191,7 @@ ChipsView.prototype.show = function() {
 	var diffY = this.position.y - destination.y;
 	var diff = Math.sqrt(diffX * diffX + diffY * diffY);
 
-	var tween = new TWEEN.Tween(this.position)
+	this.tween = new TWEEN.Tween(this.position)
 		.to({
 			x: destination.x,
 			y: destination.y
@@ -230,7 +241,7 @@ ChipsView.prototype.animateIn = function() {
 	}
 
 	var time = this.viewConfig.scaleAnimationTime(500);
-	var tween = new TWEEN.Tween(this)
+	this.tween = new TWEEN.Tween(this)
 		.to({
 			y: this.resources.getPoint("potPosition").y,
 			x: o.x
@@ -286,7 +297,7 @@ ChipsView.prototype.animateOut = function() {
 	};
 
 	var time = this.viewConfig.scaleAnimationTime(500);
-	var tween = new TWEEN.Tween(this)
+	this.tween = new TWEEN.Tween(this)
 		.to(o, time)
 		.onComplete(this.onOutAnimationComplete.bind(this))
 		.start();
@@ -300,7 +311,7 @@ ChipsView.prototype.animateOut = function() {
 ChipsView.prototype.onOutAnimationComplete = function() {
 
 	var time = 500;
-	var tween = new TWEEN.Tween({
+	this.tween = new TWEEN.Tween({
 			x: 0
 		})
 		.to({

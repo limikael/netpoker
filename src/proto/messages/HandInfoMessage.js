@@ -26,7 +26,7 @@ HandInfoMessage.prototype.getText = function() {
  * Getter.
  * @method getValue
  */
-HandInfoMessage.prototype.getCountdown = function() {
+HandInfoMessage.prototype.getCountDown = function() {
 	return this.countdown;
 }
 

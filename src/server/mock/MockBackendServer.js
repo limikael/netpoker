@@ -113,7 +113,7 @@ MockBackendServer.prototype.tournamentInfo = function(params) {
 		payoutPercent: [70, 20],
 		fee: 10,
 		blindStructure: [{
-			time: 100,
+			time: 10,
 			stake: 2,
 			ante: 0,
 		}, {

@@ -67,7 +67,7 @@ CountdownText.prototype.updateFormattedText = function() {
  * @method setTimeLeft
  */
 CountdownText.prototype.setTimeLeft = function(timeLeft) {
-	if (timeLeft < 0)
+	if (timeLeft < 0 || isNaN(timeLeft) || timeLeft === null)
 		timeLeft = 0;
 
 	if (this.timerInterval) {

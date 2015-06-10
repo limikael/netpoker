@@ -12,5 +12,6 @@
 {"type":"pocketCards", "seatIndex": 6, "firstIndex": 1, "cards": [-1], "animate":true}
 {"type":"communityCards", "firstIndex": 0, "cards": [13], "animate":true}
 {"type":"stateComplete"}
+{"type":"pot", "values": []}
 {"type":"payOut", "values":[10143,0,0,0,0,0,0,0,0,0]}
 {"type":"stateComplete"}

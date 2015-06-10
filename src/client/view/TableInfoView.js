@@ -9,6 +9,7 @@ var DialogButton = require("./DialogButton");
 var inherits = require("inherits");
 var ButtonData = require("../../proto/data/ButtonData");
 var ObjectUtil = require("../../utils/ObjectUtil");
+var CountDownText = require("../../utils/CountDownText");
 
 /**
  * Show table info.
@@ -60,7 +61,7 @@ function TableInfoView(viewConfig, resources) {
 		strokeThickness: 1,
 	};
 
-	this.handInfoText = new PIXI.Text("<HandInfoText>", style);
+	this.handInfoText = new CountDownText("<HandInfoText>", style);
 	this.handInfoText.position.y = 10;
 	this.handInfoText.position.x = 10; //960 - this.handInfoText.width;
 	this.addChild(this.handInfoText);
@@ -169,11 +170,12 @@ TableInfoView.prototype.setLeaveButtonVisible = function(value) {
  * Set hand info text.
  * @method setTableInfoText
  */
-TableInfoView.prototype.setHandInfoText = function(s) {
+TableInfoView.prototype.setHandInfoText = function(s, countdown) {
 	if (!s)
 		s = "";
 
 	this.handInfoText.setText(s);
+	this.handInfoText.setTimeLeft(countdown);
 	this.handInfoText.updateTransform();
 }
 

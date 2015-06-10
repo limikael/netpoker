@@ -1,0 +1,8 @@
+{"type":"seatInfo", "seatIndex": 2, "name": "olle", "chips": 463, "active": true}
+{"type":"stateComplete"}
+{"type":"bet", "seatIndex": 2, "value": 10}
+{"type":"delay", "delay": 1000}
+
+{"type":"betsToPot"}
+{"type":"pot", "values": [123]}
+{"type":"bet", "seatIndex": 2, "value": 10}

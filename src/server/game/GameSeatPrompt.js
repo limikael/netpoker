@@ -212,6 +212,7 @@ GameSeatPrompt.prototype.onTimeout = function() {
 		return;
 	}
 
+	this.gameSeat.send(new ButtonsMessage());
 	this.gameSeat.getTableSeat().off(ButtonClickMessage.TYPE, this.onButtonClickMessage, this);
 	this.gameSeat.getTableSeat().off(BaseTableSeat.SETTINGS_CHANGED, this.onTableSeatSettingsChanged, this);
 

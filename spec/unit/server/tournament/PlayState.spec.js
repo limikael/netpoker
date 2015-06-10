@@ -54,7 +54,7 @@ describe("PlayState", function() {
 	it("waits for next blind change", function() {
 		console.log("now: "+Date.now());
 
-/*		var levs = [
+		var levs = [
 			new BlindStructureData(100, 1, 2),
 			new BlindStructureData(200, 2, 3),
 			new BlindStructureData(1000, 3, 4)
@@ -80,8 +80,19 @@ describe("PlayState", function() {
 		playState.enterLevel();
 		expect(mockTournament.getBlindStructureForLevel).toHaveBeenCalled();
 
+		expect(playState.blindLevel).toBe(0);
+
 		expect(playState.getTimeUntilNextLevel()).toBe(100);
 		jasmine.clock().tick(50 * 1000);
-		expect(playState.getTimeUntilNextLevel()).toBe(50);*/
+		expect(playState.getTimeUntilNextLevel()).toBe(50);
+		jasmine.clock().tick(50 * 1000);
+		expect(playState.blindLevel).toBe(1);
+		expect(playState.getTimeUntilNextLevel()).toBe(200);
+
+		jasmine.clock().tick(200*1000);
+		expect(playState.blindLevel).toBe(2);
+		expect(playState.getTimeUntilNextLevel()).toBe(-1);
+
+		expect(playState.getCurrentStake()).toBe(3);
 	});
 });

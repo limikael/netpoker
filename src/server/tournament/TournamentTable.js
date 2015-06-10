@@ -345,21 +345,20 @@ TournamentTable.prototype.getHandInfoMessage = function() {
 	if (this.previousHandId != null)
 		s += "Previous Hand: #" + this.previousHandId + "\n";
 
-	//trace("ps: "+playState);
+	s += "\n";
+	s += "Blinds: " + this.playState.getCurrentStake() / 2 + "/" + this.playState.getCurrentStake() + "\n";
 
-	/*s += "\n";
-	s += "Blinds: " + playState.getCurrentStake() / 2 + "/" + playState.getCurrentStake() + "\n";
+	if (this.playState.getCurrentAnte() > 0)
+		s += "Ante: " + this.playState.getCurrentAnte() + "\n";
 
-	if (playState.getCurrentAnte() > 0)
-		s += "Ante: " + playState.getCurrentAnte() + "\n";
-
-	var t: Int = playState.getTimeUntilNextLevel();
+	var countdown = 0;
+	var t = this.playState.getTimeUntilNextLevel();
 	if (t >= 0) {
-		hm.countdown = t;
+		countdown = t;
 		s += "Next Level: %t";
-	}*/
+	}
 
-	return new HandInfoMessage(s);
+	return new HandInfoMessage(s, countdown);
 }
 
 /**
@@ -368,6 +367,14 @@ TournamentTable.prototype.getHandInfoMessage = function() {
  */
 TournamentTable.prototype.getStake = function() {
 	return this.stake;
+}
+
+/**
+ * Get ante.
+ * @method getAnte
+ */
+TournamentTable.prototype.getAnte = function() {
+	return this.ante;
 }
 
 /**

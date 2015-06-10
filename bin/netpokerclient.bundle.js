@@ -20376,7 +20376,7 @@ NetPokerClient.getQueryStringParams = function() {
 }
 
 module.exports = NetPokerClient;
-},{"../../proto/ProtoConnection":46,"../../proto/messages/InitMessage":63,"../../proto/messages/StateCompleteMessage":74,"../../utils/MessageRequestConnection":85,"../../utils/MessageWebSocketConnection":86,"../../utils/UrlUtil":93,"../controller/NetPokerClientController":19,"../resources/DefaultSkin":21,"../resources/Resources":22,"../resources/ViewConfig":23,"../view/LoadingScreen":33,"../view/NetPokerClientView":34,"inherits":7,"pixi.js":8,"pixiapp":9,"tween.js":13,"url":6}],16:[function(require,module,exports){
+},{"../../proto/ProtoConnection":46,"../../proto/messages/InitMessage":63,"../../proto/messages/StateCompleteMessage":74,"../../utils/MessageRequestConnection":86,"../../utils/MessageWebSocketConnection":87,"../../utils/UrlUtil":94,"../controller/NetPokerClientController":19,"../resources/DefaultSkin":21,"../resources/Resources":22,"../resources/ViewConfig":23,"../view/LoadingScreen":33,"../view/NetPokerClientView":34,"inherits":7,"pixi.js":8,"pixiapp":9,"tween.js":13,"url":6}],16:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -20497,7 +20497,7 @@ InterfaceController.prototype.onTableInfoMessage = function(m) {
 InterfaceController.prototype.onHandInfoMessage = function(m) {
 	var tableInfoView = this.view.getTableInfoView();
 
-	tableInfoView.setHandInfoText(m.getText());
+	tableInfoView.setHandInfoText(m.getText(),m.getCountDown());
 }
 
 /**
@@ -20627,7 +20627,7 @@ MessageSequenceItem.prototype.onTargetComplete = function() {
 }
 
 module.exports = MessageSequenceItem;
-},{"../../utils/Sequencer":91,"inherits":7,"yaed":14}],18:[function(require,module,exports){
+},{"../../utils/Sequencer":92,"inherits":7,"yaed":14}],18:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -20702,7 +20702,7 @@ MessageSequencer.prototype.waitFor = function(target, event) {
 }
 
 module.exports = MessageSequencer;
-},{"../../utils/Sequencer":91,"./MessageSequenceItem":17,"yaed":14}],19:[function(require,module,exports){
+},{"../../utils/Sequencer":92,"./MessageSequenceItem":17,"yaed":14}],19:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -21427,7 +21427,7 @@ Resources.prototype.processSkinData = function(data) {
 }
 
 module.exports = Resources;
-},{"../../utils/HttpRequest":84,"../../utils/UrlUtil":93,"pixi.js":8,"tinp":12}],23:[function(require,module,exports){
+},{"../../utils/HttpRequest":85,"../../utils/UrlUtil":94,"pixi.js":8,"tinp":12}],23:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -21581,7 +21581,7 @@ function ButtonsView(viewConfig, resources) {
 	this.addChild(this.buttonHolder);
 
 	var sliderBackground = new NineSlice(this.resources.getTexture("sliderBackground"), 20, 0, 20, 0);
-	sliderBackground.setLocalSize(300,sliderBackground.height);
+	sliderBackground.setLocalSize(300, sliderBackground.height);
 	//sliderBackground.width = 300;
 
 	var knob = new PIXI.Sprite(this.resources.getTexture("sliderKnob"));
@@ -21609,13 +21609,13 @@ function ButtonsView(viewConfig, resources) {
 
 	var raiseSprite = new PIXI.Sprite(this.resources.getTexture("sliderKnob"));
 	var arrowSprite = new PIXI.Sprite(this.resources.getTexture("upArrow"));
-	arrowSprite.position.x = (raiseSprite.width - arrowSprite.width)*0.5 - 0.5;
-	arrowSprite.position.y = (raiseSprite.height - arrowSprite.height)*0.5 - 2;
+	arrowSprite.position.x = (raiseSprite.width - arrowSprite.width) * 0.5 - 0.5;
+	arrowSprite.position.y = (raiseSprite.height - arrowSprite.height) * 0.5 - 2;
 	raiseSprite.addChild(arrowSprite);
 
 	this.raiseMenuButton = new Button(raiseSprite);
 	this.raiseMenuButton.addEventListener(Button.CLICK, this.onRaiseMenuButtonClick, this);
-	this.raiseMenuButton.position.x = 2*105 + 70;
+	this.raiseMenuButton.position.x = 2 * 105 + 70;
 	this.raiseMenuButton.position.y = -5;
 	this.buttonHolder.addChild(this.raiseMenuButton);
 
@@ -21656,38 +21656,38 @@ ButtonsView.prototype.createRaiseAmountMenu = function() {
 	};
 
 	var t = new PIXI.Text("RAISE TO", styleObject);
-	t.position.x = (125 - t.width)*0.5;
+	t.position.x = (125 - t.width) * 0.5;
 	t.position.y = 10;
 	this.raiseAmountMenu.addChild(t);
 
 	this.raiseShortcutButtons = new Array();
 
-	for(var i = 0; i < 6; i++) {
+	for (var i = 0; i < 6; i++) {
 		var b = new RaiseShortcutButton(this.resources);
 		b.addEventListener(Button.CLICK, this.onRaiseShortcutClick, this);
 		b.position.x = 10;
-		b.position.y = 35 + i*30;
+		b.position.y = 35 + i * 30;
 
 		this.raiseAmountMenu.addChild(b);
 		this.raiseShortcutButtons.push(b);
 	}
 
-/*
-	PixiTextinput should be used.
-	this.raiseAmountMenuInput=new TextField();
-	this.raiseAmountMenuInput.x=10;
-	this.raiseAmountMenuInput.y=40+30*5;
-	this.raiseAmountMenuInput.width=105;
-	this.raiseAmountMenuInput.height=19;
-	this.raiseAmountMenuInput.border=true;
-	this.raiseAmountMenuInput.borderColor=0x404040;
-	this.raiseAmountMenuInput.background=true;
-	this.raiseAmountMenuInput.multiline=false;
-	this.raiseAmountMenuInput.type=TextFieldType.INPUT;
-	this.raiseAmountMenuInput.addEventListener(Event.CHANGE,onRaiseAmountMenuInputChange);
-	this.raiseAmountMenuInput.addEventListener(KeyboardEvent.KEY_DOWN,onRaiseAmountMenuInputKeyDown);
-	this.raiseAmountMenu.addChild(this.raiseAmountMenuInput);
-	*/
+	/*
+		PixiTextinput should be used.
+		this.raiseAmountMenuInput=new TextField();
+		this.raiseAmountMenuInput.x=10;
+		this.raiseAmountMenuInput.y=40+30*5;
+		this.raiseAmountMenuInput.width=105;
+		this.raiseAmountMenuInput.height=19;
+		this.raiseAmountMenuInput.border=true;
+		this.raiseAmountMenuInput.borderColor=0x404040;
+		this.raiseAmountMenuInput.background=true;
+		this.raiseAmountMenuInput.multiline=false;
+		this.raiseAmountMenuInput.type=TextFieldType.INPUT;
+		this.raiseAmountMenuInput.addEventListener(Event.CHANGE,onRaiseAmountMenuInputChange);
+		this.raiseAmountMenuInput.addEventListener(KeyboardEvent.KEY_DOWN,onRaiseAmountMenuInputKeyDown);
+		this.raiseAmountMenu.addChild(this.raiseAmountMenuInput);
+		*/
 
 	this.raiseAmountMenu.visible = false;
 }
@@ -21716,15 +21716,15 @@ ButtonsView.prototype.onRaiseShortcutClick = function() {
  */
 ButtonsView.prototype.onRaiseMenuButtonClick = function() {
 	this.raiseAmountMenu.visible = !this.raiseAmountMenu.visible;
-/*
-	if(this.raiseAmountMenu.visible) {
-		this.stage.mousedown = this.onStageMouseDown.bind(this);
-		// this.raiseAmountMenuInput.focus();
-		// this.raiseAmountMenuInput.SelectAll
-	}
-	else {
-		this.stage.mousedown = null;
-	}*/
+	/*
+		if(this.raiseAmountMenu.visible) {
+			this.stage.mousedown = this.onStageMouseDown.bind(this);
+			// this.raiseAmountMenuInput.focus();
+			// this.raiseAmountMenuInput.SelectAll
+		}
+		else {
+			this.stage.mousedown = null;
+		}*/
 }
 
 /**
@@ -21732,7 +21732,7 @@ ButtonsView.prototype.onRaiseMenuButtonClick = function() {
  * @method onSliderChange
  */
 ButtonsView.prototype.onSliderChange = function() {
-	var newValue = Math.round(this.sliderMin + this.slider.getValue()*(this.sliderMax - this.sliderMin));
+	var newValue = Math.round(this.sliderMin + this.slider.getValue() * (this.sliderMax - this.sliderMin));
 	this.buttons[this.sliderIndex].setValue(newValue);
 	this.buttonDatas[this.sliderIndex].value = newValue;
 	console.log("newValue = " + newValue);
@@ -21750,8 +21750,8 @@ ButtonsView.prototype.showSlider = function(index, min, max) {
 	this.sliderMin = min;
 	this.sliderMax = max;
 
-	console.log("this.buttonDatas["+index+"] = " + this.buttonDatas[index].getValue() + ", min = " + min + ", max = " + max);
-	this.slider.setValue((this.buttonDatas[index].getValue() - min)/(max - min));
+	console.log("this.buttonDatas[" + index + "] = " + this.buttonDatas[index].getValue() + ", min = " + min + ", max = " + max);
+	this.slider.setValue((this.buttonDatas[index].getValue() - min) / (max - min));
 	console.log("this.slider.getValue() = " + this.slider.getValue());
 	this.slider.visible = true;
 	this.slider.show();
@@ -21788,8 +21788,11 @@ ButtonsView.prototype.setButtons = function(buttonDatas, sliderButtonIndex, min,
 
 	}
 
-	if((min >= 0) && (max >= 0))
+	if ((min >= 0) && (max >= 0))
 		this.showSlider(sliderButtonIndex, min, max);
+
+	else
+		this.slider.visible = false;
 
 	this.buttonHolder.position.x = 366;
 
@@ -21824,7 +21827,7 @@ ButtonsView.prototype.onButtonClick = function(e) {
 }
 
 module.exports = ButtonsView;
-},{"../../utils/Button":81,"../../utils/NineSlice":88,"../../utils/Slider":92,"./BigButton":24,"./RaiseShortcutButton":38,"inherits":7,"pixi.js":8,"yaed":14}],26:[function(require,module,exports){
+},{"../../utils/Button":81,"../../utils/NineSlice":89,"../../utils/Slider":93,"./BigButton":24,"./RaiseShortcutButton":38,"inherits":7,"pixi.js":8,"yaed":14}],26:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -22338,7 +22341,7 @@ ChatView.prototype.onKeyDown = function(event) {
 
 
 module.exports = ChatView;
-},{"../../utils/MouseOverGroup":87,"../../utils/NineSlice":88,"../../utils/Slider":92,"inherits":7,"pixi.js":8,"pixitextinput":10,"yaed":14}],29:[function(require,module,exports){
+},{"../../utils/MouseOverGroup":88,"../../utils/NineSlice":89,"../../utils/Slider":93,"inherits":7,"pixi.js":8,"pixitextinput":10,"yaed":14}],29:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -22377,6 +22380,7 @@ function ChipsView(viewConfig, resources, showToolTip) {
 		this.addChild(this.toolTip);
 	}
 
+	this.tween = null;
 }
 
 inherits(ChipsView, PIXI.DisplayObjectContainer);
@@ -22410,6 +22414,16 @@ ChipsView.prototype.setTargetPosition = function(position) {
  * @method setValue
  */
 ChipsView.prototype.setValue = function(value) {
+	if (this.tween) {
+		this.tween.onComplete();
+		this.tween.stop();
+	}
+
+	if (this.targetPosition) {
+		this.position.x = this.targetPosition.x;
+		this.position.y = this.targetPosition.y;
+	}
+
 	this.value = value;
 
 	var sprite;
@@ -22521,7 +22535,7 @@ ChipsView.prototype.show = function() {
 	var diffY = this.position.y - destination.y;
 	var diff = Math.sqrt(diffX * diffX + diffY * diffY);
 
-	var tween = new TWEEN.Tween(this.position)
+	this.tween = new TWEEN.Tween(this.position)
 		.to({
 			x: destination.x,
 			y: destination.y
@@ -22571,7 +22585,7 @@ ChipsView.prototype.animateIn = function() {
 	}
 
 	var time = this.viewConfig.scaleAnimationTime(500);
-	var tween = new TWEEN.Tween(this)
+	this.tween = new TWEEN.Tween(this)
 		.to({
 			y: this.resources.getPoint("potPosition").y,
 			x: o.x
@@ -22627,7 +22641,7 @@ ChipsView.prototype.animateOut = function() {
 	};
 
 	var time = this.viewConfig.scaleAnimationTime(500);
-	var tween = new TWEEN.Tween(this)
+	this.tween = new TWEEN.Tween(this)
 		.to(o, time)
 		.onComplete(this.onOutAnimationComplete.bind(this))
 		.start();
@@ -22641,7 +22655,7 @@ ChipsView.prototype.animateOut = function() {
 ChipsView.prototype.onOutAnimationComplete = function() {
 
 	var time = 500;
-	var tween = new TWEEN.Tween({
+	this.tween = new TWEEN.Tween({
 			x: 0
 		})
 		.to({
@@ -22962,7 +22976,7 @@ DialogView.prototype.onButtonClick = function(e) {
 }
 
 module.exports = DialogView;
-},{"../../proto/data/ButtonData":47,"../../utils/NineSlice":88,"./DialogButton":31,"inherits":7,"pixi.js":8,"pixitextinput":10,"yaed":14}],33:[function(require,module,exports){
+},{"../../proto/data/ButtonData":47,"../../utils/NineSlice":89,"./DialogButton":31,"inherits":7,"pixi.js":8,"pixitextinput":10,"yaed":14}],33:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23024,7 +23038,7 @@ LoadingScreen.prototype.hide = function() {
 }
 
 module.exports = LoadingScreen;
-},{"../../utils/Gradient":83,"inherits":7,"pixi.js":8}],34:[function(require,module,exports){
+},{"../../utils/Gradient":84,"inherits":7,"pixi.js":8}],34:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23453,7 +23467,7 @@ NetPokerClientView.prototype.clear = function() {
 }
 
 module.exports = NetPokerClientView;
-},{"../../proto/messages/FadeTableMessage":60,"../../utils/Gradient":83,"../../utils/Point":90,"../view/PresetButtonsView":37,"../view/SettingsView":42,"../view/TableInfoView":44,"./ButtonsView":25,"./CardView":27,"./ChatView":28,"./ChipsView":29,"./DealerButtonView":30,"./DialogView":32,"./PotView":35,"./SeatView":39,"./TableButtonsView":43,"./TimerView":45,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],35:[function(require,module,exports){
+},{"../../proto/messages/FadeTableMessage":60,"../../utils/Gradient":84,"../../utils/Point":91,"../view/PresetButtonsView":37,"../view/SettingsView":42,"../view/TableInfoView":44,"./ButtonsView":25,"./CardView":27,"./ChatView":28,"./ChipsView":29,"./DealerButtonView":30,"./DialogView":32,"./PotView":35,"./SeatView":39,"./TableButtonsView":43,"./TimerView":45,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],35:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -23842,7 +23856,7 @@ RaiseShortcutButton.prototype.setEnabled = function(value) {
 }
 
 module.exports = RaiseShortcutButton;
-},{"../../utils/Button":81,"../../utils/Checkbox":82,"../../utils/NineSlice":88,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],39:[function(require,module,exports){
+},{"../../utils/Button":81,"../../utils/Checkbox":82,"../../utils/NineSlice":89,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],39:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24213,7 +24227,7 @@ SettingsCheckbox.prototype.setChecked = function(checked) {
 }
 
 module.exports = SettingsCheckbox;
-},{"../../utils/Button":81,"../../utils/Checkbox":82,"../../utils/NineSlice":88,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],42:[function(require,module,exports){
+},{"../../utils/Button":81,"../../utils/Checkbox":82,"../../utils/NineSlice":89,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],42:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24470,7 +24484,7 @@ SettingsView.prototype.setCheckboxChecked = function(id, checked) {
 }
 
 module.exports = SettingsView;
-},{"../../proto/data/ButtonData":47,"../../proto/messages/CheckboxMessage":55,"../../utils/Button":81,"../../utils/NineSlice":88,"./RaiseShortcutButton":38,"./SettingsCheckbox":41,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],43:[function(require,module,exports){
+},{"../../proto/data/ButtonData":47,"../../proto/messages/CheckboxMessage":55,"../../utils/Button":81,"../../utils/NineSlice":89,"./RaiseShortcutButton":38,"./SettingsCheckbox":41,"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],43:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -24565,6 +24579,7 @@ var DialogButton = require("./DialogButton");
 var inherits = require("inherits");
 var ButtonData = require("../../proto/data/ButtonData");
 var ObjectUtil = require("../../utils/ObjectUtil");
+var CountDownText = require("../../utils/CountDownText");
 
 /**
  * Show table info.
@@ -24616,7 +24631,7 @@ function TableInfoView(viewConfig, resources) {
 		strokeThickness: 1,
 	};
 
-	this.handInfoText = new PIXI.Text("<HandInfoText>", style);
+	this.handInfoText = new CountDownText("<HandInfoText>", style);
 	this.handInfoText.position.y = 10;
 	this.handInfoText.position.x = 10; //960 - this.handInfoText.width;
 	this.addChild(this.handInfoText);
@@ -24725,11 +24740,12 @@ TableInfoView.prototype.setLeaveButtonVisible = function(value) {
  * Set hand info text.
  * @method setTableInfoText
  */
-TableInfoView.prototype.setHandInfoText = function(s) {
+TableInfoView.prototype.setHandInfoText = function(s, countdown) {
 	if (!s)
 		s = "";
 
 	this.handInfoText.setText(s);
+	this.handInfoText.setTimeLeft(countdown);
 	this.handInfoText.updateTransform();
 }
 
@@ -24771,7 +24787,7 @@ TableInfoView.prototype.onButtonClick = function(e) {
 }
 
 module.exports = TableInfoView;
-},{"../../proto/data/ButtonData":47,"../../utils/ObjectUtil":89,"./DialogButton":31,"inherits":7,"pixi.js":8,"yaed":14}],45:[function(require,module,exports){
+},{"../../proto/data/ButtonData":47,"../../utils/CountDownText":83,"../../utils/ObjectUtil":90,"./DialogButton":31,"inherits":7,"pixi.js":8,"yaed":14}],45:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -26295,7 +26311,7 @@ HandInfoMessage.prototype.getText = function() {
  * Getter.
  * @method getValue
  */
-HandInfoMessage.prototype.getCountdown = function() {
+HandInfoMessage.prototype.getCountDown = function() {
 	return this.countdown;
 }
 
@@ -27784,6 +27800,109 @@ module.exports = Checkbox;
  */
 
 var PIXI = require("pixi.js");
+var inherits = require("inherits");
+
+/**
+ * A text that counts down.
+ * @class CountdownText
+ */
+function CountdownText(text, style) {
+	PIXI.Text.call(this, text, style);
+
+	this.timeLeft = 0;
+	this.timerInterval = null;
+	this.setText(text);
+}
+
+inherits(CountdownText, PIXI.Text);
+
+/**
+ * Override the setText function.
+ * @method setText
+ */
+CountdownText.prototype.setText = function(text) {
+	this.format = text;
+
+	this.updateFormattedText();
+}
+
+/**
+ * Update the actual text.
+ * @method updateFormattedText
+ */
+CountdownText.prototype.updateFormattedText = function() {
+	var s = (this.timeLeft % 60).toString();
+	var m = (Math.floor(this.timeLeft / 60) % 60).toString();
+	var h = (Math.floor(this.timeLeft / (60 * 60))).toString();
+
+	if (s.length < 2)
+		s = "0" + s;
+
+	if (m.length < 2)
+		m = "0" + m;
+
+	if (h == "0")
+		h = "";
+
+	else {
+		if (h.length < 2)
+			h = "0" + h;
+
+		h += ":";
+	}
+
+	var text = this.format.toString().replace("%t", h + m + ":" + s);
+
+	//console.log("update text: " + text);
+
+	PIXI.Text.prototype.setText.call(this, text);
+}
+
+/**
+ * Set time left.
+ * @method setTimeLeft
+ */
+CountdownText.prototype.setTimeLeft = function(timeLeft) {
+	if (timeLeft < 0 || isNaN(timeLeft) || timeLeft === null)
+		timeLeft = 0;
+
+	if (this.timerInterval) {
+		clearInterval(this.timerInterval);
+		this.timerInterval = null;
+	}
+
+	this.timeLeft = timeLeft;
+
+	if (this.timeLeft > 0) {
+		this.timerInterval = setInterval(this.onTimerInterval.bind(this), 1000);
+	}
+
+	this.updateFormattedText();
+}
+
+/**
+ * Timer interval.
+ * @method onTimerInterval
+ */
+CountdownText.prototype.onTimerInterval = function() {
+	this.timeLeft--;
+
+	if (this.timeLeft <= 0) {
+		clearInterval(this.timerInterval);
+		this.timerInterval = null;
+	}
+
+	this.updateFormattedText();
+}
+
+module.exports = CountdownText;
+},{"inherits":7,"pixi.js":8}],84:[function(require,module,exports){
+/**
+ * Utilities.
+ * @module utils
+ */
+
+var PIXI = require("pixi.js");
 
 /**
  * Create a sprite with a gradient.
@@ -27839,7 +27958,7 @@ Gradient.prototype.createSprite = function() {
 }
 
 module.exports = Gradient;
-},{"pixi.js":8}],84:[function(require,module,exports){
+},{"pixi.js":8}],85:[function(require,module,exports){
 var Thenable = require("tinp");
 
 /**
@@ -27930,7 +28049,7 @@ HttpRequest.prototype.onRequestError = function(e) {
 }
 
 module.exports = HttpRequest;
-},{"tinp":12}],85:[function(require,module,exports){
+},{"tinp":12}],86:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -28015,7 +28134,7 @@ MessageRequestConnection.prototype.send = function(m) {
 }
 
 module.exports = MessageRequestConnection;
-},{"../utils/HttpRequest":84,"inherits":7,"tinp":12,"yaed":14}],86:[function(require,module,exports){
+},{"../utils/HttpRequest":85,"inherits":7,"tinp":12,"yaed":14}],87:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -28127,7 +28246,7 @@ MessageWebSocketConnection.prototype.clearWebSocket = function() {
 }
 
 module.exports = MessageWebSocketConnection;
-},{"inherits":7,"tinp":12,"yaed":14}],87:[function(require,module,exports){
+},{"inherits":7,"tinp":12,"yaed":14}],88:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -28246,7 +28365,7 @@ MouseOverGroup.prototype.onStageMouseUp = function(interaction_object) {
 module.exports = MouseOverGroup;
 
 
-},{"inherits":7,"pixi.js":8,"yaed":14}],88:[function(require,module,exports){
+},{"inherits":7,"pixi.js":8,"yaed":14}],89:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -28371,7 +28490,7 @@ NineSlice.prototype.createTexturePart = function(x, y, width, height) {
 }
 
 module.exports = NineSlice;
-},{"inherits":7,"pixi.js":8}],89:[function(require,module,exports){
+},{"inherits":7,"pixi.js":8}],90:[function(require,module,exports){
 /**
  * Object utilities.
  * @class ObjectUtil
@@ -28429,7 +28548,7 @@ ObjectUtil.copy = function(o) {
 }
 
 module.exports = ObjectUtil;
-},{}],90:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -28449,7 +28568,7 @@ function Point(x, y) {
 }
 
 module.exports = Point;
-},{}],91:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -28537,7 +28656,7 @@ Sequencer.prototype.abort = function() {
 }
 
 module.exports = Sequencer;
-},{"inherits":7,"yaed":14}],92:[function(require,module,exports){
+},{"inherits":7,"yaed":14}],93:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -28707,7 +28826,7 @@ Slider.prototype.onHidden = function() {
 
 module.exports = Slider;
 
-},{"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],93:[function(require,module,exports){
+},{"inherits":7,"pixi.js":8,"tween.js":13,"yaed":14}],94:[function(require,module,exports){
 var url = require("url");
 
 /**

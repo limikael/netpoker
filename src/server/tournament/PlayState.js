@@ -106,6 +106,8 @@ PlayState.prototype.enterLevel = function() {
 		var t = Date.now();
 		var blindStrunctureData = this.tournament.getBlindStructureForLevel(this.blindLevel);
 		this.blindChangeTime = t + blindStrunctureData.getTime() * 1000;
+
+		this.blindTimeout = setTimeout(this.onBlindTimeout.bind(this), blindStrunctureData.getTime() * 1000);
 	} else {
 		this.blindChangeTime = 0;
 	}
@@ -128,6 +130,18 @@ PlayState.prototype.getTimeUntilNextLevel = function() {
 		secs = 0;
 
 	return secs;
+}
+
+/**
+ * Blind timoeut.
+ * @method onBlindTimeout
+ * @private
+ */
+PlayState.prototype.onBlindTimeout = function() {
+	this.blindTimeout = null;
+
+	this.blindLevel++;
+	this.enterLevel();
 }
 
 /**
@@ -334,6 +348,11 @@ PlayState.prototype.getCurrentAnte = function() {
 PlayState.prototype.close = function() {
 	for (var t = 0; t < this.tournamentTables.length; t++)
 		this.tournamentTables[t].close();
+
+	if (this.blindTimeout) {
+		clearTimeout(this.blindTimeout);
+		this.blindTimeout = null;
+	}
 }
 
 /**
@@ -407,7 +426,10 @@ PlayState.prototype.getTotalNumberOfPlayers = function() {
  * @method notifyComplete
  */
 PlayState.prototype.notifyComplete = function() {
-	// handle blind timer!!!
+	if (this.blindTimeout) {
+		clearTimeout(this.blindTimeout);
+		this.blindTimeout = null;
+	}
 
 	if (this.finishedUsers.length != this.tournament.getNumRegistrations())
 		throw new Error("lost a user during tournament");
