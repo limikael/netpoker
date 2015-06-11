@@ -131,6 +131,7 @@ RegistrationSpectator.prototype.onButtonClickMessage = function(m) {
 	if (!this.user) {
 		switch (m.getButton()) {
 			case ButtonData.OK:
+			case ButtonData.CANCEL:
 				this.send(this.getTableInfoMessage());
 				return;
 
@@ -147,6 +148,14 @@ RegistrationSpectator.prototype.onButtonClickMessage = function(m) {
 
 	switch (m.button) {
 		case ButtonData.JOIN_TOURNAMENT:
+			var d = new ShowDialogMessage();
+			d.setText("Would you like to register for this tournament?");
+			d.addButton(ButtonData.OK);
+			d.addButton(ButtonData.CANCEL);
+			this.send(d);
+			break;
+
+		case ButtonData.OK:
 			this.backendCallInProgress = true;
 			var p = {
 				userId: this.user.getId(),
@@ -159,6 +168,14 @@ RegistrationSpectator.prototype.onButtonClickMessage = function(m) {
 			break;
 
 		case ButtonData.LEAVE_TOURNAMENT:
+			var d = new ShowDialogMessage();
+			d.setText("Sure you want to unregister from the tournament?");
+			d.addButton(ButtonData.LEAVE);
+			d.addButton(ButtonData.CANCEL);
+			this.send(d);
+			break;
+
+		case ButtonData.LEAVE:
 			this.backendCallInProgress = true;
 			var p = {
 				userId: this.user.getId(),
@@ -169,6 +186,10 @@ RegistrationSpectator.prototype.onButtonClickMessage = function(m) {
 				this.onTournamentUnregisterError.bind(this)
 			);
 			break;
+
+		case ButtonData.CANCEL:
+			this.send(this.getTableInfoMessage());
+			return;
 	}
 }
 

@@ -7,6 +7,7 @@ var StateCompleteMessage = require("../../../../src/proto/messages/StateComplete
 var ButtonClickMessage = require("../../../../src/proto/messages/ButtonClickMessage");
 var ButtonData = require("../../../../src/proto/data/ButtonData");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
+var BotJoinTournamentStrategy = require("../../../utils/BotJoinTournamentStrategy");
 var Thenable = require("tinp");
 
 describe("Tournament.integration", function() {
@@ -55,8 +56,7 @@ describe("Tournament.integration", function() {
 			},
 			function(next) {
 				expect(netPokerServer.getTournamentManager().hasLocalTournamentId(666)).toBe(true);
-				bot.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
-				TickLoopRunner.runTicks().then(next);
+				bot.runStrategy(new BotJoinTournamentStrategy()).then(next);
 			},
 			function(next) {
 				expect(mockBackendServer.tournamentRegister).toHaveBeenCalled();
@@ -81,10 +81,11 @@ describe("Tournament.integration", function() {
 				).then(next);
 			},
 			function(next) {
-				bot1.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
-				bot2.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
-				bot3.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
-				TickLoopRunner.runTicks().then(next);
+				Thenable.all(
+					bot1.runStrategy(new BotJoinTournamentStrategy()),
+					bot2.runStrategy(new BotJoinTournamentStrategy()),
+					bot3.runStrategy(new BotJoinTournamentStrategy())
+				).then(next);
 			},
 			function(next) {
 				var tournament = netPokerServer.getTournamentManager().getLocalTournamentById(666);

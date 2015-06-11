@@ -10,6 +10,7 @@ var PlayState = require("../../../../src/server/tournament/PlayState");
 var FinishedState = require("../../../../src/server/tournament/FinishedState");
 var TournamentResultMessage = require("../../../../src/proto/messages/TournamentResultMessage");
 var StateCompleteMessage = require("../../../../src/proto/messages/StateCompleteMessage");
+var BotJoinTournamentStrategy = require("../../../utils/BotJoinTournamentStrategy");
 var Thenable = require("tinp");
 
 describe("TournamentTable.integration", function() {
@@ -66,7 +67,7 @@ describe("TournamentTable.integration", function() {
 			},
 			function(next) {
 				bots.forEach(function(bot) {
-					bot.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
+					bot.runStrategy(new BotJoinTournamentStrategy());
 				});
 				TickLoopRunner.runTicks().then(next);
 			},

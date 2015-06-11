@@ -9,6 +9,7 @@ var StateCompleteMessage = require("../../../../src/proto/messages/StateComplete
 var ButtonClickMessage = require("../../../../src/proto/messages/ButtonClickMessage");
 var ButtonData = require("../../../../src/proto/data/ButtonData");
 var TickLoopRunner = require("../../../utils/TickLoopRunner");
+var BotJoinTournamentStrategy = require("../../../utils/BotJoinTournamentStrategy");
 var Thenable = require("tinp");
 
 describe("PlayState.integration", function() {
@@ -44,10 +45,11 @@ describe("PlayState.integration", function() {
 	it("enters the state", function(done) {
 		AsyncSequence.run(
 			function(next) {
-				bot1.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
-				bot2.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
-				bot3.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
-				TickLoopRunner.runTicks().then(next);
+				Thenable.all(
+					bot1.runStrategy(new BotJoinTournamentStrategy()),
+					bot2.runStrategy(new BotJoinTournamentStrategy()),
+					bot3.runStrategy(new BotJoinTournamentStrategy())
+				).then(next);
 			},
 			function(next) {
 				var tournament = netPokerServer.getTournamentManager().getLocalTournamentById(666);
@@ -83,10 +85,11 @@ describe("PlayState.integration", function() {
 
 		AsyncSequence.run(
 			function(next) {
-				bot1.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
-				bot2.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
-				bot3.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
-				TickLoopRunner.runTicks().then(next);
+				Thenable.all(
+					bot1.runStrategy(new BotJoinTournamentStrategy()),
+					bot2.runStrategy(new BotJoinTournamentStrategy()),
+					bot3.runStrategy(new BotJoinTournamentStrategy())
+				).then(next);
 			},
 			function(next) {
 				var tournament = netPokerServer.getTournamentManager().getLocalTournamentById(666);
@@ -115,10 +118,11 @@ describe("PlayState.integration", function() {
 
 		AsyncSequence.run(
 			function(next) {
-				bot1.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
-				bot2.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
-				bot3.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
-				TickLoopRunner.runTicks().then(next);
+				Thenable.all(
+					bot1.runStrategy(new BotJoinTournamentStrategy()),
+					bot2.runStrategy(new BotJoinTournamentStrategy()),
+					bot3.runStrategy(new BotJoinTournamentStrategy())
+				).then(next);
 			},
 			function(next) {
 				var tournament = netPokerServer.getTournamentManager().getLocalTournamentById(666);

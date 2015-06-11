@@ -12,6 +12,7 @@ var TournamentResultMessage = require("../../../../src/proto/messages/Tournament
 var TableButtonsMessage = require("../../../../src/proto/messages/TableButtonsMessage");
 var TableButtonClickMessage = require("../../../../src/proto/messages/TableButtonClickMessage");
 var FadeTableMessage = require("../../../../src/proto/messages/FadeTableMessage");
+var BotJoinTournamentStrategy = require("../../../utils/BotJoinTournamentStrategy");
 var Thenable = require("tinp");
 
 describe("PlaySpectator.integration", function() {
@@ -55,7 +56,7 @@ describe("PlaySpectator.integration", function() {
 			},
 			function(next) {
 				bots.forEach(function(bot) {
-					bot.send(new ButtonClickMessage(ButtonData.JOIN_TOURNAMENT));
+					bot.runStrategy(new BotJoinTournamentStrategy())
 				});
 				TickLoopRunner.runTicks().then(next);
 			},
