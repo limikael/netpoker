@@ -8,12 +8,21 @@
 		return $host;
 	}
 
+	function netpoker_get_gameplay_server_to_server_host() {
+		$host=variable_get("netpoker_gameplay_server_to_server_host");
+
+		if (!$host)
+			$host=netpoker_get_gameplay_server_host();
+
+		return $host;
+	}
+
 	function netpoker_server_request($method, $params=array()) {
 		$curl=curl_init();
 
 		$url=
 			"http://".
-			netpoker_get_gameplay_server_host().":".
+			netpoker_get_gameplay_server_to_server_host().":".
 			variable_get("netpoker_gameplay_server_port")."/".
 			$method;
 

@@ -1,5 +1,7 @@
 <?php
 
+	require_once __DIR__."/netpoker.functions.php";
+
 	/**
 	 * @file
 	 * Handle extra page calls for the netpoker module.
@@ -172,9 +174,7 @@
 	 * Serve up the cashgame html page.
 	 */
 	function netpoker_cashGame($nid) {
-		$host=variable_get("netpoker_gameplay_server_host");
-		if (!$host)
-			$host=$_SERVER["HTTP_HOST"];
+		$host=netpoker_get_gameplay_server_host();
 
 		$vars=array(
 			"tableId"=>$nid,

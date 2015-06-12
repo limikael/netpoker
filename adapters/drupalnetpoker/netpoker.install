@@ -16,6 +16,7 @@
 		variable_del("netpoker_cashgame_id");
 		variable_del("netpoker_gameplay_server_port");
 		variable_del("netpoker_gameplay_server_host");
+		variable_del("netpoker_gameplay_server_to_server_host");
 		variable_del("netpoker_default_playmoney");
 		variable_del("netpoker_communicate_with_server");
 

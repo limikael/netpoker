@@ -578,6 +578,13 @@
 			'#description' => t('The host that runs the gameplay server. If blank the same host as the main site is assumed.'),
 		);
 
+		$form["netpoker_gameplay_server_to_server_host"]=array(
+			'#type' => 'textfield',
+			'#title' => t('Gameplay Server To Server Host'),
+			'#default_value' => variable_get('netpoker_gameplay_server_to_server_host', ""),
+			'#description' => t('The gameplay server as seen from the site. If blank the same as the above is assumed.'),
+		);
+
 		$form["netpoker_gameplay_server_port"]=array(
 			'#type' => 'textfield',
 			'#title' => t('Gameplay Server Port'),
