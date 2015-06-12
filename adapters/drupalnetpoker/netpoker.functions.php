@@ -3,7 +3,7 @@
 	function netpoker_get_gameplay_server_host() {
 		$host=variable_get("netpoker_gameplay_server_host");
 		if (!$host)
-			$host=$_SERVER["HTTP_HOST"];
+			$host=$_SERVER["SERVER_NAME"];
 
 		return $host;
 	}
