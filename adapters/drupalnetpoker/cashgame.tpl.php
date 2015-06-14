@@ -1,6 +1,7 @@
 <html>
 	<head>
-		<title>Testing</title>
+		<link rel="shortcut icon" href="<?php echo $favicon; ?>" type="image/vnd.microsoft.icon" />
+		<title><?php echo $title; ?></title>
 		<script src="<?php echo $bundleLoaderUrl; ?>"></script>
 		<script>
 			var loader = new BundleLoader();

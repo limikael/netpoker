@@ -135,8 +135,10 @@
 	 */
 	function netpoker_cashGame($nid) {
 		$host=netpoker_get_gameplay_server_host();
+		$table=node_load($nid);
 
 		$vars=array(
+			"title"=>variable_get('site_name')." | ".$table->title,
 			"tableId"=>$nid,
 			"url"=>"ws://".$host.":".variable_get("netpoker_gameplay_server_port")."/",
 			"token"=>session_id(),
@@ -172,6 +174,10 @@
 
 		$modulePath=base_path().drupal_get_path("module","netpoker");
 
+		if (!isset($vars["title"]))
+			$vars["title"]="Testing";
+
+		$vars["favicon"]=theme_get_setting("favicon");
 		$vars["bundleUrl"]=$modulePath."/bin/netpokerclient.bundle.min.js?nocache=".rand();
 		$vars["skinUrl"]=$modulePath."/bin/netpokerclient.spritesheet.json?nocache=".rand();
 		$vars["bundleLoaderUrl"]=$modulePath."/bundleloader.min.js";
