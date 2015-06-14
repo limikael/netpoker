@@ -33,6 +33,7 @@ module.exports = function(grunt) {
 						"netpoker.install",
 						"netpoker.menu.php",
 						"netpoker.functions.php",
+						"netpoker.fields.php",
 						"cashgame.tpl.php",
 						"netpoker.js",
 						"bundleloader.min.js",

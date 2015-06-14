@@ -29,7 +29,7 @@
 	 */
 	function netpoker_server_request($method, $params=array()) {
 		if (!module_exists("netpoker")) {
-			watchdog("netpoker","netpoker_server_request: module disabled",array(),WATCHDOG_WARNING);
+			//watchdog("netpoker","netpoker_server_request: module disabled",array(),WATCHDOG_WARNING);
 			return NULL;
 			return;
 		}

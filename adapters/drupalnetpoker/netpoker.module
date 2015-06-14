@@ -2,6 +2,7 @@
 
 	require_once __DIR__."/netpoker.menu.php";
 	require_once __DIR__."/netpoker.functions.php";
+	require_once __DIR__."/netpoker.fields.php";
 
 	/**
 	 * @file
@@ -101,181 +102,19 @@
 	 * Creates variables and such.
 	 */
 	function netpoker_enable() {
-		if (!variable_get("netpoker_gameplay_key"))
-			variable_set("netpoker_gameplay_key",md5(rand().microtime()));
-
-		if (!variable_get("netpoker_cashgame_id"))
-			variable_set("netpoker_cashgame_id",1001);
-
-		if (!variable_get("netpoker_gameplay_server_port"))
-			variable_set("netpoker_gameplay_server_port",8881);
-
-		if (!variable_get("netpoker_default_playmoney"))
-			variable_set("netpoker_default_playmoney",1000);
-
-		if (!variable_get("netpoker_communicate_with_server"))
-			variable_set("netpoker_communicate_with_server",FALSE);
-
-		//// Add instances to the pokergame node object. ////
-		if (!field_info_field("field_netpoker_players")) {
-			$field=array(
-				"field_name"=>"field_netpoker_players",
-				"type"=>"list_integer",
-				"required"=>1,
-				"settings"=>array(
-					"allowed_values"=>array(2=>2, 4=>4, 6=>6, 10=>10)
-				),
-			);
-
-			field_create_field($field);
+		foreach (netpoker_get_variable_defaults() as $variable=>$value) {
+			if (!variable_get($variable))
+				variable_set($variable,$value);
 		}
 
-		if (!field_info_field("field_netpoker_min_sit_in")) {
-			$field=array(
-				"field_name"=>"field_netpoker_min_sit_in",
-				"type"=>"number_integer",
-				"required"=>1
-			);
-
-			field_create_field($field);
+		foreach (netpoker_get_fields() as $f) {
+			if (!field_info_field($f["field_name"]))
+				field_create_field($f);
 		}
 
-		if (!field_info_field("field_netpoker_max_sit_in")) {
-			$field=array(
-				"field_name"=>"field_netpoker_max_sit_in",
-				"type"=>"number_integer",
-				"required"=>1
-			);
-
-			field_create_field($field);
-		}
-
-		if (!field_info_field("field_netpoker_stake")) {
-			$field=array(
-				"field_name"=>"field_netpoker_stake",
-				"type"=>"number_integer",
-				"required"=>1
-			);
-
-			field_create_field($field);
-		}
-
-		if (!field_info_field("field_netpoker_current_players")) {
-			$field=array(
-				"field_name"=>"field_netpoker_current_players",
-				"type"=>"number_integer"
-			);
-
-			field_create_field($field);
-		}
-
-		if (!field_info_field("field_netpoker_currency")) {
-			$field=array(
-				"field_name"=>"field_netpoker_currency",
-				"type"=>"list_text",
-				"required"=>1,
-				"settings"=>array(
-					"allowed_values_function" => "netpoker_get_curreny_field_allowed_values"
-				),
-			);
-
-			field_create_field($field);
-		}
-
-		//// Add instances to the pokergame node object. ////
-		if (!field_info_instance("node","field_netpoker_players","pokergame")) {
-			$instance=array(
-				"field_name"=>"field_netpoker_players",
-				"entity_type"=>"node",
-				"bundle"=>"pokergame",
-				"label"=>"Number of players",
-				"required"=>1
-      		);
-
-			field_create_instance($instance);
-		}
-
-		if (!field_info_instance("node","field_netpoker_currency","pokergame")) {
-			$instance=array(
-				"field_name"=>"field_netpoker_currency",
-				"entity_type"=>"node",
-				"bundle"=>"pokergame",
-				"label"=>"Currency",
-				"required"=>1
-      		);
-
-			field_create_instance($instance);
-		}
-
-		if (!field_info_instance("node","field_netpoker_min_sit_in","pokergame")) {
-			$instance=array(
-				"field_name"=>"field_netpoker_min_sit_in",
-				"entity_type"=>"node",
-				"bundle"=>"pokergame",
-				"label"=>"Min sit in amount",
-				"required"=>1
-      		);
-
-			field_create_instance($instance);
-		}
-
-		if (!field_info_instance("node","field_netpoker_max_sit_in","pokergame")) {
-			$instance=array(
-				"field_name"=>"field_netpoker_max_sit_in",
-				"entity_type"=>"node",
-				"bundle"=>"pokergame",
-				"label"=>"Max sit in amount",
-				"required"=>1
-      		);
-
-			field_create_instance($instance);
-		}
-
-		if (!field_info_instance("node","field_netpoker_stake","pokergame")) {
-			$instance=array(
-				"field_name"=>"field_netpoker_stake",
-				"entity_type"=>"node",
-				"bundle"=>"pokergame",
-				"label"=>"Stake (big blind)",
-				"required"=>1
-      		);
-
-			field_create_instance($instance);
-		}
-
-		if (!field_info_instance("node","field_netpoker_current_players","pokergame")) {
-			$instance=array(
-				"field_name"=>"field_netpoker_current_players",
-				"entity_type"=>"node",
-				"bundle"=>"pokergame",
-				"label"=>"Current number of players"
-      		);
-
-			field_create_instance($instance);
-		}
-
-		//// Add fields to the user object. ////
-		if (!field_info_field("field_netpoker_playmoney")) {
-			$field=array(
-				"field_name"=>"field_netpoker_playmoney",
-				"type"=>"number_integer",
-			);
-
-			field_create_field($field);
-		}
-
-		if (!field_info_instance("user","field_netpoker_playmoney","user")) {
-			$instance=array(
-				"field_name"=>"field_netpoker_playmoney",
-				"entity_type"=>"user",
-				"bundle"=>"user",
-				"label"=>"Poker Playmoney",
-				"widget"=>array(
-					"type"=>"number_integer"
-				)
-			);
-
-			field_create_instance($instance);
+		foreach (netpoker_get_field_instances() as $fi) {
+			if (!field_info_instance($fi["entity_type"],$fi["field_name"],$fi["bundle"]))
+				field_create_instance($fi);
 		}
 	}
 
@@ -296,8 +135,6 @@
 	 * Implementation of hook_disable()
 	 */
 	function netpoker_disable() {
-//		variable_set("netpoker_communicate_with_server", FALSE);
-
 		$result = db_select('node','n')
 			->fields('n',array('nid'))
 			->condition('type',"pokergame",'=')
@@ -309,46 +146,13 @@
 			node_save($node);
 		}
 
-		$instance=field_info_instance("user","field_netpoker_playmoney","user");
-		if ($instance) {
-			$instance["deleted"]=1;
-			field_update_instance($instance);
-		}
+		foreach (netpoker_get_field_instances() as $fi) {
+			$instance=field_info_instance($fi["entity_type"],$fi["field_name"],$fi["bundle"]);
 
-		$instance=field_info_instance("node","field_netpoker_players","pokergame");
-		if ($instance) {
-			$instance["deleted"]=1;
-			field_update_instance($instance);
-		}
-
-		$instance=field_info_instance("node","field_netpoker_min_sit_in","pokergame");
-		if ($instance) {
-			$instance["deleted"]=1;
-			field_update_instance($instance);
-		}
-
-		$instance=field_info_instance("node","field_netpoker_max_sit_in","pokergame");
-		if ($instance) {
-			$instance["deleted"]=1;
-			field_update_instance($instance);
-		}
-
-		$instance=field_info_instance("node","field_netpoker_stake","pokergame");
-		if ($instance) {
-			$instance["deleted"]=1;
-			field_update_instance($instance);
-		}
-
-		$instance=field_info_instance("node","field_netpoker_current_players","pokergame");
-		if ($instance) {
-			$instance["deleted"]=1;
-			field_update_instance($instance);
-		}
-
-		$instance=field_info_instance("node","field_netpoker_currency","pokergame");
-		if ($instance) {
-			$instance["deleted"]=1;
-			field_update_instance($instance);
+			if ($instance) {
+				$instance["deleted"]=1;
+				field_update_instance($instance);
+			}
 		}
 
 		field_purge_batch(1000);

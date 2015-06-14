@@ -1,5 +1,7 @@
 <?php
 
+	require_once __DIR__."/netpoker.fields.php";
+
 	function netpoker_install() {
 	}
 
@@ -12,49 +14,17 @@
 		foreach ($result as $record)
 			node_delete($record->nid);
 
-		variable_del("netpoker_gameplay_key");
-		variable_del("netpoker_cashgame_id");
-		variable_del("netpoker_gameplay_server_port");
-		variable_del("netpoker_gameplay_server_host");
-		variable_del("netpoker_gameplay_server_to_server_host");
-		variable_del("netpoker_default_playmoney");
-		variable_del("netpoker_communicate_with_server");
+		foreach (netpoker_get_variable_defaults() as $variable=>$v) {
+			variable_del($variable);
+		}
 
-		field_delete_instance(array(
-			"field_name"=>"field_netpoker_players",
-			"entity_type"=>"node",
-			"bundle"=>"pokergame",
-		));
-
-		field_delete_instance(array(
-			"field_name"=>"field_netpoker_current_players",
-			"entity_type"=>"node",
-			"bundle"=>"pokergame",
-		));
-
-		field_delete_instance(array(
-			"field_name"=>"field_netpoker_min_sit_in",
-			"entity_type"=>"node",
-			"bundle"=>"pokergame",
-		));
-
-		field_delete_instance(array(
-			"field_name"=>"field_netpoker_max_sit_in",
-			"entity_type"=>"node",
-			"bundle"=>"pokergame",
-		));
-
-		field_delete_instance(array(
-			"field_name"=>"field_netpoker_stake",
-			"entity_type"=>"node",
-			"bundle"=>"pokergame",
-		));
-
-		field_delete_instance(array(
-			"field_name"=>"field_netpoker_playmoney",
-			"entity_type"=>"user",
-			"bundle"=>"user",
-		));
+		foreach (netpoker_get_field_instances() as $fi) {
+			field_delete_instance(array(
+				"entity_type"=>$fi["entity_type"],
+				"field_name"=>$fi["field_name"],
+				"bundle"=>$fi["bundle"],
+			));
+		}
 
 		field_purge_batch(1000);
 	}
