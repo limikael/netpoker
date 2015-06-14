@@ -169,6 +169,19 @@
 			field_create_field($field);
 		}
 
+		if (!field_info_field("field_netpoker_currency")) {
+			$field=array(
+				"field_name"=>"field_netpoker_currency",
+				"type"=>"list_text",
+				"required"=>1,
+				"settings"=>array(
+					"allowed_values_function" => "netpoker_get_curreny_field_allowed_values"
+				),
+			);
+
+			field_create_field($field);
+		}
+
 		//// Add instances to the pokergame node object. ////
 		if (!field_info_instance("node","field_netpoker_players","pokergame")) {
 			$instance=array(
@@ -176,6 +189,18 @@
 				"entity_type"=>"node",
 				"bundle"=>"pokergame",
 				"label"=>"Number of players",
+				"required"=>1
+      		);
+
+			field_create_instance($instance);
+		}
+
+		if (!field_info_instance("node","field_netpoker_currency","pokergame")) {
+			$instance=array(
+				"field_name"=>"field_netpoker_currency",
+				"entity_type"=>"node",
+				"bundle"=>"pokergame",
+				"label"=>"Currency",
 				"required"=>1
       		);
 
@@ -255,10 +280,23 @@
 	}
 
 	/**
+	 * Get allowed values for the curreny field.
+	 */
+	function netpoker_get_curreny_field_allowed_values() {
+		$a=[];
+		$currencies=netpoker_get_available_currencies();
+
+		foreach ($currencies as $currency)
+			$a[$currency]=$currency;
+
+		return $a;
+	}
+
+	/**
 	 * Implementation of hook_disable()
 	 */
 	function netpoker_disable() {
-		variable_set("netpoker_communicate_with_server", FALSE);
+//		variable_set("netpoker_communicate_with_server", FALSE);
 
 		$result = db_select('node','n')
 			->fields('n',array('nid'))
@@ -302,6 +340,12 @@
 		}
 
 		$instance=field_info_instance("node","field_netpoker_current_players","pokergame");
+		if ($instance) {
+			$instance["deleted"]=1;
+			field_update_instance($instance);
+		}
+
+		$instance=field_info_instance("node","field_netpoker_currency","pokergame");
 		if ($instance) {
 			$instance["deleted"]=1;
 			field_update_instance($instance);

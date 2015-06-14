@@ -40,46 +40,6 @@
 	}
 
 	/**
-	 * Get playmoney balance for user.
-	 * If there is no entry in the database, get default.
-	 */
-	function netpoker_getPlaymoneyBalance($userId) {
-		$balance=variable_get("netpoker_default_playmoney");
-
-		$users=entity_load("user",array($userId));
-		$user=$users[$userId];
-
-		if (!$user)
-			netpoker_fail("User does not exist.");
-
-		if (isset($user->field_netpoker_playmoney[LANGUAGE_NONE][0]["value"]))
-			$balance=$user->field_netpoker_playmoney[LANGUAGE_NONE][0]["value"];
-
-		return intval($balance);
-	}
-
-	/**
-	 * Change playmoney balance for user.
-	 */
-	function netpoker_changePlaymoneyBalance($userId, $amount) {
-		$current=netpoker_getPlaymoneyBalance($userId);
-
-		if ($amount<-$current)
-			netpoker_fail("Not enough balance.");
-
-		$current+=$amount;
-
-		$users=entity_load("user",array($userId));
-		$user=$users[$userId];
-
-		if (!$user)
-			netpoker_fail("User does not exist.");
-
-		$user->field_netpoker_playmoney[LANGUAGE_NONE][0]["value"]=$current;
-		field_attach_update("user",$user);
-	}
-
-	/**
 	 * Api call: getCashGameTableList
 	 */
 	function netpoker_getCashGameTableList() {
@@ -100,7 +60,7 @@
 			$tables[]=array(
 				"id"=>$pokergame->nid,
 				"numseats"=>intval($pokergame->field_netpoker_players[LANGUAGE_NONE][0]["value"]),
-				"currency"=>"PLY",
+				"currency"=>$pokergame->field_netpoker_currency[LANGUAGE_NONE][0]["value"],
 				"name"=>$pokergame->title,
 				"minSitInAmount"=>intval($pokergame->field_netpoker_min_sit_in[LANGUAGE_NONE][0]["value"]),
 				"maxSitInAmount"=>intval($pokergame->field_netpoker_max_sit_in[LANGUAGE_NONE][0]["value"]),
@@ -152,7 +112,7 @@
 
 		$userId=$_REQUEST["userId"];
 		$currency=$_REQUEST["currency"];
-		$balance=netpoker_getPlaymoneyBalance($userId);
+		$balance=netpoker_get_balance($currency,array("uid"=>$userId));
 
 		drupal_json_output(array(
 			"ok"=>1,
@@ -260,7 +220,19 @@
 		if (!$table)
 			netpoker_fail("Table not found for join.");
 
-		netpoker_changePlaymoneyBalance($userId,-$amount);
+		try {
+			netpoker_transaction(
+				$table->field_netpoker_currency[LANGUAGE_NONE][0]["value"],
+				array("uid"=>$userId),
+				array("nid"=>$table->nid),
+				$amount,
+				"Join cashgame"
+			);
+		}
+
+		catch (Exception $e) {
+			netpoker_fail($e->getMessage());
+		}
 
 		if (!$table->field_netpoker_current_players[LANGUAGE_NONE][0]["value"])
 			$table->field_netpoker_current_players[LANGUAGE_NONE][0]["value"]=0;
@@ -291,9 +263,21 @@
 		$table=$tables[$tableId];
 
 		if (!$table)
-			netpoker_fail("Table not found for join.");
+			netpoker_fail("Table not found for leave.");
 
-		netpoker_changePlaymoneyBalance($userId,$amount);
+		try {
+			netpoker_transaction(
+				$table->field_netpoker_currency[LANGUAGE_NONE][0]["value"],
+				array("nid"=>$table->nid),
+				array("uid"=>$userId),
+				$amount,
+				"Leave cashgame"
+			);
+		}
+
+		catch (Exception $e) {
+			netpoker_fail($e->getMessage());
+		}
 
 		if (!$table->field_netpoker_current_players[LANGUAGE_NONE][0]["value"])
 			$table->field_netpoker_current_players[LANGUAGE_NONE][0]["value"]=0;
