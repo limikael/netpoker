@@ -32,18 +32,27 @@ function Tournament(services, data) {
 
 	this.id = data.id;
 	this.info = data.info;
-	this.requiredRegistrations = data.requiredRegistrations;
 	this.seatsPerTable = data.seatsPerTable;
 	this.blindStructure = [];
 	this.startChips = data.startChips;
 	this.payoutPercent = ArrayUtil.copy(data.payoutPercent);
 	this.fee = data.fee;
 
+	this.requiredRegistrations = parseInt(data.requiredRegistrations);
+	if (isNaN(this.requiredRegistrations) || this.requiredRegistrations < 2)
+		this.requiredRegistrations = 2;
+
 	if (data.hasOwnProperty("bonus"))
 		this.bonus = data.bonus;
 
 	else
 		this.bonus = 0;
+
+	if (data.hasOwnProperty("startTime") && data.startTime)
+		this.startTime = data.startTime;
+
+	else
+		this.startTime = null;
 
 	if (data.hasOwnProperty("handFinishDelay"))
 		this.handFinishDelay = data.handFinishDelay;
@@ -115,6 +124,14 @@ Tournament.prototype.isUserRegistered = function(u) {
 			return true;
 
 	return false;
+}
+
+/**
+ * Get start time.
+ * @method getStartTime
+ */
+Tournament.prototype.getStartTime = function() {
+	return this.startTime;
 }
 
 /**

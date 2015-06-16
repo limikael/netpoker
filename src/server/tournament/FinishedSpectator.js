@@ -8,6 +8,7 @@ var EventDispatcher = require("yaed");
 var ProtoConnection = require("../../proto/ProtoConnection");
 var StateCompleteMessage = require("../../proto/messages/StateCompleteMessage");
 var SeatInfoMessage = require("../../proto/messages/SeatInfoMessage");
+var TableInfoMessage = require("../../proto/messages/TableInfoMessage");
 
 /**
  * A spectator in the play state.
@@ -43,6 +44,10 @@ FinishedSpectator.prototype.setProtoConnection = function(protoConnection) {
 
 	if (this.protoConnection) {
 		this.protoConnection.on(ProtoConnection.CLOSE, this.onProtoConnectionClose, this);
+
+		if (this.finishedState.isCanceled()) {
+			this.protoConnection.send(new TableInfoMessage(this.finishedState.getCancelMessage()));
+		}
 
 		if (this.finishedState.getTournamentResultMessage())
 			this.protoConnection.send(this.finishedState.getTournamentResultMessage());

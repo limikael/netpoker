@@ -117,6 +117,7 @@ MockBackendServer.prototype.tournamentInfo = function(params) {
 		startChips: 1000,
 		payoutPercent: [70, 20],
 		fee: 10,
+		//startTime: Math.round(Date.now() / 1000) + 10,
 		blindStructure: [{
 			time: 10,
 			stake: 2,

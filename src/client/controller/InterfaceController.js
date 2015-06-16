@@ -155,7 +155,7 @@ InterfaceController.prototype.onCheckboxMessage = function(m) {
 InterfaceController.prototype.onPreTournamentInfoMessage = function(m) {
 	var tableInfoView = this.view.getTableInfoView();
 
-	tableInfoView.setPreTournamentInfoText(m.getText());
+	tableInfoView.setPreTournamentInfoText(m.getText(), m.getCountdown());
 }
 
 /**

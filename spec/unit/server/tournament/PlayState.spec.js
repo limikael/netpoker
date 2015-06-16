@@ -10,7 +10,7 @@ describe("PlayState", function() {
 
 	afterEach(function() {
 		jasmine.clock().uninstall();
-	})
+	});
 
 	it("can check the finish order", function() {
 		var mockTournament = {};

@@ -31,6 +31,22 @@ PreTournamentInfoMessage.prototype.getCountdown = function() {
 }
 
 /**
+ * Setter.
+ * @method setText
+ */
+PreTournamentInfoMessage.prototype.setText = function(text) {
+	this.text = text;
+}
+
+/**
+ * Setter.
+ * @method setCountdown
+ */
+PreTournamentInfoMessage.prototype.setCountdown = function(countdown) {
+	this.countdown = countdown;
+}
+
+/**
  * Un-serialize.
  * @method unserialize
  */
@@ -44,7 +60,7 @@ PreTournamentInfoMessage.prototype.unserialize = function(data) {
  * @method serialize
  */
 PreTournamentInfoMessage.prototype.serialize = function() {
-	if (this.countdown < 0)
+	if (this.countdown < 0 || isNaN(parseInt(this.countdown)))
 		this.countdown = 0;
 
 	return {

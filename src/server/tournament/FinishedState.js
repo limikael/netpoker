@@ -58,8 +58,8 @@ FinishedState.prototype.run = function() {
 	var payouts = this.tournament.getPayouts();
 
 	for (var i = 0; i < payouts.length; i++) {
-		left += (i + 1) + ". " + this.finishOrder[i].getName()+"\n";
-		right += payouts[i]+"\n";
+		left += (i + 1) + ". " + this.finishOrder[i].getName() + "\n";
+		right += payouts[i] + "\n";
 	}
 
 	this.tournamentResultMessage = new TournamentResultMessage(left, right);
@@ -160,6 +160,22 @@ FinishedState.prototype.setFinishOrder = function(order) {
  */
 FinishedState.prototype.getTournamentResultMessage = function() {
 	return this.tournamentResultMessage;
+}
+
+/**
+ * Canceled?
+ * @method isCanceled
+ */
+FinishedState.prototype.isCanceled = function() {
+	return this.canceled;
+}
+
+/**
+ * Get cancel message.
+ * @method getCancelMessage
+ */
+FinishedState.prototype.getCancelMessage = function() {
+	return this.cancelMessage;
 }
 
 module.exports = FinishedState;

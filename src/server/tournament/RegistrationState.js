@@ -5,6 +5,7 @@
 
 var TournamentState = require("./TournamentState");
 var PlayState = require("./PlayState");
+var FinishedState = require("./FinishedState");
 var inherits = require("inherits");
 var RegistrationSpectator = require("./RegistrationSpectator");
 var PreTournamentInfoMessage = require("../../proto/messages/PreTournamentInfoMessage");
@@ -18,6 +19,10 @@ function RegistrationState() {
 	TournamentState.call(this);
 
 	this.registrationSpectators = [];
+	this.unloaded = false;
+
+	this.startTimeout = null;
+	this.startTimeoutCalled = false;
 }
 
 inherits(RegistrationState, TournamentState);
@@ -27,6 +32,9 @@ inherits(RegistrationState, TournamentState);
  * @method notifyNewConnection
  */
 RegistrationState.prototype.notifyNewConnection = function(protoConnection, user) {
+	if (this.unloaded)
+		throw new Error("The tournament is unloaded, this shouldn't happen");
+
 	var rs = new RegistrationSpectator(this, protoConnection, user);
 	rs.on(RegistrationSpectator.DONE, this.onRegistrationSpectatorDone, this);
 	rs.on(RegistrationSpectator.BACKEND_CALL_COMPLETE, this.onSpectatorBackendCallComplete, this);
@@ -46,8 +54,15 @@ RegistrationState.prototype.onRegistrationSpectatorDone = function(ev) {
 	if (index >= 0)
 		this.registrationSpectators.splice(index, 1);
 
-	if (!this.registrationSpectators.length)
+	if (!this.registrationSpectators.length) {
+		if (this.startTimeout) {
+			clearTimeout(this.startTimeout);
+			this.startTimeout = null;
+		}
+
+		this.unloaded = true;
 		this.trigger(TournamentState.CAN_UNLOAD);
+	}
 }
 
 /**
@@ -55,23 +70,25 @@ RegistrationState.prototype.onRegistrationSpectatorDone = function(ev) {
  * @method getPreTournamentInfoMessage
  */
 RegistrationState.prototype.getPreTournamentInfoMessage = function() {
-	/*	var now: Int = Math.round(Date.now().getTime() / 1000);
-		var startingIn: Int = Math.round(tournament.startTime - now);
-		var m: PreTournamentInfoMessage = new PreTournamentInfoMessage();
+	var m = new PreTournamentInfoMessage();
 
-		m.countdown = startingIn;*/
+	if (this.tournament.getStartTime()) {
+		var now = Math.round(Date.now() / 1000);
+		var untilStart = this.tournament.getStartTime() - now;
+		m.setCountdown(untilStart);
 
-	var text;
-
-	if (this.tournament.getRequiredRegistrations())
-		text = "Registrations: " +
-		this.tournament.getNumRegistrations() + " / " +
-		this.tournament.getRequiredRegistrations();
-
-	else
-		text = "Registrations: " + this.tournament.getNumRegistrations() + "\n\nStarting in: ??:??";
-
-	var m = new PreTournamentInfoMessage(text);
+		m.setText(
+			"Registrations: " +
+			this.tournament.getNumRegistrations() +
+			"\n\nStarting in: %t"
+		);
+	} else {
+		m.setText(
+			"Registrations: " +
+			this.tournament.getNumRegistrations() + " / " +
+			this.tournament.getRequiredRegistrations()
+		);
+	}
 
 	return m;
 }
@@ -98,6 +115,25 @@ RegistrationState.prototype.onSpectatorBackendCallComplete = function() {
  * @method run
  */
 RegistrationState.prototype.run = function() {
+	if (this.tournament.getStartTime()) {
+		var now = Math.round(Date.now() / 1000);
+		var untilStart = this.tournament.getStartTime() - now;
+		if (untilStart < 0)
+			untilStart = 0;
+
+		this.startTimeout = setTimeout(this.onStartTimeout.bind(this), untilStart * 1000);
+	}
+
+	this.checkStart();
+}
+
+/**
+ * Start timeout.
+ * @method onStartTimeout
+ */
+RegistrationState.prototype.onStartTimeout = function() {
+	this.startTimeout = null;
+	this.startTimeoutCalled = true;
 	this.checkStart();
 }
 
@@ -111,9 +147,21 @@ RegistrationState.prototype.checkStart = function() {
 			return;
 	}
 
-	if (this.tournament.getRequiredRegistrations() &&
-		this.tournament.getNumRegistrations() >= this.tournament.getRequiredRegistrations())
-		this.start();
+	if (this.tournament.getStartTime()) {
+		if (this.startTimeoutCalled) {
+			if (this.tournament.getNumRegistrations() >= this.tournament.getRequiredRegistrations()) {
+				this.start();
+			} else {
+				var f = new FinishedState();
+				f.setCanceled("The tournament was canceled due to too few registrations.");
+				this.tournament.setTournamentState(f);
+				this.moveConnectionsToState(f);
+			}
+		}
+	} else {
+		if (this.tournament.getNumRegistrations() >= this.tournament.getRequiredRegistrations())
+			this.start();
+	}
 }
 
 /**

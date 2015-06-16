@@ -20544,7 +20544,7 @@ InterfaceController.prototype.onCheckboxMessage = function(m) {
 InterfaceController.prototype.onPreTournamentInfoMessage = function(m) {
 	var tableInfoView = this.view.getTableInfoView();
 
-	tableInfoView.setPreTournamentInfoText(m.getText());
+	tableInfoView.setPreTournamentInfoText(m.getText(), m.getCountdown());
 }
 
 /**
@@ -20637,7 +20637,7 @@ MessageSequenceItem.prototype.waitFor = function(target, event) {
  */
 MessageSequenceItem.prototype.onTargetComplete = function() {
 	setTimeout(function() {
-		//console.log("target is complete: "+this.waitEvent);
+		console.log("target is complete: "+this.waitEvent);
 		this.waitTarget.removeEventListener(this.waitEvent, this.waitClosure);
 		this.notifyComplete();
 	}.bind(this), 0);
@@ -24637,7 +24637,7 @@ function TableInfoView(viewConfig, resources) {
 		align: "center"
 	};
 
-	this.preTournamentInfoText = new PIXI.Text("<PreTournamentInfoText>", style);
+	this.preTournamentInfoText = new CountDownText("<PreTournamentInfoText>", style);
 	this.preTournamentInfoText.position.y = 360;
 	//this.preTournamentInfoText.position.y = 280;
 	this.preTournamentInfoText.position.x = Math.round(960 - 300) / 2;
@@ -24735,11 +24735,12 @@ TableInfoView.prototype.setTableInfoText = function(s) {
  * Set pre tournament info text.
  * @method setPreTournamentInfoText
  */
-TableInfoView.prototype.setPreTournamentInfoText = function(s) {
+TableInfoView.prototype.setPreTournamentInfoText = function(s, countDown) {
 	if (!s)
 		s = "";
 
 	this.preTournamentInfoText.setText(s);
+	this.preTournamentInfoText.setTimeLeft(countDown);
 	this.preTournamentInfoText.position.x = 960 / 2 - this.preTournamentInfoText.width / 2;
 }
 
@@ -26746,6 +26747,22 @@ PreTournamentInfoMessage.prototype.getCountdown = function() {
 }
 
 /**
+ * Setter.
+ * @method setText
+ */
+PreTournamentInfoMessage.prototype.setText = function(text) {
+	this.text = text;
+}
+
+/**
+ * Setter.
+ * @method setCountdown
+ */
+PreTournamentInfoMessage.prototype.setCountdown = function(countdown) {
+	this.countdown = countdown;
+}
+
+/**
  * Un-serialize.
  * @method unserialize
  */
@@ -26759,7 +26776,7 @@ PreTournamentInfoMessage.prototype.unserialize = function(data) {
  * @method serialize
  */
 PreTournamentInfoMessage.prototype.serialize = function() {
-	if (this.countdown < 0)
+	if (this.countdown < 0 || isNaN(parseInt(this.countdown)))
 		this.countdown = 0;
 
 	return {

@@ -44,7 +44,7 @@ function TableInfoView(viewConfig, resources) {
 		align: "center"
 	};
 
-	this.preTournamentInfoText = new PIXI.Text("<PreTournamentInfoText>", style);
+	this.preTournamentInfoText = new CountDownText("<PreTournamentInfoText>", style);
 	this.preTournamentInfoText.position.y = 360;
 	//this.preTournamentInfoText.position.y = 280;
 	this.preTournamentInfoText.position.x = Math.round(960 - 300) / 2;
@@ -142,11 +142,12 @@ TableInfoView.prototype.setTableInfoText = function(s) {
  * Set pre tournament info text.
  * @method setPreTournamentInfoText
  */
-TableInfoView.prototype.setPreTournamentInfoText = function(s) {
+TableInfoView.prototype.setPreTournamentInfoText = function(s, countDown) {
 	if (!s)
 		s = "";
 
 	this.preTournamentInfoText.setText(s);
+	this.preTournamentInfoText.setTimeLeft(countDown);
 	this.preTournamentInfoText.position.x = 960 / 2 - this.preTournamentInfoText.width / 2;
 }
 
