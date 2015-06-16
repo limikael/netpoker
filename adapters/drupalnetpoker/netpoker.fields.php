@@ -9,6 +9,7 @@
 				"field_name"=>"field_netpoker_players",
 				"type"=>"list_integer",
 				"required"=>1,
+				"locked"=>TRUE,
 				"settings"=>array(
 					"allowed_values"=>array(2=>2, 4=>4, 6=>6, 10=>10)
 				),
@@ -17,43 +18,50 @@
 			array(
 				"field_name"=>"field_netpoker_min_sit_in",
 				"type"=>"number_integer",
-				"required"=>1
+				"required"=>1,
+				"locked"=>TRUE,
 			),
 
 			array(
 				"field_name"=>"field_netpoker_max_sit_in",
 				"type"=>"number_integer",
-				"required"=>1
+				"required"=>1,
+				"locked"=>TRUE,
 			),
 
 			array(
 				"field_name"=>"field_netpoker_stake",
 				"type"=>"number_integer",
-				"required"=>1
+				"required"=>1,
+				"locked"=>TRUE,
 			),
 
 			array(
 				"field_name"=>"field_netpoker_current_players",
-				"type"=>"number_integer"
+				"type"=>"number_integer",
+				"locked"=>TRUE,
 			),
 
 			array(
 				"field_name"=>"field_netpoker_currency",
 				"type"=>"list_text",
 				"required"=>1,
+				"locked"=>TRUE,
 				"settings"=>array(
 					"allowed_values_function" => "netpoker_get_curreny_field_allowed_values"
-				)
+				),
 			),
 
 			array(
 				"field_name"=>"field_netpoker_rake_percent",
 				"type"=>"number_decimal",
+				"locked"=>TRUE,
 				"required"=>1,
 			),
 
 			array(
 				"field_name"=>"field_netpoker_playmoney",
+				"locked"=>TRUE,
 				"type"=>"number_integer",
 			)
 		);
