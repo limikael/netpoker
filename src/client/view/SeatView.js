@@ -71,8 +71,9 @@ inherits(SeatView, Button);
  * Set reference to bet chips.
  * @method setBetChipsView
  */
-SeatView.prototype.setBetChipsView = function(value) {
-	this.betChips = value;
+SeatView.prototype.setBetChipsView = function(chipsView) {
+	this.betChips = chipsView;
+	chipsView.seatIndex = this.seatIndex;
 }
 
 /**
@@ -163,7 +164,7 @@ SeatView.prototype.onFoldComplete = function() {
  */
 SeatView.prototype.action = function(action) {
 	this.actionField.setText(action);
-	this.actionField.position.x = -this.actionField.canvas.width / 2;
+	this.actionField.position.x = -this.actionField.width / 2;
 
 	this.actionField.alpha = 1;
 	this.nameField.alpha = 0;

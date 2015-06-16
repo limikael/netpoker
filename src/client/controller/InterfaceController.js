@@ -61,8 +61,9 @@ InterfaceController.prototype.onButtonsMessage = function(m) {
  */
 InterfaceController.prototype.onPresetButtons = function(m) {
 	var presetButtonsView = this.view.getPresetButtonsView();
-
 	var buttons = presetButtonsView.getButtons();
+	var havePresetButton = false;
+
 	for (var i = 0; i < buttons.length; i++) {
 		if (i > m.buttons.length) {
 			buttons[i].hide();
@@ -72,12 +73,16 @@ InterfaceController.prototype.onPresetButtons = function(m) {
 			if (data == null) {
 				buttons[i].hide();
 			} else {
+				havePresetButton = true;
 				buttons[i].show(data.button, data.value);
 			}
 		}
 	}
 
 	presetButtonsView.setCurrent(m.current);
+
+	if (havePresetButton)
+		this.view.getButtonsView().clear();
 }
 
 /**
@@ -118,7 +123,7 @@ InterfaceController.prototype.onTableInfoMessage = function(m) {
 InterfaceController.prototype.onHandInfoMessage = function(m) {
 	var tableInfoView = this.view.getTableInfoView();
 
-	tableInfoView.setHandInfoText(m.getText(),m.getCountDown());
+	tableInfoView.setHandInfoText(m.getText(), m.getCountDown());
 }
 
 /**

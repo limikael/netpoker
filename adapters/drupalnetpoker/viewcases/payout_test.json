@@ -1,17 +1,18 @@
-{"type":"seatInfo", "seatIndex": 0, "name": "olle", "chips": 463, "active": true}
-{"type":"seatInfo", "seatIndex": 6, "name": "pelle", "chips": 123, "active": true}
-{"type":"bet", "seatIndex": 6, "value": 10096}
-{"type":"bet", "seatIndex": 0, "value": 47}
-{"type":"stateComplete"}
-{"type":"pot", "values": [10143]}
+{"type":"seatInfo", "seatIndex": 0, "name": "olle", "chips": 1, "active": true}
+{"type":"seatInfo", "seatIndex": 6, "name": "pelle", "chips": 2, "active": true}
+{"type":"bet", "seatIndex": 6, "value": 2}
+{"type":"bet", "seatIndex": 0, "value": 1}
 {"type":"stateComplete"}
 {"type":"dealerButton", "seatIndex": 6, "animate":false}
 {"type":"pocketCards", "seatIndex": 0, "firstIndex": 0, "cards": [11], "animate":true}
 {"type":"pocketCards", "seatIndex": 6, "firstIndex": 0, "cards": [-1], "animate":true}
 {"type":"pocketCards", "seatIndex": 0, "firstIndex": 1, "cards": [13], "animate":true}
 {"type":"pocketCards", "seatIndex": 6, "firstIndex": 1, "cards": [-1], "animate":true}
-{"type":"communityCards", "firstIndex": 0, "cards": [13], "animate":true}
-{"type":"stateComplete"}
+{"type":"seatInfo", "seatIndex": 0, "name": "olle", "chips": 1, "active": true}
+{"type":"seatInfo", "seatIndex": 6, "name": "pelle", "chips": 2, "active": true}
 {"type":"pot", "values": []}
-{"type":"payOut", "values":[10143,0,0,0,0,0,0,0,0,0]}
+{"type":"betsToPot"}
+{"type":"pot", "values": [3]}
+{"type":"delay", "delay": 2000}
+{"type":"payOut", "values":[1,0,0,0,0,0,0,0,0,0]}
 {"type":"stateComplete"}

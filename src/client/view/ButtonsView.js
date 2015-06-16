@@ -205,7 +205,8 @@ ButtonsView.prototype.showSlider = function(index, min, max) {
  * Clear.
  * @method clear
  */
-ButtonsView.prototype.clear = function(buttonDatas) {
+ButtonsView.prototype.clear = function() {
+	this.buttonDatas = [];
 	this.setButtons([], 0, -1, -1);
 	this.slider.visible = false;
 }

@@ -6,10 +6,11 @@
 			function run() {
 				var params=NetPokerClient.getQueryStringParams();
 
-				var netPokerClient = new NetPokerClient();
+				netPokerClient = new NetPokerClient();
 				
 				netPokerClient.setUrl("ws://"+window.location.host+"/");
 				netPokerClient.setToken(params["token"]);
+				netPokerClient.setLogMessages(true);
 
 				if (params["tableId"])
 					netPokerClient.setTableId(params["tableId"]);

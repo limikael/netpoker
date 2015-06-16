@@ -13,7 +13,9 @@ var inherits = require("inherits");
  */
 function MessageWebSocketConnection() {
 	EventDispatcher.call(this);
-	this.test = 1;
+
+	this.log = [];
+	this.logMessages = false;
 }
 
 inherits(MessageWebSocketConnection, EventDispatcher);
@@ -33,6 +35,14 @@ MessageWebSocketConnection.prototype.connect = function(url) {
 	this.webSocket.onmessage = this.onWebSocketMessage.bind(this);
 	this.webSocket.onclose = this.onWebSocketClose.bind(this);
 	this.webSocket.onerror = this.onWebSocketError.bind(this);
+}
+
+/**
+ * Should messages be logged?
+ * @method setLogMessages
+ */
+MessageWebSocketConnection.prototype.setLogMessages = function(value) {
+	this.logMessages = value;
 }
 
 /**
@@ -62,6 +72,9 @@ MessageWebSocketConnection.prototype.onWebSocketMessage = function(e) {
 
 	var message = JSON.parse(e.data);
 
+	if (this.logMessages)
+		this.log.push(message);
+
 	this.trigger({
 		type: MessageWebSocketConnection.MESSAGE,
 		message: message
@@ -74,7 +87,6 @@ MessageWebSocketConnection.prototype.onWebSocketMessage = function(e) {
  * @private
  */
 MessageWebSocketConnection.prototype.onWebSocketClose = function() {
-	console.log("web socket close, ws=" + this.webSocket + " this=" + this.test);
 	this.webSocket.close();
 	this.clearWebSocket();
 
@@ -87,8 +99,6 @@ MessageWebSocketConnection.prototype.onWebSocketClose = function() {
  * @private
  */
 MessageWebSocketConnection.prototype.onWebSocketError = function() {
-	console.log("web socket error, ws=" + this.webSocket + " this=" + this.test);
-
 	this.webSocket.close();
 	this.clearWebSocket();
 

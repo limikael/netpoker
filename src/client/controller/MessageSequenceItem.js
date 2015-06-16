@@ -5,7 +5,7 @@
 
 var EventDispatcher = require("yaed");
 var Sequencer = require("../../utils/Sequencer");
-var inherits=require("inherits");
+var inherits = require("inherits");
 
 /**
  * An item in a message sequence.
@@ -65,9 +65,11 @@ MessageSequenceItem.prototype.waitFor = function(target, event) {
  * @private
  */
 MessageSequenceItem.prototype.onTargetComplete = function() {
-	//console.log("target is complete: "+this.waitEvent);
-	this.waitTarget.removeEventListener(this.waitEvent, this.waitClosure);
-	this.notifyComplete();
+	setTimeout(function() {
+		//console.log("target is complete: "+this.waitEvent);
+		this.waitTarget.removeEventListener(this.waitEvent, this.waitClosure);
+		this.notifyComplete();
+	}.bind(this), 0);
 }
 
 module.exports = MessageSequenceItem;

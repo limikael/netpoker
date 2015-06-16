@@ -70,15 +70,19 @@ ChipsView.prototype.setTargetPosition = function(position) {
  * @method setValue
  */
 ChipsView.prototype.setValue = function(value) {
-	if (this.tween) {
-		this.tween.onComplete();
+	/*if (this.tween) {
+		this.tween.onComplete(function() {});
+		this.tween.onUpdate(function() {});
 		this.tween.stop();
-	}
+		this.tween = null;
+	}*/
 
 	if (this.targetPosition) {
 		this.position.x = this.targetPosition.x;
 		this.position.y = this.targetPosition.y;
 	}
+
+	//console.log("set value, seatIndex=" + this.seatIndex+", value="+value);
 
 	this.value = value;
 

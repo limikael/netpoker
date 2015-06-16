@@ -43,6 +43,7 @@ function NetPokerClient() {
 	this.tableId = null;
 	this.tournamentId = null;
 	this.viewConfig = new ViewConfig(this.resources);
+	this.logMessages = false;
 
 	this.on("frame", TWEEN.update);
 }
@@ -55,6 +56,14 @@ inherits(NetPokerClient, PixiApp);
  */
 NetPokerClient.prototype.setUrl = function(url) {
 	this.url = url;
+}
+
+/**
+ * Should messages be logged?
+ * @method setLogMessages
+ */
+NetPokerClient.prototype.setLogMessages = function(value) {
+	this.logMessages = value;
 }
 
 /**
@@ -173,6 +182,7 @@ NetPokerClient.prototype.connect = function() {
 		this.connection = new MessageRequestConnection();
 	} else {
 		this.connection = new MessageWebSocketConnection();
+		this.connection.setLogMessages(this.logMessages);
 	}
 
 	this.connection.on(MessageWebSocketConnection.CONNECT, this.onConnectionConnect, this);

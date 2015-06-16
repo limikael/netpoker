@@ -20140,6 +20140,7 @@ function NetPokerClient() {
 	this.tableId = null;
 	this.tournamentId = null;
 	this.viewConfig = new ViewConfig(this.resources);
+	this.logMessages = false;
 
 	this.on("frame", TWEEN.update);
 }
@@ -20152,6 +20153,14 @@ inherits(NetPokerClient, PixiApp);
  */
 NetPokerClient.prototype.setUrl = function(url) {
 	this.url = url;
+}
+
+/**
+ * Should messages be logged?
+ * @method setLogMessages
+ */
+NetPokerClient.prototype.setLogMessages = function(value) {
+	this.logMessages = value;
 }
 
 /**
@@ -20270,6 +20279,7 @@ NetPokerClient.prototype.connect = function() {
 		this.connection = new MessageRequestConnection();
 	} else {
 		this.connection = new MessageWebSocketConnection();
+		this.connection.setLogMessages(this.logMessages);
 	}
 
 	this.connection.on(MessageWebSocketConnection.CONNECT, this.onConnectionConnect, this);
@@ -20440,8 +20450,9 @@ InterfaceController.prototype.onButtonsMessage = function(m) {
  */
 InterfaceController.prototype.onPresetButtons = function(m) {
 	var presetButtonsView = this.view.getPresetButtonsView();
-
 	var buttons = presetButtonsView.getButtons();
+	var havePresetButton = false;
+
 	for (var i = 0; i < buttons.length; i++) {
 		if (i > m.buttons.length) {
 			buttons[i].hide();
@@ -20451,12 +20462,16 @@ InterfaceController.prototype.onPresetButtons = function(m) {
 			if (data == null) {
 				buttons[i].hide();
 			} else {
+				havePresetButton = true;
 				buttons[i].show(data.button, data.value);
 			}
 		}
 	}
 
 	presetButtonsView.setCurrent(m.current);
+
+	if (havePresetButton)
+		this.view.getButtonsView().clear();
 }
 
 /**
@@ -20497,7 +20512,7 @@ InterfaceController.prototype.onTableInfoMessage = function(m) {
 InterfaceController.prototype.onHandInfoMessage = function(m) {
 	var tableInfoView = this.view.getTableInfoView();
 
-	tableInfoView.setHandInfoText(m.getText(),m.getCountDown());
+	tableInfoView.setHandInfoText(m.getText(), m.getCountDown());
 }
 
 /**
@@ -20561,7 +20576,7 @@ module.exports = InterfaceController;
 
 var EventDispatcher = require("yaed");
 var Sequencer = require("../../utils/Sequencer");
-var inherits=require("inherits");
+var inherits = require("inherits");
 
 /**
  * An item in a message sequence.
@@ -20621,9 +20636,11 @@ MessageSequenceItem.prototype.waitFor = function(target, event) {
  * @private
  */
 MessageSequenceItem.prototype.onTargetComplete = function() {
-	//console.log("target is complete: "+this.waitEvent);
-	this.waitTarget.removeEventListener(this.waitEvent, this.waitClosure);
-	this.notifyComplete();
+	setTimeout(function() {
+		//console.log("target is complete: "+this.waitEvent);
+		this.waitTarget.removeEventListener(this.waitEvent, this.waitClosure);
+		this.notifyComplete();
+	}.bind(this), 0);
 }
 
 module.exports = MessageSequenceItem;
@@ -21761,7 +21778,8 @@ ButtonsView.prototype.showSlider = function(index, min, max) {
  * Clear.
  * @method clear
  */
-ButtonsView.prototype.clear = function(buttonDatas) {
+ButtonsView.prototype.clear = function() {
+	this.buttonDatas = [];
 	this.setButtons([], 0, -1, -1);
 	this.slider.visible = false;
 }
@@ -22414,15 +22432,19 @@ ChipsView.prototype.setTargetPosition = function(position) {
  * @method setValue
  */
 ChipsView.prototype.setValue = function(value) {
-	if (this.tween) {
-		this.tween.onComplete();
+	/*if (this.tween) {
+		this.tween.onComplete(function() {});
+		this.tween.onUpdate(function() {});
 		this.tween.stop();
-	}
+		this.tween = null;
+	}*/
 
 	if (this.targetPosition) {
 		this.position.x = this.targetPosition.x;
 		this.position.y = this.targetPosition.y;
 	}
+
+	//console.log("set value, seatIndex=" + this.seatIndex+", value="+value);
 
 	this.value = value;
 
@@ -23930,8 +23952,9 @@ inherits(SeatView, Button);
  * Set reference to bet chips.
  * @method setBetChipsView
  */
-SeatView.prototype.setBetChipsView = function(value) {
-	this.betChips = value;
+SeatView.prototype.setBetChipsView = function(chipsView) {
+	this.betChips = chipsView;
+	chipsView.seatIndex = this.seatIndex;
 }
 
 /**
@@ -24022,7 +24045,7 @@ SeatView.prototype.onFoldComplete = function() {
  */
 SeatView.prototype.action = function(action) {
 	this.actionField.setText(action);
-	this.actionField.position.x = -this.actionField.canvas.width / 2;
+	this.actionField.position.x = -this.actionField.width / 2;
 
 	this.actionField.alpha = 1;
 	this.nameField.alpha = 0;
@@ -28150,7 +28173,9 @@ var inherits = require("inherits");
  */
 function MessageWebSocketConnection() {
 	EventDispatcher.call(this);
-	this.test = 1;
+
+	this.log = [];
+	this.logMessages = false;
 }
 
 inherits(MessageWebSocketConnection, EventDispatcher);
@@ -28170,6 +28195,14 @@ MessageWebSocketConnection.prototype.connect = function(url) {
 	this.webSocket.onmessage = this.onWebSocketMessage.bind(this);
 	this.webSocket.onclose = this.onWebSocketClose.bind(this);
 	this.webSocket.onerror = this.onWebSocketError.bind(this);
+}
+
+/**
+ * Should messages be logged?
+ * @method setLogMessages
+ */
+MessageWebSocketConnection.prototype.setLogMessages = function(value) {
+	this.logMessages = value;
 }
 
 /**
@@ -28199,6 +28232,9 @@ MessageWebSocketConnection.prototype.onWebSocketMessage = function(e) {
 
 	var message = JSON.parse(e.data);
 
+	if (this.logMessages)
+		this.log.push(message);
+
 	this.trigger({
 		type: MessageWebSocketConnection.MESSAGE,
 		message: message
@@ -28211,7 +28247,6 @@ MessageWebSocketConnection.prototype.onWebSocketMessage = function(e) {
  * @private
  */
 MessageWebSocketConnection.prototype.onWebSocketClose = function() {
-	console.log("web socket close, ws=" + this.webSocket + " this=" + this.test);
 	this.webSocket.close();
 	this.clearWebSocket();
 
@@ -28224,8 +28259,6 @@ MessageWebSocketConnection.prototype.onWebSocketClose = function() {
  * @private
  */
 MessageWebSocketConnection.prototype.onWebSocketError = function() {
-	console.log("web socket error, ws=" + this.webSocket + " this=" + this.test);
-
 	this.webSocket.close();
 	this.clearWebSocket();
 
