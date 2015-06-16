@@ -2,6 +2,7 @@ var MessageSequencer = require("../../../../src/client/controller/MessageSequenc
 var StateCompleteMessage = require("../../../../src/proto/messages/StateCompleteMessage");
 var SeatInfoMessage = require("../../../../src/proto/messages/SeatInfoMessage");
 var EventDispatcher = require("yaed");
+var SeatInfoMessage = require("../../../../src/proto/messages/SeatInfoMessage");
 
 describe("MessageSequencer", function() {
 	it("sequences messages", function() {
@@ -20,7 +21,7 @@ describe("MessageSequencer", function() {
 		expect(spy.calls.count()).toBe(2);
 	});
 
-	it("can be told to wait until processing next message", function() {
+	it("can be told to wait until processing next message", function(done) {
 		var e = new EventDispatcher();
 		var s = new MessageSequencer();
 
@@ -49,8 +50,17 @@ describe("MessageSequencer", function() {
 		expect(spy).toHaveBeenCalled();
 		expect(spy2).not.toHaveBeenCalled();
 
+		s.messageDispatcher.off(SeatInfoMessage.TYPE, spy2);
+
+		spy2 = function() {
+			console.log("done!!!");
+			done();
+		}
+
+		s.addMessageHandler(SeatInfoMessage.TYPE, spy2);
+
 		e.trigger("event");
 
-		expect(spy2).toHaveBeenCalled();
+		//		expect(spy2).toHaveBeenCalled();
 	});
 });
