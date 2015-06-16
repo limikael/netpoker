@@ -1,6 +1,7 @@
 var Thenable = require("tinp");
 var url = require("url");
 var request = require("request");
+var fs = require("fs");
 
 /**
  * Server.
@@ -27,6 +28,12 @@ NetPokerServerConfigurator.prototype.applySetting = function(name, value) {
 	var thenable = new Thenable();
 
 	switch (name) {
+		case "version":
+			var pkg = JSON.parse(fs.readFileSync(__dirname + "/../../../package.json"));
+			console.log(pkg.name + " " + pkg.version);
+			process.exit(1);
+			break;
+
 		case "backend":
 			this.netPokerServer.setBackend(value);
 			break;

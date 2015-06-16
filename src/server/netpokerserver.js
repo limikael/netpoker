@@ -11,6 +11,7 @@ function usage() {
 	console.log("");
 	console.log("Options:");
 	console.log("");
+	console.log("  --version                Print version and exit.")
 	console.log("  --clientPort <port>      Port where to listen for incoming connections.");
 	console.log("  --clientBindAddr <port>  Bind to this address when accepting connectins.");
 	console.log("  --backend <url>          Which backend to connect to.");
