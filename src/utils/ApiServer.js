@@ -144,6 +144,8 @@ ApiServer.prototype.handleWebRequest = function(request, response) {
 				else
 					message = e.toString();
 
+				console.error("**** Api handler threw an error: " + message);
+
 				response.statusCode = 500;
 				response.write(JSON.stringify(message));
 			}

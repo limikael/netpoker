@@ -23,6 +23,8 @@ describe("ServerApi - integration", function() {
 					var data=JSON.parse(body);
 					expect(data.state).toBe("running");
 
+					expect(data.version).toBeDefined();
+
 					netPokerServer.close();
 					next();
 				});

@@ -5,6 +5,7 @@
 
 var ApiServer = require("../../utils/ApiServer");
 var PollNumPlayersRequestHandler = require("./PollNumPlayersRequestHandler");
+var fs = require("fs");
 
 /**
  * A http api so the server can be queried from the outside world.
@@ -48,6 +49,9 @@ ServerApi.prototype.onInfo = function(p) {
 
 		o.tables.push(tableInfo);
 	}
+
+	var pkg = JSON.parse(fs.readFileSync(__dirname + "/../../../package.json"));
+	o.version = pkg.version;
 
 	return o;
 }
