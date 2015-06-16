@@ -47,6 +47,12 @@
 			),
 
 			array(
+				"field_name"=>"field_netpoker_rake_percent",
+				"type"=>"number_decimal",
+				"required"=>1,
+			),
+
+			array(
 				"field_name"=>"field_netpoker_playmoney",
 				"type"=>"number_integer",
 			)
@@ -103,6 +109,19 @@
 				"entity_type"=>"node",
 				"bundle"=>"pokergame",
 				"label"=>"Current number of players"
+			),
+
+			array(
+				"field_name"=>"field_netpoker_rake_percent",
+				"entity_type"=>"node",
+				"bundle"=>"pokergame",
+				"label"=>"Rake percent",
+				"required"=>1,
+				"default_value"=>array(
+					array(
+						"value"=>2.0
+					)
+				)
 			),
 
 			array(

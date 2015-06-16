@@ -65,6 +65,7 @@
 				"minSitInAmount"=>intval($pokergame->field_netpoker_min_sit_in[LANGUAGE_NONE][0]["value"]),
 				"maxSitInAmount"=>intval($pokergame->field_netpoker_max_sit_in[LANGUAGE_NONE][0]["value"]),
 				"stake"=>intval($pokergame->field_netpoker_stake[LANGUAGE_NONE][0]["value"]),
+				"rakePercent"=>$pokergame->field_netpoker_rake_percent[LANGUAGE_NONE][0]["value"],
 			);
 		}
 
@@ -342,6 +343,14 @@
 		$gameId=$_REQUEST["gameId"];
 		$state=$_REQUEST["state"];
 		$rake=$_REQUEST["rake"];
+		$tableId=$_REQUEST["parentId"];
+
+		if ($rake) {
+			$tables=entity_load("node",array($tableId));
+			$table=$tables[$tableId];
+			$currency=$table->field_netpoker_currency[LANGUAGE_NONE][0]["value"];
+			netpoker_transaction($currency,array("nid"=>$tableId),array("uid"=>1),$rake,"Rake");
+		}
 
 		watchdog(
 			"netpoker_finish_cashgame",

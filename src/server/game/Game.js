@@ -161,7 +161,8 @@ Game.prototype.notifyFinished = function() {
 	var params = {
 		gameId: this.id,
 		state: this.table.getLogState(),
-		rake: this.rake
+		rake: this.rake,
+		parentId: this.table.getStartGameParentId()
 	};
 
 	this.gameState = null;
