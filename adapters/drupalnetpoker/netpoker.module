@@ -133,6 +133,12 @@
 
 			$original=node_load($node->nid);
 
+			if (isset($original->field_netpoker_tournament_state) &&
+					$original->field_netpoker_tournament_state[LANGUAGE_NONE][0]["value"]!=Tournament::REGISTRATION) {
+				form_set_error("field_netpoker_tournament_state","Can only change tournaments in registration state.");
+				return;
+			}
+
 			if ($original && 
 					$original->field_netpoker_currency[LANGUAGE_NONE][0]["value"] !=
 					$node->field_netpoker_currency[LANGUAGE_NONE][0]["value"]) {

@@ -22,6 +22,7 @@ function FinishedState() {
 	this.backendCallInProgress = false;
 	this.finishOrder = [];
 	this.tournamentResultMessage = null;
+	this.doFinishCall = true;
 }
 
 inherits(FinishedState, TournamentState);
@@ -36,20 +37,30 @@ FinishedState.prototype.setCanceled = function(message) {
 }
 
 /**
+ * Should we do the finish call?
+ * @method setDoFinishCall
+ */
+FinishedState.prototype.setDoFinishCall = function(value) {
+	this.doFinishCall = value;
+}
+
+/**
  * Run.
  * @method run
  */
 FinishedState.prototype.run = function() {
 	if (this.canceled) {
-		backendCallInProgress = true;
-		var p = {
-			tournamentId: this.tournament.id,
-			cancelMessage: this.cancelMessage
+		if (this.doFinishCall) {
+			backendCallInProgress = true;
+			var p = {
+				tournamentId: this.tournament.id,
+				cancelMessage: this.cancelMessage
+			}
+			this.tournament.getBackend().call(Backend.TOURNAMENT_CANCEL, p).then(
+				this.onFinishCallComplete.bind(this),
+				this.onFinishCallError.bind(this)
+			);
 		}
-		this.tournament.getBackend().call(Backend.TOURNAMENT_CANCEL, p).then(
-			this.onFinishCallComplete.bind(this),
-			this.onFinishCallError.bind(this)
-		);
 		return;
 	}
 
@@ -75,11 +86,13 @@ FinishedState.prototype.run = function() {
 		payouts: JSON.stringify(this.tournament.getPayouts())
 	}
 
-	this.backendCallInProgress = true;
-	this.tournament.getBackend().call(Backend.TOURNAMENT_FINISH, p).then(
-		this.onFinishCallComplete.bind(this),
-		this.onFinishCallError.bind(this)
-	);
+	if (this.doFinishCall) {
+		this.backendCallInProgress = true;
+		this.tournament.getBackend().call(Backend.TOURNAMENT_FINISH, p).then(
+			this.onFinishCallComplete.bind(this),
+			this.onFinishCallError.bind(this)
+		);
+	}
 }
 
 /**

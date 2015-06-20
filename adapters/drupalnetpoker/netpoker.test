@@ -32,7 +32,7 @@
 			return $contents;
 		}
 
-		/*public function testTournamentInfo() {
+		public function testTournamentInfo() {
 			$settings=array();
 			$settings["type"]="pokertournament";
 			$settings["field_netpoker_currency"][LANGUAGE_NONE][0]["value"]="ply";
@@ -70,7 +70,7 @@
 			$tournamentNode=node_load($tournamentNode->nid,NULL,TRUE);
 
 			$this->assertEqual(1,sizeof($tournamentNode->field_netpoker_registrations[LANGUAGE_NONE]));
-		}
+		}*/
 
 		public function testTournamentResult() {
 			$settings=array();
@@ -108,7 +108,18 @@
 			$result=json_decode($resultJson);
 
 			$this->assertEqual(3,sizeof($result));
-		}*/
+
+			$infoResponse=$this->emulateRequest("netpoker_tournamentInfo",array(
+				"key"=>variable_get("netpoker_gameplay_key"),
+				"tournamentId"=>$tournamentNode->nid
+			));
+
+			$res=json_decode($infoResponse,TRUE);
+			$this->assertEqual(3,sizeof($res["finishorder"]));
+			$this->assertEqual($res["finishorder"][0],$users[1]->uid);
+			$this->assertEqual($res["finishorder"][1],$users[2]->uid);
+			$this->assertEqual($res["finishorder"][2],$users[0]->uid);
+		}
 
 		public function testTournamentRecurring() {
 			$settings=array();

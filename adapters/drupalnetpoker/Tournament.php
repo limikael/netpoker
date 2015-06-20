@@ -109,6 +109,15 @@
 			if (isset($node->field_netpoker_start_time[LANGUAGE_NONE][0]["value"]))
 				$data["startTime"]=$node->field_netpoker_start_time[LANGUAGE_NONE][0]["value"];
 
+			if (isset($this->node->field_netpoker_tournament_result[LANGUAGE_NONE][0]["value"])) {
+				$data["finishorder"]=array();
+
+				$result=json_decode($this->node->field_netpoker_tournament_result[LANGUAGE_NONE][0]["value"],TRUE);
+
+				foreach ($result as $res)
+					$data["finishorder"][]=$res["userId"];
+			}
+
 			return $data;
 		}
 

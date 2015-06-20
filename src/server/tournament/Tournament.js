@@ -5,6 +5,7 @@
 
 var TournamentState = require("./TournamentState");
 var RegistrationState = require("./RegistrationState");
+var FinishedState = require("./FinishedState");
 var EventDispatcher = require("yaed");
 var inherits = require("inherits");
 var User = require("../user/User");
@@ -85,6 +86,25 @@ function Tournament(services, data) {
 			this.setTournamentState(state);
 			break;
 
+		case "finished":
+			var state = new FinishedState();
+			state.setDoFinishCall(false);
+
+			var finishOrder = [];
+			for (var i = 0; i < data.finishorder.length; i++)
+				finishOrder.push(this.getRegisteredUserById(data.finishorder[i]));
+
+			state.setFinishOrder(finishOrder);
+			this.setTournamentState(state);
+			break;
+
+		case "canceled":
+			var state = new FinishedState();
+			state.setCanceled("The tournament was canceled");
+			state.setDoFinishCall(false);
+			this.setTournamentState(state);
+			break;
+
 		default:
 			throw new Error("Can't manage this tournament: state=" + data.state);
 			break;
@@ -105,6 +125,18 @@ Tournament.IDLE = "idle";
  * @event Tournament.CAN_UNLOAD
  */
 Tournament.CAN_UNLOAD = "canUnload";
+
+/**
+ * Get registered user.
+ * @method getRegisteredUserById
+ */
+Tournament.prototype.getRegisteredUserById = function(id) {
+	for (var i = 0; i < this.users.length; i++)
+		if (this.users[i].getId() == id)
+			return this.users[i];
+
+	throw new Error("The user isn't registered: " + id);
+}
 
 /**
  * Get id.
