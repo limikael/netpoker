@@ -200,8 +200,8 @@
 		if ($op=="edit" && $field["field_name"]=="field_netpoker_current_players")
 			return FALSE;
 
-		/*if ($op=="edit" && $field["field_name"]=="field_netpoker_registrations")
-			return FALSE;*/
+		if ($op=="edit" && $field["field_name"]=="field_netpoker_registrations")
+			return FALSE;
 
 		if ($op=="edit" && $field["field_name"]=="field_netpoker_tournament_state")
 			return FALSE;
