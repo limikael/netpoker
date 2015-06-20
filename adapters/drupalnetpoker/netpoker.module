@@ -17,15 +17,33 @@
 	 * Reload tables in the server on new game.
 	 */
 	function netpoker_node_insert($node) {
-		if ($node->type!="pokergame")
-			return;
+		if ($node->type=="pokertournament") {
+			if (!isset($node->field_netpoker_currency[LANGUAGE_NONE][0]["value"]))
+				throw new Exception("Strage, tournament created without currency");
 
-		if (!variable_get("netpoker_communicate_with_server")) {
-			watchdog("netpoker","game inserted, but server communication is off",array(),WATCHDOG_WARNING);
-			return;
+			$currency=$node->field_netpoker_currency[LANGUAGE_NONE][0]["value"];
+
+			$bonus=0;
+			if (isset($node->field_netpoker_bonus[LANGUAGE_NONE][0]["value"]))
+				$bonus=$node->field_netpoker_bonus[LANGUAGE_NONE][0]["value"];
+
+			netpoker_transaction(
+				$currency,
+				array("uid"=>1),
+				array("nid"=>$node->nid),
+				$bonus,
+				"Tourney bonus"
+			);
 		}
 
-		drupal_register_shutdown_function("netpoker_server_request","reloadTables");
+		if ($node->type=="pokergame") {
+			if (!variable_get("netpoker_communicate_with_server")) {
+				watchdog("netpoker","game inserted, but server communication is off",array(),WATCHDOG_WARNING);
+				return;
+			}
+
+			drupal_register_shutdown_function("netpoker_server_request","reloadTables");
+		}
 	}
 
 	/**
@@ -34,15 +52,17 @@
 	 * Reload tables in server.
 	 */
 	function netpoker_node_delete($node) {
-		if ($node->type!="pokergame")
-			return;
+		/*if ($node->type=="pokertournament") {
+		}*/
 
-		if (!variable_get("netpoker_communicate_with_server")) {
-			watchdog("netpoker","game deleted, but server communication is off",array(),WATCHDOG_WARNING);
-			return;
+		if ($node->type=="pokergame") {
+			if (!variable_get("netpoker_communicate_with_server")) {
+				watchdog("netpoker","game deleted, but server communication is off",array(),WATCHDOG_WARNING);
+				return;
+			}
+
+			drupal_register_shutdown_function("netpoker_server_request","reloadTables");
 		}
-
-		drupal_register_shutdown_function("netpoker_server_request","reloadTables");
 	}
 
 	/**
@@ -51,15 +71,90 @@
 	 * Reload tables in server.
 	 */
 	function netpoker_node_update($node) {
-		if ($node->type!="pokergame")
-			return;
+		if ($node->type=="pokertournament") {
+			$currency=$node->field_netpoker_currency[LANGUAGE_NONE][0]["value"];
 
-		if (!variable_get("netpoker_communicate_with_server")) {
-			watchdog("netpoker","game updated, but server communication is off",array(),WATCHDOG_WARNING);
-			return;
+			$oldBonus=0;
+			if (isset($node->original->field_netpoker_bonus[LANGUAGE_NONE][0]["value"]))
+				$oldBonus=$node->original->field_netpoker_bonus[LANGUAGE_NONE][0]["value"];
+
+			$newBonus=0;
+			if (isset($node->field_netpoker_bonus[LANGUAGE_NONE][0]["value"]))
+				$newBonus=$node->field_netpoker_bonus[LANGUAGE_NONE][0]["value"];
+
+			$bonusDiff=$newBonus-$oldBonus;
+
+			if ($newBonus>$oldBonus) {
+				netpoker_transaction(
+					$currency,
+					array("uid"=>1),
+					array("nid"=>$node->nid),
+					$newBonus-$oldBonus,
+					"Tourney bonus"
+				);
+			}
+
+			else {
+				netpoker_transaction(
+					$currency,
+					array("nid"=>$node->nid),
+					array("uid"=>1),
+					$oldBonus-$newBonus,
+					"Tourney bonus"
+				);
+			}
 		}
 
-		drupal_register_shutdown_function("netpoker_server_request","reloadTables");
+		if ($node->type=="pokergame") {
+			if (!variable_get("netpoker_communicate_with_server")) {
+				watchdog("netpoker","game updated, but server communication is off",array(),WATCHDOG_WARNING);
+				return;
+			}
+
+			drupal_register_shutdown_function("netpoker_server_request","reloadTables");
+		}
+	}
+
+	/**
+	 * Hook node validate.
+	 */
+	function netpoker_node_validate($node, $form, &$form_state) {
+		if ($node->type=="pokertournament") {
+			if (!$node->field_netpoker_req_registrations[LANGUAGE_NONE][0]["value"]
+					&& !$node->field_netpoker_start_time[LANGUAGE_NONE][0]["value"])
+				form_set_error("field_netpoker_req_registrations","Either number of registrations of start time needs to be specified.");
+
+			$totalPayout=0;
+			foreach (explode(",", $node->field_netpoker_payout_percent[LANGUAGE_NONE][0]["value"]) as $payoutLevel)
+				$totalPayout+=$payoutLevel;
+
+			if ($totalPayout!=100)
+				form_set_error("field_netpoker_payout_percent","Payout percentages should add up to 100");
+
+			$original=node_load($node->nid);
+
+			if ($original && 
+					$original->field_netpoker_currency[LANGUAGE_NONE][0]["value"] !=
+					$node->field_netpoker_currency[LANGUAGE_NONE][0]["value"]) {
+				form_set_error("field_netpoker_currency","Can't change currency for a tournament.");
+				return;
+			}
+
+			$currency=$node->field_netpoker_currency[LANGUAGE_NONE][0]["value"];
+
+			$oldBonus=0;
+			if (isset($original->field_netpoker_bonus[LANGUAGE_NONE][0]["value"]))
+				$oldBonus=$original->field_netpoker_bonus[LANGUAGE_NONE][0]["value"];
+
+			$newBonus=0;
+			if (isset($node->field_netpoker_bonus[LANGUAGE_NONE][0]["value"]))
+				$newBonus=$node->field_netpoker_bonus[LANGUAGE_NONE][0]["value"];
+
+			$bonusDiff=$newBonus-$oldBonus;
+
+			if ($currency && $bonusDiff>0 && $bonusDiff>netpoker_get_balance($currency,array("uid"=>1)))
+				form_set_error("field_netpoker_bonus","Not enough funds on admin account for bonus.");
+		}
 	}
 
 	/**
@@ -75,7 +170,17 @@
 				"description"=>t("Create a new poker game"),
 				"has_title"=>TRUE,
 				"title_label"=>t("Game title")
-			)
+			),
+
+			"pokertournament"=>array(
+				"name"=>t("Pokertournament"),
+				"base"=>"pokertournament",
+				"description"=>t("Create a new poker tournament"),
+				"has_title"=>TRUE,
+				"has_body"=>TRUE,
+				"title_label"=>t("Tournament title"),
+				"comment"=>0
+			),
 		);
 	}
 
@@ -93,6 +198,15 @@
 		}
 
 		if ($op=="edit" && $field["field_name"]=="field_netpoker_current_players")
+			return FALSE;
+
+		/*if ($op=="edit" && $field["field_name"]=="field_netpoker_registrations")
+			return FALSE;*/
+
+		if ($op=="edit" && $field["field_name"]=="field_netpoker_tournament_state")
+			return FALSE;
+
+		if ($field["field_name"]=="field_netpoker_tournament_result")
 			return FALSE;
 	}
 
@@ -116,6 +230,10 @@
 			if (!field_info_instance($fi["entity_type"],$fi["field_name"],$fi["bundle"]))
 				field_create_instance($fi);
 		}
+
+		// Disable comments.
+		variable_set("comment_pokertournament",0);
+		variable_set("comment_pokergame",0);
 	}
 
 	/**
@@ -168,6 +286,15 @@
 	}
 
 	/**
+	 * Create the form for the pokertournament node type.
+	 */
+	function pokertournament_form($node, $form_state) {
+		$form=node_content_form($node, $form_state);
+
+		return $form;
+	}
+
+	/**
 	 * Implements hook_node_view().
 	 *
 	 * Makes the pokergame node show up and adds the play link.
@@ -193,6 +320,32 @@
 				$node->content["field_netpoker_current_players"][0]["#markup"]=$markup;
 			}
 		}
+
+		if ($node->type=="pokertournament") {
+			drupal_add_js(drupal_get_path("module","netpoker")."/netpoker.js");
+
+			$node->content['tournament_sep_1']=array(
+				"#weight"=>100,
+				"#theme"=>"container",
+				"#attributes"=>array(
+					"style"=>"height: 10px"
+				),
+			);
+
+			$node->content['tournament_open_link'] = array(
+				'#weight' => 101,
+				'#theme' => 'link',
+				'#path' => 'netpoker/tournamentGame/'.$node->nid,
+				'#text' => t('Open Tournament'),
+				'#options' => array(
+					'attributes' => array(
+						"target"=>"netpoker-tournament-".$node->nid,
+						"class"=>array("button")
+					),
+					'html' => FALSE
+				),
+			);
+		}
 	}
 
 	/**
@@ -204,7 +357,9 @@
 		$apiCalls=array(
 			"getCashGameTableList", "getUserInfoByToken", "getUserBalance",
 			"serverConfig", "cashGame", "bin", "cashGameUserJoin", "cashGameUserLeave",
-			"gameStartForCashGame", "gameFinish", "debug", "pollNumPlayers", "skinTest"
+			"gameStartForCashGame", "gameFinish", "debug", "pollNumPlayers", "skinTest",
+			"tournamentInfo", "tournamentGame", "tournamentRegister", "tournamentUnregister",
+			"tournamentStart", "tournamentCancel", "tournamentFinish", "gameStartForTournament"
 		);
 
 		$items=array();

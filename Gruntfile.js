@@ -37,6 +37,8 @@ module.exports = function(grunt) {
 						"cashgame.tpl.php",
 						"netpoker.js",
 						"bundleloader.min.js",
+						"netpoker.test",
+						"Tournament.php",
 						"bin/*",
 						"viewcases/*"
 					]

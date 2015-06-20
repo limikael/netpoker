@@ -33,6 +33,10 @@
 					netPokerClient.setTableId(<?php echo $tableId; ?>);
 				<?php } ?>
 
+				<?php if (isset($tournamentId)) { ?>
+					netPokerClient.setTournamentId(<?php echo $tournamentId; ?>);
+				<?php } ?>
+
 				<?php if ($skinSource) { ?>
 					netPokerClient.addSkinSource(<?php echo json_encode($skinSource); ?>);
 				<?php } ?>

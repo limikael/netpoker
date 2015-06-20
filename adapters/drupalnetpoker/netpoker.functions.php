@@ -77,20 +77,20 @@
 	 * Get balance.
 	 */
 	function netpoker_get_balance($currency, $accountspec) {
-		if (!$accountspec["uid"])
-			throw new Exception("Can only get balance for user accounts.");
-
 		switch (strtolower($currency)) {
 			case "bits":
 				return blockchainaccounts_get_balance($currency, $accountspec);
 				break;
 
 			case "ply":
-				$balance=variable_get("netpoker_default_playmoney");
+				if (isset($accountspec["nid"]))
+					return 0;
 
-				$userId=$accountspec["uid"];
-				$users=entity_load("user",array($userId));
-				$user=$users[$userId];
+				if (!$accountspec["uid"])
+					throw new Exception("Unknown account spec.");
+
+				$balance=variable_get("netpoker_default_playmoney");
+				$user=user_load($accountspec["uid"]);
 
 				if (!$user)
 					netpoker_fail("User does not exist.");
@@ -120,10 +120,10 @@
 				break;
 
 			case "ply":
-				if ($from["uid"])
+				if (isset($from["uid"]))
 					netpoker_change_playmoney_balance($from["uid"],-$amount);
 
-				if ($to["uid"])
+				if (isset($to["uid"]))
 					netpoker_change_playmoney_balance($to["uid"],$amount);
 				break;
 
@@ -143,13 +143,12 @@
 			throw new Exception("Not enough playmoney balance.");
 
 		$current+=$amount;
-
-		$users=entity_load("user",array($userId));
-		$user=$users[$userId];
+		$user=user_load($userId);
 
 		if (!$user)
 			throw new Exception("User does not exist.");
 
 		$user->field_netpoker_playmoney[LANGUAGE_NONE][0]["value"]=$current;
 		field_attach_update("user",$user);
+		user_save($user);
 	}

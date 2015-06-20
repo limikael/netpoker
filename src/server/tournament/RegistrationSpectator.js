@@ -161,7 +161,7 @@ RegistrationSpectator.prototype.onButtonClickMessage = function(m) {
 				userId: this.user.getId(),
 				tournamentId: this.tournament.getId()
 			};
-			this.tournament.getBackend().call(Backend.TOURNAMENT_REGISTER).then(
+			this.tournament.getBackend().call(Backend.TOURNAMENT_REGISTER,p).then(
 				this.onTournamentRegisterSuccess.bind(this),
 				this.onTournamentRegisterError.bind(this)
 			);
@@ -181,7 +181,7 @@ RegistrationSpectator.prototype.onButtonClickMessage = function(m) {
 				userId: this.user.getId(),
 				tournamentId: this.tournament.getId()
 			};
-			this.tournament.getBackend().call(Backend.TOURNAMENT_REGISTER).then(
+			this.tournament.getBackend().call(Backend.TOURNAMENT_UNREGISTER,p).then(
 				this.onTournamentUnregisterSuccess.bind(this),
 				this.onTournamentUnregisterError.bind(this)
 			);
@@ -210,7 +210,12 @@ RegistrationSpectator.prototype.onTournamentRegisterSuccess = function(r) {
  * @method onTournamentRegisterError
  * @private
  */
-RegistrationSpectator.prototype.onTournamentRegisterError = function(r) {
+RegistrationSpectator.prototype.onTournamentRegisterError = function(message) {
+	var d = new ShowDialogMessage();
+	d.setText(message);
+	d.addButton(ButtonData.CANCEL);
+	this.send(d);
+
 	this.send(this.getTableInfoMessage());
 	this.notifyCallComplete();
 }

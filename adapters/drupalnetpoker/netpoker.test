@@ -1,0 +1,132 @@
+<?php
+
+	require_once __DIR__."/netpoker.test";
+
+	class NetpokerTestCase extends DrupalWebTestCase {
+		protected $profile = 'minimal';
+
+		public static function getInfo() {
+			return array(
+				'name' => 'Netpoker Test',
+				'description' => "Tests test netpoker module",
+				'group' => 'netpoker',
+			);
+		}
+
+		public function setUp() {
+			parent::setUp(array("netpoker"));
+		}
+
+		/**
+		 * This should really use drupalGet instead,
+		 * but can't get it to work...
+		 */
+		private function emulateRequest($func, $params=array()) {
+			$_REQUEST=$params;
+
+			ob_start();
+			$func();
+			$contents=ob_get_contents();
+			ob_end_clean();
+
+			return $contents;
+		}
+
+		/*public function testTournamentInfo() {
+			$settings=array();
+			$settings["type"]="pokertournament";
+			$settings["field_netpoker_currency"][LANGUAGE_NONE][0]["value"]="ply";
+			$tournamentNode=$this->drupalCreateNode($settings);
+
+			$infoResponse=$this->emulateRequest("netpoker_tournamentInfo",array(
+				"key"=>variable_get("netpoker_gameplay_key"),
+				"tournamentId"=>$tournamentNode->nid
+			));
+
+			$res=json_decode($infoResponse,TRUE);
+			$this->assertEqual($res["startChips"],1000);
+			$this->assertEqual(sizeof($res["payoutPercent"]),3);
+			$this->assertEqual($res["payoutPercent"][0],65);
+			$this->assertEqual(sizeof($res["blindStructure"]),22);
+			$this->assertEqual($res["blindStructure"][0],array("time"=>15*60,"stake"=>10,"ante"=>0));
+			$this->assertEqual($res["blindStructure"][1],array("time"=>15*60,"stake"=>20,"ante"=>0));
+		}
+
+		public function testTournamentRegister() {
+			global $user;
+
+			$settings=array();
+			$settings["type"]="pokertournament";
+			$settings["field_netpoker_currency"][LANGUAGE_NONE][0]["value"]="ply";
+			$settings["field_netpoker_fee"][LANGUAGE_NONE][0]["value"]=100;
+			$tournamentNode=$this->drupalCreateNode($settings);
+
+			$infoResponse=$this->emulateRequest("netpoker_tournamentRegister",array(
+				"key"=>variable_get("netpoker_gameplay_key"),
+				"tournamentId"=>$tournamentNode->nid,
+				"userId"=>$user->uid
+			));
+
+			$tournamentNode=node_load($tournamentNode->nid,NULL,TRUE);
+
+			$this->assertEqual(1,sizeof($tournamentNode->field_netpoker_registrations[LANGUAGE_NONE]));
+		}
+
+		public function testTournamentResult() {
+			$settings=array();
+			$settings["type"]="pokertournament";
+			$settings["field_netpoker_currency"][LANGUAGE_NONE][0]["value"]="ply";
+			$settings["field_netpoker_fee"][LANGUAGE_NONE][0]["value"]=100;
+			$tournamentNode=$this->drupalCreateNode($settings);
+
+			$tournament=new Tournament($tournamentNode->nid);
+
+			$users=array(
+				$this->drupalCreateUser(),
+				$this->drupalCreateUser(),
+				$this->drupalCreateUser()
+			);
+
+			$this->assertEqual(netpoker_get_balance("ply",array("uid"=>$users[0]->uid)),1000);
+
+			$tournament->registerUser($users[0]->uid);
+			$tournament->registerUser($users[1]->uid);
+			$tournament->registerUser($users[2]->uid);
+
+			$this->assertEqual(netpoker_get_balance("ply",array("uid"=>$users[0]->uid)),900);
+
+			$tournament->start();
+			$tournament->finish(
+				array($users[1]->uid,$users[2]->uid,$users[0]->uid),
+				array(200,100)
+			);
+
+			$this->assertEqual(netpoker_get_balance("ply",array("uid"=>$users[1]->uid)),1100);
+			$this->assertEqual(netpoker_get_balance("ply",array("uid"=>$users[2]->uid)),1000);
+
+			$resultJson=$tournament->node->field_netpoker_tournament_result[LANGUAGE_NONE][0]["value"];
+			$result=json_decode($resultJson);
+
+			$this->assertEqual(3,sizeof($result));
+		}*/
+
+		public function testTournamentRecurring() {
+			$settings=array();
+			$settings["type"]="pokertournament";
+			$settings["field_netpoker_currency"][LANGUAGE_NONE][0]["value"]="ply";
+			$settings["field_netpoker_fee"][LANGUAGE_NONE][0]["value"]=100;
+			$settings["field_netpoker_recurring"][LANGUAGE_NONE][0]["value"]="weekly";
+			$settings["field_netpoker_start_time"][LANGUAGE_NONE][0]["value"]=strtotime("2008-08-07 18:11:31");
+			$tournamentNode=$this->drupalCreateNode($settings);
+
+			$tournament=new Tournament($tournamentNode->nid);
+			$newId=$tournament->createRecurring();
+			$newTournament=new Tournament($newId);
+
+			$origStart=date("Y-m-d H:i:s",$tournament->node->field_netpoker_start_time[LANGUAGE_NONE][0]["value"]);
+			$newStart=date("Y-m-d H:i:s",$newTournament->node->field_netpoker_start_time[LANGUAGE_NONE][0]["value"]);
+
+			$this->assertEqual("2008-08-07 18:11:31",$origStart);
+			$this->assertEqual("2008-08-14 18:11:31",$newStart);
+		}
+	}

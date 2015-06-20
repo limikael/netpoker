@@ -1,6 +1,7 @@
 <?php
 
 	require_once __DIR__."/netpoker.functions.php";
+	require_once __DIR__."/Tournament.php";
 
 	/**
 	 * @file
@@ -11,26 +12,32 @@
 	 */
 
 	/**
+	 * Handle an exception inside an api call.
+	 */
+	function netpoker_handleApiCallException($ex) {
+		netpoker_fail($ex->getMessage());
+	}
+
+	/**
+	 * Init an api call from the game server.
 	 * Ensure that the right api key is passed. This function
 	 * is called from all pages that require an api key.
 	 */
-	function netpoker_checkKey() {
+	function netpoker_initApiCall() {
 		$key=variable_get("netpoker_gameplay_key");
 
-		if (!$_REQUEST["key"] || $key!=$_REQUEST["key"]) {
-			drupal_json_output(array(
-				"ok"=>0,
-				"message"=>"wrong api key"
-			));
+		if (!isset($_REQUEST["key"]) || !$_REQUEST["key"] || $key!=$_REQUEST["key"])
+			netpoker_fail("Wrong api key");
 
-			exit();
-		}
+		set_exception_handler("netpoker_handleApiCallException");
 	}
 
 	/**
 	 * Fail hard.
 	 */
 	function netpoker_fail($message="Unknown error.") {
+		watchdog("netpoker","api call: ".$message,array(),WATCHDOG_ERROR);
+
 		drupal_json_output(array(
 			"ok"=>0,
 			"message"=>$message
@@ -40,10 +47,83 @@
 	}
 
 	/**
+	 * Api call: tournament info
+	 */
+	function netpoker_tournamentInfo() {
+		netpoker_initApiCall();
+
+		$tournament=new Tournament($_REQUEST["tournamentId"]);
+		drupal_json_output($tournament->getInfoData());
+	}
+
+	/**
+	 * Api call: tournamentRegister
+	 */
+	function netpoker_tournamentRegister() {
+		netpoker_initApiCall();
+
+		$tournament=new Tournament($_REQUEST["tournamentId"]);
+		$tournament->registerUser($_REQUEST["userId"]);
+
+		drupal_json_output(array("ok"=>1));
+	}
+
+	/**
+	 * Api call: tournamentUnregister
+	 */
+	function netpoker_tournamentUnregister() {
+		netpoker_initApiCall();
+
+		$tournament=new Tournament($_REQUEST["tournamentId"]);
+		$tournament->unregisterUser($_REQUEST["userId"]);
+
+		drupal_json_output(array("ok"=>1));
+	}
+
+	/**
+	 * Api call: tournamentStart
+	 */
+	function netpoker_tournamentStart() {
+		netpoker_initApiCall();
+
+		$tournament=new Tournament($_REQUEST["tournamentId"]);
+		$tournament->start();
+
+		drupal_json_output(array("ok"=>1));
+	}
+
+	/**
+	 * Api call: tournamentCancel
+	 */
+	function netpoker_tournamentCancel() {
+		netpoker_initApiCall();
+
+		$tournament=new Tournament($_REQUEST["tournamentId"]);
+		$tournament->cancel();
+
+		drupal_json_output(array("ok"=>1));
+	}
+
+	/**
+	 * Api call: tournamentFinish
+	 */
+	function netpoker_tournamentFinish() {
+		netpoker_initApiCall();
+
+		$tournament=new Tournament($_REQUEST["tournamentId"]);
+		$tournament->finish(
+			json_decode($_REQUEST["finishorder"]),
+			json_decode($_REQUEST["payouts"])
+		);
+
+		drupal_json_output(array("ok"=>1));
+	}
+
+	/**
 	 * Api call: getCashGameTableList
 	 */
 	function netpoker_getCashGameTableList() {
-		netpoker_checkKey();
+		netpoker_initApiCall();
 
 		$ids=db_select("node","n")
 			->fields("n",array("nid"))
@@ -79,7 +159,7 @@
 	 * Api call: getUserInfoByToken
 	 */
 	function netpoker_getUserInfoByToken() {
-		netpoker_checkKey();
+		netpoker_initApiCall();
 
 		$token=$_REQUEST["token"];
 
@@ -109,7 +189,7 @@
 	 * Api call: getUserBalance
 	 */
 	function netpoker_getUserBalance() {
-		netpoker_checkKey();
+		netpoker_initApiCall();
 
 		$userId=$_REQUEST["userId"];
 		$currency=$_REQUEST["currency"];
@@ -141,6 +221,24 @@
 		$vars=array(
 			"title"=>variable_get('site_name')." | ".$table->title,
 			"tableId"=>$nid,
+			"url"=>"ws://".$host.":".variable_get("netpoker_gameplay_server_port")."/",
+			"token"=>session_id(),
+		);
+
+		netpoker_showTable($vars);
+	}
+
+	/**
+	 * Api call: tournamentGame
+	 * Serve up the tournament game html page.
+	 */
+	function netpoker_tournamentGame($nid) {
+		$host=netpoker_get_gameplay_server_host();
+		$tournament=node_load($nid);
+
+		$vars=array(
+			"title"=>variable_get('site_name')." | ".$tournament->title,
+			"tournamentId"=>$nid,
 			"url"=>"ws://".$host.":".variable_get("netpoker_gameplay_server_port")."/",
 			"token"=>session_id(),
 		);
@@ -215,7 +313,7 @@
 	 * Api call: cashGameUserJoin
 	 */
 	function netpoker_cashGameUserJoin() {
-		netpoker_checkKey();
+		netpoker_initApiCall();
 
 		$userId=$_REQUEST["userId"];
 		$tableId=$_REQUEST["tableId"];
@@ -260,7 +358,7 @@
 	 * Api call: cashGameUserLeave
 	 */
 	function netpoker_cashGameUserLeave() {
-		netpoker_checkKey();
+		netpoker_initApiCall();
 
 		$userId=$_REQUEST["userId"];
 		$tableId=$_REQUEST["tableId"];
@@ -302,10 +400,34 @@
 	}
 
 	/**
+	 * Api call: gameStartForTournament
+	 */
+	function netpoker_gameStartForTournament() {
+		netpoker_initApiCall();
+
+		$tournamentId=$_REQUEST["parentId"];
+		$tournament=new Tournament($tournamentId);
+
+		$id=variable_get("netpoker_cashgame_id");
+		variable_set("netpoker_cashgame_id",$id+1);
+
+		watchdog(
+			"netpoker_start_tournamentgame",
+			"gameId=$id&tableId=$tournamentId", 
+			array(), WATCHDOG_INFO
+		);
+
+		drupal_json_output(array(
+			"ok"=>1,
+			"gameId"=>$id
+		));
+	}
+
+	/**
 	 * Api call: gameStartForCashGame
 	 */
 	function netpoker_gameStartForCashGame() {
-		netpoker_checkKey();
+		netpoker_initApiCall();
 
 		$tableId=$_REQUEST["parentId"];
 
@@ -338,7 +460,7 @@
 	 * Api call: gameFinish
 	 */
 	function netpoker_gameFinish() {
-		netpoker_checkKey();
+		netpoker_initApiCall();
 
 		$gameId=$_REQUEST["gameId"];
 		$state=$_REQUEST["state"];

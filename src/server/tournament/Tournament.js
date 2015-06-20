@@ -23,12 +23,14 @@ var ArrayUtil = require("../../utils/ArrayUtil");
 function Tournament(services, data) {
 	EventDispatcher.call(this);
 
+	this.services = services;
+
 	if (!data.id) throw new Error("id missing");
 	if (!data.seatsPerTable) throw new Error("missing seats per table for tournament");
 	if (!data.startChips) throw new Error("missing start chips for tournament");
 	if (!data.blindStructure || !data.blindStructure.length) throw new Error("no blind structure");
 	if (!data.payoutPercent) throw new Error("missing payoutPercent for tournament");
-	if (!data.fee) throw new Error("missing fee");
+	if (isNaN(data.fee)) throw new Error("missing fee");
 
 	this.id = data.id;
 	this.info = data.info;
@@ -87,8 +89,6 @@ function Tournament(services, data) {
 			throw new Error("Can't manage this tournament: state=" + data.state);
 			break;
 	}
-
-	this.services = services;
 }
 
 inherits(Tournament, EventDispatcher);
