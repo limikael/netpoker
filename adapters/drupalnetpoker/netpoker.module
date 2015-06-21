@@ -258,6 +258,11 @@
 	function pokertournament_form($node, $form_state) {
 		$form=node_content_form($node, $form_state);
 
+		$tournament=new Tournament($node);
+
+		if ($tournament->getNumRegistrations())
+			drupal_set_message("This tournament has registered users. If you change fee these will be removed.","warning",FALSE);
+
 		return $form;
 	}
 
