@@ -18,22 +18,8 @@
 	 */
 	function netpoker_node_insert($node) {
 		if ($node->type=="pokertournament") {
-			if (!isset($node->field_netpoker_currency[LANGUAGE_NONE][0]["value"]))
-				throw new Exception("Strage, tournament created without currency");
-
-			$currency=$node->field_netpoker_currency[LANGUAGE_NONE][0]["value"];
-
-			$bonus=0;
-			if (isset($node->field_netpoker_bonus[LANGUAGE_NONE][0]["value"]))
-				$bonus=$node->field_netpoker_bonus[LANGUAGE_NONE][0]["value"];
-
-			netpoker_transaction(
-				$currency,
-				array("uid"=>1),
-				array("nid"=>$node->nid),
-				$bonus,
-				"Tourney bonus"
-			);
+			$tournament=new Tournament($node);
+			$tournament->handleBonusChange(0);
 		}
 
 		if ($node->type=="pokergame") {
@@ -72,37 +58,12 @@
 	 */
 	function netpoker_node_update($node) {
 		if ($node->type=="pokertournament") {
-			$currency=$node->field_netpoker_currency[LANGUAGE_NONE][0]["value"];
+			$tournament=new Tournament($node);
+			$original=new Tournament($node->original);
+			$tournament->handleBonusChange($original->getBonus());
 
-			$oldBonus=0;
-			if (isset($node->original->field_netpoker_bonus[LANGUAGE_NONE][0]["value"]))
-				$oldBonus=$node->original->field_netpoker_bonus[LANGUAGE_NONE][0]["value"];
-
-			$newBonus=0;
-			if (isset($node->field_netpoker_bonus[LANGUAGE_NONE][0]["value"]))
-				$newBonus=$node->field_netpoker_bonus[LANGUAGE_NONE][0]["value"];
-
-			$bonusDiff=$newBonus-$oldBonus;
-
-			if ($newBonus>$oldBonus) {
-				netpoker_transaction(
-					$currency,
-					array("uid"=>1),
-					array("nid"=>$node->nid),
-					$newBonus-$oldBonus,
-					"Tourney bonus"
-				);
-			}
-
-			else {
-				netpoker_transaction(
-					$currency,
-					array("nid"=>$node->nid),
-					array("uid"=>1),
-					$oldBonus-$newBonus,
-					"Tourney bonus"
-				);
-			}
+			if ($tournament->getTotalFee()!=$original->getTotalFee())
+				$tournament->unregisterAllUsers($original->getTotalFee());
 		}
 
 		if ($node->type=="pokergame") {

@@ -15,8 +15,12 @@
 		/**
 		 * Constructor.
 		 */
-		public function __construct($tournamentId) {
-			$this->node=node_load($tournamentId);
+		public function __construct($param) {
+			if ($param instanceof stdClass)
+				$this->node=$param;
+
+			else
+				$this->node=node_load($param);
 
 			if (!$this->node)
 				throw new Exception("Can't find tournament");
@@ -42,6 +46,18 @@
 		}
 
 		/**
+		 * Getter.
+		 */
+		public function getBonus() {
+			$bonus=0;
+
+			if (isset($this->node->field_netpoker_bonus[LANGUAGE_NONE][0]["value"]))
+				$bonus=$this->node->field_netpoker_bonus[LANGUAGE_NONE][0]["value"];
+
+			return $bonus;
+		}
+
+		/**
 		 * Get current state.
 		 */
 		public function getCurrentState() {
@@ -53,6 +69,35 @@
 		 */
 		public function setState($state) {
 			$this->node->field_netpoker_tournament_state[LANGUAGE_NONE][0]["value"]=$state;
+		}
+
+		/**
+		 * Handle bonus change.
+		 */
+		public function handleBonusChange($oldBonus) {
+			$currency=$this->getCurrency();
+
+			$newBonus=$this->getBonus();
+
+			if ($newBonus>$oldBonus) {
+				netpoker_transaction(
+					$currency,
+					array("uid"=>1),
+					array("nid"=>$this->node->nid),
+					$newBonus-$oldBonus,
+					"Tourney bonus"
+				);
+			}
+
+			else if ($oldBonus>$newBonus) {
+				netpoker_transaction(
+					$currency,
+					array("nid"=>$this->node->nid),
+					array("uid"=>1),
+					$oldBonus-$newBonus,
+					"Tourney bonus"
+				);
+			}
 		}
 
 		/**
@@ -168,7 +213,10 @@
 		/**
 		 * Unregister a user for this tournament.
 		 */
-		public function unregisterUser($userId) {
+		public function unregisterUser($userId, $returnFee=NULL) {
+			if ($returnFee===NULL)
+				$returnFee=$this->getTotalFee();
+
 			$user=user_load($userId);
 			if (!$user)
 				throw new Exception("User does not exist.");
@@ -183,7 +231,7 @@
 				$this->getCurrency(),
 				array("nid"=>$this->node->nid),
 				array("uid"=>$userId),
-				$this->getTotalFee(),
+				$returnFee,
 				"Cancel tournament registration"
 			);
 
@@ -194,6 +242,36 @@
 			}
 
 			node_save($this->node);
+		}
+
+		/**
+		 * Get number of registrations.
+		 */
+		public function getNumRegistrations() {
+			if (!isset($this->node->field_netpoker_registrations[LANGUAGE_NONE]))
+				return;
+
+			$num=0;
+
+			foreach ($this->node->field_netpoker_registrations[LANGUAGE_NONE] as $k=>$entry)
+				$num++;
+
+			return $num;
+		}
+
+		/**
+		 * Unregister all users.
+		 */
+		public function unregisterAllUsers($returnFee=NULL) {
+			if (!isset($this->node->field_netpoker_registrations[LANGUAGE_NONE]))
+				return;
+
+			$userIds=array();
+			foreach ($this->node->field_netpoker_registrations[LANGUAGE_NONE] as $k=>$entry)
+				$userIds[]=$entry["target_id"];
+
+			foreach ($userIds as $userId)
+				$this->unregisterUser($userId, $returnFee);
 		}
 
 		/**

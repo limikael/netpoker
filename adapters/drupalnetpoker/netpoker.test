@@ -70,7 +70,19 @@
 			$tournamentNode=node_load($tournamentNode->nid,NULL,TRUE);
 
 			$this->assertEqual(1,sizeof($tournamentNode->field_netpoker_registrations[LANGUAGE_NONE]));
-		}*/
+			$this->assertEqual(900,netpoker_get_balance("ply",array("uid"=>$user->uid)));
+
+			$infoResponse=$this->emulateRequest("netpoker_tournamentUnregister",array(
+				"key"=>variable_get("netpoker_gameplay_key"),
+				"tournamentId"=>$tournamentNode->nid,
+				"userId"=>$user->uid
+			));
+
+			$tournamentNode=node_load($tournamentNode->nid,NULL,TRUE);
+
+			$this->assertEqual(NULL,$tournamentNode->field_netpoker_registrations);
+			$this->assertEqual(1000,netpoker_get_balance("ply",array("uid"=>$user->uid)));
+		}
 
 		public function testTournamentResult() {
 			$settings=array();
@@ -139,5 +151,34 @@
 
 			$this->assertEqual("2008-08-07 18:11:31",$origStart);
 			$this->assertEqual("2008-08-14 18:11:31",$newStart);
+		}
+
+		public function testUnregisterAllUsers() {
+			$settings=array();
+			$settings["type"]="pokertournament";
+			$settings["field_netpoker_currency"][LANGUAGE_NONE][0]["value"]="ply";
+			$settings["field_netpoker_fee"][LANGUAGE_NONE][0]["value"]=100;
+			$settings["field_netpoker_commission"][LANGUAGE_NONE][0]["value"]=20;
+			$tournamentNode=$this->drupalCreateNode($settings);
+
+			$tournament=new Tournament($tournamentNode->nid);
+
+			$users=array(
+				$this->drupalCreateUser(),
+				$this->drupalCreateUser(),
+				$this->drupalCreateUser()
+			);
+
+			$tournament->registerUser($users[0]->uid);
+			$tournament->registerUser($users[1]->uid);
+			$tournament->registerUser($users[2]->uid);
+
+			$this->assertEqual(880,netpoker_get_balance("ply",array("uid"=>$users[0]->uid)));
+
+			$tournament->unregisterAllUsers();
+			$tournament=new Tournament($tournamentNode->nid);
+
+			$this->assertEqual(1000,netpoker_get_balance("ply",array("uid"=>$users[0]->uid)));
+			$this->assertEqual(0,$tournament->getNumRegistrations());
 		}
 	}
