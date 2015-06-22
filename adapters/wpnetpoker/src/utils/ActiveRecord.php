@@ -64,6 +64,7 @@
 			$fields=self::$classes[get_called_class()]["fields"];
 			$primaryKey=self::$classes[get_called_class()]["primaryKey"];
 
+			// Create table if it doesn't exist.
 			$qs="CREATE TABLE IF NOT EXISTS ".$table." (";
 
 			foreach ($fields as $name=>$declaration)
@@ -71,10 +72,51 @@
 
 			$qs.="primary key(".$primaryKey."))";
 
-			$res=self::$pdo->query($qs);
+			$createStatement=self::$pdo->query($qs);
+			if (!$createStatement)
+				throw new Exception("Unable to create table: ".join(",",self::$pdo->errorInfo()));
 
-			if (!$res)
-				throw new Exception("Unable to create table");
+			$createStatement->closeCursor();
+
+			// Check current state of database.
+			$describeStatement=self::$pdo->query("DESCRIBE ".$table);
+			if (!$describeStatement)
+				throw new Exception("Unable to set up table: ".join(",",self::$pdo->errorInfo()));
+
+			$describeResult=$describeStatement->fetchAll();
+			$describeStatement->closeCursor();
+
+			$existing=array();
+			foreach ($describeResult as $describeRow)
+				$existing[]=$describeRow["Field"];
+
+			// Create or modify existing fields.
+			foreach ($fields as $name=>$declaration) {
+				if (in_array($name,$existing)) {
+					$q="ALTER TABLE $table MODIFY $name $declaration";
+				}
+
+				else {
+					$q="ALTER TABLE `$table` ADD `$name` $declaration";
+				}
+
+				$updateStatement=self::$pdo->query($q);
+				if (!$updateStatement)
+					throw new Exception("Unable to update table: ".join(",",self::$pdo->errorInfo()));
+
+				$updateStatement->closeCursor();
+			}
+
+			// Drup unused fields.
+			$currentFieldNames=array_keys($fields);
+			foreach ($existing as $existingField) {
+				if (!in_array($existingField, $currentFieldNames)) {
+					$updateStatement=self::$pdo->query("ALTER TABLE $table DROP $existingField");
+
+					if (!$updateStatement)
+						throw new Exception("Unable to update table: ".join(",",self::$pdo->errorInfo()));
+				}
+			}
 		}
 
 		/**
@@ -135,6 +177,7 @@
 
 		/**
 		 * Hydrate from statement.
+		 * TODO: handle default values better, let them be set in the constructor.
 		 */
 		public static function hydrateFromStatement($statement, $parameters=array()) {
 			self::init();
@@ -143,8 +186,22 @@
 			if (!$statement->execute($parameters))
 				throw new Exception("Unable to run query: ".join(",",$statement->errorInfo()));
 
-			$statement->setFetchMode(PDO::FETCH_CLASS,get_called_class());
-			return $statement->fetchAll();
+			$class=get_called_class();
+			$res=array();
+
+			do {
+				$o=new $class;
+				$statement->setFetchMode(PDO::FETCH_INTO,$o);
+				$o=$statement->fetch(); //PDO::FETCH_INTO,$o);
+
+				if ($o)
+					$res[]=$o;
+			} while ($o);
+
+			return $res;
+
+			/*$statement->setFetchMode(PDO::FETCH_CLASS,get_called_class());
+			return $statement->fetchAll();*/
 		}
 
 		/**

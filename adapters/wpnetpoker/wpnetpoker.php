@@ -3,7 +3,7 @@
 /*
 Plugin Name: Netpoker
 Plugin URI: http://github.com/limikael/netpoker
-Version: 0.0.1
+Version: 0.0.2
 */
 
 require_once __DIR__."/src/admin/CashgameListTable.php";
