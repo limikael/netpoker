@@ -9,13 +9,21 @@
 	 */
 	class NetPokerPlugin {
 
+		private static $instance;
+
+		/**
+		 *  Construct.
+		 */
+		public function __construct($mainFile) {
+			register_activation_hook($mainFile,array($this,"activate"));
+		}
+
 		/**
 		 * Install hook.
 		 */
-		public static function activate() {
+		public function activate() {
 			Cashgame::createTable();
 
-			//error_log("done activating...");
 
 			/*$c=new Cashgame();
 			$c->title="hello";
@@ -25,6 +33,13 @@
 
 			/*$c->numseats=20;
 			$c->save();*/
+		}
+
+		/**
+		 *
+		 */
+		public static function init($mainFile) {
+			self::$instance=new NetPokerPlugin($mainFile);
 		}
 	}
 

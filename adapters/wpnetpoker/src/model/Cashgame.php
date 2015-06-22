@@ -8,10 +8,8 @@
 			$this->minSitIn=10;
 			$this->maxSitIn=100;
 			$this->numseats=50;
-		}
-
-		public function getTitle() {
-			return $this->title."...";
+			$this->stake=2;
+			$this->currentNumPlayers=0;
 		}
 
 		public static function initialize() {
@@ -21,5 +19,7 @@
 			self::addField("numseats","integer not null");
 			self::addField("minSitIn","integer not null");
 			self::addField("maxSitIn","integer not null");
+			self::addField("stake","integer not null");
+			self::addField("currentNumPlayers","integer not null");
 		}
 	}

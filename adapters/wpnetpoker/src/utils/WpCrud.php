@@ -29,6 +29,21 @@
 		private $fields=array();
 		private $listFields;
 		private $editFields;
+		private $submenuSlug;
+
+		/**
+		 * Constructor.
+		 */
+		public function __construct() {
+			parent::__construct();
+		}
+
+		/**
+		 * Set submenu slug.
+		 */
+		protected function setSubmenuSlug($slug) {
+			$this->submenuSlug=$slug;
+		}
 
 		/**
 		 * Set the name of the type being managed.
@@ -313,10 +328,22 @@
 		/**
 		 * Main entry point.
 		 */
-		public static function createPages() {
+		public static function admin_menu() {
 			$instance=new static();
 
-			add_menu_page($instance->typeName, $instance->typeName, "activate_plugins", $instance->typeId."_list", array($instance,"list_handler"));
-		    add_submenu_page($instance->typeName, "Edit ".$instance->typeName, "Edit ".$instance->typeName, 'activate_plugins', $instance->typeId.'_form', array($instance,"form_handler"));
+			if ($instance->submenuSlug)
+				add_submenu_page($instance->submenuSlug,$instance->typeName, $instance->typeName, "activate_plugins", $instance->typeId."_list", array($instance,"list_handler"));
+
+			else
+				add_menu_page($instance->typeName, $instance->typeName, "activate_plugins", $instance->typeId."_list", array($instance,"list_handler"));
+
+		    add_submenu_page(NULL, "Edit ".$instance->typeName, "Edit ".$instance->typeName, 'activate_plugins', $instance->typeId.'_form', array($instance,"form_handler"));
+		}
+
+		/**
+		 * Set up.
+		 */
+		public static function init() {
+			add_action("admin_menu",array(get_called_class(),"admin_menu"));
 		}
 	}

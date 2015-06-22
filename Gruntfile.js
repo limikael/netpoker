@@ -70,6 +70,13 @@ module.exports = function(grunt) {
 					expand: true,
 					src: "res/viewcases/**",
 					dest: "adapters/drupalnetpoker/viewcases"
+				}, {
+					expand: true,
+					src: "bin/**",
+					dest: "adapters/wpnetpoker"
+				}, {
+					src: "node_modules/bundleloader/bundleloader.min.js",
+					dest: "adapters/wpnetpoker/res/bundleloader.min.js"
 				}]
 			},
 

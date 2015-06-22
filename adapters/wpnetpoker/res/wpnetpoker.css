@@ -1,0 +1,20 @@
+.netpoker_cashgame_list {
+	width: 100%;
+	table-layout: fixed;
+}
+
+.netpoker_cashgame_list th {
+	background: #404040;
+	color: #ffffff;
+	margin: 0;
+	padding: 10px;
+}
+
+.netpoker_cashgame_list td {
+	background: #f0f0f0;
+	color: #000000;
+	padding: 10px;
+}
+
+.netpoker_cashgame_list tr {
+}

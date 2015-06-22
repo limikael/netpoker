@@ -1,6 +1,5 @@
 <?php
 
-	require_once ABSPATH.'wp-admin/includes/class-wp-list-table.php';
 	require_once __DIR__."/../model/Cashgame.php";
 	require_once __DIR__."/../utils/Template.php";
 	require_once __DIR__."/../utils/WpCrud.php";
@@ -13,11 +12,15 @@
 			$this->setTypeName("Cashgame");
 
 			$this->addField("title")->label("Title");
-			$this->addField("currency")->label("Currency");
 			$this->addField("numseats")->label("Number of seats");
+			$this->addField("currency")->label("Currency");
+			$this->addField("minSitIn")->label("Min sit in");
+			$this->addField("maxSitIn")->label("Max sit in");
+			$this->addField("stake")->label("Stake (Big Blind)");
 
 			$this->setListFields(array("title","currency"));
 
+			$this->setSubmenuSlug("netpoker_settings");
 		}
 
 		protected function createItem() {
@@ -53,5 +56,3 @@
 			return Cashgame::findAll();
 		}
 	}
-
-	add_action("admin_menu",array("CashgameListTable","createPages"));
