@@ -1,15 +1,13 @@
-var Thenable = require("tinp");
-var url = require("url");
-var request = require("request");
-var fs = require("fs");
-
 /**
  * Server.
  * @module server
  */
 
-var yaml = require("js-yaml");
+var Thenable = require("tinp");
+var url = require("url");
+var request = require("request");
 var fs = require("fs");
+var ConfigParser=require("../../utils/ConfigParser");
 
 /**
  * Configure the server with command line options and/or contents from a config
@@ -117,20 +115,6 @@ NetPokerServerConfigurator.prototype.loadConfigSource = function(configSource) {
 
 	else
 		return this.loadConfigFile(configSource);
-
-	/*	fs.readFile(configFileName)
-
-		var doc = yaml.safeLoad(fs.readFileSync(configFileName));
-
-		this.applySettings(doc).then(
-			function() {
-				thenable.resolve()
-			},
-			function() {
-				thenable.reject()
-			});
-
-		return thenable;*/
 }
 
 /**
@@ -141,7 +125,7 @@ NetPokerServerConfigurator.prototype.loadConfigSource = function(configSource) {
 NetPokerServerConfigurator.prototype.loadConfigFile = function(configFileName) {
 	var thenable = new Thenable();
 
-	var doc = yaml.safeLoad(fs.readFileSync(configFileName));
+	var doc = ConfigParser.parse(fs.readFileSync(configFileName));
 
 	this.applySettings(doc).then(
 		function() {
@@ -173,7 +157,7 @@ NetPokerServerConfigurator.prototype.loadConfigUrl = function(configUrl) {
 			return;
 		}
 
-		var doc = yaml.safeLoad(body);
+		var doc = ConfigParser.parse(body);
 
 		this.applySettings(doc).then(
 			function() {
