@@ -14,8 +14,8 @@
 			$this->addField("title")->label("Title");
 			$this->addField("numseats")->label("Number of seats");
 			$this->addField("currency")->label("Currency");
-			$this->addField("minSitIn")->label("Min sit in");
-			$this->addField("maxSitIn")->label("Max sit in");
+			$this->addField("minSitInAmount")->label("Min sit in");
+			$this->addField("maxSitInAmount")->label("Max sit in");
 			$this->addField("stake")->label("Stake (Big Blind)");
 
 			$this->setListFields(array("title","currency"));

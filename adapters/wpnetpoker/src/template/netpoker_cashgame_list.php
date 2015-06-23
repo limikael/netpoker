@@ -9,7 +9,8 @@
 	<?php foreach ($items as $item) { ?>
 		<tr>
 			<td>
-				<a href="<?php echo plugins_url(); ?>/wpnetpoker/game.php">
+				<a href="<?php echo plugins_url(); ?>/wpnetpoker/game.php?cashgameId=<?php echo $item->id; ?>"
+					target="cashgame-<?php echo $item->id ?>">
 					<?php print $item->title; ?>
 				</a>
 			</td>
@@ -23,8 +24,8 @@
 				<?php print $item->currency; ?>
 			</td>
 			<td>
-				<?php print $item->minSitIn; ?> - 
-				<?php print $item->maxSitIn; ?>
+				<?php print $item->minSitInAmount; ?> - 
+				<?php print $item->maxSitInAmount; ?>
 				<?php print $item->currency; ?>
 			</td>
 		</tr>

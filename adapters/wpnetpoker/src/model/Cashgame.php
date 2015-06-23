@@ -5,11 +5,12 @@
 	class Cashgame extends ActiveRecord {
 
 		public function __construct() {
-			$this->minSitIn=10;
-			$this->maxSitIn=100;
+			$this->minSitInAmount=10;
+			$this->maxSitInAmount=100;
 			$this->numseats=50;
 			$this->stake=2;
 			$this->currentNumPlayers=0;
+			$this->currency="ply";
 		}
 
 		public static function initialize() {
@@ -17,8 +18,8 @@
 			self::addField("title","varchar(255)");
 			self::addField("currency","varchar(255)");
 			self::addField("numseats","integer not null");
-			self::addField("minSitIn","integer not null");
-			self::addField("maxSitIn","integer not null");
+			self::addField("minSitInAmount","integer not null");
+			self::addField("maxSitInAmount","integer not null");
 			self::addField("stake","integer not null");
 			self::addField("currentNumPlayers","integer not null");
 		}

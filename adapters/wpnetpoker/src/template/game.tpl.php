@@ -23,7 +23,7 @@
 				});
 
 				netPokerClient.setUrl("<?php echo $url; ?>");
-				netPokerClient.setSpriteSheet("<?php echo $skinUrl; ?>");
+				netPokerClient.setSpriteSheet("<?php echo $mainSpriteSheet; ?>");
 
 				<?php if (isset($token)) { ?>
 					netPokerClient.setToken("<?php echo $token; ?>");

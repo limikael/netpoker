@@ -31,6 +31,16 @@
 
 			register_activation_hook($mainFile,array($this,"activate"));
 			register_uninstall_hook($mainFile,array("NetPokerPlugin","uninstall"));
+
+			add_action("wp_logout",array($this,"wp_logout"));
+		}
+
+		/**
+		 * Logout.
+		 */
+		public function wp_logout() {
+			session_start();
+			unset($_SESSION["netpoker_user_id"]);
 		}
 
 		/**
@@ -55,6 +65,45 @@
 				delete_option($option);
 
 			Cashgame::dropTable();
+		}
+
+		/**
+		 * Get gameplay server host.
+		 */
+		public function getGameplayServerHost() {
+			if (get_option("netpoker_gameplay_server_host"))
+				return get_option("netpoker_gameplay_server_host");
+
+			return $_SERVER["SERVER_NAME"];
+		}
+
+		/**
+		 * Get user ply balance.
+		 */
+		public function getUserPlyBalance($userId) {
+			$user=get_user_by("id",$userId);
+			if (!$user)
+				throw new Exception("User not found");
+
+			$value=get_user_meta($userId,"netpoker_playmoney_balance",TRUE);
+
+			if ($value==="")
+				$value=get_option("netpoker_default_playmoney");
+
+			return $value;
+		}
+
+		/**
+		 * Change user ply balance.
+		 */
+		public function changeUserPlyBalance($userId, $amount) {
+			$balance=$this->getUserPlyBalance($userId);
+			$balance+=$amount;
+
+			if ($balance<0)
+				throw new Exception("Not enough balance.");
+
+			update_user_meta($userId,"netpoker_playmoney_balance",$balance);
 		}
 	}
 

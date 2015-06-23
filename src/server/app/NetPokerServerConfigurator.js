@@ -73,6 +73,9 @@ NetPokerServerConfigurator.prototype.applySetting = function(name, value) {
 			return this.loadConfigSource(value);
 			break;
 
+		case "ok":
+			break;
+
 		case "_":
 			if (value.length) {
 				thenable.reject("Don't know what to do with those arguments...");
