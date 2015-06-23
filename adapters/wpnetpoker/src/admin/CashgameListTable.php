@@ -3,6 +3,7 @@
 	require_once __DIR__."/../model/Cashgame.php";
 	require_once __DIR__."/../utils/Template.php";
 	require_once __DIR__."/../utils/WpCrud.php";
+	require_once __DIR__."/../plugin/NetPokerPlugin.php";
 
 	class CashgameListTable extends WpCrud {
 
@@ -37,6 +38,7 @@
 
 		protected function saveItem($item) {
 			$item->save();
+			NetPokerPlugin::init()->reloadTablesConditionally();
 		}
 
 		protected function validateItem($item) {
@@ -46,6 +48,7 @@
 
 		protected function deleteItem($item) {
 			$item->delete();
+			NetPokerPlugin::init()->reloadTablesConditionally();
 		}
 
 		protected function getItem($id) {

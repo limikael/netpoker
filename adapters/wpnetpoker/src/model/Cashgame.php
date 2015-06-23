@@ -7,7 +7,7 @@
 		public function __construct() {
 			$this->minSitInAmount=10;
 			$this->maxSitInAmount=100;
-			$this->numseats=50;
+			$this->numseats=10;
 			$this->stake=2;
 			$this->currentNumPlayers=0;
 			$this->currency="ply";

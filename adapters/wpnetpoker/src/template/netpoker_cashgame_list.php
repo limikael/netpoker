@@ -10,7 +10,7 @@
 		<tr>
 			<td>
 				<a href="<?php echo plugins_url(); ?>/wpnetpoker/game.php?cashgameId=<?php echo $item->id; ?>"
-					target="cashgame-<?php echo $item->id ?>">
+					target="cashgame-<?php echo $item->id ?>-<?php echo wp_get_current_user()->ID ?>">
 					<?php print $item->title; ?>
 				</a>
 			</td>

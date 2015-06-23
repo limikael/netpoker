@@ -78,6 +78,16 @@
 		}
 
 		/**
+		 * Get gameplay server host.
+		 */
+		public function getGameplayServerToServerHost() {
+			if (get_option("netpoker_gameplay_server_to_server_host"))
+				return get_option("netpoker_gameplay_server_to_server_host");
+
+			return $this->getGameplayServerHost();
+		}
+
+		/**
 		 * Get user ply balance.
 		 */
 		public function getUserPlyBalance($userId) {
@@ -104,6 +114,55 @@
 				throw new Exception("Not enough balance.");
 
 			update_user_meta($userId,"netpoker_playmoney_balance",$balance);
+		}
+
+		/**
+		 * Use current game id.
+		 */
+		public function useGameId() {
+			$id=get_option("netpoker_cashgame_id");
+
+			update_option("netpoker_cashgame_id",$id+1);
+
+			return $id;
+		}
+
+		/**
+		 * Reload table info in server if enabled.
+		 */
+		public function reloadTablesConditionally() {
+			if (!get_option("netpoker_communicate_with_server"))
+				return;
+
+			$this->serverRequest("reloadTables");
+		}
+
+		/**
+		 * Server request.
+		 */
+		public function serverRequest($method, $params=array()) {
+			$curl=curl_init();
+
+			$url=
+				"http://".
+				$this->getGameplayServerToServerHost().":".
+				get_option("netpoker_gameplay_server_port")."/".
+				$method;
+
+			$params["key"]=get_option("netpoker_gameplay_key");
+
+			$url.="?".http_build_query($params);
+
+			curl_setopt($curl,CURLOPT_URL,$url);
+			curl_setopt($curl,CURLOPT_RETURNTRANSFER,TRUE);
+			$res=curl_exec($curl);
+
+			if (!$res) {
+				error_log("backend call failed: ".$method);
+				return NULL;
+			}
+
+			return json_decode($res,TRUE);
 		}
 	}
 

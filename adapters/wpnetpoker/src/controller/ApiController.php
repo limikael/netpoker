@@ -109,6 +109,27 @@
 		}
 
 		/**
+		 * Start for cash game.
+		 */
+		public function gameStartForCashGame($p) {
+			$cashgame=Cashgame::findOne($p["parentId"]);
+			if (!$cashgame)
+				throw new Exception("Can't find game.");
+
+			$gameId=NetPokerPlugin::init()->useGameId();
+
+			return array(
+				"gameId"=>$gameId
+			);
+		}
+
+		/**
+		 * Start for cash game.
+		 */
+		public function gameFinish($p) {
+		}
+
+		/**
 		 * Dispatch call.
 		 */
 		public function dispatch() {

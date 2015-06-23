@@ -25,6 +25,9 @@
 			), array(
 				"setting"=>"netpoker_gameplay_key",
 				"title"=>"Gameplay server key",
+			), array(
+				"setting"=>"netpoker_communicate_with_server",
+				"title"=>"Communicate with server",
 			));
 
 			add_action('admin_menu',array($this,'admin_menu'));
