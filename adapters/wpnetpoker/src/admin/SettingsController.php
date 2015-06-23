@@ -1,29 +1,29 @@
 <?php
 
 	require_once __DIR__."/../utils/Template.php";
+	require_once __DIR__."/../plugin/NetPokerPlugin.php";
+	require_once __DIR__."/../utils/Singleton.php";
 
 	/**
 	 * Manage the settings page.
 	 */
-	class SettingsController {
-
-		private static $instance;
+	class SettingsController extends Singleton {
 
 		/**
 		 * Construct.
 		 */
 		public function __construct() {
 			$this->settings=array(array(
-				"setting"=>"gameplay_server_host",
+				"setting"=>"netpoker_gameplay_server_host",
 				"title"=>"Gameplay server host",
 			), array(
-				"setting"=>"gameplay_server_to_server_host",
+				"setting"=>"netpoker_gameplay_server_to_server_host",
 				"title"=>"Gameplay server to server host",
 			), array(
-				"setting"=>"gameplay_server_port",
+				"setting"=>"netpoker_gameplay_server_port",
 				"title"=>"Gameplay server port",
 			), array(
-				"setting"=>"gameplay_server_key",
+				"setting"=>"netpoker_gameplay_key",
 				"title"=>"Gameplay server key",
 			));
 
@@ -62,12 +62,5 @@
 			$template=new Template(__DIR__."/../template/settings.tpl.php");
 			$template->set("settings",$this->settings);
 			$template->show();
-		}
-
-		/**
-		 * Init.
-		 */
-		public static function init() {
-			$instance=new SettingsController();
 		}
 	}

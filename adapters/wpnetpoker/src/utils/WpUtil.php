@@ -21,7 +21,12 @@
 		 * Create a PDO object that is compatible with the current
 		 * wordpress install.
 		 */
-		public static function createCompatiblePdo() {
-			return new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME,DB_USER,DB_PASSWORD);
+		public static function getCompatiblePdo() {
+			static $pdo;
+
+			if (!$pdo)
+				$pdo=new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME,DB_USER,DB_PASSWORD);
+
+			return $pdo;
 		}
 	}

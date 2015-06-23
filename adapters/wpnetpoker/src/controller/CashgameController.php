@@ -1,13 +1,12 @@
 <?php
 
 	require_once __DIR__."/../utils/Template.php";
+	require_once __DIR__."/../utils/Singleton.php";
 
 	/**
 	 * Handle shortcodes related to cashgames.
 	 */
-	class CashgameController {
-
-		private static $instance;
+	class CashgameController extends Singleton {
 
 		/**
 		 * Construct.
@@ -35,15 +34,5 @@
 			$template->set("items",Cashgame::findAll());
 
 			return $template->render();
-		}
-
-		/**
-		 * Init.
-		 */
-		public static function init() {
-			if (self::$instance)
-				throw new Exception("Already created");
-
-			self::$instance=new CashgameController();
 		}
 	}
