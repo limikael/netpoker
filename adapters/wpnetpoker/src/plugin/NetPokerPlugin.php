@@ -34,17 +34,6 @@
 		}
 
 		/**
-		 * Set main file.
-		 */
-		public function setMainFile($mainFile) {
-			if ($this->hooked)
-				return;
-
-			$this->hooked=TRUE;
-
-		}
-
-		/**
 		 * Install hook.
 		 */
 		public function activate() {
@@ -64,6 +53,8 @@
 
 			foreach ($instance->optionDefaults as $option=>$default)
 				delete_option($option);
+
+			Cashgame::dropTable();
 		}
 	}
 

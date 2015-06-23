@@ -120,6 +120,19 @@
 		}
 
 		/**
+		 * Drop table if it exists.
+		 */
+		public final static function dropTable() {
+			self::init();
+
+			$table=self::$classes[get_called_class()]["table"];
+
+			$dropStatement=self::$pdo->query("DROP TABLE IF EXISTS $table");
+			if (!$dropStatement)
+				throw new Exception("Unable to drop table: ".join(",",self::$pdo->errorInfo()));
+		}
+
+		/**
 		 * Get value for primary key.
 		 */
 		private function getPrimaryKeyValue() {

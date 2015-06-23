@@ -9,7 +9,7 @@
 	global $wpdb;
 
 	ActiveRecord::setTablePrefix($wpdb->prefix);
-	ActiveRecord::setPdo(new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME,DB_USER,DB_PASSWORD));
+	ActiveRecord::setPdo(WpUtil::getCompatiblePdo());
 
 	$template=new Template(__DIR__."/src/template/game.tpl.php");
 	$template->set("bundleLoaderUrl","res/bundleloader.min.js");
