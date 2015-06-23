@@ -61,6 +61,9 @@
 		public function create_settings_page() {
 			$template=new Template(__DIR__."/../template/settings.tpl.php");
 			$template->set("settings",$this->settings);
+			$template->set("startupCommand",
+				"netpokerserver --config=".plugins_url("wpnetpoker/api.php")."/serverConfig?key=".get_option("netpoker_gameplay_key")
+			);
 			$template->show();
 		}
 	}

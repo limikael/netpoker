@@ -15,6 +15,12 @@
                     </td>
                 </tr>
             <?php } ?>
+            <tr valign="top">
+                <th scope="row">Server startup</th>
+                <td>
+                    <tt><?php echo $startupCommand; ?></tt>
+                </td>
+            </tr>
         </table>
 
         <?php submit_button(); ?>
