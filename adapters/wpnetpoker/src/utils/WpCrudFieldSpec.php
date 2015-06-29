@@ -1,5 +1,7 @@
 <?php
 
+	namespace wpnetpoker;
+
 	class WpCrudFieldSpec {
 
 		public $field;

@@ -4,6 +4,10 @@
 	require_once __DIR__."/src/utils/Template.php";
 	require_once __DIR__."/src/plugin/NetPokerPlugin.php";
 
+	use wpnetpoker\WpUtil;
+	use wpnetpoker\NetPokerPlugin;
+	use wpnetpoker\Template;
+
 	require_once WpUtil::getWpLoadPath();
 
 	$url="ws://".
@@ -17,8 +21,6 @@
 	if ($user) {
 		$_SESSION["netpoker_user_id"]=$user->ID;
 	}
-
-//	print_r($user->ID);
 
 	$template=new Template(__DIR__."/src/template/game.tpl.php");
 	$template->set("bundleLoaderUrl","res/bundleloader.min.js");

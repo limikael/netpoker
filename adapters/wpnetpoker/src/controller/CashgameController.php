@@ -1,5 +1,7 @@
 <?php
 
+	namespace wpnetpoker;
+
 	require_once __DIR__."/../model/Cashgame.php";
 	require_once __DIR__."/../utils/Template.php";
 	require_once __DIR__."/../utils/WpCrud.php";

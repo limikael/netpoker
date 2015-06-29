@@ -1,6 +1,10 @@
 <?php
 
+	namespace wpnetpoker;
+
 	require_once __DIR__."/../../ext/smartrecord/SmartRecord.php";
+
+	use \SmartRecord;
 
 	class Cashgame extends SmartRecord {
 

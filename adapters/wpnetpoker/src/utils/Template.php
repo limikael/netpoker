@@ -1,5 +1,7 @@
 <?php
 
+	namespace wpnetpoker;
+
 	/**
 	 * Echo for attribute.
 	 */
@@ -45,7 +47,7 @@
 		 * Create a Template for the specified file.
 		 * @param mixed $filename The file to use as template.
 		 */
-		public function Template($filename) {
+		public function __construct($filename) {
 			$this->filename=$filename;
 			$this->vars=array();
 		}

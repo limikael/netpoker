@@ -1,5 +1,7 @@
 <?php
 
+	namespace wpnetpoker;
+
 	require_once __DIR__."/../model/Cashgame.php";
 	require_once __DIR__."/../utils/Singleton.php";
 
@@ -29,7 +31,7 @@
 			$mainFile=WP_PLUGIN_DIR."/wpnetpoker/wpnetpoker.php";
 
 			register_activation_hook($mainFile,array($this,"activate"));
-			register_uninstall_hook($mainFile,array("NetPokerPlugin","uninstall"));
+			register_uninstall_hook($mainFile,array('wpnetpoker\NetPokerPlugin',"uninstall"));
 
 			add_action("wp_logout",array($this,"wp_logout"));
 		}

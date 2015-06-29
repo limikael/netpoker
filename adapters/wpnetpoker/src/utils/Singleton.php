@@ -1,5 +1,7 @@
 <?php
 
+	namespace wpnetpoker;
+
 	/**
 	 * Singleton
 	 */

@@ -1,8 +1,12 @@
 <?php
 
+	namespace wpnetpoker;
+
 	require_once ABSPATH.'wp-admin/includes/class-wp-list-table.php';
 	require_once __DIR__."/../utils/Template.php";
 	require_once __DIR__."/WpCrudFieldSpec.php";
+
+	use \WP_List_Table;
 
 	/**
 	 * Generic CRUD interface for Wordpress.
