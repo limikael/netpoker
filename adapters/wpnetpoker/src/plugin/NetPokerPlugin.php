@@ -1,7 +1,6 @@
 <?php
 
 	require_once __DIR__."/../model/Cashgame.php";
-	require_once __DIR__."/../utils/ActiveRecord.php";
 	require_once __DIR__."/../utils/Singleton.php";
 
 	/**
@@ -39,7 +38,9 @@
 		 * Logout.
 		 */
 		public function wp_logout() {
-			session_start();
+			if (!session_id())
+				session_start();
+
 			unset($_SESSION["netpoker_user_id"]);
 		}
 
@@ -51,7 +52,7 @@
 				if (!get_option($option))
 					update_option($option,$default);
 
-			Cashgame::createTable();
+			Cashgame::install();
 		}
 
 		/**
@@ -64,7 +65,7 @@
 			foreach ($instance->optionDefaults as $option=>$default)
 				delete_option($option);
 
-			Cashgame::dropTable();
+			Cashgame::uninstall();
 		}
 
 		/**

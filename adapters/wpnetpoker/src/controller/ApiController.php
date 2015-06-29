@@ -49,6 +49,9 @@
 		 * Get user info by token
 		 */
 		public function getUserInfoByToken($p) {
+			if (session_id())
+				session_commit();
+
 			session_id($p["token"]);
 			session_start();
 

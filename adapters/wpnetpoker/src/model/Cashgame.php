@@ -1,8 +1,8 @@
 <?php
 
-	require_once __DIR__."/../utils/ActiveRecord.php";
+	require_once __DIR__."/../../ext/smartrecord/SmartRecord.php";
 
-	class Cashgame extends ActiveRecord {
+	class Cashgame extends SmartRecord {
 
 		public function __construct() {
 			$this->minSitInAmount=10;
@@ -14,13 +14,13 @@
 		}
 
 		public static function initialize() {
-			self::addField("id","integer not null auto_increment");
-			self::addField("title","varchar(255)");
-			self::addField("currency","varchar(255)");
-			self::addField("numseats","integer not null");
-			self::addField("minSitInAmount","integer not null");
-			self::addField("maxSitInAmount","integer not null");
-			self::addField("stake","integer not null");
-			self::addField("currentNumPlayers","integer not null");
+			self::field("id","integer not null auto_increment");
+			self::field("title","varchar(255)");
+			self::field("currency","varchar(255)");
+			self::field("numseats","integer not null");
+			self::field("minSitInAmount","integer not null");
+			self::field("maxSitInAmount","integer not null");
+			self::field("stake","integer not null");
+			self::field("currentNumPlayers","integer not null");
 		}
 	}
