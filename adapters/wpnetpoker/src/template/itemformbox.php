@@ -6,9 +6,27 @@
 					<label for="<?php echo $field["field"]; ?>"><?php echo $field["label"]; ?></label>
 				</th>
 				<td>
-					<input id="<?php echo $field["field"] ?>" 
-						name="<?php echo $field["field"] ?>" type="text" style="width: 95%" value="<?php echo esc_attr($field['value'])?>"
-						size="50" class="code" placeholder="">
+					<?php if ($field["spec"]->type=="select") { ?>
+						<select id="<?php echo $field["field"] ?>"
+								name="<?php echo $field["field"] ?>">
+							<?php foreach ($field["spec"]->options as $key=>$value) { ?>
+								<option value="<?php echo $key; ?>"
+									<?php if ($field["value"]==$key) { ?>
+										selected="true"
+									<?php } ?>
+								>
+									<?php echo $value; ?>
+								</option>
+							<?php } ?>
+						</select>
+					<?php } else { ?>
+						<input id="<?php echo $field["field"] ?>" 
+								name="<?php echo $field["field"] ?>" 
+								type="text" 
+								style="width: 95%" 
+								value="<?php echo esc_attr($field['value'])?>"
+								size="50" class="code" placeholder="">
+					<?php } ?>
 				</td>
 			</tr>
 		<?php } ?>

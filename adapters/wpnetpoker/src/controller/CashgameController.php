@@ -12,11 +12,26 @@
 		public function __construct() {
 			parent::__construct();
 
+			$currencies=array();
+			$currencies["ply"]="PLY";
+
+			if (is_plugin_active("wpblockchainaccounts/wpblockchainaccounts.php"))
+				$currencies["bits"]="BITS";
+
+			$numseatOptions=array(
+				"2"=>"2",
+				"3"=>"3",
+				"4"=>"4",
+				"6"=>"6",
+				"8"=>"8",
+				"10"=>"10"
+			);
+
 			$this->setTypeName("Cashgame");
 
 			$this->addField("title")->label("Title");
-			$this->addField("numseats")->label("Number of seats");
-			$this->addField("currency")->label("Currency");
+			$this->addField("numseats")->label("Number of seats")->options($numseatOptions);
+			$this->addField("currency")->label("Currency")->options($currencies);
 			$this->addField("minSitInAmount")->label("Min sit in");
 			$this->addField("maxSitInAmount")->label("Max sit in");
 			$this->addField("stake")->label("Stake (Big Blind)");
@@ -44,8 +59,11 @@
 		}
 
 		protected function validateItem($item) {
+			if (!$item->title)
+				return "You need to name the table something.";
+
 			if (!$item->numseats)
-				return "Number of seats needs to be specified";
+				return "Number of seats needs to be specified.";
 		}
 
 		protected function deleteItem($item) {
