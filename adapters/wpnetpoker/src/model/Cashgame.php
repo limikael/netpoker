@@ -6,8 +6,14 @@
 
 	use \SmartRecord;
 
+	/**
+	 * A cashgame.
+	 */
 	class Cashgame extends SmartRecord {
 
+		/**
+		 * Constructor.
+		 */
 		public function __construct() {
 			$this->minSitInAmount=10;
 			$this->maxSitInAmount=100;
@@ -17,10 +23,13 @@
 			$this->currency="ply";
 		}
 
+		/**
+		 * Initialize database.
+		 */
 		public static function initialize() {
 			self::field("id","integer not null auto_increment");
 			self::field("title","varchar(255)");
-			self::field("currency","varchar(255)");
+			self::field("currency","varchar(255) not null");
 			self::field("numseats","integer not null");
 			self::field("minSitInAmount","integer not null");
 			self::field("maxSitInAmount","integer not null");

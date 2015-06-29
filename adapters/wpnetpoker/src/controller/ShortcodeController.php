@@ -5,6 +5,8 @@
 	require_once __DIR__."/../utils/Template.php";
 	require_once __DIR__."/../utils/Singleton.php";
 	require_once __DIR__."/../plugin/NetPokerPlugin.php";
+	require_once __DIR__."/../model/Cashgame.php";
+	require_once __DIR__."/../model/Tournament.php";
 
 	/**
 	 * Handle shortcodes related to cashgames.
@@ -19,6 +21,7 @@
 
 			add_shortcode("netpoker_cashgame_list", array($this, "netpoker_cashgame_list"));
 			add_shortcode("netpoker_playmoney_balance", array($this, "netpoker_playmoney_balance"));
+			add_shortcode("netpoker_tournament_list", array($this, "netpoker_tournament_list"));
 		}
 
 		/**
@@ -47,5 +50,17 @@
 			$balance=NetPokerPlugin::init()->getUserPlyBalance($user->ID);
 
 			return "Playmoney balance: ".$balance."<br/>";
+		}
+
+		/**
+		 * Tournament list.
+		 */
+		public function netpoker_tournament_list() {
+			wp_enqueue_style("netpoker");
+
+			$template=new Template(__DIR__."/../template/netpoker_tournament_list.php");
+			$template->set("items",Tournament::findAll());
+
+			return $template->render();
 		}
 	}

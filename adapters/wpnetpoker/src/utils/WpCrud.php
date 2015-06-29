@@ -154,7 +154,7 @@
 				);
 
 				return sprintf('%s %s',
-					$item->title,
+					$item->$column_name,
 					$this->row_actions($actions)
 				);
 			}

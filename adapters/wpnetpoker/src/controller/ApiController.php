@@ -78,19 +78,7 @@
 			if (!$user)
 				throw new Exception("Unknown user.");
 
-			switch ($p["currency"]) {
-				case "ply":
-					$balance=NetPokerPlugin::init()->getUserPlyBalance($user->ID);
-					break;
-
-				case "bits":
-					$balance=bca_user_account($user)->getBalance("bits");
-					break;
-
-				default:
-					throw new Exception("Unknown currency: ".$p["currency"]);
-					break;
-			}
+			$balance=NetPokerPlugin::init()->getEntityBalance($p["currency"],$user);
 
 			return array(
 				"balance"=>$balance
@@ -109,23 +97,11 @@
 			if (!$cashgame)
 				throw new Exception("Can't find game.");
 
-			switch ($cashgame->currency) {
-				case "ply":
-					NetPokerPlugin::init()->changeUserPlyBalance($p["userId"],-$p["amount"]);
-					break;
-
-				case "bits":
-					bca_make_transaction("bits",
-						bca_user_account($user),
-						bca_entity_account("cashgame",$cashgame->id),
-						$p["amount"],"Sit in"
-					);
-					break;
-
-				default:
-					throw new Exception("Unknown currency: ".$cashgame->currency);
-					break;
-			}
+			NetPokerPlugin::init()->makeEntityTransaction(
+				$cashgame->currency,
+				$user,$cashgame,
+				$p["amount"],"Sit in"
+			);
 		}
 
 		/**
@@ -140,24 +116,11 @@
 			if (!$cashgame)
 				throw new Exception("Can't find game.");
 
-			switch ($cashgame->currency) {
-				case "ply":
-					NetPokerPlugin::init()->changeUserPlyBalance($p["userId"],$p["amount"]);
-					break;
-
-				case "bits":
-					bca_make_transaction("bits",
-						bca_entity_account("cashgame",$cashgame->id),
-						bca_user_account($user),
-						$p["amount"],"Sit out"
-					);
-					break;
-
-				default:
-					throw new Exception("Unknown currency: ".$cashgame->currency);
-					break;
-			}
-
+			NetPokerPlugin::init()->makeEntityTransaction(
+				$cashgame->currency,
+				$cashgame,$user,
+				$p["amount"],"Sit out"
+			);
 		}
 
 		/**
@@ -179,6 +142,47 @@
 		 * Start for cash game.
 		 */
 		public function gameFinish($p) {
+		}
+
+		/**
+		 * Get tournament info.
+		 */
+		public function tournamentInfo($p) {
+			$tournament=Tournament::findOne($p["tournamentId"]);
+			if (!$tournament)
+				throw new Exception("Can't find tournament.");
+
+			return $tournament->getInfoData();
+		}
+
+		/**
+		 * Register for tournament.
+		 */
+		public function tournamentRegister($p) {
+			$tournament=Tournament::findOne($p["tournamentId"]);
+			if (!$tournament)
+				throw new Exception("Can't find tournament.");
+
+			$user=get_user_by("id",$p["userId"]);
+			if (!$user)
+				throw new Exception("Unknown user.");
+
+			$tournament->registerUser($user);
+		}
+
+		/**
+		 * Register for tournament.
+		 */
+		public function tournamentUnregister($p) {
+			$tournament=Tournament::findOne($p["tournamentId"]);
+			if (!$tournament)
+				throw new Exception("Can't find tournament.");
+
+			$user=get_user_by("id",$p["userId"]);
+			if (!$user)
+				throw new Exception("Unknown user.");
+
+			$tournament->unregisterUser($user);
 		}
 
 		/**

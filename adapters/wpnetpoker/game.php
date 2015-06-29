@@ -34,4 +34,7 @@
 	if (isset($_REQUEST["cashgameId"]))
 		$template->set("tableId",$_REQUEST["cashgameId"]);
 
+	if (isset($_REQUEST["tournamentId"]))
+		$template->set("tournamentId",$_REQUEST["tournamentId"]);
+
 	$template->show();
