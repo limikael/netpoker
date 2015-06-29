@@ -5,7 +5,7 @@
 	require_once __DIR__."/../utils/WpCrud.php";
 	require_once __DIR__."/../plugin/NetPokerPlugin.php";
 
-	class CashgameListTable extends WpCrud {
+	class CashgameController extends WpCrud {
 
 		public function __construct() {
 			parent::__construct();
