@@ -6,6 +6,8 @@
 	require_once __DIR__."/../plugin/NetPokerPlugin.php";
 	require_once __DIR__."/../model/Cashgame.php";
 
+	use \Exception;
+
 	/**
 	 * Api controller.
 	 */
@@ -76,7 +78,19 @@
 			if (!$user)
 				throw new Exception("Unknown user.");
 
-			$balance=NetPokerPlugin::init()->getUserPlyBalance($user->ID);
+			switch ($p["currency"]) {
+				case "ply":
+					$balance=NetPokerPlugin::init()->getUserPlyBalance($user->ID);
+					break;
+
+				case "bits":
+					$balance=bca_user_account($user)->getBalance("bits");
+					break;
+
+				default:
+					throw new Exception("Unknown currency: ".$p["currency"]);
+					break;
+			}
 
 			return array(
 				"balance"=>$balance
@@ -95,7 +109,23 @@
 			if (!$cashgame)
 				throw new Exception("Can't find game.");
 
-			NetPokerPlugin::init()->changeUserPlyBalance($p["userId"],-$p["amount"]);
+			switch ($cashgame->currency) {
+				case "ply":
+					NetPokerPlugin::init()->changeUserPlyBalance($p["userId"],-$p["amount"]);
+					break;
+
+				case "bits":
+					bca_make_transaction("bits",
+						bca_user_account($user),
+						bca_entity_account("cashgame",$cashgame->id),
+						$p["amount"],"Sit in"
+					);
+					break;
+
+				default:
+					throw new Exception("Unknown currency: ".$cashgame->currency);
+					break;
+			}
 		}
 
 		/**
@@ -110,7 +140,24 @@
 			if (!$cashgame)
 				throw new Exception("Can't find game.");
 
-			NetPokerPlugin::init()->changeUserPlyBalance($p["userId"],$p["amount"]);
+			switch ($cashgame->currency) {
+				case "ply":
+					NetPokerPlugin::init()->changeUserPlyBalance($p["userId"],$p["amount"]);
+					break;
+
+				case "bits":
+					bca_make_transaction("bits",
+						bca_entity_account("cashgame",$cashgame->id),
+						bca_user_account($user),
+						$p["amount"],"Sit out"
+					);
+					break;
+
+				default:
+					throw new Exception("Unknown currency: ".$cashgame->currency);
+					break;
+			}
+
 		}
 
 		/**
