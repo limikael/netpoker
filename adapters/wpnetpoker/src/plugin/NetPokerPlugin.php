@@ -15,7 +15,7 @@
 	 */
 	class NetPokerPlugin extends Singleton {
 
-		const DBVERSION=11;
+		const DBVERSION=12;
 
 		private $optionDefaults;
 		private $mainFile;

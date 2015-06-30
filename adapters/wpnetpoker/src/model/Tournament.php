@@ -14,6 +14,9 @@
 	class Tournament extends SmartRecord {
 
 		const REGISTRATION="registration";
+		const PLAYING="playing";
+		const FINISHED="finished";
+		const CANCELED="canceled";
 
 		/**
 		 * Constructor.
@@ -136,8 +139,14 @@
 		 * Register user.
 		 */
 		public function registerUser($user) {
+			if (!$user)
+				throw new Exception("That's not a user.");
+
 			if ($this->isUserRegistered($user))
 				throw new Exception("Already registered.");
+
+			if ($this->state!=Tournament::REGISTRATION)
+				throw new Exception("Not in registration state.");
 
 			NetPokerPlugin::init()->makeEntityTransaction(
 				$this->currency,
@@ -156,12 +165,82 @@
 			if (!$reg)
 				throw new Exception("Not registered.");
 
+			if ($this->state!=Tournament::REGISTRATION)
+				throw new Exception("Not in registration state.");
+
 			NetPokerPlugin::init()->makeEntityTransaction(
 				$this->currency,
 				$this,$user,
 				$reg->fee,"Cancel tournament registration");
 
 			$reg->delete();
+		}
+
+		/**
+		 * Create recurring tournament.
+		 */
+		private static function createRecurring() {
+			// implement...
+		}
+
+		/**
+		 * Start.
+		 */
+		public function start() {
+			if ($this->state!=Tournament::REGISTRATION)
+				throw new Exception("Can't start, not in registration state");
+
+			$this->state=Tournament::PLAYING;
+			$this->save();
+
+			$this->createRecurring();
+		}
+
+		/**
+		 * Cancel the tournament.
+		 */
+		public function cancel() {
+			if ($this->state!=Tournament::REGISTRATION)
+				throw new Exception("Can't cancel, the tournament is not in registration state.");
+
+			$this->state=Tournament::CANCELED;
+			$this->save();
+
+			$this->createRecurring();
+		}
+
+		/**
+		 * Finish
+		 */
+		public function finish($finishOrder, $payout) {
+			if ($this->state!=Tournament::PLAYING)
+				throw new Exception("Can't finish, not in playing state");
+
+			$finishIndex=0;
+
+			foreach ($finishOrder as $finishUserId) {
+				$finishUser=get_user_by("id",$finishUserId);
+				$registration=$this->getRegistrationForUser($finishUser);
+
+				$registration->finishIndex=$finishIndex;
+
+				if (isset($payout[$finishIndex])) {
+					$out=$payout[$finishIndex];
+					$registration->payout=$out;
+
+					NetPokerPlugin::init()->makeEntityTransaction(
+						$this->currency,
+						$this,$finishUser,
+						$out,"Tournament prize"
+					);
+				}
+
+				$registration->save();
+				$finishIndex++;
+			}
+
+			$this->state=Tournament::FINISHED;
+			$this->save();
 		}
 
 		/**

@@ -41,6 +41,7 @@
 			$this->addField("levelDuration")->label("Level duration");
 			$this->addField("blindLevels")->label("Blind levels");
 			$this->addField("payoutPercent")->label("Payout percentages");
+			$this->addField("minRegistrations")->label("Min. registrations");
 			$this->addField("startTime")->label("Start time")->type("timestamp");
 
 			$this->setListFields(array("title","currency","fee"));
@@ -74,6 +75,9 @@
 
 			if ($item->bonus+$item->fee+$item->commission==0)
 				return "Bonus + Fee + Commission can't be 0, there needs to be a prize pool.";
+
+			if (!$item->minRegistrations && !$item->startTime)
+				return "There needs to be min registrations or start time.";
 		}
 
 		protected function deleteItem($item) {

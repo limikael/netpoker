@@ -186,6 +186,42 @@
 		}
 
 		/**
+		 * Start tournament.
+		 */
+		public function tournamentStart($p) {
+			$tournament=Tournament::findOne($p["tournamentId"]);
+			if (!$tournament)
+				throw new Exception("Can't find tournament.");
+
+			$tournament->start();
+		}
+
+		/**
+		 * Start tournament.
+		 */
+		public function tournamentCancel($p) {
+			$tournament=Tournament::findOne($p["tournamentId"]);
+			if (!$tournament)
+				throw new Exception("Can't find tournament.");
+
+			$tournament->cancel();
+		}
+
+		/**
+		 * Start tournament.
+		 */
+		public function tournamentFinish($p) {
+			$tournament=Tournament::findOne($p["tournamentId"]);
+			if (!$tournament)
+				throw new Exception("Can't find tournament.");
+
+			$tournament->finish(
+				json_decode($p["finishorder"],TRUE),
+				json_decode($p["payouts"],TRUE)
+			);
+		}
+
+		/**
 		 * Dispatch call.
 		 */
 		public function dispatch() {
