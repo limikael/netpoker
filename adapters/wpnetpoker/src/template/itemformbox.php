@@ -19,6 +19,20 @@
 								</option>
 							<?php } ?>
 						</select>
+					<?php } else if ($field["spec"]->type=="timestamp") { ?>
+						<input id="<?php echo $field["field"] ?>" 
+								name="<?php echo $field["field"] ?>" 
+								type="text" 
+								style="width: 95%" 
+								value="<?php echo esc_attr($field['value'])?>"
+								size="50" class="code" placeholder="">
+						<script>
+							jQuery(document).ready(function() {
+							    jQuery('#<?php echo $field["field"] ?>').datepicker({
+							        dateFormat : 'yy-mm-dd'
+							    });
+							});
+						</script>
 					<?php } else { ?>
 						<input id="<?php echo $field["field"] ?>" 
 								name="<?php echo $field["field"] ?>" 

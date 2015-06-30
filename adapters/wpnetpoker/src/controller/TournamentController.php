@@ -27,6 +27,8 @@
 				"8"=>"8",
 			);
 
+			// use: https://github.com/xdan/datetimepicker
+
 			$this->setTypeName("Tournament");
 
 			$this->addField("title")->label("Title");
@@ -39,6 +41,7 @@
 			$this->addField("levelDuration")->label("Level duration");
 			$this->addField("blindLevels")->label("Blind levels");
 			$this->addField("payoutPercent")->label("Payout percentages");
+			$this->addField("startTime")->label("Start time")->type("timestamp");
 
 			$this->setListFields(array("title","currency","fee"));
 

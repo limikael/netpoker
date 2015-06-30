@@ -43,7 +43,7 @@
 		 * Get prize pool.
 		 */
 		public function getPrizePool() {
-			return 123;
+			return sizeof($this->getRegistrations())*$this->fee+$this->bonus;
 		}
 
 		/**
@@ -60,7 +60,7 @@
 		 * Get prize pool.
 		 */
 		public function getNumRegistrations() {
-			return 1;
+			return sizeof($this->getRegistrations());
 		}
 
 		/**
