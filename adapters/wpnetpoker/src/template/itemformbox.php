@@ -27,9 +27,9 @@
 								value="<?php echo esc_attr($field['value'])?>"
 								size="50" class="code" placeholder="">
 						<script>
-							jQuery(document).ready(function() {
-							    jQuery('#<?php echo $field["field"] ?>').datepicker({
-							        dateFormat : 'yy-mm-dd'
+							jQuery(document).ready(function($) {
+							    $('#<?php echo $field["field"] ?>').datetimepicker({
+							    	format: 'Y-m-d H:i'
 							    });
 							});
 						</script>

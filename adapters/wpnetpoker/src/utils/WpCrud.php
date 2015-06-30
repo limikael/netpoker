@@ -41,8 +41,11 @@
 		public function __construct() {
 			parent::__construct();
 
-			wp_enqueue_script('jquery-ui-datepicker');
-			wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
+			wp_register_script("jquery-datetimepicker",plugins_url()."/wpnetpoker/res/jquery.datetimepicker.js");
+			wp_register_style("jquery-datetimepicker",plugins_url()."/wpnetpoker/res/jquery.datetimepicker.css");
+
+			/*wp_enqueue_script("jquery-datetimepicker");
+			wp_enqueue_style("jquery-datetimepicker");*/
 		}
 
 		/**
@@ -209,6 +212,9 @@
 		 * Internal.
 		 */
 		public function form_handler() {
+			wp_enqueue_script("jquery-datetimepicker");
+			wp_enqueue_style("jquery-datetimepicker");
+
 			$template=new Template(__DIR__."/../template/itemformpage.php");
 
 			if (wp_verify_nonce($_REQUEST["nonce"],basename(__FILE__))) {
@@ -218,8 +224,29 @@
 				else
 					$item=$this->createItem();
 
-				foreach ($this->getEditFields() as $field)
-					$this->setFieldValue($item,$field,$_REQUEST[$field]);
+				foreach ($this->getEditFields() as $field) {
+					$fieldspec=$this->getFieldSpec($field);
+					$v=$_REQUEST[$field];
+
+					// post process field.
+					switch ($fieldspec->type) {
+						case "timestamp":
+							if ($v) {
+								$oldTz=date_default_timezone_get();
+								date_default_timezone_set(get_option('timezone_string'));
+								$v=strtotime($v);
+								date_default_timezone_set($oldTz);
+							}
+
+							else {
+								$v=0;
+							}
+
+							break;
+					}
+
+					$this->setFieldValue($item,$field,$v);
+				}
 
 				$message=$this->validateItem($item);
 
@@ -260,11 +287,30 @@
 
 			foreach ($this->getEditFields() as $field) {
 				$fieldspec=$this->getFieldSpec($field);
+				$v=$this->getFieldValue($item,$field);
+
+				// pre process fields.
+				switch ($fieldspec->type) {
+					case "timestamp":
+						if ($v) {
+							$oldTz=date_default_timezone_get();
+							date_default_timezone_set(get_option('timezone_string'));
+							$v=date("Y-m-d H:i",$v);
+							date_default_timezone_set($oldTz);
+						}
+
+						else {
+							$v="";
+						}
+
+						break;
+				}
+
 				$fields[]=array(
 					"spec"=>$fieldspec,
 					"field"=>$fieldspec->field,
 					"label"=>$fieldspec->label,
-					"value"=>$this->getFieldValue($item,$field),
+					"value"=>$v,
 				);
 			}
 
