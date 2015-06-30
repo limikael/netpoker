@@ -22,7 +22,7 @@
 			<div id="post-body">
 				<div id="post-body-content">
 					<?php /* And here we call our custom meta box */ ?>
-					<?php do_meta_boxes($metabox, 'normal', $item); ?>
+					<?php do_meta_boxes($metabox, $metaboxContext, $item); ?>
 					<input type="submit" value="Save" id="submit" class="button-primary" name="submit">
 				</div>
 			</div>

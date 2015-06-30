@@ -2,7 +2,7 @@
 
 	namespace wpnetpoker;
 
-	require_once __DIR__."/../model/Cashgame.php";
+	require_once __DIR__."/../model/Tournament.php";
 	require_once __DIR__."/../utils/Template.php";
 	require_once __DIR__."/../utils/WpCrud.php";
 	require_once __DIR__."/../plugin/NetPokerPlugin.php";
@@ -10,7 +10,7 @@
 	class TournamentController extends WpCrud {
 
 		public function __construct() {
-			parent::__construct();
+			parent::__construct("Tournament");
 
 			$currencies=array();
 			$currencies["ply"]="PLY";

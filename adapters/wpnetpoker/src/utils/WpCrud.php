@@ -26,8 +26,6 @@
 	 */
 	abstract class WpCrud extends WP_List_Table {
 
-		private static $instance;
-
 		private $typeName;
 		private $typeId;
 		private $fields=array();
@@ -38,14 +36,18 @@
 		/**
 		 * Constructor.
 		 */
-		public function __construct() {
-			parent::__construct();
+		public function __construct($typeName) {
+			if (!$typeName)
+				throw new Exception("no type name");
+
+			$this->setTypeName($typeName);
+
+			parent::__construct(array(
+				"screen"=>$this->typeId
+			));
 
 			wp_register_script("jquery-datetimepicker",plugins_url()."/wpnetpoker/res/jquery.datetimepicker.js");
 			wp_register_style("jquery-datetimepicker",plugins_url()."/wpnetpoker/res/jquery.datetimepicker.css");
-
-			/*wp_enqueue_script("jquery-datetimepicker");
-			wp_enqueue_style("jquery-datetimepicker");*/
 		}
 
 		/**
@@ -172,6 +174,8 @@
 		 * Render the page.
 		 */
 		public function list_handler() {
+			//echo "list handler, called=".get_called_class();
+
 			$template=new Template(__DIR__."/../template/itemlist.php");
 
 			if (isset($_REQUEST["action"]) && $_REQUEST["action"]=="delete") {
@@ -266,12 +270,13 @@
 			else
 				$item=$this->createItem();
 
-			add_meta_box($this->typeId."_meta_box",$this->typeName,array($this,"meta_box_handler"),$this->typeId, 'normal', 'default');
+			add_meta_box($this->typeId."_meta_box",$this->typeName,array($this,"meta_box_handler"),$this->typeId, 'normal_'.$this->typeId, 'default');
 
 			$template->set("title",$this->typeName);
 			$template->set("nonce",wp_create_nonce(basename(__FILE__)));
 			$template->set("backlink",get_admin_url(get_current_blog_id(), 'admin.php?page='.$this->typeId.'_list'));
 			$template->set("metabox",$this->typeId);
+			$template->set("metaboxContext","normal_".$this->typeId);
 			$template->set("item",$item);
 			$template->show();
 		}
@@ -385,10 +390,10 @@
 			$instance=new static();
 
 			if ($instance->submenuSlug)
-				add_submenu_page($instance->submenuSlug,$instance->typeName, $instance->typeName, "activate_plugins", $instance->typeId."_list", array($instance,"list_handler"));
+				$screenId=add_submenu_page($instance->submenuSlug,$instance->typeName, $instance->typeName, "activate_plugins", $instance->typeId."_list", array($instance,"list_handler"));
 
 			else
-				add_menu_page($instance->typeName, $instance->typeName, "activate_plugins", $instance->typeId."_list", array($instance,"list_handler"));
+				$screenId=add_menu_page($instance->typeName, $instance->typeName, "activate_plugins", $instance->typeId."_list", array($instance,"list_handler"));
 
 		    add_submenu_page(NULL, "Edit ".$instance->typeName, "Edit ".$instance->typeName, 'activate_plugins', $instance->typeId.'_form', array($instance,"form_handler"));
 		}

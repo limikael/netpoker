@@ -10,7 +10,7 @@
 	class CashgameController extends WpCrud {
 
 		public function __construct() {
-			parent::__construct();
+			parent::__construct("Cashgame");
 
 			$currencies=array();
 			$currencies["ply"]="PLY";
@@ -36,7 +36,7 @@
 			$this->addField("maxSitInAmount")->label("Max sit in");
 			$this->addField("stake")->label("Stake (Big Blind)");
 
-			$this->setListFields(array("title","currency"));
+			$this->setListFields(array("title","currency","numseats","stake"));
 
 			$this->setSubmenuSlug("netpoker_settings");
 		}
