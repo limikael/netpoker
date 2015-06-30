@@ -17,11 +17,18 @@
 		 * Construct.
 		 */
 		public function __construct() {
-			wp_register_style('netpoker', plugins_url()."/wpnetpoker/res/wpnetpoker.css");
-
 			add_shortcode("netpoker_cashgame_list", array($this, "netpoker_cashgame_list"));
 			add_shortcode("netpoker_playmoney_balance", array($this, "netpoker_playmoney_balance"));
 			add_shortcode("netpoker_tournament_list", array($this, "netpoker_tournament_list"));
+
+			add_action("wp_enqueue_scripts",array($this,"wp_enqueue_scripts"));
+		}
+
+		/**
+		 * Enqueue scripts.
+		 */
+		public function wp_enqueue_scripts() {
+			wp_register_style('netpoker', plugins_url()."/wpnetpoker/res/wpnetpoker.css");
 		}
 
 		/**

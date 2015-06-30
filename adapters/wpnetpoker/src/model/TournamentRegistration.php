@@ -26,6 +26,11 @@
 
 			if ($fee)
 				$this->fee=$fee;
+
+			else
+				$this->fee=0;
+
+			$this->prize=0;
 		}
 
 		/**

@@ -30,6 +30,11 @@
 
 			$this->blindLevels="20, 40, 60, 80, 100";
 			$this->payoutPercent="65, 25, 10";
+
+			$this->title="";
+			$this->info="";
+			$this->seatsPerTable=10;
+			$this->startTime=0;
 		}
 
 		/**
@@ -50,7 +55,7 @@
 		 * Get registrations.
 		 */
 		public function getRegistrations() {
-			if (!$this->registrations)
+			if (!isset($this->registrations))
 				$this->registrations=TournamentRegistration::findAllBy("tournamentId",$this->id);
 
 			return $this->registrations;
