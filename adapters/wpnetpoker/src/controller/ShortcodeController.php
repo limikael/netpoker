@@ -56,7 +56,7 @@
 
 			$balance=NetPokerPlugin::init()->getUserPlyBalance($user->ID);
 
-			return "Playmoney balance: ".$balance."<br/>";
+			return $balance;
 		}
 
 		/**
