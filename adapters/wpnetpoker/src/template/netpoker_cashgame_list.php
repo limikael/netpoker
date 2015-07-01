@@ -1,4 +1,4 @@
-<table class="netpoker_cashgame_list">
+<table class="netpoker_cashgame_list" cellpadding="0" cellspacing="0">
 	<tr>
 		<th>Table</th>
 		<th>Players</th>
