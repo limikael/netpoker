@@ -22,13 +22,30 @@
 		$_SESSION["netpoker_user_id"]=$user->ID;
 	}
 
+	$skinVariables=array();
+
+	function netpoker_set_skin_variables($vars) {
+		global $skinVariables;
+
+		$skinVariables=$vars;
+	}
+
+	do_action("netpoker_game_theme");
+
+	if (!isset($skinVariables["spritesheets"]))
+		$skinVariables["spritesheets"]=array();
+
+	if (isset($skinVariables["spritesheet"]))
+		$skinVariables["spritesheets"][]=$skinVariables["spritesheet"];
+
 	$template=new Template(__DIR__."/src/template/game.tpl.php");
 	$template->set("bundleLoaderUrl","res/bundleloader.min.js");
 	$template->set("bundleUrl","bin/netpokerclient.bundle.min.js");
 	$template->set("title","Poker");
 	$template->set("url",$url);
 	$template->set("mainSpriteSheet","bin/netpokerclient.spritesheet.json");
-	$template->set("spriteSheets",array());
+	$template->set("spriteSheets",$skinVariables["spritesheets"]);
+	$template->set("skinSource",$skinVariables);
 	$template->set("token",session_id());
 
 	if (isset($_REQUEST["cashgameId"]))
