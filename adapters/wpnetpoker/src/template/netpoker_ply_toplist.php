@@ -11,10 +11,10 @@
 		<?php foreach ($items as $item) { ?>
 			<tr>
 				<td><?php echo $i;?></td>
-				<td><?php echo ucfirst($item->name); ?></td>
-				<td><?php echo $item->balance;?></td>
+				<td><?php echo $item->name; ?></td>
+				<td><?php echo $item->balance; ?></td>
 			</tr>
 			<?php $i++; ?>
-		<? } ?>
+		<?php } ?>
 	</tbody>
 </table>

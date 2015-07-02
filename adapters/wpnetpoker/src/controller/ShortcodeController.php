@@ -93,6 +93,11 @@
 				"LIMIT     10"
 			);
 
+			foreach ($items as &$item) {
+				if (isset($p["ucfirst"]))
+					$item->name=ucfirst($item->name);
+			}
+
 			$template=new Template(__DIR__."/../template/netpoker_ply_toplist.php");
 			$template->set("items",$items);
 
