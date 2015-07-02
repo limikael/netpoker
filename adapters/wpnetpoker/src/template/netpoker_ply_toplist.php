@@ -1,4 +1,4 @@
-<table class="netpoker_ply_toplist">
+<table class="netpoker_ply_toplist" cellpadding="0" cellspacing="0">
 	<thead>
 		<tr>
 			<th>Place</th>
