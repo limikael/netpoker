@@ -8,6 +8,8 @@
 	require_once __DIR__."/../model/Cashgame.php";
 	require_once __DIR__."/../model/Tournament.php";
 
+	use \Exception;
+
 	/**
 	 * Handle shortcodes related to cashgames.
 	 */
@@ -20,6 +22,7 @@
 			add_shortcode("netpoker_cashgame_list", array($this, "netpoker_cashgame_list"));
 			add_shortcode("netpoker_playmoney_balance", array($this, "netpoker_playmoney_balance"));
 			add_shortcode("netpoker_tournament_list", array($this, "netpoker_tournament_list"));
+			add_shortcode("netpoker_ply_toplist", array($this, "netpoker_ply_toplist"));
 
 			add_action("wp_enqueue_scripts",array($this,"wp_enqueue_scripts"));
 		}
@@ -67,6 +70,31 @@
 
 			$template=new Template(__DIR__."/../template/netpoker_tournament_list.php");
 			$template->set("items",Tournament::findAll());
+
+			return $template->render();
+		}
+
+		/**
+		 * Playmoney toplist.
+		 */
+		public function netpoker_ply_toplist($p) {
+			global $wpdb;
+
+			wp_enqueue_style("netpoker");
+
+			$defaultBalance=intval(get_option("netpoker_default_playmoney"));
+
+			$items=$wpdb->get_results(
+				"SELECT    u.ID, u.display_name AS name, ".
+				"          IF(m.meta_value, CAST(m.meta_value AS DECIMAL), $defaultBalance) AS balance ".
+				"FROM      wp_users AS u ".
+				"LEFT JOIN wp_usermeta AS m ON u.ID=m.user_id AND m.meta_key='netpoker_playmoney_balance' ".
+				"ORDER BY  balance DESC ".
+				"LIMIT     10"
+			);
+
+			$template=new Template(__DIR__."/../template/netpoker_ply_toplist.php");
+			$template->set("items",$items);
 
 			return $template->render();
 		}
