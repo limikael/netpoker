@@ -11,7 +11,15 @@
 		<?php foreach ($items as $item) { ?>
 			<tr>
 				<td><?php echo $i;?></td>
-				<td><?php echo $item->name; ?></td>
+				<td>
+					<?php if (isset($item->url)) { ?>
+						<a href="<?php echo $item->url; ?>">
+							<?php echo $item->name; ?>
+						</a>
+					<?php } else { ?>
+						<?php echo $item->name; ?>
+					<?php } ?>
+				</td>
 				<td><?php echo $item->balance; ?></td>
 			</tr>
 			<?php $i++; ?>

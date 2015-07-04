@@ -94,6 +94,9 @@
 			);
 
 			foreach ($items as &$item) {
+				if (isset($p["authorlink"]))
+					$item->url=get_author_posts_url($item->ID);
+
 				if (isset($p["ucfirst"]))
 					$item->name=ucfirst($item->name);
 			}
