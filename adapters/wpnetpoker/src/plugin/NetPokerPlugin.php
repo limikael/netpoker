@@ -70,6 +70,8 @@
 			Cashgame::install();
 			Tournament::install();
 			TournamentRegistration::install();
+
+			update_option("netpoker_dbversion",self::DBVERSION);
 		}
 
 		/**
