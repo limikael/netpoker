@@ -80,6 +80,8 @@
 		public function netpoker_ply_toplist($p) {
 			global $wpdb;
 
+			print_r($p);
+
 			wp_enqueue_style("netpoker");
 
 			$defaultBalance=intval(get_option("netpoker_default_playmoney"));
@@ -93,12 +95,19 @@
 				"LIMIT     10"
 			);
 
+			$avatarsize=40;
+
+			if (isset($p["avatarsize"]))
+				$avatarsize=$p["avatarsize"];
+
 			foreach ($items as &$item) {
 				if (isset($p["authorlink"]))
 					$item->url=get_author_posts_url($item->ID);
 
 				if (isset($p["ucfirst"]))
 					$item->name=ucfirst($item->name);
+
+				$item->avatar=get_avatar($item->ID,$avatarsize);
 			}
 
 			$template=new Template(__DIR__."/../template/netpoker_ply_toplist.php");

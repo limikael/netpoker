@@ -14,9 +14,11 @@
 				<td>
 					<?php if (isset($item->url)) { ?>
 						<a href="<?php echo $item->url; ?>">
+							<?php echo $item->avatar; ?>
 							<?php echo $item->name; ?>
 						</a>
 					<?php } else { ?>
+						<?php echo $item->avatar; ?>
 						<?php echo $item->name; ?>
 					<?php } ?>
 				</td>
