@@ -80,8 +80,6 @@
 		public function netpoker_ply_toplist($p) {
 			global $wpdb;
 
-			print_r($p);
-
 			wp_enqueue_style("netpoker");
 
 			$defaultBalance=intval(get_option("netpoker_default_playmoney"));
