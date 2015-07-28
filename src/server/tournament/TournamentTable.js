@@ -123,8 +123,8 @@ TournamentTable.prototype.sendState = function(protoConnection) {
 	var b = new DealerButtonMessage(this.dealerButtonIndex);
 	protoConnection.send(b);
 
-	for (var i = 0; i < this.chatLines.length; i++)
-		protoConnection.send(new ChatMessage(this.chatLines[i].user, this.chatLines[i].text));
+	/*for (var i = 0; i < this.chatLines.length; i++)
+		protoConnection.send(new ChatMessage(this.chatLines[i].user, this.chatLines[i].text));*/
 
 	protoConnection.send(this.getHandInfoMessage());
 
