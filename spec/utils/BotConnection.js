@@ -255,7 +255,7 @@ BotConnection.prototype.act = function(buttonId, value) {
 	}
 
 	if (!this.isActionAvailable(buttonId))
-		throw new Error("Action not available: " + buttonId);
+		throw new Error("Action not available: " + buttonId + " available: "+this.model.getButtons());
 
 	this.send(new ButtonClickMessage(buttonId, value));
 }

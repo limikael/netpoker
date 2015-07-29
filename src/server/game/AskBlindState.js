@@ -28,6 +28,8 @@ var inherits = require("inherits");
  */
 function AskBlindState() {
 	GameState.call(this);
+
+	this.headsUp=false;
 }
 
 inherits(AskBlindState, GameState);
@@ -58,6 +60,12 @@ AskBlindState.prototype.run = function() {
 		table.send(new BetsToPotMessage());
 		table.send(new PotMessage(this.game.getPots()));
 	}
+
+	if (table.getNumInGame()<2)
+		throw new Error("Trying to start a game with fewer than 2 players");
+
+	if (table.getNumInGame()==2)
+		this.headsUp=true;
 
 	this.haveBlinds = 0;
 	this.askNextBlind();
@@ -168,6 +176,19 @@ AskBlindState.prototype.askDone = function() {
  * @private
  */
 AskBlindState.prototype.getCurrentBlind = function() {
+	if (this.headsUp) {
+		switch (this.haveBlinds) {
+			case 0:
+				return ButtonData.POST_BB;
+
+			case 1:
+				return ButtonData.POST_SB;
+
+			default:
+				return null;
+		}
+	}
+
 	switch (this.haveBlinds) {
 		case 0:
 			return ButtonData.POST_SB;

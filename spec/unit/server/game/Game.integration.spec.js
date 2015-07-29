@@ -65,13 +65,12 @@ describe("Game.integration", function() {
 				expect(table.getCurrentGame()).not.toBe(null);
 
 				var s1 = bot1.runStrategy(new BotActSequenceStrategy([
-					ButtonData.POST_BB,
+					ButtonData.POST_SB,
 					ButtonData.FOLD
 				]));
 
 				var s2 = bot2.runStrategy(new BotActSequenceStrategy([
-					ButtonData.POST_SB,
-					ButtonData.CALL,
+					ButtonData.POST_BB,
 					ButtonData.MUCK
 				]));
 
@@ -86,7 +85,7 @@ describe("Game.integration", function() {
 
 					expect(param.gameId).toBe(987);
 					expect(param.rake).toBe(0);
-					expect(param.state).toBe('{"seats":[{"seatIndex":1,"userName":"olle","chips":8},{"seatIndex":2,"userName":"kalle","chips":12}]}');
+					expect(param.state).toBe('{"seats":[{"seatIndex":1,"userName":"olle","chips":9},{"seatIndex":2,"userName":"kalle","chips":11}]}');
 
 					next();
 

@@ -59,26 +59,26 @@ describe("NetPokerServer - show muck", function() {
 
 			function(next) {
 				expect(table.getCurrentGame().gameState).toEqual(jasmine.any(AskBlindState));
-				bot2.act(ButtonData.POST_SB);
+				bot2.act(ButtonData.POST_BB);
 				TickLoopRunner.runTicks().then(next);
 			},
 
 			function(next) {
-				bot1.act(ButtonData.POST_BB);
+				bot1.act(ButtonData.POST_SB);
 				TickLoopRunner.runTicks().then(next);
 			},
 
 			function(next) {
-				expect(bot1.getSeatAt(1).getBet()).toBe(2);
-				expect(bot1.getSeatAt(1).getChips()).toBe(8);
-				expect(bot1.getSeatAt(2).getBet()).toBe(1);
-				expect(bot1.getSeatAt(2).getChips()).toBe(9);
+				expect(bot1.getSeatAt(1).getBet()).toBe(1);
+				expect(bot1.getSeatAt(1).getChips()).toBe(9);
+				expect(bot1.getSeatAt(2).getBet()).toBe(2);
+				expect(bot1.getSeatAt(2).getChips()).toBe(8);
 
 				expect(table.getCurrentGame().gameState).toEqual(jasmine.any(RoundState));
 				expect(bot1.getSeatAt(1).getCardAt(0)).not.toBe(null);
 
-				expect(bot2.getButtons()).not.toBe(null);
-				bot2.act(ButtonData.FOLD);
+				expect(bot1.getButtons()).not.toBe(null);
+				bot1.act(ButtonData.FOLD);
 
 				TickLoopRunner.runTicks(20).then(next);
 			},
@@ -87,16 +87,16 @@ describe("NetPokerServer - show muck", function() {
 				var state = table.getCurrentGame().getGameState();
 				expect(state instanceof ShowMuckState).toBe(true);
 
-				expect(bot1.getButtons()).not.toBe(null);
-				bot1.act(ButtonData.MUCK);
+				expect(bot2.getButtons()).not.toBe(null);
+				bot2.act(ButtonData.MUCK);
 
 				TickLoopRunner.runTicks(20).then(next);
 			},
 
 			function(next) {
 				expect(bot1.getTotalSeatChips()).toBe(20);
-				expect(bot1.getSeatAt(1).getChips()).toBe(11);
-				expect(bot1.getSeatAt(2).getChips()).toBe(9);
+				expect(bot1.getSeatAt(1).getChips()).toBe(9);
+				expect(bot1.getSeatAt(2).getChips()).toBe(11);
 
 				expect(bot1.getSeatAt(1).getCardAt(0)).toBe(null);
 
@@ -136,26 +136,26 @@ describe("NetPokerServer - show muck", function() {
 
 			function(next) {
 				expect(table.getCurrentGame().gameState).toEqual(jasmine.any(AskBlindState));
-				bot2.act(ButtonData.POST_SB);
+				bot2.act(ButtonData.POST_BB);
 				TickLoopRunner.runTicks().then(next);
 			},
 
 			function(next) {
-				bot1.act(ButtonData.POST_BB);
+				bot1.act(ButtonData.POST_SB);
 				TickLoopRunner.runTicks().then(next);
 			},
 
 			function(next) {
-				expect(bot1.getSeatAt(1).getBet()).toBe(2);
-				expect(bot1.getSeatAt(1).getChips()).toBe(8);
-				expect(bot1.getSeatAt(2).getBet()).toBe(1);
-				expect(bot1.getSeatAt(2).getChips()).toBe(9);
+				expect(bot1.getSeatAt(1).getBet()).toBe(1);
+				expect(bot1.getSeatAt(1).getChips()).toBe(9);
+				expect(bot1.getSeatAt(2).getBet()).toBe(2);
+				expect(bot1.getSeatAt(2).getChips()).toBe(8);
 
 				expect(table.getCurrentGame().gameState).toEqual(jasmine.any(RoundState));
 				expect(bot1.getSeatAt(1).getCardAt(0)).not.toBe(null);
 
-				expect(bot2.getButtons()).not.toBe(null);
-				bot2.act(ButtonData.FOLD);
+				expect(bot1.getButtons()).not.toBe(null);
+				bot1.act(ButtonData.FOLD);
 
 				TickLoopRunner.runTicks(20).then(next);
 			},
@@ -164,22 +164,22 @@ describe("NetPokerServer - show muck", function() {
 				var state = table.getCurrentGame().getGameState();
 				expect(state instanceof ShowMuckState).toBe(true);
 
-				expect(bot1.getSeatAt(1).getCardAt(0).isShown()).toBe(true);
-				expect(bot2.getSeatAt(1).getCardAt(0).isShown()).toBe(false);
+				expect(bot1.getSeatAt(2).getCardAt(0).isShown()).toBe(false);
+				expect(bot2.getSeatAt(2).getCardAt(0).isShown()).toBe(true);
 
-				expect(bot1.getButtons()).not.toBe(null);
-				bot1.act(ButtonData.SHOW);
+				expect(bot2.getButtons()).not.toBe(null);
+				bot2.act(ButtonData.SHOW);
 
 				TickLoopRunner.runTicks(20).then(next);
 			},
 
 			function(next) {
 				expect(bot1.getTotalSeatChips()).toBe(20);
-				expect(bot1.getSeatAt(1).getChips()).toBe(11);
-				expect(bot1.getSeatAt(2).getChips()).toBe(9);
+				expect(bot1.getSeatAt(1).getChips()).toBe(9);
+				expect(bot1.getSeatAt(2).getChips()).toBe(11);
 
-				expect(bot1.getSeatAt(1).getCardAt(0).isShown()).toBe(true);
-				expect(bot2.getSeatAt(1).getCardAt(0).isShown()).toBe(true);
+				expect(bot1.getSeatAt(2).getCardAt(0).isShown()).toBe(true);
+				expect(bot2.getSeatAt(2).getCardAt(0).isShown()).toBe(true);
 
 				var state = table.getCurrentGame().getGameState();
 				expect(state instanceof FinishedState).toBe(true);

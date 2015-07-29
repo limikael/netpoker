@@ -70,6 +70,9 @@ describe("Game", function() {
 		mockTable.getHandInfoMessage = function() {
 			return {};
 		}
+		mockTable.getNumInGame=function() {
+			return 3;
+		}
 
 		mockTable.send = jasmine.createSpy();
 

@@ -56,7 +56,7 @@ BotActSequenceStrategy.prototype.act = function() {
 	console.log("will act with: "+action);
 
 	if (!this.botConnection.isActionAvailable(action))
-		throw new Error("action is not available: " + action);
+		throw new Error("action is not available: " + action+ " available: "+this.botConnection.getButtons());
 
 	this.botConnection.act(action);
 

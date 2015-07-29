@@ -65,12 +65,12 @@ describe("ShowMuckState", function() {
 
 			function(next) {
 				expect(table.getCurrentGame().gameState).toEqual(jasmine.any(AskBlindState));
-				bot2.act(ButtonData.POST_SB);
+				bot2.act(ButtonData.POST_BB);
 				TickLoopRunner.runTicks().then(next);
 			},
 
 			function(next) {
-				bot1.act(ButtonData.POST_BB);
+				bot1.act(ButtonData.POST_SB);
 				TickLoopRunner.runTicks().then(next);
 			},
 

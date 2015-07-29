@@ -48,6 +48,10 @@ RoundState.prototype.run = function() {
 
 	this.hasRun = true;
 
+	// Heads up.
+	if (!this.hasDealtPocketCards() && this.game.getGameSeats().length==2)
+		this.gameSeatIndexToSpeak=1;
+
 	if (!this.hasDealtPocketCards()) {
 		this.dealPocketCards();
 	} else {

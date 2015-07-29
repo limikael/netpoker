@@ -56,20 +56,20 @@ describe("NetPokerServer - round", function() {
 
 			function(next) {
 				expect(table.getCurrentGame().gameState).toEqual(jasmine.any(AskBlindState));
-				bot2.act(ButtonData.POST_SB);
+				bot2.act(ButtonData.POST_BB);
 				TickLoopRunner.runTicks().then(next);
 			},
 
 			function(next) {
-				bot1.act(ButtonData.POST_BB);
+				bot1.act(ButtonData.POST_SB);
 				TickLoopRunner.runTicks().then(next);
 			},
 
 			function(next) {
-				expect(bot1.getSeatAt(1).getBet()).toBe(2);
-				expect(bot1.getSeatAt(1).getChips()).toBe(8);
-				expect(bot1.getSeatAt(2).getBet()).toBe(1);
-				expect(bot1.getSeatAt(2).getChips()).toBe(9);
+				expect(bot1.getSeatAt(1).getBet()).toBe(1);
+				expect(bot1.getSeatAt(1).getChips()).toBe(9);
+				expect(bot1.getSeatAt(2).getBet()).toBe(2);
+				expect(bot1.getSeatAt(2).getChips()).toBe(8);
 
 				expect(table.getCurrentGame().gameState).toEqual(jasmine.any(RoundState));
 				expect(bot1.getSeatAt(1).getCardAt(0)).not.toBe(null);
@@ -77,16 +77,16 @@ describe("NetPokerServer - round", function() {
 				//console.log("user1 buttons: "+bot1.getButtons());
 				console.log("***** user2 buttons: "+bot2.getButtons());
 
-				expect(bot2.getButtons()).not.toBe(null);
-				bot2.act(ButtonData.CALL);
+				expect(bot1.getButtons()).not.toBe(null);
+				bot1.act(ButtonData.CALL);
 
 				TickLoopRunner.runTicks(20).then(next);
 			},
 
 			function(next) {
-				expect(bot1.getButtons()).not.toBe(null);
+				expect(bot2.getButtons()).not.toBe(null);
 
-				bot1.act(ButtonData.CHECK);
+				bot2.act(ButtonData.CHECK);
 
 				TickLoopRunner.runTicks(20).then(next);
 			},

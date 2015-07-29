@@ -133,13 +133,13 @@ describe("NetPokerServer - game", function() {
 				expect(bot2.getButtons()).not.toBe(null);
 
 				var s1 = bot1.runStrategy(new BotActSequenceStrategy([
-					ButtonData.POST_BB,
-					ButtonData.CHECK,
+					ButtonData.POST_SB,
+					ButtonData.CALL,
 				]));
 
 				var s2 = bot2.runStrategy(new BotActSequenceStrategy([
-					ButtonData.POST_SB,
-					ButtonData.CALL,
+					ButtonData.POST_BB,
+					ButtonData.CHECK,
 					new ButtonData(ButtonData.BET, 3)
 				]));
 
@@ -211,7 +211,7 @@ describe("NetPokerServer - game", function() {
 			},
 
 			function(next) {
-				expect(bot2.isActionAvailable(ButtonData.POST_SB)).toBe(true);
+				expect(bot2.isActionAvailable(ButtonData.POST_BB)).toBe(true);
 				bot2.send(new CheckboxMessage(CheckboxMessage.AUTO_POST_BLINDS,true));
 				TickLoopRunner.runTicks().then(next);
 			},
