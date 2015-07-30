@@ -86,7 +86,7 @@
 
 			$items=$wpdb->get_results(
 				"SELECT    u.ID, u.display_name AS name, ".
-				"          IF(m.meta_value, CAST(m.meta_value AS DECIMAL), $defaultBalance) AS balance ".
+				"          IF(m.meta_value IS NOT NULL, CAST(m.meta_value AS DECIMAL), $defaultBalance) AS balance ".
 				"FROM      wp_users AS u ".
 				"LEFT JOIN wp_usermeta AS m ON u.ID=m.user_id AND m.meta_key='netpoker_playmoney_balance' ".
 				"ORDER BY  balance DESC ".
