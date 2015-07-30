@@ -50,15 +50,6 @@ describe("Hand", function() {
 		expect(hand.getCategory()).toBe(Hand.ONE_PAIR);
 	});
 
-	it("can check for flush", function() {
-		var cards = createCardDataArray(["2C", "3C", "6C", "9C", "AD", "8C", "7H"]);
-		var hand = new Hand(cards);
-		console.log("score: " + hand.getScoreString());
-		expect(hand.getScoreString()).toBe("flush, ace high");
-		expect(hand.getCategory()).toBe(Hand.FLUSH);
-		expect(hand.getScore()).toEqual([Hand.FLUSH, 12, 7, 6, 5, 4]);
-	});
-
 	it("can check for full house", function() {
 		var cards = createCardDataArray(["2C", "3C", "3D", "2S", "AD", "3S", "7H"]);
 		var hand = new Hand(cards);
@@ -122,5 +113,14 @@ describe("Hand", function() {
 		expect(hand.getCategory()).toBe(Hand.HIGH_CARD);
 		expect(hand.getScoreString()).toBe("high card ace");
 		expect(hand.getScore()).toEqual([Hand.HIGH_CARD, 12, 8, 6, 5, 3]);
+	});
+
+	it("can check for flush", function() {
+		var cards = createCardDataArray(["2C", "3C", "6C", "9C", "AD", "8C", "7H"]);
+		var hand = new Hand(cards);
+		console.log("score: " + hand.getScoreString());
+		expect(hand.getScoreString()).toBe("flush, nine high");
+		expect(hand.getCategory()).toBe(Hand.FLUSH);
+		expect(hand.getScore()).toEqual([Hand.FLUSH, 7, 6, 4, 1, 0]);
 	});
 });

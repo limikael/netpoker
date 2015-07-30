@@ -163,12 +163,14 @@ Hand.prototype.checkFlush = function() {
 
 	for (i = 0; i < c.length - 5 + 1; i++) {
 		if (Hand.isFlush(c.slice(i, i + 5))) {
+			var d=c.slice(i, i + 5);
+
 			this.score.push(Hand.FLUSH);
-			c.sort(CardData.compareCardValue);
-			c.reverse();
+			d.sort(CardData.compareCardValue);
+			d.reverse();
 
 			for (j = 0; j < 5; j++)
-				this.score.push(c[j].getCardValue());
+				this.score.push(d[j].getCardValue());
 
 			return true;
 		}
