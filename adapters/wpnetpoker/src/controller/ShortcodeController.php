@@ -75,6 +75,18 @@
 		}
 
 		/**
+		 * Escape values in array.
+		 */
+		private static function esc_array($a) {
+			$r=array();
+
+			foreach ($a as $item)
+				$r[]="'".esc_sql($item)."'";
+
+			return join(",",$r);
+		}
+
+		/**
 		 * Playmoney toplist.
 		 */
 		public function netpoker_ply_toplist($p) {
@@ -84,11 +96,19 @@
 
 			$defaultBalance=intval(get_option("netpoker_default_playmoney"));
 
+			$exclude_users=array("");
+
+			if (isset($p["exclude_users"]))
+				$exclude_users=explode(",",$p["exclude_users"]);
+
+			$exclude_users_s=self::esc_array($exclude_users);
+
 			$items=$wpdb->get_results(
 				"SELECT    u.ID, u.display_name AS name, ".
 				"          IF(m.meta_value IS NOT NULL, CAST(m.meta_value AS DECIMAL), $defaultBalance) AS balance ".
 				"FROM      wp_users AS u ".
 				"LEFT JOIN wp_usermeta AS m ON u.ID=m.user_id AND m.meta_key='netpoker_playmoney_balance' ".
+				"WHERE     u.display_name NOT IN ({$exclude_users_s}) ".
 				"ORDER BY  balance DESC ".
 				"LIMIT     10"
 			);
