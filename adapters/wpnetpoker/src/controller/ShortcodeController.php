@@ -94,7 +94,7 @@
 				}
 
 				else {
-					echo '<div class="updated"><strong>You have enough already :)</strong></div>';
+					echo '<div class="error"><strong>You have enough already :)</strong></div>';
 				}
 			}
 
