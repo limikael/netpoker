@@ -23,6 +23,7 @@
 			add_shortcode("netpoker_playmoney_balance", array($this, "netpoker_playmoney_balance"));
 			add_shortcode("netpoker_tournament_list", array($this, "netpoker_tournament_list"));
 			add_shortcode("netpoker_ply_toplist", array($this, "netpoker_ply_toplist"));
+			add_shortcode("netpoker_ply_topup_button", array($this, "netpoker_ply_topup_button"));
 
 			add_action("wp_enqueue_scripts",array($this,"wp_enqueue_scripts"));
 		}
@@ -70,6 +71,20 @@
 
 			$template=new Template(__DIR__."/../template/netpoker_tournament_list.php");
 			$template->set("items",Tournament::findAll());
+
+			return $template->render();
+		}
+
+		/**
+		 * Topup button.
+		 */
+		public function netpoker_ply_topup_button($p) {
+			$user=wp_get_current_user();
+
+			if (!$user || !$user->ID)
+				return "<i>Not logged in.</i>";
+
+			$template=new Template(__DIR__."/../template/netpoker_ply_topup_button.php");
 
 			return $template->render();
 		}
