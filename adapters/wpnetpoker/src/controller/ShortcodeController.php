@@ -84,6 +84,20 @@
 			if (!$user || !$user->ID)
 				return "<i>Not logged in.</i>";
 
+			if (isset($_REQUEST["do_ply_topup"])) {
+				$defaultPlaymoney=get_option("netpoker_default_playmoney");
+				$current=NetPokerPlugin::init()->getUserPlyBalance($user->ID);
+
+				if ($current<$defaultPlaymoney) {
+					update_user_meta($user->ID,"netpoker_playmoney_balance",$defaultPlaymoney);
+					echo '<div class="updated"><strong>Your PLY has been replenished.</strong></div>';
+				}
+
+				else {
+					echo '<div class="updated"><strong>You have enough already :)</strong></div>';
+				}
+			}
+
 			$template=new Template(__DIR__."/../template/netpoker_ply_topup_button.php");
 
 			return $template->render();
