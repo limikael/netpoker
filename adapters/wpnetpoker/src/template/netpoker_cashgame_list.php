@@ -15,7 +15,10 @@
 				</a>
 			</td>
 			<td>
-				<?php print $item->currentNumPlayers; ?> /
+				<span class="netpoker-current-players" cashgame-id="<?php echo $item->id; ?>">
+					<?php print $item->currentNumPlayers; ?>
+				</span>
+				/
 				<?php print $item->numseats; ?>
 			</td>
 			<td>

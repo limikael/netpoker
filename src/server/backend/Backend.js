@@ -28,6 +28,7 @@ Backend.TOURNAMENT_UNREGISTER = "tournamentUnregister";
 Backend.TOURNAMENT_START = "tournamentStart";
 Backend.TOURNAMENT_CANCEL = "tournamentCancel";
 Backend.TOURNAMENT_FINISH = "tournamentFinish";
+Backend.NOTIFY_CASHGAME_NUM_PLAYERS = "notifyCashGameNumPlayers";
 
 /**
  * Set base url.

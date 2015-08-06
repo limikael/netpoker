@@ -10,6 +10,9 @@
 
 	/**
 	 * Api controller.
+	 * These api functions are called from the gameplay server,
+	 * never from the site. It is required that an api key is
+	 * passed, and this api key should never be sent to the browser.
 	 */
 	class ApiController extends Singleton {
 
@@ -47,6 +50,18 @@
 				"apiOnClientPort"=>TRUE,
 				"key"=>get_option("netpoker_gameplay_key")
 			);
+		}
+
+		/**
+		 * Num players change.
+		 */
+		public function notifyCashGameNumPlayers($p) {
+			$cashgame=Cashgame::findOne($p["tableId"]);
+			if (!$cashgame)
+				throw new Exception("Can't find game.");
+
+			$cashgame->currentNumPlayers=$p["numPlayers"];
+			$cashgame->save();
 		}
 
 		/**

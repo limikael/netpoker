@@ -47,6 +47,26 @@
 				$this->activate();
 				update_option("netpoker_dbversion",self::DBVERSION);
 			}
+
+			wp_register_script("wpnetpoker",plugins_url()."/wpnetpoker/wpnetpoker.js");
+
+			add_action("wp_enqueue_scripts",array($this,"wp_enqueue_scripts"));
+			add_action("wp_head",array($this,"wp_head"));
+		}
+
+		/**
+		 * wp_head
+		 */
+		public function wp_head() {
+			$output='<script>NETPOKER_BASE_URL="'.plugins_url()."/wpnetpoker".'"</script>';
+			echo $output;
+		}
+
+		/**
+		 * Enqueue scripts.
+		 */
+		public function wp_enqueue_scripts() {
+			wp_enqueue_script("wpnetpoker");
 		}
 
 		/**
@@ -179,8 +199,10 @@
 			curl_setopt($curl,CURLOPT_RETURNTRANSFER,TRUE);
 			$res=curl_exec($curl);
 
-			if (!$res) {
+			if ($res===FALSE) {
 				error_log("backend call failed: ".$method);
+
+				throw new Exception("Backend call failed: ".curl_error($curl));
 				return NULL;
 			}
 

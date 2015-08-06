@@ -134,6 +134,17 @@ CashGameManager.prototype.onTableListCallSuccess = function(result) {
 		this.initializedTriggered = true;
 		this.trigger(CashGameManager.INITIALIZED);
 	}
+
+	for (var i = 0; i < this.tables.length; i++) {
+		var cashGameTable = this.tables[i];
+
+		var p = {
+			tableId: cashGameTable.getId(),
+			numPlayers: cashGameTable.getNumInGame()
+		};
+
+		this.services.getBackend().call(Backend.NOTIFY_CASHGAME_NUM_PLAYERS, p);
+	}
 }
 
 /**
@@ -229,8 +240,19 @@ CashGameManager.prototype.isIdle = function() {
  * @method onTableNumPlayersChange
  * @private
  */
-CashGameManager.prototype.onTableNumPlayersChange = function() {
-	this.trigger(CashGameManager.NUM_PLAYERS_CHANGE)
+CashGameManager.prototype.onTableNumPlayersChange = function(ev) {
+	var cashGameTable = ev.target;
+
+	this.trigger(CashGameManager.NUM_PLAYERS_CHANGE);
+
+	console.log("num players change for table: " + cashGameTable);
+
+	var p = {
+		tableId: cashGameTable.getId(),
+		numPlayers: cashGameTable.getNumInGame()
+	};
+
+	this.services.getBackend().call(Backend.NOTIFY_CASHGAME_NUM_PLAYERS, p);
 }
 
 /**
