@@ -46,6 +46,8 @@ describe("ServerApi - integration", function() {
 
 			function(next) {
 				request("http://localhost:2222/info", function(error, response, body) {
+					console.log(error);
+
 					expect(response.statusCode).toEqual(200);
 
 					var data=JSON.parse(body);

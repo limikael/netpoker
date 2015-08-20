@@ -21,6 +21,9 @@ function usage() {
 	console.log("  --apiKey <key>           Require this key for api requests.");
 	console.log("  --mock                   Start a mocked server without backend.");
 	console.log("  --key <key>              Use this as both apiKey and backendKey.")
+	console.log("  --sslCertFile <fn>       Ssl certificate filename.");
+	console.log("  --sslKeyFile <fn>        Ssl key filename.")
+	console.log("  --sslCaFiles <fn, ...>   Comma separated list of ssl ca file names.");
 	console.log("  --config <file.yml>      Load config from yaml file.");
 	console.log("");
 

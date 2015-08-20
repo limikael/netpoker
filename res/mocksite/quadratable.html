@@ -7,11 +7,16 @@
 				var params=NetPokerClient.getQueryStringParams();
 				var ids=["user1","user2","user3","user4"];
 
+				var socketProtocol="ws";
+				
+				if (window.location.protocol=="https:")
+					socketProtocol="wss";
+
 				for (var i=0; i<ids.length; i++) {
 					var id=ids[i];
 
 					var netPokerClient = new NetPokerClient();
-					netPokerClient.setUrl("ws://"+window.location.host+"/");
+					netPokerClient.setUrl(socketProtocol+"://"+window.location.host+"/");
 					netPokerClient.setToken(id);
 
 					if (params["tableId"])

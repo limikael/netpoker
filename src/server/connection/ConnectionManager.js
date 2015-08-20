@@ -20,6 +20,7 @@ function ConnectionManager(services) {
 
 	this.messageServer = null;
 	this.viewCaseDir = null;
+	this.sslOptions = null;
 }
 
 inherits(ConnectionManager, EventDispatcher);
@@ -101,6 +102,14 @@ ConnectionManager.prototype.isListening = function() {
 }
 
 /**
+ * Set ssl options.
+ * @method setSslOptions
+ */
+ConnectionManager.prototype.setSslOptions = function(sslOptions) {
+	this.sslOptions = sslOptions;
+}
+
+/**
  * Start listening for connections.
  * @method listen
  */
@@ -108,6 +117,10 @@ ConnectionManager.prototype.listen = function(port, bindAddr) {
 	this.messageServer = new MessageServer();
 	this.messageServer.on(MessageServer.CONNECTION, this.onMessageServerConnection, this);
 	this.messageServer.on("request", this.onMessageServerRequest, this);
+
+	if (this.sslOptions)
+		this.messageServer.setSslOptions(this.sslOptions);
+
 	this.messageServer.listen(port, bindAddr);
 }
 

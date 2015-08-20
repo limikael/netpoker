@@ -7,8 +7,13 @@
 				var params=NetPokerClient.getQueryStringParams();
 
 				netPokerClient = new NetPokerClient();
+
+				var socketProtocol="ws";
 				
-				netPokerClient.setUrl("ws://"+window.location.host+"/");
+				if (window.location.protocol=="https:")
+					socketProtocol="wss";
+
+				netPokerClient.setUrl(socketProtocol+"://"+window.location.host+"/");
 				netPokerClient.setToken(params["token"]);
 				netPokerClient.setLogMessages(true);
 

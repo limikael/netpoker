@@ -7,7 +7,7 @@ var Thenable = require("tinp");
 var url = require("url");
 var request = require("request");
 var fs = require("fs");
-var ConfigParser=require("../../utils/ConfigParser");
+var ConfigParser = require("../../utils/ConfigParser");
 
 /**
  * Configure the server with command line options and/or contents from a config
@@ -67,6 +67,21 @@ NetPokerServerConfigurator.prototype.applySetting = function(name, value) {
 
 		case "key":
 			this.netPokerServer.setKey(value);
+			break;
+
+		case "sslCertFile":
+			this.netPokerServer.setSslCertFile(value);
+			break;
+
+		case "sslKeyFile":
+			this.netPokerServer.setSslKeyFile(value);
+			break;
+
+		case "sslCaFiles":
+			var a = value.split(",");
+
+			for (var i = 0; i < a.length; i++)
+				this.netPokerServer.addSslCaFile(a[i]);
 			break;
 
 		case "config":

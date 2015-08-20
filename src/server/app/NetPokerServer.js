@@ -14,6 +14,7 @@ var NetPokerServerConfigurator = require("./NetPokerServerConfigurator");
 var MockBackendServer = require("../mock/MockBackendServer");
 var MockWebRequestHandler = require("../mock/MockWebRequestHandler");
 var inherits = require("inherits");
+var fs = require("fs");
 
 /**
  * This is the main class for the server. The 'netpokerserver' command is pretty much a wrapper
@@ -48,6 +49,10 @@ function NetPokerServer() {
 	this.cashGameManager.on(CashGameManager.IDLE, this.onCashGameManagerIdle, this);
 
 	this.tournamentManager = new TournamentManager(this);
+
+	this.sslCertFile = null;
+	this.sslKeyFile = null;
+	this.sslCaFiles = [];
 }
 
 inherits(NetPokerServer, EventDispatcher);
@@ -57,6 +62,30 @@ NetPokerServer.STARTED = "started";
 NetPokerServer.INITIALIZING = "initializing";
 NetPokerServer.RUNNING = "running";
 NetPokerServer.STOPPED = "stopped";
+
+/**
+ * Set ssl certificate file.
+ * @method setSslCertFile
+ */
+NetPokerServer.prototype.setSslCertFile = function(value) {
+	this.sslCertFile = value;
+}
+
+/**
+ * Set ssl key file.
+ * @method sslKeyFile
+ */
+NetPokerServer.prototype.setSslKeyFile = function(value) {
+	this.sslKeyFile = value;
+}
+
+/**
+ * Add ssl certificate authority file.
+ * @method addSslCaFile
+ */
+NetPokerServer.prototype.addSslCaFile = function(value) {
+	this.sslCaFiles.push(value);
+}
 
 /**
  * Set port to tisten to.
@@ -216,6 +245,33 @@ NetPokerServer.prototype.onCashGameManagerInitialized = function() {
  * @method listen.
  */
 NetPokerServer.prototype.listen = function() {
+	if (this.sslCertFile) {
+		var sslOptions = {};
+		sslOptions.ca = [];
+
+		if (!this.sslKeyFile)
+			throw new Error("Certificate specified, but no key.");
+
+		var sslCert = fs.readFileSync(this.sslCertFile);
+		if (!sslCert)
+			throw new Error("Unable to read ssl cert file: " + this.sslCertFile);
+		sslOptions.cert = sslCert;
+
+		var sslKey = fs.readFileSync(this.sslKeyFile);
+		if (!sslKey)
+			throw new Error("Unable to read ssl key file: " + this.sslKeyFile);
+		sslOptions.key = sslKey;
+
+		for (var i = 0; i < this.sslCaFiles; i++) {
+			var ca = fs.readFileSync(this.sslCaFiles[i]);
+			if (!ca)
+				throw new Error("Unable to read ssl ca file: " + this.sslCaFiles[i]);
+			sslOptions.ca.push(ca);
+		}
+
+		this.connectionManager.setSslOptions(sslOptions);
+	}
+
 	this.connectionManager.listen(this.clientPort, this.clientBindAddr);
 }
 
@@ -413,7 +469,7 @@ NetPokerServer.prototype.useMock = function() {
 	this.setBackend(mockBackend);
 
 
-//	this.setBackend(new MockBackendServer());
+	//	this.setBackend(new MockBackendServer());
 	this.setWebRequestHandler(new MockWebRequestHandler());
 }
 
