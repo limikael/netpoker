@@ -10,7 +10,12 @@
 
 	require_once WpUtil::getWpLoadPath();
 
-	$url="ws://".
+	$socketProtocol="ws";
+
+	if (get_option("netpoker_gameplay_ssl"))
+		$socketProtocol="wss";
+
+	$url=$socketProtocol."://".
 		NetPokerPlugin::init()->getGameplayServerHost().":".
 		get_option("netpoker_gameplay_server_port");
 

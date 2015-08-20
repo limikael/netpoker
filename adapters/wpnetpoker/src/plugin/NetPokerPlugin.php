@@ -32,6 +32,7 @@
 				"netpoker_communicate_with_server"=>FALSE,
 				"netpoker_gameplay_server_host"=>NULL,
 				"netpoker_gameplay_server_to_server_host"=>NULL,
+				"netpoker_gameplay_ssl"=>0,
 				"netpoker_dbversion"=>self::DBVERSION
 			);
 
@@ -185,8 +186,13 @@
 		public function serverRequest($method, $params=array()) {
 			$curl=curl_init();
 
+			$protocol="http";
+
+			if (get_option("netpoker_gameplay_ssl"))
+				$protocol="https";
+
 			$url=
-				"http://".
+				$protocol."://".
 				$this->getGameplayServerToServerHost().":".
 				get_option("netpoker_gameplay_server_port")."/".
 				$method;

@@ -9,9 +9,26 @@
                 <tr valign="top">
                     <th scope="row"><?php echo $setting["title"]; ?></th>
                     <td>
-                        <input type="text" name="<?php echo $setting["setting"]; ?>" 
-                            value="<?php echo esc_attr(get_option($setting["setting"])); ?>" 
-                            class="regular-text"/>
+                        <?php if ($setting["type"]=="select") { ?>
+                            <select name="<?php echo esc_attr($setting["setting"]); ?>">
+                                <?php foreach ($setting["options"] as $optionValue=>$optionText) { ?>
+                                    <option value="<?php echo esc_attr($optionValue); ?>"
+                                        <?php if (get_option($setting["setting"])==$optionValue) { ?>
+                                            selected
+                                        <?php } ?>
+                                    >
+                                        <?php echo $optionText; ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                        <?php } else { ?>
+                            <input type="text" name="<?php echo $setting["setting"]; ?>" 
+                                value="<?php echo esc_attr(get_option($setting["setting"])); ?>" 
+                                class="regular-text"/>
+                        <?php } ?>
+                        <?php if ($setting["description"]) { ?>
+                            <p class="description"><?php echo $setting["description"]; ?></p>
+                        <?php } ?>
                     </td>
                 </tr>
             <?php } ?>

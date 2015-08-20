@@ -18,18 +18,46 @@
 			$this->settings=array(array(
 				"setting"=>"netpoker_gameplay_server_host",
 				"title"=>"Gameplay server host",
+				"description"=>
+					"The host where clients will connect when playing the game. ".
+					"If blank the same hostname as the wordpress site url will be used."
 			), array(
 				"setting"=>"netpoker_gameplay_server_to_server_host",
 				"title"=>"Gameplay server to server host",
+				"description"=>
+					"The host used when the web server talks to the gameplay server. ".
+					"If blank the Gameplay server host will be used."
 			), array(
 				"setting"=>"netpoker_gameplay_server_port",
 				"title"=>"Gameplay server port",
+				"description"=>
+					"The port where the gameplay server is listening."
 			), array(
 				"setting"=>"netpoker_gameplay_key",
 				"title"=>"Gameplay server key",
+				"description"=>
+					"This key is both sent and expected in all communication with the gameplay server."
 			), array(
 				"setting"=>"netpoker_communicate_with_server",
 				"title"=>"Communicate with server",
+				"type"=>"select",
+				"options"=>array(
+					0=>"No",
+					1=>"Yes"
+				),
+				"description"=>
+					"Should the gameplay server be notified about database changed, etc? ".
+					"Requires that the gameplay is up and running."
+			), array(
+				"setting"=>"netpoker_gameplay_ssl",
+				"title"=>"Gameplay ssl",
+				"type"=>"select",
+				"options"=>array(
+					0=>"No",
+					1=>"Yes"
+				),
+				"description"=>
+					"Does the gameplay server use https for its communication?"
 			));
 
 			add_action('admin_menu',array($this,'admin_menu'));
