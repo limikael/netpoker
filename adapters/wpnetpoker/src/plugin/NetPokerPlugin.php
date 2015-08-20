@@ -203,6 +203,7 @@
 
 			curl_setopt($curl,CURLOPT_URL,$url);
 			curl_setopt($curl,CURLOPT_RETURNTRANSFER,TRUE);
+			curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,FALSE);
 			$res=curl_exec($curl);
 
 			if ($res===FALSE) {
