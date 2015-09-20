@@ -1,4 +1,5 @@
-<table class="netpoker_cashgame_list" cellpadding="0" cellspacing="0">
+<table class="netpoker_cashgame_list tablesorter" cellpadding="0" cellspacing="0">
+<thead>
 	<tr>
 		<th>Tournament</th>
 		<th>Starts</th>
@@ -6,7 +7,8 @@
 		<th>Prize</th>
 		<th>Registrations</th>
 	</tr>
-
+</thead>
+<tbody>
 	<?php foreach ($items as $item) { ?>
 		<tr>
 			<td>
@@ -32,5 +34,5 @@
 			</td>
 		</tr>
 	<?php } ?>
-
+</tbody>
 </table>
