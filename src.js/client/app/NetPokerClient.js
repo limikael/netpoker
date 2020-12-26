@@ -1,4 +1,6 @@
 const Resources=require("./Resources");
+const NetPokerClientView=require("../view/NetPokerClientView");
+const ContentScaler=require("../../utils/ContentScaler");
 
 class NetPokerClient {
 	constructor(params) {
@@ -10,9 +12,12 @@ class NetPokerClient {
 			height: this.element.clientHeight
 		});
 
+		this.pixiApp.renderer.autoResize=true;
 		this.pixiApp.view.style.position="absolute";
 		this.pixiApp.view.style.top=0;
 		this.pixiApp.view.style.left=0;
+
+		window.addEventListener("resize",this.onWindowResize);
 
 		this.element.appendChild(this.pixiApp.view);
 
@@ -21,13 +26,40 @@ class NetPokerClient {
 			"/netpokerclient-spritesheet.json";
 
 		this.resources=new Resources(spriteSheetUrl);
+
+		this.stage=new PIXI.Container();
+
+		this.contentScaler=new ContentScaler(this.stage);
+		this.contentScaler.setScreenSize(
+			this.element.clientWidth,
+			this.element.clientHeight
+		);
+
+		this.contentScaler.setContentSize(960,720);
+		this.pixiApp.stage.addChild(this.contentScaler);
+	}
+
+	onWindowResize=()=>{
+		this.contentScaler.setScreenSize(
+			this.element.clientWidth,
+			this.element.clientHeight
+		);
+
+		this.pixiApp.renderer.resize(
+			this.element.clientWidth,
+			this.element.clientHeight
+		);
 	}
 
 	async run() {
 		await this.resources.load();
 
-		let table=this.resources.createSprite("table");
-		this.pixiApp.stage.addChild(table);
+		this.clientView=new NetPokerClientView(this);
+		this.stage.addChild(this.clientView);
+	}
+
+	getResources() {
+		return this.resources;
 	}
 }
 

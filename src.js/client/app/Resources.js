@@ -1,4 +1,4 @@
-const THEME=require("./theme.json");
+const THEME=require("./theme.js");
 
 class Resources {
 	constructor(spriteSheetUrl) {
