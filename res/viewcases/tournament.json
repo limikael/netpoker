@@ -1,0 +1,36 @@
+{"type":"seatInfo", "seatIndex":0, "name":"Olle", "chips": 123, "active":true}
+{"type":"seatInfo", "seatIndex":1, "name":"Kalle", "chips": 123, "active":true}
+{"type":"seatInfo", "seatIndex":5, "name":"Pelle", "chips": 123, "active":true}
+{"type":"seatInfo", "seatIndex":6, "name":"Lisa", "chips": 4567, "active":true}
+{"type":"pocketCards", "seatIndex": 0, "firstIndex":0, "cards": [-1,-1], "animate": false}
+{"type":"pocketCards", "seatIndex": 1, "firstIndex":0, "cards": [20,25], "animate": false}
+{"type":"pocketCards", "seatIndex": 5, "firstIndex":0, "cards": [20,25], "animate": false}
+{"type":"pocketCards", "seatIndex": 6, "firstIndex":0, "cards": [20,25], "animate": false}
+{"type":"communityCards", "firstIndex":0, "cards": [30,24,45], "animate": false}
+{"type":"pot", "values": [184]}
+{"type":"bet", "value": 184, "seatIndex": 0}
+{"type":"tableButtons", "enabled":[true,true,false,false,true,false,true,true], "currentIndex":0, "playerIndex":4, "infoLink":"%u/tournament/1234"}
+{"type":"dealerButton", "seatIndex":5}
+{"type":"handInfo", "text":"Hand: #1234\nPrev: #5678"}
+{"type":"stateComplete"}
+
+{"type":"delay", "delay":2000}
+{"type":"fadeTable", "visible":false, "direction":"right"}
+
+{"type":"chat","user":"bla","text":"faded..."}
+
+{"type":"seatInfo", "seatIndex":6, "name":"Olle", "chips": 123, "active":true}
+{"type":"seatInfo", "seatIndex":7, "name":"Kalle", "chips": 123, "active":true}
+{"type":"seatInfo", "seatIndex":8, "name":"Pelle", "chips": 123, "active":true}
+{"type":"seatInfo", "seatIndex":9, "name":"Lisa", "chips": 4567, "active":true}
+{"type":"pocketCards", "seatIndex": 6, "firstIndex":0, "cards": [-1,-1], "animate": false}
+{"type":"pocketCards", "seatIndex": 7, "firstIndex":0, "cards": [20,25], "animate": false}
+{"type":"pocketCards", "seatIndex": 8, "firstIndex":0, "cards": [20,25], "animate": false}
+{"type":"pocketCards", "seatIndex": 9, "firstIndex":0, "cards": [20,25], "animate": false}
+{"type":"communityCards", "firstIndex":0, "cards": [30,24,45,0,0], "animate": false}
+{"type":"pot", "values": [18]}
+{"type":"bet", "value": 184, "seatIndex": 5}
+{"type":"dealerButton", "seatIndex":9}
+
+{"type":"fadeTable", "visible":true, "direction":"right"}
+{"type":"tableButtons", "enabled":[true,true,false,false,true,false,true,true], "currentIndex":1, "playerIndex":4, "infoLink":"%u/tournament/1234"}

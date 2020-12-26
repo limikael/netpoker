@@ -13,7 +13,7 @@ class NetPokerClient {
 			height: this.element.clientHeight
 		});
 
-		this.pixiApp.renderer.autoResize=true;
+		this.pixiApp.renderer.autoDensity=true;
 		this.pixiApp.view.style.position="absolute";
 		this.pixiApp.view.style.top=0;
 		this.pixiApp.view.style.left=0;

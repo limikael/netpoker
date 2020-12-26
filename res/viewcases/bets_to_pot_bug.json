@@ -1,0 +1,66 @@
+{"text":"Welcome!\n\nPlease click on an empty seat to join the game!","showJoinButton":false,"showLeaveButton":false,"infoLink":null,"infoLinkText":null,"type":"tableInfo"}
+{"visibleButtons":[],"type":"interfaceState"}
+{"buttons":[],"sliderButtonIndex":0,"min":-1,"max":-1,"type":"buttons"}
+{"seatIndex":0,"name":"","chips":"","sitout":false,"active":true,"type":"seatInfo"}
+{"seatIndex":1,"name":"","chips":"","sitout":false,"active":true,"type":"seatInfo"}
+{"seatIndex":2,"name":"","chips":"","sitout":false,"active":true,"type":"seatInfo"}
+{"seatIndex":3,"name":"","chips":"","sitout":false,"active":true,"type":"seatInfo"}
+{"seatIndex":4,"name":"","chips":"","sitout":false,"active":true,"type":"seatInfo"}
+{"seatIndex":5,"name":"","chips":"","sitout":false,"active":true,"type":"seatInfo"}
+{"seatIndex":6,"name":"","chips":"","sitout":false,"active":true,"type":"seatInfo"}
+{"seatIndex":7,"name":"kalle","chips":"RESERVED","sitout":false,"active":true,"type":"seatInfo"}
+{"seatIndex":8,"name":"","chips":"","sitout":false,"active":true,"type":"seatInfo"}
+{"seatIndex":9,"name":"","chips":"","sitout":false,"active":true,"type":"seatInfo"}
+{"seatIndex":-1,"type":"dealerButton"}
+{"text":"olle shows three of a kind, twos","user":"Dealer","type":"chat"}
+{"text":"olle wins pot: 4.","user":"Dealer","type":"chat"}
+{"text":"Not enough players to start the hand.","user":"Dealer","type":"chat"}
+{"text":"Previous Hand: #987","type":"handInfo"}
+{"type":"stateComplete"}
+{"seatIndex":7,"name":"kalle","chips":10,"sitout":false,"active":true,"type":"seatInfo"}
+{"showJoinButton":false,"showLeaveButton":false,"infoLink":null,"infoLinkText":null,"type":"tableInfo"}
+{"visibleButtons":["autoMuckLosing","sitoutNext","autoPostBlinds"],"type":"interfaceState"}
+{"seatIndex":5,"name":"olle","chips":"RESERVED","sitout":false,"active":true,"type":"seatInfo"}
+{"seatIndex":5,"name":"olle","chips":"RESERVED","sitout":false,"active":true,"type":"seatInfo"}
+{"id":"autoPostBlinds","checked":false,"type":"checkbox"}
+{"id":"autoMuckLosing","checked":true,"type":"checkbox"}
+{"id":"sitoutNext","checked":false,"type":"checkbox"}
+//{"text":"Welcome to Test Table.\n\nThe minimum required to sit in is PLY 10.\nThe maximum allowed is PLY 100.\n\nYou currently have PLY 123 on your account.\n\nHow much do you want to bring to the table?","buttons":["cancel","sitIn"],"defaultValue":10,"type":"showDialog"}
+{"seatIndex":5,"name":"olle","chips":10,"sitout":false,"active":true,"type":"seatInfo"}
+{"showJoinButton":false,"showLeaveButton":false,"infoLink":null,"infoLinkText":null,"type":"tableInfo"}
+{"showJoinButton":false,"showLeaveButton":false,"infoLink":null,"infoLinkText":null,"type":"tableInfo"}
+{"seatIndex":5,"animate":true,"type":"dealerButton"}
+{"text":"Current Hand: #987\nPrevious Hand: #987","type":"handInfo"}
+{"seatIndex":7,"totalTime":30,"timeLeft":30,"type":"timer"}
+{"seatIndex":-1,"totalTime":-1,"timeLeft":-1,"type":"timer"}
+{"seatIndex":7,"name":"kalle","chips":9,"sitout":false,"active":true,"type":"seatInfo"}
+//{"seatIndex":7,"value":1,"type":"bet"}
+{"buttons":[{"button":"sitOut"},{"button":"postBB","value":2}],"sliderButtonIndex":0,"min":-1,"max":-1,"type":"buttons"}
+{"seatIndex":5,"totalTime":30,"timeLeft":30,"type":"timer"}
+{"seatIndex":-1,"totalTime":-1,"timeLeft":-1,"type":"timer"}
+{"seatIndex":5,"name":"olle","chips":8,"sitout":false,"active":true,"type":"seatInfo"}
+//{"seatIndex":5,"value":2,"type":"bet"}
+{"animate":true,"firstIndex":0,"cards":[-1],"seatIndex":7,"type":"pocketCards"}
+{"animate":true,"firstIndex":0,"cards":[19],"seatIndex":5,"type":"pocketCards"}
+{"animate":true,"firstIndex":1,"cards":[-1],"seatIndex":7,"type":"pocketCards"}
+{"animate":true,"firstIndex":1,"cards":[38],"seatIndex":5,"type":"pocketCards"}
+{"buttons":[{"button":"fold","value":0},{"button":"check","value":0},{"button":"checkFold","value":0},{"button":"callAny","value":0},null,null,null],"current":null,"type":"presetButtons"}
+{"seatIndex":7,"totalTime":30,"timeLeft":30,"type":"timer"}
+{"showJoinButton":false,"showLeaveButton":false,"infoLink":null,"infoLinkText":null,"type":"tableInfo"}
+{"seatIndex":-1,"totalTime":-1,"timeLeft":-1,"type":"timer"}
+{"seatIndex":7,"action":"call","type":"action"}
+{"seatIndex":7,"name":"kalle","chips":8,"sitout":false,"active":true,"type":"seatInfo"}
+{"seatIndex":7,"value":2,"type":"bet"}
+{"buttons":[null,null,null,null,null,null,null],"current":null,"type":"presetButtons"}
+{"buttons":[{"button":"fold"},{"button":"check"},{"button":"raise","value":4}],"sliderButtonIndex":2,"min":4,"max":10,"type":"buttons"}
+{"seatIndex":5,"totalTime":30,"timeLeft":30,"type":"timer"}
+{"seatIndex":-1,"totalTime":-1,"timeLeft":-1,"type":"timer"}
+{"seatIndex":5,"action":"check","type":"action"}
+{"buttons":[null,null,null,null,null,null,null],"current":null,"type":"presetButtons"}
+{"type":"betsToPot"}
+{"values":[4],"type":"pot"}
+{"animate":true,"firstIndex":0,"cards":[32],"type":"communityCards"}
+{"animate":true,"firstIndex":1,"cards":[42],"type":"communityCards"}
+{"animate":true,"firstIndex":2,"cards":[10],"type":"communityCards"}
+{"buttons":[{"button":"fold","value":0},{"button":"check","value":0},{"button":"checkFold","value":0},{"button":"callAny","value":0},null,null,null],"current":null,"type":"presetButtons"}
+{"seatIndex":7,"totalTime":30,"timeLeft":30,"type":"timer"}

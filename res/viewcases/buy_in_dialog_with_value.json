@@ -1,0 +1,2 @@
+{"type":"showDialog","text":"Hello and walcome!\n\nDo you want to join?","buttons":["buyIn","cancel"],"defaultValue":123}
+{"type":"stateComplete"}

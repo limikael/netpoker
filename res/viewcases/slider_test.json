@@ -1,0 +1,7 @@
+{"type":"seatInfo", "seatIndex": 5, "name": "olle", "chips": 123, "active": true}
+{"type":"stateComplete"}
+{"type":"pocketCards", "seatIndex": 5, "firstIndex": 0, "cards": [11], "animate": true}
+{"type":"pocketCards", "seatIndex": 5, "firstIndex": 1, "cards": [12], "animate": true}
+{"type":"stateComplete"}
+{"type":"buttons", "buttons":[{"button":"fold"},{"button":"check"},{"button":"raise", "value": 2}], "sliderButtonIndex": 2, "min":1, "max":100}
+{"type":"stateComplete"}

@@ -1,0 +1,24 @@
+{"type":"seatInfo", "seatIndex": 5, "name": "olle", "chips": 123, "active": true}
+{"type":"seatInfo", "seatIndex": 7, "name": "pelle", "chips": 123, "active": true}
+{"type":"pocketCards", "seatIndex": 5, "firstIndex": 0, "cards": [11,13]}
+{"type":"pocketCards", "seatIndex": 7, "firstIndex": 0, "cards": [14,15]}
+{"type":"stateComplete"}
+
+{"type":"chat","text":"placing some bets first"}
+{"type":"bet", "seatIndex": 5, "value": 19}
+{"type":"bet", "seatIndex": 7, "value": 23}
+{"type":"delay", "delay": 2000}
+
+{"type":"chat","text":"moving them to the pot"}
+{"type":"betsToPot"}
+{"type":"pot", "values": [48]}
+{"type":"delay", "delay": 2000}
+
+{"type":"chat","text":"placing some new bets"}
+{"type":"bet", "seatIndex": 5, "value": 2}
+{"type":"bet", "seatIndex": 7, "value": 3}
+{"type":"delay", "delay": 2000}
+
+{"type":"chat","text":"moving them to the pot also"}
+{"type":"betsToPot"}
+{"type":"pot", "values": [53]}

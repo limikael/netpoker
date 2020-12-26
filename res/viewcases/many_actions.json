@@ -1,0 +1,20 @@
+{"type":"seatInfo", "seatIndex": 0, "name": "olle", "chips": 123, "active": true}
+{"type":"seatInfo", "seatIndex": 1, "name": "pelle", "chips": 123, "active": true}
+{"type":"seatInfo", "seatIndex": 2, "name": "long name", "chips": 123, "active": true}
+{"type":"seatInfo", "seatIndex": 3, "name": "sitout", "chips": 456, "active": true, "sitout": true}
+{"type":"seatInfo", "seatIndex": 4, "name": "inactive", "chips": 456, "active": false}
+{"type":"seatInfo", "seatIndex": 5, "name": "sitout", "chips": 456, "active": true, "sitout": true}
+{"type":"seatInfo", "seatIndex": 6, "name": "inactive", "chips": 456, "active": false}
+{"type":"stateComplete"}
+{"type":"action", "seatIndex":1,"action":"Fold"}
+{"type":"stateComplete"}
+{"type":"action", "seatIndex":2,"action":"Check"}
+{"type":"stateComplete"}
+{"type":"action", "seatIndex":3,"action":"Raise"}
+{"type":"stateComplete"}
+{"type":"action", "seatIndex":4,"action":"Fold"}
+{"type":"stateComplete"}
+{"type":"action", "seatIndex":5,"action":"Fold"}
+{"type":"stateComplete"}
+{"type":"action", "seatIndex":6,"action":"Fold"}
+{"type":"stateComplete"}

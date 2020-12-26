@@ -1,0 +1,4 @@
+{"type":"seatInfo", "seatIndex": 2, "name": "olle", "chips": 463, "active": true}
+{"type":"stateComplete"}
+{"type":"bet", "seatIndex": 2, "value": 10}
+{"type":"bet", "seatIndex": 2, "value": 14}

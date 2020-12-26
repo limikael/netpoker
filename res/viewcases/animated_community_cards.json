@@ -1,0 +1,9 @@
+{"type":"seatInfo", "seatIndex": 5, "name": "olle", "chips": 463, "active": true}
+{"type":"stateComplete"}
+{"type":"pocketCards", "seatIndex": 5, "firstIndex": 0, "cards": [20], "animate": true}
+{"type":"pocketCards", "seatIndex": 5, "firstIndex": 1, "cards": [21], "animate": true}
+{"type":"communityCards", "firstIndex": 0, "cards": [10], "animate": true}
+{"type":"communityCards", "firstIndex": 1, "cards": [11], "animate": true}
+{"type":"communityCards", "firstIndex": 2, "cards": [12], "animate": true}
+{"type":"communityCards", "firstIndex": 3, "cards": [12], "animate": true}
+{"type":"communityCards", "firstIndex": 4, "cards": [12], "animate": true}

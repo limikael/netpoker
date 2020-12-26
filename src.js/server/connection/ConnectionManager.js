@@ -1,7 +1,10 @@
-const ws=require("ws");
+const WebSocket=require("ws");
+const EventEmiter=require("events");
 
-class ConnectionManager {
+class ConnectionManager extends EventEmiter {
 	constructor(server) {
+		super();
+
 		this.server=server;
 		this.wsServer=new WebSocket.Server({server: this.server.httpServer});
 		this.wsServer.on("connection",this.onWsConnection);

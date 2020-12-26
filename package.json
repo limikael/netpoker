@@ -8,7 +8,7 @@
     "spritesheet": "spritesheet-js -n netpokerclient-spritesheet -p res res/netpokerclient-sprites/*.png"
   },
   "bin": {
-    "netpokerserver": "src.js/server/netpokerserver.js"
+    "netpokerserver": "./src.js/server/netpokerserver.js"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,8 @@
   "homepage": "https://github.com/limikael/netpoker#readme",
   "dependencies": {
     "minimist": "^1.2.5",
-    "watchify": "^3.11.1"
+    "watchify": "^3.11.1",
+    "ws": "^7.4.1"
   },
   "devDependencies": {
     "browserify": "^17.0.0",
