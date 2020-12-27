@@ -44,7 +44,7 @@ class NetPokerPlugin extends Singleton {
 		if ($res===FALSE) {
 			error_log("backend call failed: ".$method);
 
-			throw new Exception("Backend call failed: ".curl_error($curl));
+			throw new \Exception("Backend call failed: ".curl_error($curl));
 			return NULL;
 		}
 
