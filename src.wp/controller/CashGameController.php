@@ -37,26 +37,9 @@ class CashGameController extends Singleton {
 
  	public function the_content($content) {
 		if (is_singular("cashgame") && in_the_loop() && is_main_query()) {
-			wp_enqueue_script("pixi",
-				NETPOKER_URL."/res/pixi.min.js",
-				array(),"5.3.6",true);
+			$config=array();
 
-			wp_enqueue_script("netpokerclient-bundle",
-				NETPOKER_URL."/res/netpokerclient-bundle.js",
-				array("jquery","pixi"),"1.0.0",true);
-
-			wp_enqueue_script("netpoker",
-				NETPOKER_URL."/res/netpoker.js",
-				array("netpokerclient-bundle"),"1.0.0",true);
-
-			$config=array(
-				"resourceBaseUrl"=>NETPOKER_URL."/res/"
-			);
-
-			wp_localize_script("netpoker","netpokerConfig",$config);
-
-			$t=new Template(__DIR__."/../tpl/netpoker.tpl.php");
-			return $t->render();
+			return TableController::instance()->renderTable($config);
 		}
 
  		return $content;
