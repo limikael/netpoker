@@ -1,6 +1,7 @@
 const Resources=require("./Resources");
 const NetPokerClientView=require("../view/NetPokerClientView");
 const ContentScaler=require("../../utils/ContentScaler");
+const MessageConnection=require("../../utils/MessageConnection");
 
 class NetPokerClient {
 	constructor(params) {
@@ -51,15 +52,23 @@ class NetPokerClient {
 		);
 	}
 
+	getResources() {
+		return this.resources;
+	}
+
 	async run() {
 		await this.resources.load();
 
 		this.clientView=new NetPokerClientView(this);
 		this.stage.addChild(this.clientView);
+
+		this.connect();
 	}
 
-	getResources() {
-		return this.resources;
+	async connect() {
+		this.connection=await MessageConnection.connect(this.params.serverUrl);
+
+		
 	}
 }
 

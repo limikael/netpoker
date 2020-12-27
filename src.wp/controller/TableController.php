@@ -14,7 +14,6 @@ class TableController extends Singleton {
 		if (!$currentViewcase)
 			$currentViewcase="basic";
 
-		$cofig=array();
 		$viewcases=NetPokerPlugin::instance()->serverRequest("listViewCases");
 		$viewcaseOptions=array();
 		foreach ($viewcases as $viewcase)
@@ -26,10 +25,14 @@ class TableController extends Singleton {
 			"currentViewcase"=>$currentViewcase
 		);
 
-		return ($t->render($vars).$this->renderTable($config));
+		$params=array(
+			"viewcase"=>$currentViewcase
+		);
+
+		return ($t->render($vars).$this->renderTable($params));
 	}
 
-	public function renderTable($config) {
+	public function renderTable($params=array()) {
 		wp_enqueue_script("pixi",
 			NETPOKER_URL."/res/pixi.min.js",
 			array(),"5.3.6",true);
@@ -42,9 +45,12 @@ class TableController extends Singleton {
 			NETPOKER_URL."/res/netpoker.js",
 			array("netpokerclient-bundle"),"1.0.0",true);
 
-		$config=array(
-			"resourceBaseUrl"=>NETPOKER_URL."/res/"
-		);
+		$config["resourceBaseUrl"]=NETPOKER_URL."/res/";
+
+		$url=get_option("netpoker_serverurl");
+		$url=str_replace("http://", "ws://", $url);
+		$url=str_replace("https://", "wss://", $url);
+		$config["serverUrl"]=$url."?".http_build_query($params);
 
 		wp_localize_script("netpoker","netpokerConfig",$config);
 
