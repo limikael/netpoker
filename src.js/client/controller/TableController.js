@@ -58,23 +58,17 @@ class TableController {
 	 * @method onCommunityCardsMessage
 	 */
 	onCommunityCardsMessage=(m)=>{
-		var i;
-
-		console.log("got community cards!");
-		//console.log(m);
-
-		for (i = 0; i < m.getCards().length; i++) {
-			var cardData = m.getCards()[i];
-			var cardView = this.view.getCommunityCards()[m.getFirstIndex() + i];
+		for (let i = 0; i < m.cards.length; i++) {
+			let cardData = new CardData(m.cards[i]);
+			let cardView = this.view.getCommunityCards()[m.firstIndex + i];
 
 			cardView.setCardData(cardData);
-			cardView.show(m.animate, i * 500);
+			cardView.show(m.animate);
 		}
-		if (m.getCards().length > 0) {
-			var cardData = m.getCards()[m.getCards().length - 1];
-			var cardView = this.view.getCommunityCards()[m.getFirstIndex() + m.getCards().length - 1];
+		if (m.animate) {
+			var cardView = this.view.getCommunityCards()[m.firstIndex + m.cards.length - 1];
 			if (m.animate)
-				this.messageSequencer.waitFor(cardView, "animationDone");
+				this.eventQueue.waitFor(cardView, "animationDone");
 		}
 	}
 

@@ -40,9 +40,9 @@ class NetPokerClientView extends PIXI.Container {
 		this.tableBackground.position = this.resources.getPoint("tablePosition");
 
 		this.setupSeats();
-		/*this.setupCommunityCards();
+		this.setupCommunityCards();
 
-		this.timerView = new TimerView(this.client);
+		/*this.timerView = new TimerView(this.client);
 		this.tableContainer.addChild(this.timerView);
 
 		this.chatView = new ChatView(this.client);
@@ -188,12 +188,12 @@ class NetPokerClientView extends PIXI.Container {
 	setupCommunityCards() {
 		this.communityCards = [];
 
-		var p = this.resources.getPoint("communityCardsPosition");
-		var margin = parseInt(this.resources.getValue("communityCardMargin"));
-		for (i = 0; i < 5; i++) {
-			var cardView = new CardView(this.viewConfig, this.resources);
+		let p = this.resources.getPoint("communityCardsPosition");
+		let margin = parseInt(this.resources.getValue("communityCardMargin"));
+		for (let i = 0; i < 5; i++) {
+			let cardView = new CardView(this.client);
 			cardView.hide();
-			cardView.setTargetPosition(Point(p.x + i * (cardView.back.width + margin), p.y));
+			cardView.setTargetPosition(new PIXI.Point(p.x + i * (cardView.back.width + margin), p.y));
 
 			this.communityCards.push(cardView);
 			this.tableContainer.addChild(cardView);

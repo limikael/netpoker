@@ -5,6 +5,10 @@ class Resources {
 		this.spriteSheetUrl=spriteSheetUrl
 	}
 
+	getValue(id) {
+		return THEME[id];
+	}
+
 	getTexture(id) {
 		let fn=THEME[id];
 		return this.sheet.textures[fn];
