@@ -1,13 +1,13 @@
 {
 	"meta": {
 		"image": "netpokerclient-spritesheet.png",
-		"size": {"w":772,"h":704},
+		"size": {"w":774,"h":710},
 		"scale": "1"
 	},
 	"frames": {
 		"table.png":
 		{
-			"frame": {"x":0,"y":0,"w":772,"h":412},
+			"frame": {"x":1,"y":1,"w":772,"h":412},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":772,"h":412},
@@ -15,7 +15,7 @@
 		},
 		"dividerLine.png":
 		{
-			"frame": {"x":0,"y":412,"w":2,"h":170},
+			"frame": {"x":1,"y":415,"w":2,"h":170},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":2,"h":170},
@@ -23,7 +23,7 @@
 		},
 		"seatPlate.png":
 		{
-			"frame": {"x":2,"y":412,"w":160,"h":70},
+			"frame": {"x":5,"y":415,"w":160,"h":70},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":160,"h":70},
@@ -31,7 +31,7 @@
 		},
 		"cardBack.png":
 		{
-			"frame": {"x":0,"y":582,"w":87,"h":122},
+			"frame": {"x":1,"y":587,"w":87,"h":122},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":87,"h":122},
@@ -39,7 +39,7 @@
 		},
 		"cardFrame.png":
 		{
-			"frame": {"x":87,"y":582,"w":87,"h":122},
+			"frame": {"x":90,"y":587,"w":87,"h":122},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":87,"h":122},
@@ -47,7 +47,7 @@
 		},
 		"sliderBackground.png":
 		{
-			"frame": {"x":162,"y":412,"w":120,"h":30},
+			"frame": {"x":167,"y":415,"w":120,"h":30},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":120,"h":30},
@@ -55,7 +55,7 @@
 		},
 		"bigButton.png":
 		{
-			"frame": {"x":2,"y":482,"w":95,"h":94},
+			"frame": {"x":5,"y":487,"w":95,"h":94},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":95,"h":94},
@@ -63,7 +63,7 @@
 		},
 		"dialogButton.png":
 		{
-			"frame": {"x":97,"y":482,"w":82,"h":47},
+			"frame": {"x":102,"y":487,"w":82,"h":47},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":82,"h":47},
@@ -71,7 +71,7 @@
 		},
 		"chatBackground.png":
 		{
-			"frame": {"x":174,"y":582,"w":74,"h":76},
+			"frame": {"x":179,"y":587,"w":74,"h":76},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":74,"h":76},
@@ -79,7 +79,7 @@
 		},
 		"framePlate.png":
 		{
-			"frame": {"x":248,"y":582,"w":74,"h":76},
+			"frame": {"x":255,"y":587,"w":74,"h":76},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":74,"h":76},
@@ -87,7 +87,7 @@
 		},
 		"buttonBackground.png":
 		{
-			"frame": {"x":322,"y":582,"w":64,"h":64},
+			"frame": {"x":331,"y":587,"w":64,"h":64},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -95,7 +95,7 @@
 		},
 		"textScrollbarThumb.png":
 		{
-			"frame": {"x":282,"y":412,"w":60,"h":10},
+			"frame": {"x":289,"y":415,"w":60,"h":10},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":60,"h":10},
@@ -103,7 +103,7 @@
 		},
 		"textScrollbarTrack.png":
 		{
-			"frame": {"x":342,"y":412,"w":60,"h":10},
+			"frame": {"x":351,"y":415,"w":60,"h":10},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":60,"h":10},
@@ -111,7 +111,7 @@
 		},
 		"dealerButton.png":
 		{
-			"frame": {"x":162,"y":442,"w":41,"h":35},
+			"frame": {"x":167,"y":447,"w":41,"h":35},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":41,"h":35},
@@ -119,7 +119,7 @@
 		},
 		"chip0.png":
 		{
-			"frame": {"x":203,"y":442,"w":40,"h":30},
+			"frame": {"x":210,"y":447,"w":40,"h":30},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":40,"h":30},
@@ -127,7 +127,7 @@
 		},
 		"chip1.png":
 		{
-			"frame": {"x":243,"y":442,"w":40,"h":30},
+			"frame": {"x":252,"y":447,"w":40,"h":30},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":40,"h":30},
@@ -135,7 +135,7 @@
 		},
 		"chip2.png":
 		{
-			"frame": {"x":283,"y":442,"w":40,"h":30},
+			"frame": {"x":294,"y":447,"w":40,"h":30},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":40,"h":30},
@@ -143,7 +143,7 @@
 		},
 		"chip3.png":
 		{
-			"frame": {"x":323,"y":442,"w":40,"h":30},
+			"frame": {"x":336,"y":447,"w":40,"h":30},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":40,"h":30},
@@ -151,7 +151,7 @@
 		},
 		"chip4.png":
 		{
-			"frame": {"x":363,"y":442,"w":40,"h":30},
+			"frame": {"x":378,"y":447,"w":40,"h":30},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":40,"h":30},
@@ -159,7 +159,7 @@
 		},
 		"selectedTableButton.png":
 		{
-			"frame": {"x":403,"y":442,"w":39,"h":22},
+			"frame": {"x":420,"y":447,"w":39,"h":22},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":39,"h":22},
@@ -167,7 +167,7 @@
 		},
 		"selectTableButton.png":
 		{
-			"frame": {"x":442,"y":442,"w":39,"h":22},
+			"frame": {"x":461,"y":447,"w":39,"h":22},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":39,"h":22},
@@ -175,7 +175,7 @@
 		},
 		"timerBackground.png":
 		{
-			"frame": {"x":179,"y":482,"w":32,"h":32},
+			"frame": {"x":186,"y":487,"w":32,"h":32},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -183,7 +183,7 @@
 		},
 		"sliderKnob.png":
 		{
-			"frame": {"x":211,"y":482,"w":28,"h":28},
+			"frame": {"x":220,"y":487,"w":28,"h":28},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":28,"h":28},
@@ -191,7 +191,7 @@
 		},
 		"wrenchIcon.png":
 		{
-			"frame": {"x":481,"y":442,"w":21,"h":21},
+			"frame": {"x":502,"y":447,"w":21,"h":21},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":21,"h":21},
@@ -199,7 +199,7 @@
 		},
 		"checkboxTick.png":
 		{
-			"frame": {"x":282,"y":422,"w":21,"h":16},
+			"frame": {"x":289,"y":427,"w":21,"h":16},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":21,"h":16},
@@ -207,7 +207,7 @@
 		},
 		"suitSymbol0.png":
 		{
-			"frame": {"x":502,"y":442,"w":18,"h":19},
+			"frame": {"x":525,"y":447,"w":18,"h":19},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":18,"h":19},
@@ -215,7 +215,7 @@
 		},
 		"suitSymbol1.png":
 		{
-			"frame": {"x":520,"y":442,"w":18,"h":19},
+			"frame": {"x":545,"y":447,"w":18,"h":19},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":18,"h":19},
@@ -223,7 +223,7 @@
 		},
 		"suitSymbol2.png":
 		{
-			"frame": {"x":538,"y":442,"w":18,"h":19},
+			"frame": {"x":565,"y":447,"w":18,"h":19},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":18,"h":19},
@@ -231,7 +231,7 @@
 		},
 		"suitSymbol3.png":
 		{
-			"frame": {"x":556,"y":442,"w":18,"h":19},
+			"frame": {"x":585,"y":447,"w":18,"h":19},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":18,"h":19},
@@ -239,7 +239,7 @@
 		},
 		"checkboxBackground.png":
 		{
-			"frame": {"x":574,"y":442,"w":18,"h":18},
+			"frame": {"x":605,"y":447,"w":18,"h":18},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -247,7 +247,7 @@
 		},
 		"eleminatedTableIcon.png":
 		{
-			"frame": {"x":303,"y":422,"w":13,"h":13},
+			"frame": {"x":312,"y":427,"w":13,"h":13},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":13,"h":13},
@@ -255,7 +255,7 @@
 		},
 		"upArrow.png":
 		{
-			"frame": {"x":402,"y":412,"w":12,"h":8},
+			"frame": {"x":413,"y":415,"w":12,"h":8},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {"x":0,"y":0,"w":12,"h":8},

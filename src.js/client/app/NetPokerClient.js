@@ -67,8 +67,10 @@ class NetPokerClient {
 
 	async connect() {
 		this.connection=await MessageConnection.connect(this.params.serverUrl);
+	}
 
-		
+	getResources() {
+		return this.resources;
 	}
 }
 

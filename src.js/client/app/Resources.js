@@ -10,6 +10,10 @@ class Resources {
 		return new PIXI.Sprite(this.sheet.textures[fn]);
 	}
 
+	getPoint(id) {
+		return new PIXI.Point(THEME[id][0],THEME[id][1]);
+	}
+
 	async load() {
 		await new Promise((resolve,reject)=>{
 			PIXI.Loader.shared.add(this.spriteSheetUrl);

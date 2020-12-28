@@ -5,7 +5,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "bundle": "browserify -o res/netpokerclient-bundle.js src.js/client/netpokerclient.js",
     "watch": "watchify -v -o res/netpokerclient-bundle.js src.js/client/netpokerclient.js",
-    "spritesheet": "spritesheet-js -n netpokerclient-spritesheet -p res res/netpokerclient-sprites/*.png"
+    "spritesheet": "spritesheet-js --padding=1 -n netpokerclient-spritesheet -p res res/netpokerclient-sprites/*.png"
   },
   "bin": {
     "netpokerserver": "./src.js/server/netpokerserver.js"
@@ -22,6 +22,7 @@
   "homepage": "https://github.com/limikael/netpoker#readme",
   "dependencies": {
     "minimist": "^1.2.5",
+    "tween.js": "^16.6.0",
     "watchify": "^3.11.1",
     "ws": "^7.4.1"
   },
