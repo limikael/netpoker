@@ -9,6 +9,10 @@ class Resources {
 		return THEME[id];
 	}
 
+	getColor(id) {
+		return this.getValue(id);
+	}
+
 	getTexture(id) {
 		let fn=THEME[id];
 		return this.sheet.textures[fn];

@@ -58,18 +58,17 @@ class TableController {
 	 * @method onCommunityCardsMessage
 	 */
 	onCommunityCardsMessage=(m)=>{
+		let cardView;
+
 		for (let i = 0; i < m.cards.length; i++) {
 			let cardData = new CardData(m.cards[i]);
-			let cardView = this.view.getCommunityCards()[m.firstIndex + i];
-
+			cardView = this.view.getCommunityCards()[m.firstIndex + i];
 			cardView.setCardData(cardData);
 			cardView.show(m.animate);
 		}
-		if (m.animate) {
-			var cardView = this.view.getCommunityCards()[m.firstIndex + m.cards.length - 1];
-			if (m.animate)
-				this.eventQueue.waitFor(cardView, "animationDone");
-		}
+
+		if (m.animate && cardView)
+			this.eventQueue.waitFor(cardView, "animationDone");
 	}
 
 	/**
@@ -112,7 +111,8 @@ class TableController {
 	 * @method onBetMessage
 	 */
 	onBetMessage=(m)=>{
-		this.view.seatViews[m.seatIndex].betChips.setValue(m.value);
+		var seatView = this.view.getSeatViewByIndex(m.seatIndex);
+		seatView.getBetChipsView().setValue(m.value);
 	};
 
 	/**
@@ -132,7 +132,7 @@ class TableController {
 		for (var i = 0; i < this.view.seatViews.length; i++)
 			this.view.seatViews[i].betChips.animateIn();
 
-		this.messageSequencer.waitFor(this.view.seatViews[0].betChips, "animationDone");
+		this.eventQueue.waitFor(this.view.seatViews[9].betChips, "animationDone");
 	}
 
 	/**

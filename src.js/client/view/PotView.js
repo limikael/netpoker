@@ -3,83 +3,79 @@
  * @module client
  */
 
-var PIXI = require("pixi.js");
-var TWEEN = require("tween.js");
-var EventDispatcher = require("yaed");
+const TWEEN = require('@tweenjs/tween.js');
 var ChipsView = require("./ChipsView");
-var inherits = require("inherits");
 
 /**
  * A pot view
  * @class PotView
  */
-function PotView(viewConfig, resources) {
-	PIXI.DisplayObjectContainer.call(this);
-	
-	this.viewConfig = viewConfig
-	this.resources = resources;
-	this.value = 0;
+class PotView extends PIXI.Container {
+	constructor(client) {
+		super();
 
-	this.holder = new PIXI.DisplayObjectContainer();
-	this.addChild(this.holder);
+		this.client=client;
+		this.resources = client.getResources();
+		this.value = 0;
 
-	this.stacks = new Array();
-}
+		this.holder = new PIXI.Container();
+		this.addChild(this.holder);
 
-inherits(PotView, PIXI.DisplayObjectContainer);
-EventDispatcher.init(PotView);
-
-/**
- * Set value.
- * @method setValue
- */
-PotView.prototype.setValues = function(values) {
-	
-	for(var i = 0; i < this.stacks.length; i++)
-		this.holder.removeChild(this.stacks[i]);
-
-	this.stacks = new Array();
-
-	var pos = 0;
-
-	for(var i = 0; i < values.length; i++) {
-		var chips = new ChipsView(this.viewConfig, this.resources, false);
-		this.stacks.push(chips);
-		this.holder.addChild(chips);
-		chips.setValue(values[i]);
-		chips.x = pos;
-		pos += Math.floor(chips.width + 20);
-
-		var textField = new PIXI.Text(values[i], {
-			font: "bold 12px Arial",
-			align: "center",
-			fill: "#ffffff"
-		});
-
-		textField.position.x = (chips.width - textField.width)*0.5;
-		textField.position.y = 30;
-
-		chips.addChild(textField);
+		this.stacks = new Array();
 	}
 
-	this.holder.x = -this.holder.width*0.5;
-}
+	/**
+	 * Set value.
+	 * @method setValue
+	 */
+	setValues(values) {
+		for(var i = 0; i < this.stacks.length; i++)
+			this.holder.removeChild(this.stacks[i]);
 
-/**
- * Hide.
- * @method hide
- */
-PotView.prototype.hide = function() {
-	this.visible = false;
-}
+		this.stacks = new Array();
 
-/**
- * Show.
- * @method show
- */
-PotView.prototype.show = function() {
-	this.visible = true;
+		var pos = 0;
 
+		for(var i = 0; i < values.length; i++) {
+			var chips = new ChipsView(this.client);
+			this.stacks.push(chips);
+			this.holder.addChild(chips);
+			chips.setValue(values[i]);
+			chips.x = pos;
+			pos += Math.floor(chips.width + 20);
+
+			var textField = new PIXI.Text(values[i], {
+				fontFamily: "Arial",
+				fontWeight: "bold",
+				fontSize: 12,
+				align: "center",
+				fill: "#ffffff"
+			});
+
+			textField.position.x = (chips.width - textField.width)*0.5;
+			textField.position.y = 30;
+
+			chips.addChild(textField);
+		}
+
+		this.holder.x = -this.holder.width*0.5;
+	}
+
+	/**
+	 * Hide.
+	 * @method hide
+	 */
+	hide() {
+		this.visible = false;
+	}
+
+	/**
+	 * Show.
+	 * @method show
+	 */
+	show() {
+		this.visible = true;
+	}
 }
 
 module.exports = PotView;

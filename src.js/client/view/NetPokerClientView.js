@@ -8,13 +8,13 @@ var Point = require("../../utils/Point");
 var ButtonsView = require("./ButtonsView");
 var DialogView = require("./DialogView");
 var DealerButtonView = require("./DealerButtonView");
-var ChipsView = require("./ChipsView");
-var PotView = require("./PotView");
 var TimerView = require("./TimerView");
 var SettingsView = require("../view/SettingsView");
 var TableInfoView = require("../view/TableInfoView");
 var PresetButtonsView = require("../view/PresetButtonsView");
 var TableButtonsView = require("./TableButtonsView");*/
+const PotView = require("./PotView");
+const ChipsView = require("./ChipsView");
 const CardView = require("./CardView");
 const SeatView = require("./SeatView");
 const TWEEN = require('@tweenjs/tween.js');
@@ -55,14 +55,13 @@ class NetPokerClientView extends PIXI.Container {
 		this.tableContainer.addChild(this.dealerButtonView);
 
 		this.tableInfoView = new TableInfoView(this.client);
-		this.addChild(this.tableInfoView);
+		this.addChild(this.tableInfoView);*/
 
 		this.potView = new PotView(this.client);
+		this.potView.position = this.resources.getPoint("potPosition");
 		this.tableContainer.addChild(this.potView);
-		this.potView.position.x = this.resources.getPoint("potPosition").x;
-		this.potView.position.y = this.resources.getPoint("potPosition").y;
 
-		this.settingsView = new SettingsView(this.client);
+		/*this.settingsView = new SettingsView(this.client);
 		this.addChild(this.settingsView);
 
 		this.dialogView = new DialogView(this.client);
@@ -72,11 +71,11 @@ class NetPokerClientView extends PIXI.Container {
 		this.addChild(this.presetButtonsView);
 
 		this.tableButtonsView = new TableButtonsView(this.client);
-		this.addChild(this.tableButtonsView);
+		this.addChild(this.tableButtonsView);*/
 
 		this.setupChips();
 
-		this.fadeTableTween = null;*/
+		this.fadeTableTween = null;
 	}
 
 	/**
@@ -155,7 +154,7 @@ class NetPokerClientView extends PIXI.Container {
 	 */
 	setupChips() {
 		for (let i = 0; i < 10; i++) {
-			var chipsView = new ChipsView(this.viewConfig, this.resources);
+			let chipsView = new ChipsView(this.client);
 			this.seatViews[i].setBetChipsView(chipsView);
 
 			chipsView.setAlignment(this.resources.getValue("betAlign").charAt(i));

@@ -78,6 +78,10 @@ class SeatView extends Button {
 		chipsView.seatIndex = this.seatIndex;
 	}
 
+	getBetChipsView() {
+		return this.betChips;
+	}
+
 	/**
 	 * Set name.
 	 * @method setName
