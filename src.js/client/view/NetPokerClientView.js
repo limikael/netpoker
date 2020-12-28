@@ -5,14 +5,14 @@
 
 /*var ChatView = require("./ChatView");
 var Point = require("../../utils/Point");
-var ButtonsView = require("./ButtonsView");
 var DialogView = require("./DialogView");
 var DealerButtonView = require("./DealerButtonView");
-var TimerView = require("./TimerView");
 var SettingsView = require("../view/SettingsView");
 var TableInfoView = require("../view/TableInfoView");
 var PresetButtonsView = require("../view/PresetButtonsView");
 var TableButtonsView = require("./TableButtonsView");*/
+//const ButtonsView = require("./ButtonsView");
+const TimerView = require("./TimerView");
 const PotView = require("./PotView");
 const ChipsView = require("./ChipsView");
 const CardView = require("./CardView");
@@ -42,16 +42,16 @@ class NetPokerClientView extends PIXI.Container {
 		this.setupSeats();
 		this.setupCommunityCards();
 
-		/*this.timerView = new TimerView(this.client);
+		this.timerView = new TimerView(this.client);
 		this.tableContainer.addChild(this.timerView);
 
-		this.chatView = new ChatView(this.client);
-		this.addChild(this.chatView);
+		/*this.chatView = new ChatView(this.client);
+		this.addChild(this.chatView);*/
 
-		this.buttonsView = new ButtonsView(this.client);
-		this.addChild(this.buttonsView);
+		/*this.buttonsView = new ButtonsView(this.client);
+		this.addChild(this.buttonsView);*/
 
-		this.dealerButtonView = new DealerButtonView(this.client);
+		/*this.dealerButtonView = new DealerButtonView(this.client);
 		this.tableContainer.addChild(this.dealerButtonView);
 
 		this.tableInfoView = new TableInfoView(this.client);

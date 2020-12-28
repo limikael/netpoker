@@ -4,5 +4,5 @@
 {"type":"delay", "delay": 1000}
 
 {"type":"betsToPot"}
-{"type":"pot", "values": [123]}
+{"type":"pot", "values": [1234,56]}
 {"type":"bet", "seatIndex": 2, "value": 10}

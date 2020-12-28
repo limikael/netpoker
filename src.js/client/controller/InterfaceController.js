@@ -26,21 +26,13 @@ class InterfaceController {
 	}
 
 	/**
-	 * Table buttons message.
-	 * @method onTableButtonsMessage
-	 */
-	onTableButtonsMessage=(m)=>{
-		console.log("table buttons...");
-	}
-
-	/**
 	 * Buttons message.
 	 * @method onButtonsMessage
 	 */
 	onButtonsMessage=(m)=>{
 		var buttonsView = this.view.getButtonsView();
 
-		buttonsView.setButtons(m.getButtons(), m.sliderButtonIndex, parseInt(m.min, 10), parseInt(m.max, 10));
+		buttonsView.setButtons(m.buttons, m.sliderButtonIndex, parseInt(m.min, 10), parseInt(m.max, 10));
 	}
 
 	/**

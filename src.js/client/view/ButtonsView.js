@@ -3,14 +3,11 @@
  * @module client
  */
 
-var PIXI = require("pixi.js");
-var EventDispatcher = require("yaed");
 var Button = require("../../utils/Button");
 var Slider = require("../../utils/Slider");
 var NineSlice = require("../../utils/NineSlice");
 var BigButton = require("./BigButton");
-var RaiseShortcutButton = require("./RaiseShortcutButton");
-var inherits = require("inherits");
+//var RaiseShortcutButton = require("./RaiseShortcutButton");
 
 /**
  * Buttons
