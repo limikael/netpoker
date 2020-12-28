@@ -1,72 +1,38 @@
 const Resources=require("./Resources");
 const NetPokerClientView=require("../view/NetPokerClientView");
-const ContentScaler=require("../../utils/ContentScaler");
+const NetPokerClientController=require("../controller/NetPokerClientController");
 const MessageConnection=require("../../utils/MessageConnection");
+const PixiApp=require("../../utils/PixiApp");
 
-class NetPokerClient {
+class NetPokerClient extends PixiApp {
 	constructor(params) {
+		super(960,720);
 		this.params=params;
+	}
 
-		this.element=params.element;
-		this.pixiApp=new PIXI.Application({
-			width: this.element.clientWidth,
-			height: this.element.clientHeight
-		});
+	async run() {
+		// Attach to element.
+		this.attach(this.params.element);
 
-		this.pixiApp.renderer.autoDensity=true;
-		this.pixiApp.view.style.position="absolute";
-		this.pixiApp.view.style.top=0;
-		this.pixiApp.view.style.left=0;
-
-		window.addEventListener("resize",this.onWindowResize);
-
-		this.element.appendChild(this.pixiApp.view);
-
+		// Load resources.
 		let spriteSheetUrl=
 			this.params.resourceBaseUrl+
 			"/netpokerclient-spritesheet.json";
 
 		this.resources=new Resources(spriteSheetUrl);
-
-		this.stage=new PIXI.Container();
-
-		this.contentScaler=new ContentScaler(this.stage);
-		this.contentScaler.setScreenSize(
-			this.element.clientWidth,
-			this.element.clientHeight
-		);
-
-		this.contentScaler.setContentSize(960,720);
-		this.pixiApp.stage.addChild(this.contentScaler);
-	}
-
-	onWindowResize=()=>{
-		this.contentScaler.setScreenSize(
-			this.element.clientWidth,
-			this.element.clientHeight
-		);
-
-		this.pixiApp.renderer.resize(
-			this.element.clientWidth,
-			this.element.clientHeight
-		);
-	}
-
-	getResources() {
-		return this.resources;
-	}
-
-	async run() {
 		await this.resources.load();
 
+		// Create view and controller.
 		this.clientView=new NetPokerClientView(this);
-		this.stage.addChild(this.clientView);
+		this.addChild(this.clientView);
+		this.clientController=new NetPokerClientController(this.clientView);
 
 		this.connect();
 	}
 
 	async connect() {
 		this.connection=await MessageConnection.connect(this.params.serverUrl);
+		this.clientController.setConnection(this.connection);
 	}
 
 	getResources() {

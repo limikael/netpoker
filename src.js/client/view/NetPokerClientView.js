@@ -3,8 +3,7 @@
  * @module client
  */
 
-/*var CardView = require("./CardView");
-var ChatView = require("./ChatView");
+/*var ChatView = require("./ChatView");
 var Point = require("../../utils/Point");
 var ButtonsView = require("./ButtonsView");
 var DialogView = require("./DialogView");
@@ -16,6 +15,7 @@ var SettingsView = require("../view/SettingsView");
 var TableInfoView = require("../view/TableInfoView");
 var PresetButtonsView = require("../view/PresetButtonsView");
 var TableButtonsView = require("./TableButtonsView");*/
+const CardView = require("./CardView");
 const SeatView = require("./SeatView");
 const TWEEN = require("tween.js");
 const Gradient = require("../../utils/Gradient");
@@ -134,13 +134,13 @@ class NetPokerClientView extends PIXI.Container {
 			let seatView = new SeatView(this.client, i);
 			let p = seatView.position;
 
-			/*for (j = 0; j < 2; j++) {
+			for (j = 0; j < 2; j++) {
 				let c = new CardView(this.client);
 				c.hide();
-				c.setTargetPosition(Point(p.x + j * 30 - 60, p.y - 100));
+				c.setTargetPosition(new PIXI.Point(p.x + j * 30 - 60, p.y - 100));
 				this.tableContainer.addChild(c);
 				seatView.addPocketCard(c);
-			}*/
+			}
 
 			seatView.on("click", this.onSeatClick, this);
 
@@ -384,13 +384,13 @@ class NetPokerClientView extends PIXI.Container {
 	}
 
 	/**
-	 * Clear everything to an empty state.
+	 * Clear everything to and empty state.
 	 * @method clear
 	 */
-	clear = function() {
-		var i;
+	clear() {
+		console.log("implement clear!!!");
 
-		this.clearTableContents();
+		/*this.clearTableContents();
 
 		this.presetButtonsView.hide();
 
@@ -409,7 +409,7 @@ class NetPokerClientView extends PIXI.Container {
 		}
 
 		this.tableContainer.alpha = 1;
-		this.tableContainer.x = 0;
+		this.tableContainer.x = 0;*/
 	}
 }
 

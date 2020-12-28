@@ -1608,73 +1608,39 @@ module.exports = function () {
 },{}],5:[function(require,module,exports){
 const Resources=require("./Resources");
 const NetPokerClientView=require("../view/NetPokerClientView");
-const ContentScaler=require("../../utils/ContentScaler");
+const NetPokerClientController=require("../controller/NetPokerClientController");
 const MessageConnection=require("../../utils/MessageConnection");
+const PixiApp=require("../../utils/PixiApp");
 
-class NetPokerClient {
+class NetPokerClient extends PixiApp {
 	constructor(params) {
+		super(960,720);
 		this.params=params;
+	}
 
-		this.element=params.element;
-		this.pixiApp=new PIXI.Application({
-			width: this.element.clientWidth,
-			height: this.element.clientHeight
-		});
+	async run() {
+		// Attach to element.
+		this.attach(this.params.element);
 
-		this.pixiApp.renderer.autoDensity=true;
-		this.pixiApp.view.style.position="absolute";
-		this.pixiApp.view.style.top=0;
-		this.pixiApp.view.style.left=0;
-
-		window.addEventListener("resize",this.onWindowResize);
-
-		this.element.appendChild(this.pixiApp.view);
-
+		// Load resources.
 		let spriteSheetUrl=
 			this.params.resourceBaseUrl+
 			"/netpokerclient-spritesheet.json";
 
 		this.resources=new Resources(spriteSheetUrl);
-
-		this.stage=new PIXI.Container();
-
-		this.contentScaler=new ContentScaler(this.stage);
-		this.contentScaler.setScreenSize(
-			this.element.clientWidth,
-			this.element.clientHeight
-		);
-
-		this.contentScaler.setContentSize(960,720);
-		this.pixiApp.stage.addChild(this.contentScaler);
-	}
-
-	onWindowResize=()=>{
-		this.contentScaler.setScreenSize(
-			this.element.clientWidth,
-			this.element.clientHeight
-		);
-
-		this.pixiApp.renderer.resize(
-			this.element.clientWidth,
-			this.element.clientHeight
-		);
-	}
-
-	getResources() {
-		return this.resources;
-	}
-
-	async run() {
 		await this.resources.load();
 
+		// Create view and controller.
 		this.clientView=new NetPokerClientView(this);
-		this.stage.addChild(this.clientView);
+		this.addChild(this.clientView);
+		this.clientController=new NetPokerClientController(this.clientView);
 
 		this.connect();
 	}
 
 	async connect() {
 		this.connection=await MessageConnection.connect(this.params.serverUrl);
+		this.clientController.setConnection(this.connection);
 	}
 
 	getResources() {
@@ -1684,7 +1650,7 @@ class NetPokerClient {
 
 module.exports=NetPokerClient;
 
-},{"../../utils/ContentScaler":13,"../../utils/MessageConnection":15,"../view/NetPokerClientView":9,"./Resources":6}],6:[function(require,module,exports){
+},{"../../utils/MessageConnection":22,"../../utils/PixiApp":23,"../controller/NetPokerClientController":9,"../view/NetPokerClientView":14,"./Resources":6}],6:[function(require,module,exports){
 const THEME=require("./theme.js");
 
 class Resources {
@@ -1692,9 +1658,13 @@ class Resources {
 		this.spriteSheetUrl=spriteSheetUrl
 	}
 
-	createSprite(id) {
+	getTexture(id) {
 		let fn=THEME[id];
-		return new PIXI.Sprite(this.sheet.textures[fn]);
+		return this.sheet.textures[fn];
+	}
+
+	createSprite(id) {
+		return new PIXI.Sprite(this.getTexture(id));
 	}
 
 	getPoint(id) {
@@ -1799,6 +1769,583 @@ module.exports={
 	"bigButtonPosition": [366, 575]
 }
 },{}],8:[function(require,module,exports){
+/**
+ * Client.
+ * @module client
+ */
+
+/**
+ * Control user interface.
+ * @class InterfaceController
+ */
+class InterfaceController {
+	constructor(eventQueue, view) {
+		this.eventQueue = eventQueue;
+		this.view = view;
+
+		this.eventQueue.on("buttons",this.onButtonsMessage);
+		this.eventQueue.on("showDialog",this.onShowDialogMessage);
+		this.eventQueue.on("chat",this.onChat);
+		this.eventQueue.on("tableInfo",this.onTableInfoMessage);
+		this.eventQueue.on("handInfo",this.onHandInfoMessage);
+		this.eventQueue.on("interfaceState",this.onInterfaceStateMessage);
+		this.eventQueue.on("chekbox",this.onCheckboxMessage);
+		this.eventQueue.on("preTournamentInfo",this.onPreTournamentInfoMessage);
+		this.eventQueue.on("tableButtons",this.onTableButtonsMessage);
+		this.eventQueue.on("tournamentResult",this.onTournamentResultMessage);
+		this.eventQueue.on("presetButtons",this.onPresetButtonsMessage);
+	}
+
+	/**
+	 * Table buttons message.
+	 * @method onTableButtonsMessage
+	 */
+	onTableButtonsMessage=(m)=>{
+		console.log("table buttons...");
+	}
+
+	/**
+	 * Buttons message.
+	 * @method onButtonsMessage
+	 */
+	onButtonsMessage=(m)=>{
+		var buttonsView = this.view.getButtonsView();
+
+		buttonsView.setButtons(m.getButtons(), m.sliderButtonIndex, parseInt(m.min, 10), parseInt(m.max, 10));
+	}
+
+	/**
+	 * PresetButtons message.
+	 * @method onPresetButtons
+	 */
+	onPresetButtonsMessage=(m)=> {
+		var presetButtonsView = this.view.getPresetButtonsView();
+		var buttons = presetButtonsView.getButtons();
+		var havePresetButton = false;
+
+		for (var i = 0; i < buttons.length; i++) {
+			if (i > m.buttons.length) {
+				buttons[i].hide();
+			} else {
+				var data = m.buttons[i];
+
+				if (data == null) {
+					buttons[i].hide();
+				} else {
+					havePresetButton = true;
+					buttons[i].show(data.button, data.value);
+				}
+			}
+		}
+
+		presetButtonsView.setCurrent(m.current);
+
+		if (havePresetButton)
+			this.view.getButtonsView().clear();
+	}
+
+	/**
+	 * Show dialog.
+	 * @method onShowDialogMessage
+	 */
+	onShowDialogMessage=(m)=>{
+		var dialogView = this.view.getDialogView();
+
+		dialogView.show(m.getText(), m.getButtons(), m.getDefaultValue());
+	}
+
+
+	/**
+	 * On chat message.
+	 * @method onChat
+	 */
+	onChat=(m)=>{
+		this.view.chatView.addText(m.user, m.text);
+	}
+
+	/**
+	 * Handle table info message.
+	 * @method onTableInfoMessage
+	 */
+	onTableInfoMessage=(m)=>{
+		var tableInfoView = this.view.getTableInfoView();
+
+		tableInfoView.setTableInfoText(m.getText());
+		tableInfoView.setJoinButtonVisible(m.getShowJoinButton());
+		tableInfoView.setLeaveButtonVisible(m.getShowLeaveButton());
+	}
+
+	/**
+	 * Handle hand info message.
+	 * @method onHandInfoMessage
+	 */
+	onHandInfoMessage=(m)=>{
+		var tableInfoView = this.view.getTableInfoView();
+
+		tableInfoView.setHandInfoText(m.getText(), m.getCountDown());
+	}
+
+	/**
+	 * Handle interface state message.
+	 * @method onInterfaceStateMessage
+	 */
+	onInterfaceStateMessage=(m)=>{
+		var settingsView = this.view.getSettingsView();
+
+		settingsView.setVisibleButtons(m.getVisibleButtons());
+	}
+
+	/**
+	 * Handle checkbox message.
+	 * @method onCheckboxMessage
+	 */
+	onCheckboxMessage=(m)=>{
+		console.log(m);
+
+		var settingsView = this.view.getSettingsView();
+
+		settingsView.setCheckboxChecked(m.getId(), m.getChecked());
+	}
+
+	/**
+	 * Handle pre torunament info message.
+	 * @method onPreTournamentInfoMessage
+	 */
+	onPreTournamentInfoMessage=(m)=>{
+		var tableInfoView = this.view.getTableInfoView();
+
+		tableInfoView.setPreTournamentInfoText(m.getText(), m.getCountdown());
+	}
+
+	/**
+	 * Handle tournament result message.
+	 * @method onTournamentResultMessage
+	 */
+	onTournamentResultMessage=(m)=>{
+		var tableInfoView = this.view.getTableInfoView();
+
+		tableInfoView.setTournamentResultText(m.getText(), m.getRightColumnText());
+	}
+
+	/**
+	 * Table buttons message.
+	 * @method onTableButtonsMessage
+	 */
+	onTableButtonsMessage=(m)=>{
+		var tableButtonsView = this.view.getTableButtonsView();
+
+		tableButtonsView.showButtons(m.getEnabled(), m.getCurrentIndex());
+	}
+}
+
+module.exports = InterfaceController;
+},{}],9:[function(require,module,exports){
+/**
+ * Client.
+ * @module client
+ */
+
+const TableController = require("./TableController");
+const InterfaceController = require("./InterfaceController");
+const EventQueue=require("../../utils/EventQueue");
+
+/**
+ * Main controller
+ * @class NetPokerClientController
+ */
+class NetPokerClientController {
+	constructor(view) {
+		this.netPokerClientView = view;
+		this.connection = null;
+		this.eventQueue = new EventQueue();
+
+		this.tableController = new TableController(this.eventQueue, this.netPokerClientView);
+		this.interfaceController = new InterfaceController(this.eventQueue, this.netPokerClientView);
+
+		/*this.netPokerClientView.getButtonsView().on(ButtonsView.BUTTON_CLICK, this.onButtonClick, this);
+		this.netPokerClientView.getTableInfoView().on(TableInfoView.BUTTON_CLICK, this.onButtonClick, this);
+		this.netPokerClientView.getDialogView().on(DialogView.BUTTON_CLICK, this.onButtonClick, this);
+		this.netPokerClientView.on(NetPokerClientView.SEAT_CLICK, this.onSeatClick, this);
+
+		this.netPokerClientView.chatView.addEventListener("chat", this.onViewChat, this);
+		this.netPokerClientView.settingsView.addEventListener(SettingsView.BUY_CHIPS_CLICK, this.onBuyChipsButtonClick, this);
+		this.netPokerClientView.settingsView.addEventListener(SettingsView.CHECKBOX_CHANGE, this.onCheckboxChange, this);
+
+		this.netPokerClientView.getPresetButtonsView().addEventListener(PresetButtonsView.CHANGE, this.onPresetButtonsChange, this);
+		this.netPokerClientView.getTableButtonsView().on(TableButtonsView.TABLE_CLICK, this.onTableButtonClick, this);*/
+	}
+
+	/**
+	 * Set connection.
+	 * @method setProtoConnection
+	 */
+	setConnection(connection) {
+		if (connection==this.connection)
+			return;
+
+		if (this.connection)
+			this.connection.off("message",this.onConnectionMessage);
+
+		this.netPokerClientView.clear();
+		this.eventQueue.clear();
+		this.connection=connection;
+
+		if (this.connection)
+			this.connection.on("message",this.onConnectionMessage);
+	}
+
+	/**
+	 * Incoming message.
+	 * Enqueue for processing.
+	 * @method onProtoConnectionMessage
+	 * @private
+	 */
+	onConnectionMessage=(message)=>{
+		this.eventQueue.enqueue(message.type,message);
+	}
+
+	/**
+	 * Button click.
+	 * This function handles clicks from both the dialog and game play buttons.
+	 * @method onButtonClick
+	 * @private
+	 */
+	/*NetPokerClientController.prototype.onButtonClick = function(e) {
+		if (!this.protoConnection)
+			return;
+
+		console.log("button click, v=" + e.value);
+
+		var m = new ButtonClickMessage(e.button, e.value);
+		this.protoConnection.send(m);
+	}*/
+
+	/**
+	 * Seat click.
+	 * @method onSeatClick
+	 * @private
+	 */
+	/*NetPokerClientController.prototype.onSeatClick = function(e) {
+		var m = new SeatClickMessage(e.seatIndex);
+		this.protoConnection.send(m);
+	}*/
+
+	/**
+	 * On send chat message.
+	 * @method onViewChat
+	 */
+	/*NetPokerClientController.prototype.onViewChat = function(e) {
+		var message = new ChatMessage();
+		message.user = "";
+		message.text = e.text;
+
+		this.protoConnection.send(message);
+	}*/
+
+	/**
+	 * On buy chips button click.
+	 * @method onBuyChipsButtonClick
+	 */
+	/*NetPokerClientController.prototype.onBuyChipsButtonClick = function() {
+		console.log("buy chips click");
+
+		this.protoConnection.send(new ButtonClickMessage(ButtonData.BUY_CHIPS));
+	}*/
+
+	/**
+	 * PresetButtons change message.
+	 * @method onPresetButtonsChange
+	 */
+	/*NetPokerClientController.prototype.onPresetButtonsChange = function() {
+		var presetButtonsView = this.netPokerClientView.getPresetButtonsView();
+		var message = new PresetButtonClickMessage();
+
+		var c = presetButtonsView.getCurrent();
+		if (c != null) {
+			message.button = c.id;
+			message.value = c.value;
+		}
+
+		this.protoConnection.send(message);
+	}*/
+
+	/**
+	 * Checkbox change.
+	 * @method onCheckboxChange
+	 */
+	/*NetPokerClientController.prototype.onCheckboxChange = function(ev) {
+		this.protoConnection.send(new CheckboxMessage(ev.checkboxId, ev.checked));
+	}*/
+
+	/**
+	 * Table button click.
+	 * @method onTableButtonClick
+	 */
+	/*NetPokerClientController.prototype.onTableButtonClick = function(index) {
+		this.protoConnection.send(new TableButtonClickMessage(index));
+	}*/
+}
+
+module.exports = NetPokerClientController;
+},{"../../utils/EventQueue":20,"./InterfaceController":8,"./TableController":10}],10:[function(require,module,exports){
+/**
+ * Client.
+ * @module client
+ */
+
+const CardData=require("../../data/CardData");
+
+/**
+ * Control the table
+ * @class TableController
+ */
+class TableController {
+	constructor(eventQueue, view) {
+		this.eventQueue = eventQueue;
+		this.view = view;
+
+		this.eventQueue.on("seatInfo", this.onSeatInfoMessage);
+		this.eventQueue.on("communityCards", this.onCommunityCardsMessage);
+		this.eventQueue.on("pocketCards", this.onPocketCardsMessage);
+		this.eventQueue.on("dealerButton", this.onDealerButtonMessage);
+		this.eventQueue.on("bet", this.onBetMessage);
+		this.eventQueue.on("betsToPot", this.onBetsToPotMessage);
+		this.eventQueue.on("pot", this.onPotMessage);
+		this.eventQueue.on("timer", this.onTimerMessage);
+		this.eventQueue.on("action", this.onActionMessage);
+		this.eventQueue.on("foldCards", this.onFoldCardsMessage);
+		this.eventQueue.on("delay", this.onDelayMessage);
+		this.eventQueue.on("cleat", this.onClearMessage);
+		this.eventQueue.on("payOut", this.onPayOutMessage);
+		this.eventQueue.on("fadeTable", this.onFadeTableMessage);
+	}
+
+	/**
+	 * Fade table.
+	 * @method onFadeTableMessage
+	 */
+	onFadeTableMessage=(m)=>{
+		this.view.fadeTable(m.getVisible(), m.getDirection());
+		this.eventQueue.waitFor(this.view, "fadeTableComplete");
+	}
+
+	/**
+	 * Seat info message.
+	 * @method onSeatInfoMessage
+	 */
+	onSeatInfoMessage=(m)=>{
+		var seatView = this.view.getSeatViewByIndex(m.seatIndex);
+
+		seatView.setName(m.name);
+		seatView.setChips(m.chips);
+		seatView.setActive(m.active);
+		seatView.setSitout(m.sitout);
+	}
+
+	/**
+	 * Seat info message.
+	 * @method onCommunityCardsMessage
+	 */
+	onCommunityCardsMessage=(m)=>{
+		var i;
+
+		console.log("got community cards!");
+		//console.log(m);
+
+		for (i = 0; i < m.getCards().length; i++) {
+			var cardData = m.getCards()[i];
+			var cardView = this.view.getCommunityCards()[m.getFirstIndex() + i];
+
+			cardView.setCardData(cardData);
+			cardView.show(m.animate, i * 500);
+		}
+		if (m.getCards().length > 0) {
+			var cardData = m.getCards()[m.getCards().length - 1];
+			var cardView = this.view.getCommunityCards()[m.getFirstIndex() + m.getCards().length - 1];
+			if (m.animate)
+				this.messageSequencer.waitFor(cardView, "animationDone");
+		}
+	}
+
+	/**
+	 * Pocket cards message.
+	 * @method onPocketCardsMessage
+	 */
+	onPocketCardsMessage=(m)=>{
+		var seatView = this.view.getSeatViewByIndex(m.seatIndex);
+		var i;
+
+		for (i = 0; i < m.cards.length; i++) {
+			var cardData = new CardData(m.cards[i]);
+			var cardView = seatView.getPocketCards()[m.firstIndex + i];
+
+			if (m.animate)
+				this.eventQueue.waitFor(cardView, "animationDone");
+
+			cardView.setCardData(cardData);
+			cardView.show(m.animate, 10);
+		}
+	}
+
+	/**
+	 * Dealer button message.
+	 * @method onDealerButtonMessage
+	 */
+	onDealerButtonMessage=(m)=>{
+		var dealerButtonView = this.view.getDealerButtonView();
+
+		if (m.seatIndex < 0) {
+			dealerButtonView.hide();
+		} else {
+			this.messageSequencer.waitFor(dealerButtonView, "animationDone");
+			dealerButtonView.show(m.getSeatIndex(), m.getAnimate());
+		}
+	};
+
+	/**
+	 * Bet message.
+	 * @method onBetMessage
+	 */
+	onBetMessage=(m)=>{
+		this.view.seatViews[m.seatIndex].betChips.setValue(m.value);
+	};
+
+	/**
+	 * Bets to pot.
+	 * @method onBetsToPot
+	 */
+	onBetsToPotMessage=(m)=>{
+		var haveChips = false;
+
+		for (var i = 0; i < this.view.seatViews.length; i++)
+			if (this.view.seatViews[i].betChips.value > 0)
+				haveChips = true;
+
+		if (!haveChips)
+			return;
+
+		for (var i = 0; i < this.view.seatViews.length; i++)
+			this.view.seatViews[i].betChips.animateIn();
+
+		this.messageSequencer.waitFor(this.view.seatViews[0].betChips, "animationDone");
+	}
+
+	/**
+	 * Pot message.
+	 * @method onPot
+	 */
+	onPotMessage=(m)=>{
+		this.view.potView.setValues(m.values);
+	};
+
+	/**
+	 * Timer message.
+	 * @method onTimer
+	 */
+	onTimerMessage=(m)=>{
+		if (m.seatIndex < 0)
+			this.view.timerView.hide();
+
+		else {
+			this.view.timerView.show(m.seatIndex);
+			this.view.timerView.countdown(m.totalTime, m.timeLeft);
+		}
+	};
+
+	/**
+	 * Action message.
+	 * @method onAction
+	 */
+	onActionMessage=(m)=>{
+		if (m.seatIndex == null)
+			m.seatIndex = 0;
+
+		this.view.seatViews[m.seatIndex].action(m.action);
+	};
+
+	/**
+	 * Fold cards message.
+	 * @method onFoldCards
+	 */
+	onFoldCardsMessage=(m)=>{
+		this.view.seatViews[m.seatIndex].foldCards();
+
+		this.messageSequencer.waitFor(this.view.seatViews[m.seatIndex], "animationDone");
+	};
+
+	/**
+	 * Delay message.
+	 * @method onDelay
+	 */
+	onDelayMessage=(m)=>{
+		console.log("delay for  = " + m.delay);
+
+		throw new Error("implement!!!");
+
+	//	this.messageSequencer.waitFor(this, "timerDone");
+	//	setTimeout(this.dispatchEvent.bind(this, "timerDone"), m.delay);
+	};
+
+	/**
+	 * Clear message.
+	 * @method onClear
+	 */
+	onClearMessage=(m)=>{
+		var components = m.getComponents();
+
+		for (var i = 0; i < components.length; i++) {
+			switch (components[i]) {
+				case ClearMessage.POT:
+					{
+						this.view.potView.setValues([]);
+						break;
+					}
+				case ClearMessage.BETS:
+					{
+						for (var s = 0; s < this.view.seatViews.length; s++) {
+							this.view.seatViews[s].betChips.setValue(0);
+						}
+						break;
+					}
+				case ClearMessage.CARDS:
+					{
+						for (var s = 0; s < this.view.seatViews.length; s++) {
+							for (var c = 0; c < this.view.seatViews[s].pocketCards.length; c++) {
+								this.view.seatViews[s].pocketCards[c].hide();
+							}
+						}
+
+						for (var c = 0; c < this.view.communityCards.length; c++) {
+							this.view.communityCards[c].hide();
+						}
+						break;
+					}
+				case ClearMessage.CHAT:
+					{
+						this.view.chatView.clear();
+						break;
+					}
+			}
+		}
+	}
+
+	/**
+	 * Pay out message.
+	 * @method onPayOut
+	 */
+	onPayOutMessage=(m)=>{
+		for (var i = 0; i < m.values.length; i++)
+			this.view.seatViews[i].betChips.setValue(m.values[i]);
+
+		for (var i = 0; i < this.view.seatViews.length; i++)
+			this.view.seatViews[i].betChips.animateOut();
+
+		this.eventQueue.waitFor(this.view.seatViews[0].betChips, "animationDone");
+	};
+}
+
+module.exports = TableController;
+},{"../../data/CardData":16}],11:[function(require,module,exports){
 const NetPokerClient=require("./app/NetPokerClient");
 const ArrayUtil=require("../utils/ArrayUtil");
 
@@ -1813,14 +2360,222 @@ const ArrayUtil=require("../utils/ArrayUtil");
 	}
 })(jQuery);
 
-},{"../utils/ArrayUtil":11,"./app/NetPokerClient":5}],9:[function(require,module,exports){
+},{"../utils/ArrayUtil":17,"./app/NetPokerClient":5}],12:[function(require,module,exports){
 /**
  * Client.
  * @module client
  */
 
-/*var CardView = require("./CardView");
-var ChatView = require("./ChatView");
+/**
+ * The front view of a card.
+ * @class CardFrontView
+ */
+class CardFrontView extends PIXI.Container {
+	constructor(client) {
+		super();
+		this.resources=client.getResources();
+
+		this.frame = this.resources.createSprite("cardFrame");
+		this.addChild(this.frame);
+
+		var style = {
+			fontFamily: "Arial",
+			fontSize: 16,
+			fontWeight: "bold"
+		};
+
+		this.valueField = new PIXI.Text("[val]",style);
+		this.valueField.position.x = 10;
+		this.valueField.position.y = 5;
+		this.addChild(this.valueField);
+
+		this.suit = new PIXI.Sprite();
+		this.suit.position.x = 8;
+		this.suit.position.y = 25;
+		this.addChild(this.suit);
+	}
+
+	setCardData(cardData) {
+		this.cardData = cardData;
+
+		this.suit.texture=this.resources.getTexture("suitSymbol" + this.cardData.getSuitIndex());
+		this.valueField.style.fill = this.cardData.getColor();
+		this.valueField.text=this.cardData.getCardValueString();
+		this.valueField.position.x = 17 - this.valueField.width / 2;
+	}
+}
+
+module.exports = CardFrontView;
+},{}],13:[function(require,module,exports){
+/**
+ * Client.
+ * @module client
+ */
+
+var TWEEN = require("tween.js");
+var CardFrontView = require("./CardFrontView");
+
+/**
+ * A card view.
+ * @class CardView
+ */
+class CardView extends PIXI.Container {
+	constructor(client) {
+		super();
+		this.targetPosition = null;
+		this.resources = client.getResources();
+
+		this.front = new CardFrontView(client);
+		this.addChild(this.front);
+		this.back = this.resources.createSprite("cardBack");
+		this.addChild(this.back);
+
+		this.maskGraphics = new PIXI.Graphics();
+		this.maskGraphics.beginFill(0x000000);
+		this.maskGraphics.drawRect(0, 0, this.back.width, this.back.height);
+		this.maskGraphics.endFill();
+		this.addChild(this.maskGraphics);
+
+		this.mask = this.maskGraphics;
+	}
+
+	/**
+	 * Set card data.
+	 * @method setCardData
+	 */
+	setCardData=(cardData)=>{
+		this.cardData = cardData;
+
+		if (this.cardData.isShown()) {
+			this.front.setCardData(this.cardData);
+
+			this.maskGraphics.beginFill(0x000000);
+			this.maskGraphics.drawRect(0, 0, this.front.width, this.front.height);
+			this.maskGraphics.endFill();
+		}
+		this.back.visible = true;
+		this.front.visible = false;
+	}
+
+	/**
+	 * Set card data.
+	 * @method setCardData
+	 */
+	setTargetPosition(point) {
+		this.targetPosition = point;
+
+		this.position.x = point.x;
+		this.position.y = point.y;
+	}
+
+	/**
+	 * Hide.
+	 * @method hide
+	 */
+	hide() {
+		this.visible = false;
+	}
+
+	/**
+	 * Show.
+	 * @method show
+	 */
+	show(animate) {
+		this.maskGraphics.scale.y = 1;
+		this.position.x = this.targetPosition.x;
+		this.position.y = this.targetPosition.y;
+		if (!animate) {
+			this.visible = true;
+			this.onShowComplete();
+			return;
+		}
+		this.mask.height = this.height;
+
+		var destination = {
+			x: this.position.x,
+			y: this.position.y
+		};
+		this.position.x = (this.parent.width - this.width) * 0.5;
+		this.position.y = -this.height;
+
+		var diffX = this.position.x - destination.x;
+		var diffY = this.position.y - destination.y;
+		var diff = Math.sqrt(diffX * diffX + diffY * diffY);
+
+		var tween = new TWEEN.Tween(this.position)
+			.to({
+				x: destination.x,
+				y: destination.y
+			}, 500)
+			.easing(TWEEN.Easing.Quadratic.Out)
+			.onStart(this.onShowStart.bind(this))
+			.onComplete(this.onShowComplete.bind(this))
+			.start();
+	}
+
+	/**
+	 * Show complete.
+	 * @method onShowComplete
+	 */
+	onShowStart() {
+		this.visible = true;
+	}
+
+	/**
+	 * Show complete.
+	 * @method onShowComplete
+	 */
+	onShowComplete() {
+		if (this.cardData.isShown()) {
+			this.back.visible = false;
+			this.front.visible = true;
+		}
+		this.emit("animationDone");
+	}
+
+	/**
+	 * Fold.
+	 * @method fold
+	 */
+	fold() {
+		var o = {
+			x: this.targetPosition.x,
+			y: this.targetPosition.y + 80
+		};
+
+		this.t0 = new TWEEN.Tween(this.position)
+			.to(o, 500)
+			.easing(TWEEN.Easing.Quadratic.Out)
+			.onUpdate(this.onFoldUpdate.bind(this))
+			.onComplete(this.onFoldComplete.bind(this))
+			.start();
+	}
+
+	/**
+	 * Fold animation update.
+	 * @method onFoldUpdate
+	 */
+	onFoldUpdate(progress) {
+		this.maskGraphics.scale.y = 1 - progress;
+	}
+
+	/**
+	 * Fold animation complete.
+	 * @method onFoldComplete
+	 */
+	onFoldComplete() {
+		this.dispatchEvent("animationDone");
+	}
+}
+
+module.exports = CardView;
+},{"./CardFrontView":12,"tween.js":2}],14:[function(require,module,exports){
+/**
+ * Client.
+ * @module client
+ */
+
+/*var ChatView = require("./ChatView");
 var Point = require("../../utils/Point");
 var ButtonsView = require("./ButtonsView");
 var DialogView = require("./DialogView");
@@ -1832,6 +2587,7 @@ var SettingsView = require("../view/SettingsView");
 var TableInfoView = require("../view/TableInfoView");
 var PresetButtonsView = require("../view/PresetButtonsView");
 var TableButtonsView = require("./TableButtonsView");*/
+const CardView = require("./CardView");
 const SeatView = require("./SeatView");
 const TWEEN = require("tween.js");
 const Gradient = require("../../utils/Gradient");
@@ -1950,13 +2706,13 @@ class NetPokerClientView extends PIXI.Container {
 			let seatView = new SeatView(this.client, i);
 			let p = seatView.position;
 
-			/*for (j = 0; j < 2; j++) {
+			for (j = 0; j < 2; j++) {
 				let c = new CardView(this.client);
 				c.hide();
-				c.setTargetPosition(Point(p.x + j * 30 - 60, p.y - 100));
+				c.setTargetPosition(new PIXI.Point(p.x + j * 30 - 60, p.y - 100));
 				this.tableContainer.addChild(c);
 				seatView.addPocketCard(c);
-			}*/
+			}
 
 			seatView.on("click", this.onSeatClick, this);
 
@@ -2200,13 +2956,13 @@ class NetPokerClientView extends PIXI.Container {
 	}
 
 	/**
-	 * Clear everything to an empty state.
+	 * Clear everything to and empty state.
 	 * @method clear
 	 */
-	clear = function() {
-		var i;
+	clear() {
+		console.log("implement clear!!!");
 
-		this.clearTableContents();
+		/*this.clearTableContents();
 
 		this.presetButtonsView.hide();
 
@@ -2225,13 +2981,13 @@ class NetPokerClientView extends PIXI.Container {
 		}
 
 		this.tableContainer.alpha = 1;
-		this.tableContainer.x = 0;
+		this.tableContainer.x = 0;*/
 	}
 }
 
 module.exports = NetPokerClientView;
 
-},{"../../utils/Gradient":14,"./SeatView":10,"tween.js":2}],10:[function(require,module,exports){
+},{"../../utils/Gradient":21,"./CardView":13,"./SeatView":15,"tween.js":2}],15:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -2267,7 +3023,9 @@ class SeatView extends Button {
 		var style;
 
 		style = {
-			font: "bold 20px Arial"
+			fontFamily: "Arial",
+			fontWeight: "bold",
+			fontSize: 20
 		};
 
 		this.nameField = new PIXI.Text("[name]", style);
@@ -2275,7 +3033,9 @@ class SeatView extends Button {
 		this.addChild(this.nameField);
 
 		style = {
-			font: "normal 12px Arial"
+			fontFamily: "Arial",
+			fontWeight: "normal",
+			fontSize: 12
 		};
 
 		this.chipsField = new PIXI.Text("[name]", style);
@@ -2283,7 +3043,9 @@ class SeatView extends Button {
 		this.addChild(this.chipsField);
 
 		style = {
-			font: "bold 20px Arial"
+			fontFamily: "Arial",
+			fontWeight: "bold",
+			fontSize: 20
 		};
 
 		this.actionField = new PIXI.Text("action", style);
@@ -2327,9 +3089,7 @@ class SeatView extends Button {
 			chips = "";
 
 		this.chipsField.text=chips;
-		this.chipsField.updateTransform();
-
-		this.chipsField.position.x = -this.chipsField.canvas.width / 2;
+		this.chipsField.position.x = -this.chipsField.width / 2;
 	}
 
 	/**
@@ -2446,7 +3206,206 @@ class SeatView extends Button {
 }
 
 module.exports = SeatView;
-},{"../../utils/Button":12,"tween.js":2}],11:[function(require,module,exports){
+},{"../../utils/Button":18,"tween.js":2}],16:[function(require,module,exports){
+/**
+ * Protocol.
+ * @module proto
+ */
+
+/**
+ * Card data.
+ * @class CardData
+ */
+class CardData {
+	static CARD_VALUE_STRINGS =
+		["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
+
+	static SUIT_STRINGS =
+		["D", "C", "H", "S"];
+
+	static LONG_SUIT_STRINGS =
+		["Diamonds", "Clubs", "Hearts", "Spades"];
+
+	static HIDDEN = -1;
+
+	constructor(value) {
+		this.value = value;
+	}
+
+	/**
+	 * Does this CardData represent a show card?
+	 * If not it should be rendered with its backside.
+	 * @method isShown
+	 */
+	isShown() {
+		return this.value >= 0;
+	}
+
+	/**
+	 * Get card value.
+	 * This value represents the rank of the card, but starts on 0.
+	 * @method getCardValue
+	 */
+	getCardValue() {
+		return this.value % 13;
+	}
+
+	/**
+	 * Get card value string.
+	 * @method getCardValueString
+	 */
+	getCardValueString() {
+		return CardData.CARD_VALUE_STRINGS[this.value % 13];
+	}
+
+	/**
+	 * Get suit index.
+	 * @method getSuitIndex
+	 */
+	getSuitIndex() {
+		return Math.floor(this.value / 13);
+	}
+
+	/**
+	 * Get suit string.
+	 * @method getSuitString
+	 */
+	getSuitString() {
+		return CardData.SUIT_STRINGS[this.getSuitIndex()];
+	}
+
+	/**
+	 * Get long suit string.
+	 * @method getLongSuitString
+	 */
+	getLongSuitString() {
+		return CardData.LONG_SUIT_STRINGS[this.getSuitIndex()];
+	}
+
+	/**
+	 * Get color.
+	 * @method getColor
+	 */
+	getColor() {
+		if (this.getSuitIndex() % 2 != 0)
+			return "#000000";
+
+		else
+			return "#ff0000";
+	}
+
+	/**
+	 * To string.
+	 * @method toString
+	 */
+	toString() {
+		if (this.value < 0)
+			return "XX";
+
+		//	return "<card " + this.getCardValueString() + this.getSuitString() + ">";
+		return this.getCardValueString() + this.getSuitString();
+	}
+
+	/**
+	 * Get value of the card.
+	 * @method getValue
+	 */
+	getValue() {
+		return this.value;
+	}
+
+	/**
+	 * Compare with respect to value. Not really useful except for debugging!
+	 * @method compareValue
+	 * @static
+	 */
+	static compareValue(a, b) {
+		if (!(a instanceof CardData) || !(b instanceof CardData))
+			throw new Error("Not comparing card data");
+
+		if (a.getValue() > b.getValue())
+			return 1;
+
+		if (a.getValue() < b.getValue())
+			return -1;
+
+		return 0;
+	}
+
+	/**
+	 * Compare with respect to card value.
+	 * @method compareCardValue
+	 * @static
+	 */
+	static compareCardValue(a, b) {
+		if (!(a instanceof CardData) || !(b instanceof CardData))
+			throw new Error("Not comparing card data");
+
+		if (a.getCardValue() > b.getCardValue())
+			return 1;
+
+		if (a.getCardValue() < b.getCardValue())
+			return -1;
+
+		return 0;
+	}
+
+	/**
+	 * Compare with respect to suit.
+	 * @method compareSuit
+	 * @static
+	 */
+	static compareSuitIndex(a, b) {
+		if (!(a instanceof CardData) || !(b instanceof CardData))
+			throw new Error("Not comparing card data");
+
+		if (a.getSuitIndex() > b.getSuitIndex())
+			return 1;
+
+		if (a.getSuitIndex() < b.getSuitIndex())
+			return -1;
+
+		return 0;
+	}
+
+	/**
+	 * Create a card data from a string.
+	 * @method fromString
+	 * @static
+	 */
+	static fromString(s) {
+		var i;
+
+		var cardValue = -1;
+		for (i = 0; i < CardData.CARD_VALUE_STRINGS.length; i++) {
+			var cand = CardData.CARD_VALUE_STRINGS[i];
+
+			if (s.substring(0, cand.length).toUpperCase() == cand)
+				cardValue = i;
+		}
+
+		if (cardValue < 0)
+			throw new Error("Not a valid card string: " + s);
+
+		var suitString = s.substring(CardData.CARD_VALUE_STRINGS[cardValue].length);
+
+		var suitIndex = -1;
+		for (i = 0; i < CardData.SUIT_STRINGS.length; i++) {
+			var cand = CardData.SUIT_STRINGS[i];
+
+			if (suitString.toUpperCase() == cand)
+				suitIndex = i;
+		}
+
+		if (suitIndex < 0)
+			throw new Error("Not a valid card string: " + s);
+
+		return new CardData(suitIndex * 13 + cardValue);
+	}
+}
+
+module.exports = CardData;
+},{}],17:[function(require,module,exports){
 class ArrayUtil {
 
 	/**
@@ -2521,7 +3480,7 @@ class ArrayUtil {
 }
 
 module.exports = ArrayUtil;
-},{}],12:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -2620,7 +3579,7 @@ class Button extends PIXI.Container {
 }
 
 module.exports = Button;
-},{}],13:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 class ContentScaler extends PIXI.Container {
 	constructor(content) {
 		super();
@@ -2682,7 +3641,59 @@ class ContentScaler extends PIXI.Container {
 }
 
 module.exports=ContentScaler;
-},{}],14:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
+const EventEmitter=require("events");
+
+class EventQueue extends EventEmitter {
+	constructor() {
+		super();
+
+		this.queue=[];
+		this.superEmit=super.emit;
+	}
+
+	enqueue(...event) {
+		if (this.waitingForObject) {
+			this.queue.push(event);
+		}
+
+		else {
+			this.superEmit.call(this,...event);
+		}
+	}
+
+	emit() {
+		throw new Error("Don't use emit directly");
+	}
+
+	waitFor(o, ev) {
+		this.waitingForObject=o;
+		this.waitingForEvent=ev;
+		this.waitingForObject.on(this.waitingForEvent,this.onWaitEvent);
+	}
+
+	onWaitEvent=()=>{
+		this.waitingForObject.off(this.waitingForEvent,this.onWaitEvent);
+		this.waitingForObject=null;
+		this.waitingForEvent=null;
+
+		while (this.queue.length && !this.waitingForObject)
+			this.superEmit.call(this,this.queue.shift());
+	}
+
+	clear() {
+		if (this.waitingForObject) {
+			this.waitingForObject.off(this.waitingForEvent,this.onWaitEvent);
+			this.waitingForObject=null;
+			this.waitingForEvent=null;
+		}
+
+		this.queue=[];
+	}
+}
+
+module.exports=EventQueue;
+},{"events":3}],21:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -2744,7 +3755,7 @@ class Gradient {
 }
 
 module.exports = Gradient;
-},{}],15:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 let WebSocket;
 
 if (window.WebSocket)
@@ -2806,4 +3817,47 @@ class MessageConnection extends EventEmitter {
 }
 
 module.exports=MessageConnection;
-},{"events":3,"ws":4}]},{},[8]);
+},{"events":3,"ws":4}],23:[function(require,module,exports){
+const ContentScaler=require("./ContentScaler");
+
+class PixiApp extends PIXI.Container {
+	constructor(contentWidth, contentHeight) {
+		super();
+
+		this.app=new PIXI.Application();
+		this.app.renderer.autoDensity=true;
+		this.app.view.style.position="absolute";
+		this.app.view.style.top=0;
+		this.app.view.style.left=0;
+
+		this.contentScaler=new ContentScaler(this);
+		this.contentScaler.setContentSize(contentWidth,contentHeight);
+		this.app.stage.addChild(this.contentScaler);
+
+		window.addEventListener("resize",this.onWindowResize);
+	}
+
+	attach(element) {
+		this.element=element;
+		this.element.appendChild(this.app.view);
+		this.onWindowResize();
+	}
+
+	onWindowResize=()=>{
+		if (!this.element)
+			return;
+
+		this.contentScaler.setScreenSize(
+			this.element.clientWidth,
+			this.element.clientHeight
+		);
+
+		this.app.renderer.resize(
+			this.element.clientWidth,
+			this.element.clientHeight
+		);
+	}
+}
+
+module.exports=PixiApp;
+},{"./ContentScaler":19}]},{},[11]);

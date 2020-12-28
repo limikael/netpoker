@@ -5,9 +5,13 @@ class Resources {
 		this.spriteSheetUrl=spriteSheetUrl
 	}
 
-	createSprite(id) {
+	getTexture(id) {
 		let fn=THEME[id];
-		return new PIXI.Sprite(this.sheet.textures[fn]);
+		return this.sheet.textures[fn];
+	}
+
+	createSprite(id) {
+		return new PIXI.Sprite(this.getTexture(id));
 	}
 
 	getPoint(id) {

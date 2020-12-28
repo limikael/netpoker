@@ -33,7 +33,9 @@ class SeatView extends Button {
 		var style;
 
 		style = {
-			font: "bold 20px Arial"
+			fontFamily: "Arial",
+			fontWeight: "bold",
+			fontSize: 20
 		};
 
 		this.nameField = new PIXI.Text("[name]", style);
@@ -41,7 +43,9 @@ class SeatView extends Button {
 		this.addChild(this.nameField);
 
 		style = {
-			font: "normal 12px Arial"
+			fontFamily: "Arial",
+			fontWeight: "normal",
+			fontSize: 12
 		};
 
 		this.chipsField = new PIXI.Text("[name]", style);
@@ -49,7 +53,9 @@ class SeatView extends Button {
 		this.addChild(this.chipsField);
 
 		style = {
-			font: "bold 20px Arial"
+			fontFamily: "Arial",
+			fontWeight: "bold",
+			fontSize: 20
 		};
 
 		this.actionField = new PIXI.Text("action", style);
@@ -93,9 +99,7 @@ class SeatView extends Button {
 			chips = "";
 
 		this.chipsField.text=chips;
-		this.chipsField.updateTransform();
-
-		this.chipsField.position.x = -this.chipsField.canvas.width / 2;
+		this.chipsField.position.x = -this.chipsField.width / 2;
 	}
 
 	/**
