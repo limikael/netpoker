@@ -3,7 +3,7 @@
  * @module client
  */
 
-var TWEEN = require("tween.js");
+var TWEEN = require('@tweenjs/tween.js');
 var Button = require("../../utils/Button");
 
 /**
@@ -170,31 +170,31 @@ class SeatView extends Button {
 		this.nameField.alpha = 0;
 		this.chipsField.alpha = 0;
 
-		setTimeout(this.onTimer.bind(this), 1000);
+		setTimeout(this.onActionTimer, 1000);
 	}
 
 	/**
 	 * Show user action.
 	 * @method action
 	 */
-	onTimer(action) {
-
+	onActionTimer=()=>{
 		var t1 = new TWEEN.Tween(this.actionField)
 			.to({
 				alpha: 0
 			}, 1000)
 			.start();
+
 		var t2 = new TWEEN.Tween(this.nameField)
 			.to({
 				alpha: 1
 			}, 1000)
 			.start();
+
 		var t3 = new TWEEN.Tween(this.chipsField)
 			.to({
 				alpha: 1
 			}, 1000)
 			.start();
-
 	}
 
 	/**

@@ -17,7 +17,7 @@ var PresetButtonsView = require("../view/PresetButtonsView");
 var TableButtonsView = require("./TableButtonsView");*/
 const CardView = require("./CardView");
 const SeatView = require("./SeatView");
-const TWEEN = require("tween.js");
+const TWEEN = require('@tweenjs/tween.js');
 const Gradient = require("../../utils/Gradient");
 
 /**

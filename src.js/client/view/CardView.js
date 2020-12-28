@@ -3,7 +3,7 @@
  * @module client
  */
 
-var TWEEN = require("tween.js");
+var TWEEN = require('@tweenjs/tween.js');
 var CardFrontView = require("./CardFrontView");
 
 /**

@@ -1,4 +1,5 @@
 const ContentScaler=require("./ContentScaler");
+const TWEEN = require('@tweenjs/tween.js');
 
 class PixiApp extends PIXI.Container {
 	constructor(contentWidth, contentHeight) {
@@ -18,9 +19,16 @@ class PixiApp extends PIXI.Container {
 	}
 
 	attach(element) {
+		this.app.ticker.add(this.onAppTicker);
+
 		this.element=element;
 		this.element.appendChild(this.app.view);
 		this.onWindowResize();
+	}
+
+	onAppTicker=(delta)=>{
+		TWEEN.update(performance.now());
+//		TWEEN.update(Date.now());
 	}
 
 	onWindowResize=()=>{

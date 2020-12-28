@@ -10,40 +10,21 @@
 {"type":"seatInfo", "seatIndex": 9, "name": "pelle", "chips": 123, "active": true}
 {"type":"stateComplete"}
 {"type":"action", "seatIndex":0,"action":"fold"}
-{"type":"stateComplete"}
 {"type":"delay", "delay": 1000}
-{"type":"stateComplete"}
 {"type":"action", "seatIndex":1,"action":"call"}
-{"type":"stateComplete"}
 {"type":"delay", "delay": 1000}
-{"type":"stateComplete"}
 {"type":"action", "seatIndex":2,"action":"raise"}
-{"type":"stateComplete"}
 {"type":"delay", "delay": 1000}
-{"type":"stateComplete"}
 {"type":"action", "seatIndex":3,"action":"check"}
-{"type":"stateComplete"}
 {"type":"delay", "delay": 1000}
-{"type":"stateComplete"}
 {"type":"action", "seatIndex":4,"action":"bet"}
-{"type":"stateComplete"}
 {"type":"delay", "delay": 1000}
-{"type":"stateComplete"}
 {"type":"action", "seatIndex":5,"action":"muck"}
-{"type":"stateComplete"}
 {"type":"delay", "delay": 1000}
-{"type":"stateComplete"}
 {"type":"action", "seatIndex":6,"action":"ante"}
-{"type":"stateComplete"}
 {"type":"delay", "delay": 1000}
-{"type":"stateComplete"}
 {"type":"action", "seatIndex":7,"action":"fold"}
-{"type":"stateComplete"}
 {"type":"delay", "delay": 1000}
-{"type":"stateComplete"}
 {"type":"action", "seatIndex":8,"action":"call"}
-{"type":"stateComplete"}
 {"type":"delay", "delay": 1000}
-{"type":"stateComplete"}
 {"type":"action", "seatIndex":9,"action":"raise"}
-{"type":"stateComplete"}

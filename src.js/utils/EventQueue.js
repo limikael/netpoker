@@ -29,17 +29,17 @@ class EventQueue extends EventEmitter {
 	}
 
 	onWaitEvent=()=>{
-		this.waitingForObject.off(this.waitingForEvent,this.onWaitEvent);
+		this.waitingForObject.removeListener(this.waitingForEvent,this.onWaitEvent);
 		this.waitingForObject=null;
 		this.waitingForEvent=null;
 
 		while (this.queue.length && !this.waitingForObject)
-			this.superEmit.call(this,this.queue.shift());
+			this.superEmit.call(this,...this.queue.shift());
 	}
 
 	clear() {
 		if (this.waitingForObject) {
-			this.waitingForObject.off(this.waitingForEvent,this.onWaitEvent);
+			this.waitingForObject.removeListener(this.waitingForEvent,this.onWaitEvent);
 			this.waitingForObject=null;
 			this.waitingForEvent=null;
 		}

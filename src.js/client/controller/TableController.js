@@ -4,6 +4,7 @@
  */
 
 const CardData=require("../../data/CardData");
+const Timeout=require("../../utils/Timeout");
 
 /**
  * Control the table
@@ -188,12 +189,10 @@ class TableController {
 	 * @method onDelay
 	 */
 	onDelayMessage=(m)=>{
-		console.log("delay for  = " + m.delay);
+		//console.log("delay for  = " + m.delay);
 
-		throw new Error("implement!!!");
-
-	//	this.messageSequencer.waitFor(this, "timerDone");
-	//	setTimeout(this.dispatchEvent.bind(this, "timerDone"), m.delay);
+		let t=new Timeout(m.delay);
+		this.eventQueue.waitFor(t,"timeout");
 	};
 
 	/**
