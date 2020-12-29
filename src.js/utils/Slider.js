@@ -3,6 +3,13 @@
  * @module utils
  */
 
+const PixiUtil=require("./PixiUtil.js");
+
+/*
+ * Make it logaritmic:
+ * https://stackoverflow.com/questions/846221/logarithmic-slider
+ */
+
 const TWEEN = require('@tweenjs/tween.js');
 
 /**
@@ -18,7 +25,6 @@ class Slider extends PIXI.Container {
 		this.addChild(this.background);
 		this.addChild(this.knob);
 
-
 		this.knob.buttonMode = true;
 		this.knob.interactive = true;
 		this.knob.mousedown = this.onKnobMouseDown.bind(this);
@@ -26,60 +32,64 @@ class Slider extends PIXI.Container {
 		this.background.buttonMode = true;
 		this.background.interactive = true;
 		this.background.mousedown = this.onBackgroundMouseDown.bind(this);
-
-		this.fadeTween = null;
-		this.alpha = 0;
 	}
 
 	/**
 	 * Mouse down on knob.
 	 * @method onKnobMouseDown
 	 */
-	onKnobMouseDown(interaction_object) {
+	onKnobMouseDown=(e)=>{
 		this.downPos = this.knob.position.x;
-		this.downX = interaction_object.getLocalPosition(this).x;
+		this.downX = this.toLocal(e.data.global).x;
 
-		this.stage.mouseup = this.onStageMouseUp.bind(this);
-		this.stage.mousemove = this.onStageMouseMove.bind(this);
+		this.stage=PixiUtil.findTopParent(this);
+		this.stage.interactive=true;
+		this.stage.on("mouseup",this.onStageMouseUp);
+		this.stage.on("mousemove",this.onStageMouseMove);
 	}
 
 	/**
 	 * Mouse down on background.
 	 * @method onBackgroundMouseDown
 	 */
-	onBackgroundMouseDown(interaction_object) {
-		this.downX = interaction_object.getLocalPosition(this).x;
-		this.knob.x = interaction_object.getLocalPosition(this).x - this.knob.width*0.5;
+	onBackgroundMouseDown=(e)=>{
+		let x=this.toLocal(e.data.global).x;
+		this.downX=x;
+		this.knob.x=x-this.knob.width/2;
 
 		this.validateValue();
 
 		this.downPos = this.knob.position.x;
 
-		this.stage.mouseup = this.onStageMouseUp.bind(this);
-		this.stage.mousemove = this.onStageMouseMove.bind(this);
+		this.stage=PixiUtil.findTopParent(this);
+		this.stage.interactive=true;
+		this.stage.on("mouseup",this.onStageMouseUp);
+		this.stage.on("mousemove",this.onStageMouseMove);
 
-		this.dispatchEvent("change");
+		this.emit("change");
 	}
 
 	/**
 	 * Mouse up.
 	 * @method onStageMouseUp
 	 */
-	onStageMouseUp(interaction_object) {
-		this.stage.mouseup = null;
-		this.stage.mousemove = null;
+	onStageMouseUp=(e)=>{
+		this.stage.interactive=false;
+		this.stage.off("mouseup",this.onStageMouseUp);
+		this.stage.off("mousemove",this.onStageMouseMove);
 	}
 
 	/**
 	 * Mouse move.
 	 * @method onStageMouseMove
 	 */
-	onStageMouseMove(interaction_object) {
-		this.knob.x = this.downPos + (interaction_object.getLocalPosition(this).x - this.downX);
+	onStageMouseMove=(e)=>{
+		let x=this.toLocal(e.data.global).x;
+		this.knob.x = this.downPos + (x - this.downX);
 
 		this.validateValue();
 
-		this.dispatchEvent("change");
+		this.emit("change");
 	}
 
 	/**
@@ -87,7 +97,6 @@ class Slider extends PIXI.Container {
 	 * @method validateValue
 	 */
 	validateValue() {
-
 		if(this.knob.x < 0)
 			this.knob.x = 0;
 
@@ -114,40 +123,6 @@ class Slider extends PIXI.Container {
 
 		this.validateValue();
 		return this.getValue();
-	}
-
-	/**
-	 * Show.
-	 * @method show
-	 */
-	show() {
-		this.visible = true;
-		if(this.fadeTween != null)
-			this.fadeTween.stop();
-		this.fadeTween = new TWEEN.Tween(this)
-				.to({alpha: 1}, 250)
-				.start();
-	}
-
-	/**
-	 * Hide.
-	 * @method hide
-	 */
-	hide() {
-		if(this.fadeTween != null)
-			this.fadeTween.stop();
-		this.fadeTween = new TWEEN.Tween(this)
-				.to({alpha: 0}, 250)
-				.onComplete(this.onHidden.bind(this))
-				.start();
-	}
-
-	/**
-	 * On hidden.
-	 * @method onHidden
-	 */
-	onHidden() {
-		this.visible = false;
 	}
 }
 

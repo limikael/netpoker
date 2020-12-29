@@ -46,6 +46,7 @@ class BigButton extends Button {
 	 * @method setLabel
 	 */
 	setLabel(label) {
+		this.label=label;
 		this.labelField.text=label;
 		this.labelField.x = this.bigButtonTexture.width / 2 - this.labelField.width / 2;
 	}
@@ -55,6 +56,8 @@ class BigButton extends Button {
 	 * @method setValue
 	 */
 	setValue(value) {
+		this.value=value;
+
 		if (!value) {
 			this.valueField.visible = false;
 			value = "";
@@ -64,6 +67,14 @@ class BigButton extends Button {
 
 		this.valueField.text=value;
 		this.valueField.x = this.bigButtonTexture.width / 2 - this.valueField.width / 2;
+	}
+
+	getLabel() {
+		return this.label;
+	}
+
+	getValue() {
+		return this.value;
 	}
 }
 

@@ -32,7 +32,11 @@ class InterfaceController {
 	onButtonsMessage=(m)=>{
 		var buttonsView = this.view.getButtonsView();
 
-		buttonsView.setButtons(m.buttons, m.sliderButtonIndex, parseInt(m.min, 10), parseInt(m.max, 10));
+		buttonsView.clear();
+		buttonsView.showButtons(m.buttons,m.values);
+
+		if (m.hasOwnProperty("sliderIndex"))
+			buttonsView.showSlider(m.sliderIndex,m.sliderMax);
 	}
 
 	/**

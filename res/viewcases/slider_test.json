@@ -3,5 +3,6 @@
 {"type":"pocketCards", "seatIndex": 5, "firstIndex": 0, "cards": [11], "animate": true}
 {"type":"pocketCards", "seatIndex": 5, "firstIndex": 1, "cards": [12], "animate": true}
 {"type":"stateComplete"}
-{"type":"buttons", "buttons":[{"button":"fold"},{"button":"check"},{"button":"raise", "value": 2}], "sliderButtonIndex": 2, "min":1, "max":100}
+//{"type":"buttons", "buttons":["fold","check","raise"], "values": [1,2,3]}
+{"type":"buttons", "buttons":["fold","check","raise"], "values": [1,2,3], "sliderIndex": 2, "sliderMax":1000}
 {"type":"stateComplete"}
