@@ -17,7 +17,7 @@ class ConnectionManager extends EventEmiter {
 		let params={...querystring.parse(url.parse(req.url).query)};
 
 		if (params.viewcase) {
-			console.log("Sevving viewcase: "+params.viewcase);
+			console.log("Serving viewcase: "+params.viewcase);
 			let viewcaseFn=
 				__dirname+"/../../../res/viewcases/"+params.viewcase+".json";
 
@@ -27,6 +27,10 @@ class ConnectionManager extends EventEmiter {
 			for (let line of viewcaseLines)
 				if (line.trim())
 					ws.send(line.trim());
+
+			ws.on("message",(message)=>{
+				console.log("Message: "+message);
+			});
 		}
 
 		else {

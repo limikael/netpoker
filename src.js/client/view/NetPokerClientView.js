@@ -11,7 +11,7 @@ var SettingsView = require("../view/SettingsView");
 var TableInfoView = require("../view/TableInfoView");
 var PresetButtonsView = require("../view/PresetButtonsView");
 var TableButtonsView = require("./TableButtonsView");*/
-//const ButtonsView = require("./ButtonsView");
+const ButtonsView = require("./ButtonsView");
 const TimerView = require("./TimerView");
 const PotView = require("./PotView");
 const ChipsView = require("./ChipsView");
@@ -48,8 +48,8 @@ class NetPokerClientView extends PIXI.Container {
 		/*this.chatView = new ChatView(this.client);
 		this.addChild(this.chatView);*/
 
-		/*this.buttonsView = new ButtonsView(this.client);
-		this.addChild(this.buttonsView);*/
+		this.buttonsView = new ButtonsView(this.client);
+		this.addChild(this.buttonsView);
 
 		/*this.dealerButtonView = new DealerButtonView(this.client);
 		this.tableContainer.addChild(this.dealerButtonView);
@@ -175,7 +175,6 @@ class NetPokerClientView extends PIXI.Container {
 			if (e.target == this.seatViews[i])
 				seatIndex = i;
 
-		console.log("seat click: " + seatIndex);
 		this.emit("seatClick",seatIndex);
 	}
 

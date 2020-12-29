@@ -21,10 +21,10 @@ class Button extends PIXI.Container {
 		this.interactive = true;
 		this.buttonMode = true;
 
-		this.mouseover = this.onMouseover.bind(this);
+		/*this.mouseover = this.onMouseover.bind(this);
 		this.mouseout = this.touchend = this.touchendoutside = this.onMouseout.bind(this);
 		this.mousedown = this.touchstart = this.onMousedown.bind(this);
-		this.mouseup = this.onMouseup.bind(this);
+		this.mouseup = this.onMouseup.bind(this);*/
 		//this.click = this.tap = this.onClick.bind(this);
 
 		this.colorMatrixFilter = new PIXI.filters.ColorMatrixFilter();

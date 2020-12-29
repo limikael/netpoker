@@ -17,7 +17,7 @@ class MessageConnection extends EventEmitter {
 	}
 
 	send(type, message) {
-		message._=type;
+		message.type=type;
 		this.webSocket.send(JSON.stringify(message));
 	}
 

@@ -20,17 +20,17 @@ class NetPokerClientController {
 		this.tableController = new TableController(this.eventQueue, this.netPokerClientView);
 		this.interfaceController = new InterfaceController(this.eventQueue, this.netPokerClientView);
 
-		/*this.netPokerClientView.getButtonsView().on(ButtonsView.BUTTON_CLICK, this.onButtonClick, this);
-		this.netPokerClientView.getTableInfoView().on(TableInfoView.BUTTON_CLICK, this.onButtonClick, this);
-		this.netPokerClientView.getDialogView().on(DialogView.BUTTON_CLICK, this.onButtonClick, this);
-		this.netPokerClientView.on(NetPokerClientView.SEAT_CLICK, this.onSeatClick, this);
+		this.netPokerClientView.getButtonsView().on("buttonClick", this.onButtonClick);
+		//this.netPokerClientView.getTableInfoView().on(TableInfoView.BUTTON_CLICK, this.onButtonClick, this);
+		//this.netPokerClientView.getDialogView().on(DialogView.BUTTON_CLICK, this.onButtonClick, this);
+		this.netPokerClientView.on("seatClick", this.onSeatClick);
 
-		this.netPokerClientView.chatView.addEventListener("chat", this.onViewChat, this);
-		this.netPokerClientView.settingsView.addEventListener(SettingsView.BUY_CHIPS_CLICK, this.onBuyChipsButtonClick, this);
-		this.netPokerClientView.settingsView.addEventListener(SettingsView.CHECKBOX_CHANGE, this.onCheckboxChange, this);
+		//this.netPokerClientView.chatView.addEventListener("chat", this.onViewChat, this);
+		//this.netPokerClientView.settingsView.addEventListener(SettingsView.BUY_CHIPS_CLICK, this.onBuyChipsButtonClick, this);
+		//this.netPokerClientView.settingsView.addEventListener(SettingsView.CHECKBOX_CHANGE, this.onCheckboxChange, this);
 
-		this.netPokerClientView.getPresetButtonsView().addEventListener(PresetButtonsView.CHANGE, this.onPresetButtonsChange, this);
-		this.netPokerClientView.getTableButtonsView().on(TableButtonsView.TABLE_CLICK, this.onTableButtonClick, this);*/
+		//this.netPokerClientView.getPresetButtonsView().addEventListener(PresetButtonsView.CHANGE, this.onPresetButtonsChange, this);
+		//this.netPokerClientView.getTableButtonsView().on(TableButtonsView.TABLE_CLICK, this.onTableButtonClick, this);*/
 	}
 
 	/**
@@ -68,25 +68,23 @@ class NetPokerClientController {
 	 * @method onButtonClick
 	 * @private
 	 */
-	/*NetPokerClientController.prototype.onButtonClick = function(e) {
-		if (!this.protoConnection)
-			return;
-
-		console.log("button click, v=" + e.value);
-
-		var m = new ButtonClickMessage(e.button, e.value);
-		this.protoConnection.send(m);
-	}*/
+	onButtonClick=(button, value)=>{
+		this.connection.send("buttonClick",{
+			button: button,
+			value: value
+		});
+	}
 
 	/**
 	 * Seat click.
 	 * @method onSeatClick
 	 * @private
 	 */
-	/*NetPokerClientController.prototype.onSeatClick = function(e) {
-		var m = new SeatClickMessage(e.seatIndex);
-		this.protoConnection.send(m);
-	}*/
+	onSeatClick=(seatIndex)=>{
+		this.connection.send("seatClick",{
+			seatIndex: seatIndex
+		});
+	}
 
 	/**
 	 * On send chat message.
