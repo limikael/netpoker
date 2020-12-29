@@ -76,7 +76,7 @@ class InterfaceController {
 	onShowDialogMessage=(m)=>{
 		var dialogView = this.view.getDialogView();
 
-		dialogView.show(m.getText(), m.getButtons(), m.getDefaultValue());
+		dialogView.show(m.text, m.buttons, m.defaultValue);
 	}
 
 

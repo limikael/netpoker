@@ -13,18 +13,19 @@ class BigButton extends Button {
 	constructor(client) {
 		super();
 
+		this.client=client;
 		this.resources = client.getResources();
 		this.bigButtonTexture = this.resources.getTexture("bigButton");
 		this.addChild(new PIXI.Sprite(this.bigButtonTexture));
 
 		var style = {
 			fontFamily: "Arial",
-			fontSize: 18,
+			fontSize: 16,
 			fontWeight: "bold"
 		};
 
 		this.labelField = new PIXI.Text("[button]", style);
-		this.labelField.position.y = 30;
+		this.labelField.position.y = 32;
 		this.addChild(this.labelField);
 
 		var style = {
@@ -37,7 +38,7 @@ class BigButton extends Button {
 		this.valueField.position.y = 50;
 		this.addChild(this.valueField);
 
-		this.setLabel("TEST");
+		this.setLabel("");
 		this.setValue(123);
 	}
 
@@ -47,7 +48,13 @@ class BigButton extends Button {
 	 */
 	setLabel(label) {
 		this.label=label;
-		this.labelField.text=label;
+
+		if (this.label)
+			this.labelField.text=this.client.translate(label);
+
+		else
+			this.labelField.text="<none>";
+
 		this.labelField.x = this.bigButtonTexture.width / 2 - this.labelField.width / 2;
 	}
 

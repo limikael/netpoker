@@ -3,92 +3,79 @@
  * @module client
  */
 
-var PIXI = require("pixi.js");
-var TWEEN = require("tween.js");
-var EventDispatcher = require("yaed");
-var inherits = require("inherits");
+const TWEEN = require('@tweenjs/tween.js');
 
 /**
  * Dialog view.
  * @class DealerButtonView
  */
-function DealerButtonView(viewConfig, resources) {
-	PIXI.DisplayObjectContainer.call(this);
+class DealerButtonView extends PIXI.Container {
+	constructor(client) {
+		super();
 
-	this.viewConfig = viewConfig;
-	this.resources = resources;
+		this.resources=client.getResources();
 
-	var dealerButtonTexture = this.resources.getTexture("dealerButton");
-	this.sprite = new PIXI.Sprite(dealerButtonTexture);
-	this.addChild(this.sprite);
-	this.hide();
-}
-
-inherits(DealerButtonView, PIXI.DisplayObjectContainer);
-EventDispatcher.init(DealerButtonView);
-
-/**
- * Set seat index
- * @method setSeatIndex
- */
-DealerButtonView.prototype.setSeatIndex = function(seatIndex) {
-	this.position.x = this.resources.getPoint("dealerButtonPosition"+seatIndex).x;
-	this.position.y = this.resources.getPoint("dealerButtonPosition"+seatIndex).y;
-	this.dispatchEvent("animationDone", this);
-};
-
-/**
- * Animate to seat index.
- * @method animateToSeatIndex
- */
-DealerButtonView.prototype.animateToSeatIndex = function(seatIndex) {
-	if (!this.visible) {
-		this.setSeatIndex(seatIndex);
-		// todo dispatch event that it's complete?
-		this.dispatchEvent("animationDone", this);
-		return;
+		var dealerButtonTexture = this.resources.getTexture("dealerButton");
+		this.sprite = new PIXI.Sprite(dealerButtonTexture);
+		this.addChild(this.sprite);
+		this.hide();
 	}
-	var destination = this.resources.getPoint("dealerButtonPosition"+seatIndex);
-	var diffX = this.position.x - destination.x;
-	var diffY = this.position.y - destination.y;
-	var diff = Math.sqrt(diffX * diffX + diffY * diffY);
 
-	var tween = new TWEEN.Tween(this.position)
-		.to({
-			x: destination.x,
-			y: destination.y
-		}, this.viewConfig.scaleAnimationTime(5 * diff))
-		.easing(TWEEN.Easing.Quadratic.Out)
-		.onComplete(this.onShowComplete.bind(this))
-		.start();
-};
+	/**
+	 * Set seat index
+	 * @method setSeatIndex
+	 */
+	setSeatIndex = function(seatIndex) {
+		this.position = this.resources.getPoint("dealerButtonPosition"+seatIndex);
+		this.emit("animationDone");
+	};
 
-/**
- * Show Complete.
- * @method onShowComplete
- */
-DealerButtonView.prototype.onShowComplete = function() {
-	this.dispatchEvent("animationDone", this);
-}
+	/**
+	 * Animate to seat index.
+	 * @method animateToSeatIndex
+	 */
+	animateToSeatIndex(seatIndex) {
+		if (!this.visible)
+			throw new Error("Can't animate when not visible");
 
-/**
- * Hide.
- * @method hide
- */
-DealerButtonView.prototype.hide = function() {
-	this.visible = false;
-}
+		var destination = this.resources.getPoint("dealerButtonPosition"+seatIndex);
+		var tween = new TWEEN.Tween(this.position)
+			.to({
+				x: destination.x,
+				y: destination.y
+			}, 1000)
+			.easing(TWEEN.Easing.Quadratic.Out)
+			.onComplete(this.onShowComplete.bind(this))
+			.start();
+	};
 
-/**
- * Show.
- * @method show
- */
-DealerButtonView.prototype.show = function(seatIndex, animate) {
-	if (this.visible && animate) {
-		this.animateToSeatIndex(seatIndex);
-	} else {
-		this.visible = true;
-		this.setSeatIndex(seatIndex);
+	/**
+	 * Show Complete.
+	 * @method onShowComplete
+	 */
+	onShowComplete() {
+		this.emit("animationDone");
+	}
+
+	/**
+	 * Hide.
+	 * @method hide
+	 */
+	hide() {
+		this.visible = false;
+	}
+
+	/**
+	 * Show.
+	 * @method show
+	 */
+	show(seatIndex, animate) {
+		if (this.visible && animate) {
+			this.animateToSeatIndex(seatIndex);
+		} else {
+			this.visible = true;
+			this.setSeatIndex(seatIndex);
+		}
 	}
 }
 

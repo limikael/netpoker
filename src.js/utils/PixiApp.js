@@ -5,7 +5,9 @@ class PixiApp extends PIXI.Container {
 	constructor(contentWidth, contentHeight) {
 		super();
 
-		this.app=new PIXI.Application();
+		this.app=new PIXI.Application({
+			antialias: true
+		});
 		this.app.renderer.autoDensity=true;
 		this.app.view.style.position="absolute";
 		this.app.view.style.top=0;

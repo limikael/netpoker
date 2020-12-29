@@ -8,6 +8,6 @@
 {"type":"pocketCards", "seatIndex": 2, "firstIndex": 0, "cards": [11,13]}
 {"type":"pocketCards", "seatIndex": 5, "firstIndex": 0, "cards": [11,13]}
 {"type":"pocketCards", "seatIndex": 6, "firstIndex": 0, "cards": [-1,-1]}
-{"type":"buttons", "buttons":[{"button":"fold","value":0},{"button":"call","value":10},{"button":"raise","value":20}]}
+{"type":"buttons", "buttons":["fold","call","raise"],"values":[0,10,20]}
 {"type":"stateComplete"}
-//{"type":"buttons", "buttons":[{"button":"leave","value":0},{"button":"postBB","value":10}]}
+{"type":"buttons", "buttons":["leave","postBB"],"values":[0,10]}

@@ -821,7 +821,697 @@ exports.removeAll = removeAll;
 exports.update = update;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":2}],2:[function(require,module,exports){
+},{"_process":3}],2:[function(require,module,exports){
+(function (pkg){
+
+const PIXI = pkg.PIXI
+
+class TextInput extends PIXI.Container{
+  constructor(styles){
+    super()
+    this._input_style = Object.assign(
+      {
+        position: 'absolute',
+        background: 'none',
+        border: 'none',
+        outline: 'none',
+        transformOrigin: '0 0',
+        lineHeight: '1'
+      },
+      styles.input
+    )
+
+    if(styles.box)
+      this._box_generator = typeof styles.box === 'function' ? styles.box : new DefaultBoxGenerator(styles.box)
+    else
+      this._box_generator = null
+
+    if(this._input_style.hasOwnProperty('multiline')){
+      this._multiline = !!this._input_style.multiline
+      delete this._input_style.multiline
+    }else
+      this._multiline = false
+
+    this._box_cache = {}
+    this._previous = {}
+    this._dom_added = false
+    this._dom_visible = true
+    this._placeholder = ''
+    this._placeholderColor = 0xa9a9a9
+    this._selection = [0,0]
+    this._restrict_value = ''
+    this._createDOMInput()
+    this.substituteText = true
+    this._setState('DEFAULT')
+    this._addListeners()
+  }
+
+
+  // GETTERS & SETTERS
+
+  get substituteText(){
+    return this._substituted
+  }
+
+  set substituteText(substitute){
+    if(this._substituted==substitute) 
+      return
+
+    this._substituted = substitute
+
+    if(substitute){
+      this._createSurrogate()
+      this._dom_visible = false
+    }else{
+      this._destroySurrogate()
+      this._dom_visible = true
+    }
+    this.placeholder = this._placeholder
+    this._update()
+  }
+
+  get placeholder(){
+    return this._placeholder
+  }
+
+  set placeholder(text){
+    this._placeholder = text
+    if(this._substituted){
+      this._updateSurrogate()
+      this._dom_input.placeholder = ''
+    }else{
+      this._dom_input.placeholder = text
+    }
+  }
+
+  get disabled(){
+    return this._disabled
+  }
+
+  set disabled(disabled){
+    this._disabled = disabled
+    this._dom_input.disabled = disabled
+    this._setState(disabled ? 'DISABLED' : 'DEFAULT')
+  }
+
+  get maxLength(){
+    return this._max_length
+  }
+
+  set maxLength(length){
+    this._max_length = length
+    this._dom_input.setAttribute('maxlength', length)
+  }
+
+  get restrict(){
+    return this._restrict_regex
+  }
+
+  set restrict(regex){
+    if(regex instanceof RegExp){
+      regex = regex.toString().slice(1,-1)
+
+      if(regex.charAt(0) !== '^')
+        regex = '^'+regex
+
+      if(regex.charAt(regex.length-1) !== '$')
+        regex = regex+'$'
+
+      regex = new RegExp(regex)
+    }else{
+      regex = new RegExp('^['+regex+']*$')
+    }
+
+    this._restrict_regex = regex
+  }
+
+  get text(){
+    return this._dom_input.value
+  }
+
+  set text(text){
+    this._dom_input.value = text
+    if(this._substituted) this._updateSurrogate()
+  }
+
+  get htmlInput(){
+    return this._dom_input
+  }
+
+  focus(){
+    if(this._substituted && !this.dom_visible)
+      this._setDOMInputVisible(true)
+
+    this._dom_input.focus()
+    
+  }
+
+  blur(){
+    this._dom_input.blur()
+  }
+
+  select(){
+    this.focus()
+    this._dom_input.select()
+  }
+
+  setInputStyle(key,value){
+    this._input_style[key] = value
+    this._dom_input.style[key] = value
+
+    if(this._substituted && (key==='fontFamily' || key==='fontSize'))
+      this._updateFontMetrics()
+
+    if(this._last_renderer)
+      this._update()
+  }
+
+  destroy(options){
+    this._destroyBoxCache()
+    super.destroy(options)
+  }
+
+
+  // SETUP
+
+  _createDOMInput(){
+    if(this._multiline){
+      this._dom_input = document.createElement('textarea')
+      this._dom_input.style.resize = 'none'
+    }else{
+      this._dom_input = document.createElement('input')
+      this._dom_input.type = 'text'
+    }
+    
+    for(let key in this._input_style){
+      this._dom_input.style[key] = this._input_style[key]
+    }
+  }
+
+  _addListeners(){
+    this.on('added',this._onAdded.bind(this))
+    this.on('removed',this._onRemoved.bind(this))
+    this._dom_input.addEventListener('keydown', this._onInputKeyDown.bind(this))
+    this._dom_input.addEventListener('input', this._onInputInput.bind(this))
+    this._dom_input.addEventListener('keyup', this._onInputKeyUp.bind(this))
+    this._dom_input.addEventListener('focus', this._onFocused.bind(this))
+    this._dom_input.addEventListener('blur', this._onBlurred.bind(this))
+  }
+
+  _onInputKeyDown(e){
+    this._selection = [
+      this._dom_input.selectionStart,
+      this._dom_input.selectionEnd
+    ]
+
+    this.emit('keydown',e.keyCode)
+  }
+
+  _onInputInput(e){
+    if(this._restrict_regex)
+      this._applyRestriction()
+
+    if(this._substituted)
+      this._updateSubstitution()
+
+    this.emit('input',this.text)
+  }
+
+  _onInputKeyUp(e){
+    this.emit('keyup',e.keyCode)
+  }
+
+  _onFocused(){
+    this._setState('FOCUSED')
+    this.emit('focus')
+  }
+
+  _onBlurred(){
+    this._setState('DEFAULT')
+    this.emit('blur')
+  }
+
+  _onAdded(){
+    document.body.appendChild(this._dom_input)
+    this._dom_input.style.display = 'none'
+    this._dom_added = true
+  }
+
+  _onRemoved(){
+    document.body.removeChild(this._dom_input)
+    this._dom_added = false
+  }
+
+  _setState(state){
+    this.state = state
+    this._updateBox()
+    if(this._substituted)
+      this._updateSubstitution()
+  }
+
+
+
+  // RENDER & UPDATE
+
+  // for pixi v4
+  renderWebGL(renderer){
+    super.renderWebGL(renderer)
+    this._renderInternal(renderer)
+  }
+
+  // for pixi v4
+  renderCanvas(renderer){
+    super.renderCanvas(renderer)
+    this._renderInternal(renderer)
+  }
+
+  // for pixi v5
+  render(renderer){
+    super.render(renderer)
+    this._renderInternal(renderer)
+  }
+
+  _renderInternal(renderer){
+    this._resolution = renderer.resolution
+    this._last_renderer = renderer
+    this._canvas_bounds = this._getCanvasBounds()
+    if(this._needsUpdate())
+      this._update()
+  }
+
+  _update(){
+    this._updateDOMInput()
+    if(this._substituted) this._updateSurrogate()
+    this._updateBox()
+  }
+
+  _updateBox(){
+    if(!this._box_generator)
+      return
+
+    if(this._needsNewBoxCache())
+      this._buildBoxCache()
+
+    if(this.state==this._previous.state 
+      && this._box==this._box_cache[this.state])
+      return
+
+    if(this._box)
+      this.removeChild(this._box)
+
+    this._box = this._box_cache[this.state]
+    this.addChildAt(this._box,0)
+    this._previous.state = this.state
+  }
+
+  _updateSubstitution(){
+    if(this.state==='FOCUSED'){
+      this._dom_visible = true
+      this._surrogate.visible = this.text.length===0
+    }else{
+      this._dom_visible = false
+      this._surrogate.visible = true
+    }
+    this._updateDOMInput()
+    this._updateSurrogate()
+  }
+
+  _updateDOMInput(){
+    if(!this._canvas_bounds)
+      return
+
+    this._dom_input.style.top = (this._canvas_bounds.top || 0)+'px'
+    this._dom_input.style.left = (this._canvas_bounds.left || 0)+'px'
+    this._dom_input.style.transform = this._pixiMatrixToCSS(this._getDOMRelativeWorldTransform())
+    this._dom_input.style.opacity = this.worldAlpha
+    this._setDOMInputVisible(this.worldVisible && this._dom_visible)
+
+    this._previous.canvas_bounds = this._canvas_bounds
+    this._previous.world_transform = this.worldTransform.clone()
+    this._previous.world_alpha = this.worldAlpha
+    this._previous.world_visible = this.worldVisible
+  }
+
+  _applyRestriction(){
+    if(this._restrict_regex.test(this.text)){
+      this._restrict_value = this.text
+    }else{
+      this.text = this._restrict_value
+      this._dom_input.setSelectionRange(
+        this._selection[0],
+        this._selection[1]
+      )
+    }
+  }
+
+
+  // STATE COMPAIRSON (FOR PERFORMANCE BENEFITS)
+
+  _needsUpdate(){
+    return (
+      !this._comparePixiMatrices(this.worldTransform,this._previous.world_transform)
+      || !this._compareClientRects(this._canvas_bounds,this._previous.canvas_bounds)
+      || this.worldAlpha != this._previous.world_alpha
+      || this.worldVisible != this._previous.world_visible
+    )
+  }
+
+  _needsNewBoxCache(){
+    let input_bounds = this._getDOMInputBounds()
+    return (
+      !this._previous.input_bounds
+      || input_bounds.width != this._previous.input_bounds.width
+      || input_bounds.height != this._previous.input_bounds.height
+    )
+  }
+
+
+  // INPUT SUBSTITUTION
+
+  _createSurrogate(){
+    this._surrogate_hitbox = new PIXI.Graphics()
+    this._surrogate_hitbox.alpha = 0
+    this._surrogate_hitbox.interactive = true
+    this._surrogate_hitbox.cursor = 'text'
+    this._surrogate_hitbox.on('pointerdown',this._onSurrogateFocus.bind(this))
+    this.addChild(this._surrogate_hitbox)
+
+    this._surrogate_mask = new PIXI.Graphics()
+    this.addChild(this._surrogate_mask)
+
+    this._surrogate = new PIXI.Text('',{})
+    this.addChild(this._surrogate)
+
+    this._surrogate.mask = this._surrogate_mask
+
+    this._updateFontMetrics()
+    this._updateSurrogate()
+  }
+
+  _updateSurrogate(){
+    let padding = this._deriveSurrogatePadding()
+    let input_bounds = this._getDOMInputBounds()
+
+    this._surrogate.style = this._deriveSurrogateStyle()
+    this._surrogate.style.padding = Math.max.apply(Math,padding)
+    this._surrogate.y = this._multiline ? padding[0] : (input_bounds.height-this._surrogate.height)/2
+    this._surrogate.x = padding[3]
+    this._surrogate.text = this._deriveSurrogateText()
+
+    switch (this._surrogate.style.align){
+      case 'left':
+        this._surrogate.x = padding[3]
+        break
+
+      case 'center':
+        this._surrogate.x = input_bounds.width * 0.5 - this._surrogate.width * 0.5
+        break
+        
+      case 'right':
+        this._surrogate.x = input_bounds.width - padding[1] - this._surrogate.width
+        break
+    }
+
+    this._updateSurrogateHitbox(input_bounds)
+    this._updateSurrogateMask(input_bounds,padding)
+  }
+
+  _updateSurrogateHitbox(bounds){
+    this._surrogate_hitbox.clear()
+    this._surrogate_hitbox.beginFill(0)
+    this._surrogate_hitbox.drawRect(0,0,bounds.width,bounds.height)
+    this._surrogate_hitbox.endFill()
+    this._surrogate_hitbox.interactive = !this._disabled
+  }
+
+  _updateSurrogateMask(bounds,padding){
+    this._surrogate_mask.clear()
+    this._surrogate_mask.beginFill(0)
+    this._surrogate_mask.drawRect(padding[3],0,bounds.width-padding[3]-padding[1],bounds.height)
+    this._surrogate_mask.endFill()
+  }
+
+  _destroySurrogate(){
+    if(!this._surrogate) return
+
+    this.removeChild(this._surrogate)
+    this.removeChild(this._surrogate_hitbox)
+
+    this._surrogate.destroy()
+    this._surrogate_hitbox.destroy()
+
+    this._surrogate = null
+    this._surrogate_hitbox = null
+  }
+
+  _onSurrogateFocus(){
+    this._setDOMInputVisible(true)
+    //sometimes the input is not being focused by the mouseclick
+    setTimeout(this._ensureFocus.bind(this),10)
+  }
+
+  _ensureFocus(){
+    if(!this._hasFocus())
+      this.focus()
+  }
+
+  _deriveSurrogateStyle(){
+    let style = new PIXI.TextStyle()
+
+    for(var key in this._input_style){
+      switch(key){
+        case 'color':
+          style.fill = this._input_style.color
+          break
+
+        case 'fontFamily':
+        case 'fontSize':
+        case 'fontWeight':
+        case 'fontVariant':
+        case 'fontStyle':
+          style[key] = this._input_style[key]
+          break
+
+        case 'letterSpacing':
+          style.letterSpacing = parseFloat(this._input_style.letterSpacing)
+          break
+
+        case 'textAlign':
+          style.align = this._input_style.textAlign
+          break
+      }
+    }
+
+    if(this._multiline){
+      style.lineHeight = parseFloat(style.fontSize)
+      style.wordWrap = true
+      style.wordWrapWidth = this._getDOMInputBounds().width
+    }
+
+    if(this._dom_input.value.length === 0)
+      style.fill = this._placeholderColor
+
+    return style
+  }
+
+  _deriveSurrogatePadding(){
+    let indent = this._input_style.textIndent ? parseFloat(this._input_style.textIndent) : 0
+
+    if(this._input_style.padding && this._input_style.padding.length>0){
+      let components = this._input_style.padding.trim().split(' ')
+
+      if(components.length==1){
+        let padding = parseFloat(components[0])
+        return [padding,padding,padding,padding+indent]
+      }else if(components.length==2){
+        let paddingV = parseFloat(components[0])
+        let paddingH = parseFloat(components[1])
+        return [paddingV,paddingH,paddingV,paddingH+indent]
+      }else if(components.length==4){
+        let padding = components.map(component => {
+          return parseFloat(component)
+        })
+        padding[3] += indent
+        return padding
+      }
+    }
+
+    return [0,0,0,indent]
+  }
+
+  _deriveSurrogateText(){
+    return this._dom_input.value.length === 0 ? this._placeholder : this._dom_input.value
+  }
+
+  _updateFontMetrics(){
+    const style = this._deriveSurrogateStyle()
+    const font = style.toFontString()
+
+    this._font_metrics = PIXI.TextMetrics.measureFont(font)
+  }
+
+
+  // CACHING OF INPUT BOX GRAPHICS
+
+  _buildBoxCache(){
+    this._destroyBoxCache()
+
+    let states = ['DEFAULT','FOCUSED','DISABLED']
+    let input_bounds = this._getDOMInputBounds()
+
+    for(let i in states){
+      this._box_cache[states[i]] = this._box_generator(
+        input_bounds.width,
+        input_bounds.height,
+        states[i]
+      )
+    }
+
+    this._previous.input_bounds = input_bounds
+  }
+
+  _destroyBoxCache(){
+    if(this._box){
+      this.removeChild(this._box)
+      this._box = null
+    }
+
+    for(let i in this._box_cache){
+      this._box_cache[i].destroy()
+      this._box_cache[i] = null
+      delete this._box_cache[i]
+    }
+  }
+
+
+  // HELPER FUNCTIONS
+
+  _hasFocus(){
+    return document.activeElement===this._dom_input
+  }
+
+  _setDOMInputVisible(visible){
+    this._dom_input.style.display = visible ? 'block' : 'none'
+  }
+
+  _getCanvasBounds(){
+    let rect = this._last_renderer.view.getBoundingClientRect()
+    let bounds = {top: rect.top, left: rect.left, width: rect.width, height: rect.height}
+    bounds.left += window.scrollX
+    bounds.top += window.scrollY
+    return bounds
+  }
+
+  _getDOMInputBounds(){
+    let remove_after = false
+
+    if(!this._dom_added){
+      document.body.appendChild(this._dom_input)
+      remove_after = true
+    }
+
+    let org_transform = this._dom_input.style.transform
+    let org_display = this._dom_input.style.display
+    this._dom_input.style.transform = ''
+    this._dom_input.style.display = 'block'
+    let bounds = this._dom_input.getBoundingClientRect()
+    this._dom_input.style.transform = org_transform
+    this._dom_input.style.display = org_display
+
+    if(remove_after)
+      document.body.removeChild(this._dom_input)
+
+    return bounds
+  }
+
+  _getDOMRelativeWorldTransform(){
+    let canvas_bounds = this._last_renderer.view.getBoundingClientRect()
+    let matrix = this.worldTransform.clone()
+
+    matrix.scale(this._resolution,this._resolution)
+    matrix.scale(canvas_bounds.width/this._last_renderer.width,
+           canvas_bounds.height/this._last_renderer.height)
+    return matrix
+  }
+
+  _pixiMatrixToCSS(m){
+    return 'matrix('+[m.a,m.b,m.c,m.d,m.tx,m.ty].join(',')+')'
+  }
+
+  _comparePixiMatrices(m1,m2){
+    if(!m1 || !m2) return false
+    return (
+      m1.a == m2.a
+      && m1.b == m2.b
+      && m1.c == m2.c
+      && m1.d == m2.d
+      && m1.tx == m2.tx
+      && m1.ty == m2.ty
+    )
+  }
+
+  _compareClientRects(r1,r2){
+    if(!r1 || !r2) return false
+    return (
+      r1.left == r2.left
+      && r1.top == r2.top
+      && r1.width == r2.width
+      && r1.height == r2.height
+    )
+  }
+}
+
+
+function DefaultBoxGenerator(styles){
+  styles = styles || {fill: 0xcccccc}
+
+  if(styles.default){
+    styles.focused = styles.focused || styles.default
+    styles.disabled = styles.disabled || styles.default
+  }else{
+    let temp_styles = styles
+    styles = {}
+    styles.default = styles.focused = styles.disabled = temp_styles
+  }
+
+  return function(w,h,state){
+    let style = styles[state.toLowerCase()]
+    let box = new PIXI.Graphics()
+
+    if(style.fill)
+      box.beginFill(style.fill)
+
+    if(style.stroke)
+      box.lineStyle(
+        style.stroke.width || 1,
+        style.stroke.color || 0,
+        style.stroke.alpha || 1
+      )
+
+    if(style.rounded)
+      box.drawRoundedRect(0,0,w,h,style.rounded)
+    else
+      box.drawRect(0,0,w,h)
+
+    box.endFill()
+    box.closePath()
+
+    return box
+  }
+}
+
+pkg.exportTo[0][pkg.exportTo[1]] = TextInput
+
+})({ PIXI: PIXI, exportTo: [PIXI,'TextInput'] }
+  /*typeof PIXI === 'object'
+  ? { PIXI: PIXI, exportTo: [PIXI,'TextInput'] }
+  : (
+    typeof module === 'object'
+    ? { PIXI: require('pixi.js'), exportTo: [module,'exports'] }
+    : console.warn('[PIXI.TextInput] could not attach to PIXI namespace. Make sure to include this plugin after pixi.js') || {}
+  )*/
+)
+},{}],3:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -1007,7 +1697,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -1532,7 +2222,7 @@ function functionBindPolyfill(context) {
   };
 }
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -1542,12 +2232,13 @@ module.exports = function () {
   );
 };
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 const Resources=require("./Resources");
 const NetPokerClientView=require("../view/NetPokerClientView");
 const NetPokerClientController=require("../controller/NetPokerClientController");
 const MessageConnection=require("../../utils/MessageConnection");
 const PixiApp=require("../../utils/PixiApp");
+const TRANSLATIONS=require("./translations");
 
 class NetPokerClient extends PixiApp {
 	constructor(params) {
@@ -1583,11 +2274,18 @@ class NetPokerClient extends PixiApp {
 	getResources() {
 		return this.resources;
 	}
+
+	translate(key) {
+		if (!TRANSLATIONS[key])
+			throw new Error("Unknown ranslation key: "+key);
+
+		return TRANSLATIONS[key];
+	}
 }
 
 module.exports=NetPokerClient;
 
-},{"../../utils/MessageConnection":27,"../../utils/PixiApp":29,"../controller/NetPokerClientController":9,"../view/NetPokerClientView":17,"./Resources":6}],6:[function(require,module,exports){
+},{"../../utils/MessageConnection":32,"../../utils/PixiApp":34,"../controller/NetPokerClientController":11,"../view/NetPokerClientView":22,"./Resources":7,"./translations":9}],7:[function(require,module,exports){
 const THEME=require("./theme.js");
 
 class Resources {
@@ -1628,7 +2326,7 @@ class Resources {
 
 module.exports=Resources;
 
-},{"./theme.js":7}],7:[function(require,module,exports){
+},{"./theme.js":8}],8:[function(require,module,exports){
 module.exports={
 	"tableBackground": "table.png",
 	"seatPlate": "seatPlate.png",
@@ -1713,7 +2411,32 @@ module.exports={
 
 	"bigButtonPosition": [366, 575]
 }
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
+module.exports={
+	"raise": "RAISE TO",
+	"fold": "FOLD",
+	"bet": "BET",
+	"sitOut": "SIT OUT",
+	"sitIn": "SIT IN",
+	"call": "CALL",
+	"postBB": "POST BB",
+	"postSB": "POST SB",
+	"cancel": "CANCEL",
+	"check": "CHECK",
+	"show": "SHOW",
+	"muck": "MUCK",
+	"ok": "OK",
+	"imBack": "I'M BACK",
+	"leave": "LEAVE",
+	"checkFold": "CHECK / FOLD",
+	"callAny": "CALL ANY",
+	"raiseAny": "RAISE ANY",
+	"buyIn": "BUY IN",
+	"reBuy": "RE-BUY",
+	"joinTournament": "JOIN",
+	"leaveTournament": "LEAVE"
+};
+},{}],10:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -1792,7 +2515,7 @@ class InterfaceController {
 	onShowDialogMessage=(m)=>{
 		var dialogView = this.view.getDialogView();
 
-		dialogView.show(m.getText(), m.getButtons(), m.getDefaultValue());
+		dialogView.show(m.text, m.buttons, m.defaultValue);
 	}
 
 
@@ -1880,7 +2603,7 @@ class InterfaceController {
 }
 
 module.exports = InterfaceController;
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -1905,7 +2628,7 @@ class NetPokerClientController {
 
 		this.netPokerClientView.getButtonsView().on("buttonClick", this.onButtonClick);
 		//this.netPokerClientView.getTableInfoView().on(TableInfoView.BUTTON_CLICK, this.onButtonClick, this);
-		//this.netPokerClientView.getDialogView().on(DialogView.BUTTON_CLICK, this.onButtonClick, this);
+		this.netPokerClientView.getDialogView().on("buttonClick", this.onButtonClick);
 		this.netPokerClientView.on("seatClick", this.onSeatClick);
 
 		//this.netPokerClientView.chatView.addEventListener("chat", this.onViewChat, this);
@@ -2026,7 +2749,7 @@ class NetPokerClientController {
 }
 
 module.exports = NetPokerClientController;
-},{"../../utils/EventQueue":25,"./InterfaceController":8,"./TableController":10}],10:[function(require,module,exports){
+},{"../../utils/EventQueue":30,"./InterfaceController":10,"./TableController":12}],12:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -2130,8 +2853,10 @@ class TableController {
 		if (m.seatIndex < 0) {
 			dealerButtonView.hide();
 		} else {
-			this.messageSequencer.waitFor(dealerButtonView, "animationDone");
-			dealerButtonView.show(m.getSeatIndex(), m.getAnimate());
+			if (m.animate)
+				this.eventQueue.waitFor(dealerButtonView, "animationDone");
+
+			dealerButtonView.show(m.seatIndex, m.animate);
 		}
 	};
 
@@ -2277,7 +3002,7 @@ class TableController {
 }
 
 module.exports = TableController;
-},{"../../data/CardData":21,"../../utils/Timeout":32}],11:[function(require,module,exports){
+},{"../../data/CardData":26,"../../utils/Timeout":37}],13:[function(require,module,exports){
 const NetPokerClient=require("./app/NetPokerClient");
 const ArrayUtil=require("../utils/ArrayUtil");
 
@@ -2292,7 +3017,7 @@ const ArrayUtil=require("../utils/ArrayUtil");
 	}
 })(jQuery);
 
-},{"../utils/ArrayUtil":22,"./app/NetPokerClient":5}],12:[function(require,module,exports){
+},{"../utils/ArrayUtil":27,"./app/NetPokerClient":6}],14:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -2308,18 +3033,19 @@ class BigButton extends Button {
 	constructor(client) {
 		super();
 
+		this.client=client;
 		this.resources = client.getResources();
 		this.bigButtonTexture = this.resources.getTexture("bigButton");
 		this.addChild(new PIXI.Sprite(this.bigButtonTexture));
 
 		var style = {
 			fontFamily: "Arial",
-			fontSize: 18,
+			fontSize: 16,
 			fontWeight: "bold"
 		};
 
 		this.labelField = new PIXI.Text("[button]", style);
-		this.labelField.position.y = 30;
+		this.labelField.position.y = 32;
 		this.addChild(this.labelField);
 
 		var style = {
@@ -2332,7 +3058,7 @@ class BigButton extends Button {
 		this.valueField.position.y = 50;
 		this.addChild(this.valueField);
 
-		this.setLabel("TEST");
+		this.setLabel("");
 		this.setValue(123);
 	}
 
@@ -2342,7 +3068,13 @@ class BigButton extends Button {
 	 */
 	setLabel(label) {
 		this.label=label;
-		this.labelField.text=label;
+
+		if (this.label)
+			this.labelField.text=this.client.translate(label);
+
+		else
+			this.labelField.text="<none>";
+
 		this.labelField.x = this.bigButtonTexture.width / 2 - this.labelField.width / 2;
 	}
 
@@ -2374,7 +3106,7 @@ class BigButton extends Button {
 }
 
 module.exports = BigButton;
-},{"../../utils/Button":23}],13:[function(require,module,exports){
+},{"../../utils/Button":28}],15:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -2506,7 +3238,7 @@ class ButtonsView extends PIXI.Container {
 }
 
 module.exports = ButtonsView;
-},{"../../utils/Button":23,"../../utils/NineSlice":28,"../../utils/Slider":31,"./BigButton":12}],14:[function(require,module,exports){
+},{"../../utils/Button":28,"../../utils/NineSlice":33,"../../utils/Slider":36,"./BigButton":14}],16:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -2552,7 +3284,7 @@ class CardFrontView extends PIXI.Container {
 }
 
 module.exports = CardFrontView;
-},{}],15:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -2715,7 +3447,7 @@ class CardView extends PIXI.Container {
 }
 
 module.exports = CardView;
-},{"./CardFrontView":14,"@tweenjs/tween.js":1}],16:[function(require,module,exports){
+},{"./CardFrontView":16,"@tweenjs/tween.js":1}],18:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3041,20 +3773,290 @@ class ChipsView extends PIXI.Container {
 }
 
 module.exports = ChipsView;
-},{"@tweenjs/tween.js":1}],17:[function(require,module,exports){
+},{"@tweenjs/tween.js":1}],19:[function(require,module,exports){
+/**
+ * Client.
+ * @module client
+ */
+
+const TWEEN = require('@tweenjs/tween.js');
+
+/**
+ * Dialog view.
+ * @class DealerButtonView
+ */
+class DealerButtonView extends PIXI.Container {
+	constructor(client) {
+		super();
+
+		this.resources=client.getResources();
+
+		var dealerButtonTexture = this.resources.getTexture("dealerButton");
+		this.sprite = new PIXI.Sprite(dealerButtonTexture);
+		this.addChild(this.sprite);
+		this.hide();
+	}
+
+	/**
+	 * Set seat index
+	 * @method setSeatIndex
+	 */
+	setSeatIndex = function(seatIndex) {
+		this.position = this.resources.getPoint("dealerButtonPosition"+seatIndex);
+		this.emit("animationDone");
+	};
+
+	/**
+	 * Animate to seat index.
+	 * @method animateToSeatIndex
+	 */
+	animateToSeatIndex(seatIndex) {
+		if (!this.visible)
+			throw new Error("Can't animate when not visible");
+
+		var destination = this.resources.getPoint("dealerButtonPosition"+seatIndex);
+		var tween = new TWEEN.Tween(this.position)
+			.to({
+				x: destination.x,
+				y: destination.y
+			}, 1000)
+			.easing(TWEEN.Easing.Quadratic.Out)
+			.onComplete(this.onShowComplete.bind(this))
+			.start();
+	};
+
+	/**
+	 * Show Complete.
+	 * @method onShowComplete
+	 */
+	onShowComplete() {
+		this.emit("animationDone");
+	}
+
+	/**
+	 * Hide.
+	 * @method hide
+	 */
+	hide() {
+		this.visible = false;
+	}
+
+	/**
+	 * Show.
+	 * @method show
+	 */
+	show(seatIndex, animate) {
+		if (this.visible && animate) {
+			this.animateToSeatIndex(seatIndex);
+		} else {
+			this.visible = true;
+			this.setSeatIndex(seatIndex);
+		}
+	}
+}
+
+module.exports = DealerButtonView;
+},{"@tweenjs/tween.js":1}],20:[function(require,module,exports){
+/**
+ * Client.
+ * @module client
+ */
+
+var Button = require("../../utils/Button");
+
+/**
+ * Dialog button.
+ * @class DialogButton
+ */
+class DialogButton extends Button {
+	constructor(client) {
+		super();
+
+		this.resources=client.getResources();
+		this.buttonTexture = this.resources.getTexture("dialogButton");
+		this.addChild(new PIXI.Sprite(this.buttonTexture));
+
+		var style = {
+			fontFamily: "Arial",
+			fontSize: 14,
+			fontWeight: "normal",
+			fill: "#ffffff"
+		};
+
+		this.textField = new PIXI.Text("[test]", style);
+		this.textField.position.y = 15;
+		this.addChild(this.textField);
+
+		this.setText("BTN");
+	}
+
+
+	/**
+	 * Set text for the button.
+	 * @method setText
+	 */
+	setText(text) {
+		this.textField.text=text;
+		this.textField.x = this.buttonTexture.width / 2 - this.textField.width / 2;
+	}
+}
+
+module.exports = DialogButton;
+},{"../../utils/Button":28}],21:[function(require,module,exports){
+/**
+ * Client.
+ * @module client
+ */
+
+var NineSlice = require("../../utils/NineSlice");
+var DialogButton = require("./DialogButton");
+var TextInput = require("pixi-text-input");
+
+/**
+ * Dialog view.
+ * @class DialogView
+ */
+class DialogView extends PIXI.Container {
+	constructor(client) {
+		super();
+
+		this.client=client;
+		this.resources=client.getResources();
+
+		var cover = new PIXI.Graphics();
+		cover.beginFill(0x000000, .5);
+		cover.drawRect(-1000, -1000, 960 + 2000, 720 + 2000);
+		cover.endFill();
+		cover.interactive = true;
+		//cover.buttonMode = true;
+		cover.hitArea = new PIXI.Rectangle(0, 0, 960, 720);
+		this.addChild(cover);
+
+		var b = new NineSlice(this.resources.getTexture("framePlate"), 10);
+		b.setLocalSize(480, 270);
+		b.position.x = 480 - 480 / 2;
+		b.position.y = 360 - 270 / 2;
+		this.addChild(b);
+
+		let style = {
+			fontFamily: "Arial",
+			fontWeight: "normal",
+			fontSize: 14
+		};
+
+		this.textField = new PIXI.Text("[text]", style);
+		this.textField.position.x = b.position.x + 20;
+		this.textField.position.y = b.position.y + 20;
+		this.addChild(this.textField);
+
+		this.buttonsHolder = new PIXI.Container();
+		this.buttonsHolder.position.y = 430;
+		this.addChild(this.buttonsHolder);
+		this.buttons = [];
+
+		for (var i = 0; i < 2; i++) {
+			var b = new DialogButton(client);
+
+			b.position.x = i * 90;
+			b.on("click", this.onButtonClick, this);
+			this.buttonsHolder.addChild(b);
+			this.buttons.push(b);
+		}
+
+		this.inputField=new PIXI.TextInput({
+			input: {
+				fontFamily: 'Arial',
+				fontSize: "18px",
+				padding: "4px 4px",
+				width: '100px',
+				color: 'black'
+			},
+			box: {
+				fill: 0xffffff,
+				stroke: {color: 0x000000, width: 2}
+			}
+		});
+
+		this.inputField.position.x = this.textField.position.x;
+		this.addChild(this.inputField);
+
+		this.hide();
+	}
+
+	/**
+	 * Hide.
+	 * @method hide
+	 */
+	hide() {
+		this.visible = false;
+	}
+
+	/**
+	 * Show.
+	 * @method show
+	 */
+	show(text, buttonIds, defaultValue) {
+		this.visible = true;
+		this.buttonIds = buttonIds;
+
+		for (let i = 0; i < this.buttons.length; i++) {
+			if (i < buttonIds.length) {
+				var button = this.buttons[i];
+				button.setText(this.client.translate(buttonIds[i]));
+				button.visible = true;
+			} else {
+				this.buttons[i].visible = false;
+			}
+		}
+
+		this.buttonsHolder.x = 480 - buttonIds.length * 90 / 2;
+		this.textField.text=text;
+
+		if (defaultValue) {
+			this.inputField.position.y = this.textField.position.y + this.textField.height + 20;
+			this.inputField.visible = true;
+
+			this.inputField.text = defaultValue;
+			this.inputField.focus();
+		} else {
+			this.inputField.visible = false;
+		}
+	}
+
+	/**
+	 * Handle button click.
+	 * @method onButtonClick
+	 */
+	onButtonClick=(e)=>{
+		var buttonIndex = -1;
+
+		for (var i = 0; i < this.buttons.length; i++)
+			if (e.target == this.buttons[i])
+				buttonIndex = i;
+
+		var value = null;
+		if (this.inputField.visible)
+			value = Number(this.inputField.text);
+
+		this.emit("buttonClick",this.buttonIds[buttonIndex],value);
+		this.hide();
+	}
+}
+
+module.exports = DialogView;
+},{"../../utils/NineSlice":33,"./DialogButton":20,"pixi-text-input":2}],22:[function(require,module,exports){
 /**
  * Client.
  * @module client
  */
 
 /*var ChatView = require("./ChatView");
-var Point = require("../../utils/Point");
-var DialogView = require("./DialogView");
-var DealerButtonView = require("./DealerButtonView");
 var SettingsView = require("../view/SettingsView");
 var TableInfoView = require("../view/TableInfoView");
 var PresetButtonsView = require("../view/PresetButtonsView");
 var TableButtonsView = require("./TableButtonsView");*/
+const DealerButtonView = require("./DealerButtonView");
+const DialogView = require("./DialogView");
 const ButtonsView = require("./ButtonsView");
 const TimerView = require("./TimerView");
 const PotView = require("./PotView");
@@ -3095,10 +4097,10 @@ class NetPokerClientView extends PIXI.Container {
 		this.buttonsView = new ButtonsView(this.client);
 		this.addChild(this.buttonsView);
 
-		/*this.dealerButtonView = new DealerButtonView(this.client);
+		this.dealerButtonView = new DealerButtonView(this.client);
 		this.tableContainer.addChild(this.dealerButtonView);
 
-		this.tableInfoView = new TableInfoView(this.client);
+		/*this.tableInfoView = new TableInfoView(this.client);
 		this.addChild(this.tableInfoView);*/
 
 		this.potView = new PotView(this.client);
@@ -3106,12 +4108,12 @@ class NetPokerClientView extends PIXI.Container {
 		this.tableContainer.addChild(this.potView);
 
 		/*this.settingsView = new SettingsView(this.client);
-		this.addChild(this.settingsView);
+		this.addChild(this.settingsView);*/
 
 		this.dialogView = new DialogView(this.client);
 		this.addChild(this.dialogView);
 
-		this.presetButtonsView = new PresetButtonsView(this.client);
+		/*this.presetButtonsView = new PresetButtonsView(this.client);
 		this.addChild(this.presetButtonsView);
 
 		this.tableButtonsView = new TableButtonsView(this.client);
@@ -3457,7 +4459,7 @@ class NetPokerClientView extends PIXI.Container {
 
 module.exports = NetPokerClientView;
 
-},{"../../utils/Gradient":26,"./ButtonsView":13,"./CardView":15,"./ChipsView":16,"./PotView":18,"./SeatView":19,"./TimerView":20,"@tweenjs/tween.js":1}],18:[function(require,module,exports){
+},{"../../utils/Gradient":31,"./ButtonsView":15,"./CardView":17,"./ChipsView":18,"./DealerButtonView":19,"./DialogView":21,"./PotView":23,"./SeatView":24,"./TimerView":25,"@tweenjs/tween.js":1}],23:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3539,7 +4541,7 @@ class PotView extends PIXI.Container {
 }
 
 module.exports = PotView;
-},{"./ChipsView":16,"@tweenjs/tween.js":1}],19:[function(require,module,exports){
+},{"./ChipsView":18,"@tweenjs/tween.js":1}],24:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3762,7 +4764,7 @@ class SeatView extends Button {
 }
 
 module.exports = SeatView;
-},{"../../utils/Button":23,"@tweenjs/tween.js":1}],20:[function(require,module,exports){
+},{"../../utils/Button":28,"@tweenjs/tween.js":1}],25:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3915,7 +4917,7 @@ class TimerView extends PIXI.Container {
 }
 
 module.exports = TimerView;
-},{"@tweenjs/tween.js":1}],21:[function(require,module,exports){
+},{"@tweenjs/tween.js":1}],26:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -4114,7 +5116,7 @@ class CardData {
 }
 
 module.exports = CardData;
-},{}],22:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 class ArrayUtil {
 
 	/**
@@ -4189,7 +5191,7 @@ class ArrayUtil {
 }
 
 module.exports = ArrayUtil;
-},{}],23:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -4288,7 +5290,7 @@ class Button extends PIXI.Container {
 }
 
 module.exports = Button;
-},{}],24:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 class ContentScaler extends PIXI.Container {
 	constructor(content) {
 		super();
@@ -4350,7 +5352,7 @@ class ContentScaler extends PIXI.Container {
 }
 
 module.exports=ContentScaler;
-},{}],25:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 const EventEmitter=require("events");
 
 class EventQueue extends EventEmitter {
@@ -4402,7 +5404,7 @@ class EventQueue extends EventEmitter {
 }
 
 module.exports=EventQueue;
-},{"events":3}],26:[function(require,module,exports){
+},{"events":4}],31:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -4464,7 +5466,7 @@ class Gradient {
 }
 
 module.exports = Gradient;
-},{}],27:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 let WebSocket;
 
 if (window.WebSocket)
@@ -4526,7 +5528,7 @@ class MessageConnection extends EventEmitter {
 }
 
 module.exports=MessageConnection;
-},{"events":3,"ws":4}],28:[function(require,module,exports){
+},{"events":4,"ws":5}],33:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -4648,7 +5650,7 @@ class NineSlice extends PIXI.Container {
 }
 
 module.exports = NineSlice;
-},{}],29:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 const ContentScaler=require("./ContentScaler");
 const TWEEN = require('@tweenjs/tween.js');
 
@@ -4656,7 +5658,9 @@ class PixiApp extends PIXI.Container {
 	constructor(contentWidth, contentHeight) {
 		super();
 
-		this.app=new PIXI.Application();
+		this.app=new PIXI.Application({
+			antialias: true
+		});
 		this.app.renderer.autoDensity=true;
 		this.app.view.style.position="absolute";
 		this.app.view.style.top=0;
@@ -4699,7 +5703,7 @@ class PixiApp extends PIXI.Container {
 }
 
 module.exports=PixiApp;
-},{"./ContentScaler":24,"@tweenjs/tween.js":1}],30:[function(require,module,exports){
+},{"./ContentScaler":29,"@tweenjs/tween.js":1}],35:[function(require,module,exports){
 class PixiUtil {
 	static findTopParent(o) {
 		while (o.parent)
@@ -4710,7 +5714,7 @@ class PixiUtil {
 }
 
 module.exports=PixiUtil;
-},{}],31:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -4841,7 +5845,7 @@ class Slider extends PIXI.Container {
 
 module.exports = Slider;
 
-},{"./PixiUtil.js":30,"@tweenjs/tween.js":1}],32:[function(require,module,exports){
+},{"./PixiUtil.js":35,"@tweenjs/tween.js":1}],37:[function(require,module,exports){
 const EventEmitter=require("events");
 
 class Timeout extends EventEmitter {
@@ -4856,4 +5860,4 @@ class Timeout extends EventEmitter {
 }
 
 module.exports=Timeout;
-},{"events":3}]},{},[11]);
+},{"events":4}]},{},[13]);

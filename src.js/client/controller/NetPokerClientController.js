@@ -22,7 +22,7 @@ class NetPokerClientController {
 
 		this.netPokerClientView.getButtonsView().on("buttonClick", this.onButtonClick);
 		//this.netPokerClientView.getTableInfoView().on(TableInfoView.BUTTON_CLICK, this.onButtonClick, this);
-		//this.netPokerClientView.getDialogView().on(DialogView.BUTTON_CLICK, this.onButtonClick, this);
+		this.netPokerClientView.getDialogView().on("buttonClick", this.onButtonClick);
 		this.netPokerClientView.on("seatClick", this.onSeatClick);
 
 		//this.netPokerClientView.chatView.addEventListener("chat", this.onViewChat, this);

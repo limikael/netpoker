@@ -4,13 +4,12 @@
  */
 
 /*var ChatView = require("./ChatView");
-var Point = require("../../utils/Point");
-var DialogView = require("./DialogView");
-var DealerButtonView = require("./DealerButtonView");
 var SettingsView = require("../view/SettingsView");
 var TableInfoView = require("../view/TableInfoView");
 var PresetButtonsView = require("../view/PresetButtonsView");
 var TableButtonsView = require("./TableButtonsView");*/
+const DealerButtonView = require("./DealerButtonView");
+const DialogView = require("./DialogView");
 const ButtonsView = require("./ButtonsView");
 const TimerView = require("./TimerView");
 const PotView = require("./PotView");
@@ -51,10 +50,10 @@ class NetPokerClientView extends PIXI.Container {
 		this.buttonsView = new ButtonsView(this.client);
 		this.addChild(this.buttonsView);
 
-		/*this.dealerButtonView = new DealerButtonView(this.client);
+		this.dealerButtonView = new DealerButtonView(this.client);
 		this.tableContainer.addChild(this.dealerButtonView);
 
-		this.tableInfoView = new TableInfoView(this.client);
+		/*this.tableInfoView = new TableInfoView(this.client);
 		this.addChild(this.tableInfoView);*/
 
 		this.potView = new PotView(this.client);
@@ -62,12 +61,12 @@ class NetPokerClientView extends PIXI.Container {
 		this.tableContainer.addChild(this.potView);
 
 		/*this.settingsView = new SettingsView(this.client);
-		this.addChild(this.settingsView);
+		this.addChild(this.settingsView);*/
 
 		this.dialogView = new DialogView(this.client);
 		this.addChild(this.dialogView);
 
-		this.presetButtonsView = new PresetButtonsView(this.client);
+		/*this.presetButtonsView = new PresetButtonsView(this.client);
 		this.addChild(this.presetButtonsView);
 
 		this.tableButtonsView = new TableButtonsView(this.client);

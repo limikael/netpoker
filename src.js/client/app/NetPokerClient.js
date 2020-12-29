@@ -3,6 +3,7 @@ const NetPokerClientView=require("../view/NetPokerClientView");
 const NetPokerClientController=require("../controller/NetPokerClientController");
 const MessageConnection=require("../../utils/MessageConnection");
 const PixiApp=require("../../utils/PixiApp");
+const TRANSLATIONS=require("./translations");
 
 class NetPokerClient extends PixiApp {
 	constructor(params) {
@@ -37,6 +38,13 @@ class NetPokerClient extends PixiApp {
 
 	getResources() {
 		return this.resources;
+	}
+
+	translate(key) {
+		if (!TRANSLATIONS[key])
+			throw new Error("Unknown ranslation key: "+key);
+
+		return TRANSLATIONS[key];
 	}
 }
 

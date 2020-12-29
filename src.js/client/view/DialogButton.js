@@ -3,42 +3,43 @@
  * @module client
  */
 
-var PIXI = require("pixi.js");
 var Button = require("../../utils/Button");
-var inherits = require("inherits");
 
 /**
  * Dialog button.
  * @class DialogButton
  */
-function DialogButton(resources) {
-	Button.call(this);
+class DialogButton extends Button {
+	constructor(client) {
+		super();
 
-	this.buttonTexture = resources.getTexture("dialogButton");
-	this.addChild(new PIXI.Sprite(this.buttonTexture));
+		this.resources=client.getResources();
+		this.buttonTexture = this.resources.getTexture("dialogButton");
+		this.addChild(new PIXI.Sprite(this.buttonTexture));
 
-	var style = {
-		font: "normal 14px Arial",
-		fill: "#ffffff"
-	};
+		var style = {
+			fontFamily: "Arial",
+			fontSize: 14,
+			fontWeight: "normal",
+			fill: "#ffffff"
+		};
 
-	this.textField = new PIXI.Text("[test]", style);
-	this.textField.position.y = 15;
-	this.addChild(this.textField);
+		this.textField = new PIXI.Text("[test]", style);
+		this.textField.position.y = 15;
+		this.addChild(this.textField);
 
-	this.setText("BTN");
-}
+		this.setText("BTN");
+	}
 
-inherits(DialogButton, Button);
 
-/**
- * Set text for the button.
- * @method setText
- */
-DialogButton.prototype.setText = function(text) {
-	this.textField.setText(text);
-	this.textField.updateTransform();
-	this.textField.x = this.buttonTexture.width / 2 - this.textField.width / 2;
+	/**
+	 * Set text for the button.
+	 * @method setText
+	 */
+	setText(text) {
+		this.textField.text=text;
+		this.textField.x = this.buttonTexture.width / 2 - this.textField.width / 2;
+	}
 }
 
 module.exports = DialogButton;

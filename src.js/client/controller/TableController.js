@@ -101,8 +101,10 @@ class TableController {
 		if (m.seatIndex < 0) {
 			dealerButtonView.hide();
 		} else {
-			this.messageSequencer.waitFor(dealerButtonView, "animationDone");
-			dealerButtonView.show(m.getSeatIndex(), m.getAnimate());
+			if (m.animate)
+				this.eventQueue.waitFor(dealerButtonView, "animationDone");
+
+			dealerButtonView.show(m.seatIndex, m.animate);
 		}
 	};
 
