@@ -3,9 +3,9 @@
  * @module client
  */
 
-var NineSlice = require("../../utils/NineSlice");
-var DialogButton = require("./DialogButton");
-var TextInput = require("pixi-text-input");
+const NineSlice = require("../../utils/NineSlice");
+const DialogButton = require("./DialogButton");
+const TextInput = require("pixi-text-input");
 
 /**
  * Dialog view.

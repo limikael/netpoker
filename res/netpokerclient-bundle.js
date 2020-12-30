@@ -2285,7 +2285,7 @@ class NetPokerClient extends PixiApp {
 
 module.exports=NetPokerClient;
 
-},{"../../utils/MessageConnection":32,"../../utils/PixiApp":34,"../controller/NetPokerClientController":11,"../view/NetPokerClientView":22,"./Resources":7,"./translations":9}],7:[function(require,module,exports){
+},{"../../utils/MessageConnection":33,"../../utils/PixiApp":36,"../controller/NetPokerClientController":11,"../view/NetPokerClientView":23,"./Resources":7,"./translations":9}],7:[function(require,module,exports){
 const THEME=require("./theme.js");
 
 class Resources {
@@ -2631,7 +2631,7 @@ class NetPokerClientController {
 		this.netPokerClientView.getDialogView().on("buttonClick", this.onButtonClick);
 		this.netPokerClientView.on("seatClick", this.onSeatClick);
 
-		//this.netPokerClientView.chatView.addEventListener("chat", this.onViewChat, this);
+		this.netPokerClientView.getChatView().on("chat", this.onChat, this);
 		//this.netPokerClientView.settingsView.addEventListener(SettingsView.BUY_CHIPS_CLICK, this.onBuyChipsButtonClick, this);
 		//this.netPokerClientView.settingsView.addEventListener(SettingsView.CHECKBOX_CHANGE, this.onCheckboxChange, this);
 
@@ -2696,13 +2696,11 @@ class NetPokerClientController {
 	 * On send chat message.
 	 * @method onViewChat
 	 */
-	/*NetPokerClientController.prototype.onViewChat = function(e) {
-		var message = new ChatMessage();
-		message.user = "";
-		message.text = e.text;
-
-		this.protoConnection.send(message);
-	}*/
+	onChat = function(text) {
+		this.connection.send("chat",{
+			text: text
+		});
+	}
 
 	/**
 	 * On buy chips button click.
@@ -2749,7 +2747,7 @@ class NetPokerClientController {
 }
 
 module.exports = NetPokerClientController;
-},{"../../utils/EventQueue":30,"./InterfaceController":10,"./TableController":12}],12:[function(require,module,exports){
+},{"../../utils/EventQueue":31,"./InterfaceController":10,"./TableController":12}],12:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3002,7 +3000,7 @@ class TableController {
 }
 
 module.exports = TableController;
-},{"../../data/CardData":26,"../../utils/Timeout":37}],13:[function(require,module,exports){
+},{"../../data/CardData":27,"../../utils/Timeout":39}],13:[function(require,module,exports){
 const NetPokerClient=require("./app/NetPokerClient");
 const ArrayUtil=require("../utils/ArrayUtil");
 
@@ -3017,7 +3015,7 @@ const ArrayUtil=require("../utils/ArrayUtil");
 	}
 })(jQuery);
 
-},{"../utils/ArrayUtil":27,"./app/NetPokerClient":6}],14:[function(require,module,exports){
+},{"../utils/ArrayUtil":28,"./app/NetPokerClient":6}],14:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3106,7 +3104,7 @@ class BigButton extends Button {
 }
 
 module.exports = BigButton;
-},{"../../utils/Button":28}],15:[function(require,module,exports){
+},{"../../utils/Button":29}],15:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3238,7 +3236,7 @@ class ButtonsView extends PIXI.Container {
 }
 
 module.exports = ButtonsView;
-},{"../../utils/Button":28,"../../utils/NineSlice":33,"../../utils/Slider":36,"./BigButton":14}],16:[function(require,module,exports){
+},{"../../utils/Button":29,"../../utils/NineSlice":35,"../../utils/Slider":38,"./BigButton":14}],16:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3448,6 +3446,222 @@ class CardView extends PIXI.Container {
 
 module.exports = CardView;
 },{"./CardFrontView":16,"@tweenjs/tween.js":1}],18:[function(require,module,exports){
+/**
+ * Client.
+ * @module client
+ */
+
+const NineSlice = require("../../utils/NineSlice");
+const Slider = require("../../utils/Slider");
+const TextInput = require("pixi-text-input");
+const MouseOverGroup = require("../../utils/MouseOverGroup");
+
+/**
+ * Chat view.
+ * @class ChatView
+ */
+class ChatView extends PIXI.Container {
+	constructor(client) {
+		super();
+
+		this.resources=client.getResources();
+		this.margin = 5;
+
+		var chatPlate = new NineSlice(this.resources.getTexture("framePlate"), 10);
+		chatPlate.position.x = 10;
+		chatPlate.position.y = 540;
+		chatPlate.setLocalSize(330, 130);
+		this.addChild(chatPlate);
+
+		var s = new NineSlice(this.resources.getTexture("framePlate"), 10);
+		s.position.x = 10;
+		s.position.y = 675;
+		s.setLocalSize(330, 35);
+		this.addChild(s);
+
+		var styleObject = {
+			fontFamily: "Arial",
+			fontSize: 12,
+			wordWrapWidth: 310,
+			height: 114,
+			border: true,
+			color: 0xFFFFFF,
+			borderColor: 0x404040,
+			wordWrap: true,
+			multiline: true
+		};
+
+		this.container = new PIXI.Container();
+		this.addChild(this.container);
+		this.container.position.x = 20;
+		this.container.position.y = 548;
+
+		this.chatMask = new PIXI.Graphics();
+		this.chatMask.beginFill(123);
+		this.chatMask.drawRect(0, 0, 310, 114);
+		this.chatMask.endFill();
+		this.container.addChild(this.chatMask);
+
+		this.chatText = new PIXI.Text("", styleObject);
+		this.container.addChild(this.chatText);
+		this.chatText.mask = this.chatMask;
+
+		this.inputField=new PIXI.TextInput({
+			input: {
+				fontFamily: 'Arial',
+				fontSize: "14px",
+				padding: "4px 4px",
+				width: '310px',
+				color: 'black'
+			},
+			box: {
+				fill: 0xffffff,
+				stroke: {color: 0x000000, width: 1}
+			}
+		});
+
+		this.inputField.position.x = this.container.position.x;
+		this.inputField.position.y = 681;
+		this.inputField.on("keydown",this.onKeyDown)
+		this.addChild(this.inputField);
+
+
+		var slideBack = new NineSlice(this.resources.getTexture("textScrollbarTrack"), 10, 0, 10, 0);
+		slideBack.width = 107;
+		var slideKnob = new NineSlice(this.resources.getTexture("textScrollbarThumb"), 10, 0, 10, 0);
+		slideKnob.width = 30;
+
+
+		this.slider = new Slider(slideBack, slideKnob);
+		this.slider.rotation = Math.PI * 0.5;
+		this.slider.position.x = 326;
+		this.slider.position.y = 552;
+		this.slider.setValue(1);
+		this.slider.visible = false;
+		this.slider.on("change", this.onSliderChange);
+		this.addChild(this.slider);
+
+
+		this.mouseOverGroup = new MouseOverGroup();
+		this.mouseOverGroup.addDisplayObject(this.chatText);
+		this.mouseOverGroup.addDisplayObject(this.slider);
+		this.mouseOverGroup.addDisplayObject(this.chatMask);
+		this.mouseOverGroup.addDisplayObject(chatPlate);
+		this.mouseOverGroup.on("mouseover", this.onChatFieldMouseOver, this);
+		this.mouseOverGroup.on("mouseout", this.onChatFieldMouseOut, this);
+		this.mouseOverGroup.on("mousedown", this.onChatFieldMouseDown, this);
+		this.mouseOverGroup.on("mouseup", this.onChatFieldMouseUp, this);
+
+		chatPlate.touchstart = this.onChatFieldMouseDown.bind(this);
+
+
+		this.clear();
+	}
+
+	/**
+	 * Clear messages.
+	 * @method clear
+	 */
+	clear() {
+		this.chatText.text="";
+		this.chatText.y = -Math.round(this.slider.getValue() * (this.chatText.height + this.margin - this.chatMask.height));
+		this.slider.setValue(1);
+	}
+
+	/**
+	 *  Add text.
+	 * @method clear
+	 */
+	addText(user, text) {
+		var s="";
+
+		if (user)
+			s += user + ": ";
+
+		s += text;
+
+		if (this.chatText.text)
+			this.chatText.text+=("\n" + s);
+		else
+			this.chatText.text=s;
+
+		this.chatText.y = -Math.round(this.slider.getValue() * (this.chatText.height + this.margin - this.chatMask.height));
+		this.slider.setValue(1);
+	}
+
+	/**
+	 * On slider value change
+	 * @method onSliderChange
+	 */
+	onSliderChange=()=> {
+		this.chatText.y = -Math.round(this.slider.getValue() * (this.chatText.height + this.margin - this.chatMask.height));
+	}
+
+
+	/**
+	 * On mouse over
+	 * @method onChatFieldMouseOver
+	 */
+	onChatFieldMouseOver=()=> {
+		this.slider.visible=true;//show();
+	}
+
+	/**
+	 * On mouse out
+	 * @method onChatFieldMouseOut
+	 */
+	onChatFieldMouseOut=()=> {
+		this.slider.visible=false; //hide();
+	}
+
+	/**
+	 * On mouse down
+	 * @method onChatFieldMouseDown
+	 */
+	onChatFieldMouseDown=(interaction_object)=>{
+		interaction_object.target.touchend = interaction_object.target.touchendoutside = this.onChatFieldMouseUp.bind(this);
+		interaction_object.target.touchmove = this.onChatFieldMouseMove.bind(this);
+		this.startMousePos = interaction_object.global.y;
+		this.startPos = this.chatText.y;
+		this.slider.show();
+	}
+
+	/**
+	 * On mouse up
+	 * @method onChatFieldMouseUp
+	 */
+	onChatFieldMouseUp=(interaction_object)=> {
+		interaction_object.target.touchend = interaction_object.target.touchendoutside = null;
+		interaction_object.target.touchmove = null;
+		this.slider.hide();
+	}
+
+	/**
+	 * On mouse up
+	 * @method onChatFieldMouseUp
+	 */
+	onChatFieldMouseMove=(interaction_object)=> {
+		var pos = interaction_object.global.y;
+		var diff = pos - this.startMousePos;
+
+		this.slider.setValue((-(this.startPos + diff)) / (this.chatText.height + this.margin - this.chatMask.height));
+		this.onSliderChange();
+	}
+
+	/**
+	 * On key down
+	 * @method onKeyDown
+	 */
+	onKeyDown=(keyCode)=>{
+		if (keyCode == 13) {
+			this.emit("chat",this.inputField.text);
+			this.inputField.text="";
+		}
+	}
+}
+
+module.exports = ChatView;
+},{"../../utils/MouseOverGroup":34,"../../utils/NineSlice":35,"../../utils/Slider":38,"pixi-text-input":2}],19:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3773,7 +3987,7 @@ class ChipsView extends PIXI.Container {
 }
 
 module.exports = ChipsView;
-},{"@tweenjs/tween.js":1}],19:[function(require,module,exports){
+},{"@tweenjs/tween.js":1}],20:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3856,7 +4070,7 @@ class DealerButtonView extends PIXI.Container {
 }
 
 module.exports = DealerButtonView;
-},{"@tweenjs/tween.js":1}],20:[function(require,module,exports){
+},{"@tweenjs/tween.js":1}],21:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3902,15 +4116,15 @@ class DialogButton extends Button {
 }
 
 module.exports = DialogButton;
-},{"../../utils/Button":28}],21:[function(require,module,exports){
+},{"../../utils/Button":29}],22:[function(require,module,exports){
 /**
  * Client.
  * @module client
  */
 
-var NineSlice = require("../../utils/NineSlice");
-var DialogButton = require("./DialogButton");
-var TextInput = require("pixi-text-input");
+const NineSlice = require("../../utils/NineSlice");
+const DialogButton = require("./DialogButton");
+const TextInput = require("pixi-text-input");
 
 /**
  * Dialog view.
@@ -4044,17 +4258,17 @@ class DialogView extends PIXI.Container {
 }
 
 module.exports = DialogView;
-},{"../../utils/NineSlice":33,"./DialogButton":20,"pixi-text-input":2}],22:[function(require,module,exports){
+},{"../../utils/NineSlice":35,"./DialogButton":21,"pixi-text-input":2}],23:[function(require,module,exports){
 /**
  * Client.
  * @module client
  */
 
-/*var ChatView = require("./ChatView");
-var SettingsView = require("../view/SettingsView");
+/*var SettingsView = require("../view/SettingsView");
 var TableInfoView = require("../view/TableInfoView");
 var PresetButtonsView = require("../view/PresetButtonsView");
 var TableButtonsView = require("./TableButtonsView");*/
+const ChatView = require("./ChatView");
 const DealerButtonView = require("./DealerButtonView");
 const DialogView = require("./DialogView");
 const ButtonsView = require("./ButtonsView");
@@ -4091,8 +4305,8 @@ class NetPokerClientView extends PIXI.Container {
 		this.timerView = new TimerView(this.client);
 		this.tableContainer.addChild(this.timerView);
 
-		/*this.chatView = new ChatView(this.client);
-		this.addChild(this.chatView);*/
+		this.chatView = new ChatView(this.client);
+		this.addChild(this.chatView);
 
 		this.buttonsView = new ButtonsView(this.client);
 		this.addChild(this.buttonsView);
@@ -4242,6 +4456,13 @@ class NetPokerClientView extends PIXI.Container {
 			this.communityCards.push(cardView);
 			this.tableContainer.addChild(cardView);
 		}
+	}
+
+	/**
+	 * Get chat view.
+	 */
+	getChatView() {
+	 	return this.chatView;
 	}
 
 	/**
@@ -4459,7 +4680,7 @@ class NetPokerClientView extends PIXI.Container {
 
 module.exports = NetPokerClientView;
 
-},{"../../utils/Gradient":31,"./ButtonsView":15,"./CardView":17,"./ChipsView":18,"./DealerButtonView":19,"./DialogView":21,"./PotView":23,"./SeatView":24,"./TimerView":25,"@tweenjs/tween.js":1}],23:[function(require,module,exports){
+},{"../../utils/Gradient":32,"./ButtonsView":15,"./CardView":17,"./ChatView":18,"./ChipsView":19,"./DealerButtonView":20,"./DialogView":22,"./PotView":24,"./SeatView":25,"./TimerView":26,"@tweenjs/tween.js":1}],24:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -4541,7 +4762,7 @@ class PotView extends PIXI.Container {
 }
 
 module.exports = PotView;
-},{"./ChipsView":18,"@tweenjs/tween.js":1}],24:[function(require,module,exports){
+},{"./ChipsView":19,"@tweenjs/tween.js":1}],25:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -4764,7 +4985,7 @@ class SeatView extends Button {
 }
 
 module.exports = SeatView;
-},{"../../utils/Button":28,"@tweenjs/tween.js":1}],25:[function(require,module,exports){
+},{"../../utils/Button":29,"@tweenjs/tween.js":1}],26:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -4917,7 +5138,7 @@ class TimerView extends PIXI.Container {
 }
 
 module.exports = TimerView;
-},{"@tweenjs/tween.js":1}],26:[function(require,module,exports){
+},{"@tweenjs/tween.js":1}],27:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -5116,7 +5337,7 @@ class CardData {
 }
 
 module.exports = CardData;
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 class ArrayUtil {
 
 	/**
@@ -5191,7 +5412,7 @@ class ArrayUtil {
 }
 
 module.exports = ArrayUtil;
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -5290,7 +5511,7 @@ class Button extends PIXI.Container {
 }
 
 module.exports = Button;
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 class ContentScaler extends PIXI.Container {
 	constructor(content) {
 		super();
@@ -5352,7 +5573,7 @@ class ContentScaler extends PIXI.Container {
 }
 
 module.exports=ContentScaler;
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 const EventEmitter=require("events");
 
 class EventQueue extends EventEmitter {
@@ -5404,7 +5625,7 @@ class EventQueue extends EventEmitter {
 }
 
 module.exports=EventQueue;
-},{"events":4}],31:[function(require,module,exports){
+},{"events":4}],32:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -5466,7 +5687,7 @@ class Gradient {
 }
 
 module.exports = Gradient;
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 let WebSocket;
 
 if (window.WebSocket)
@@ -5528,7 +5749,125 @@ class MessageConnection extends EventEmitter {
 }
 
 module.exports=MessageConnection;
-},{"events":4,"ws":5}],33:[function(require,module,exports){
+},{"events":4,"ws":5}],34:[function(require,module,exports){
+/**
+ * Utilities.
+ * @module utils
+ */
+
+const EventEmitter=require("events");
+const PixiUtil=require("./PixiUtil.js");
+
+/**
+ * MouseOverGroup. This is the class for the MouseOverGroup.
+ * @class MouseOverGroup
+ */
+class MouseOverGroup extends EventEmitter {
+	constructor() {
+		super();
+		this.objects = new Array();
+		this.currentlyOver = false;
+		this.mouseDown = false;
+	}
+
+	/**
+	 * Add displayobject to watchlist.
+	 * @method addDisplayObject
+	 */
+	addDisplayObject = function(displayObject) {
+		displayObject.interactive = true;
+		displayObject.on("mouseover",this.onObjectMouseOver);
+		displayObject.on("mouseout",this.onObjectMouseOut);
+		displayObject.on("mousedown",this.onObjectMouseDown);
+		this.objects.push(displayObject);
+	}
+
+	/**
+	 * Mouse over object.
+	 * @method onObjectMouseOver
+	 */
+	onObjectMouseOver=(interaction_object)=>{
+		if(this.currentlyOver)
+			return;
+
+		this.currentlyOver = true;
+		this.emit("mouseover");
+	}
+
+	/**
+	 * Mouse out object.
+	 * @method onObjectMouseOut
+	 */
+	onObjectMouseOut=(e)=>{
+		if(!this.currentlyOver || this.mouseDown)
+			return;
+
+		for(var i = 0; i < this.objects.length; i++)
+			if(this.hitTest(this.objects[i],e.data.global))
+				return;
+
+		this.currentlyOver = false;
+		this.emit("mouseout");
+	}
+
+	/**
+	 * Hit test.
+	 * @method hitTest
+	 */
+	hitTest(object, globalPoint) {
+		if((globalPoint.x > object.getBounds().x ) && 
+				(globalPoint.x < (object.getBounds().x + object.getBounds().width)) &&
+				(globalPoint.y > object.getBounds().y) && 
+				(globalPoint.y < (object.getBounds().y + object.getBounds().height))) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Mouse down object.
+	 * @method onObjectMouseDown
+	 */
+	onObjectMouseDown=(e)=>{
+		console.log("object mouse down");
+
+		this.mouseDown = true;
+
+		this.stage=PixiUtil.findTopParent(e.target);
+		this.stage.interactive=true;
+		this.stage.on("mouseup",this.onStageMouseUp);
+	}
+
+
+	/**
+	 * Mouse up stage.
+	 * @method onStageMouseUp
+	 */
+	onStageMouseUp=(e)=>{
+		console.log("stage mouse up");
+
+		this.stage.off("mouseup",this.onStageMouseUp);
+		this.mouseDown = false;
+
+		if(this.currentlyOver) {
+			var over = false;
+
+			for(var i = 0; i < this.objects.length; i++)
+				if(this.hitTest(this.objects[i],e.data.global))
+					over = true;
+
+			if(!over) {
+				this.currentlyOver = false;
+				this.emit("mouseout");
+			}
+		}
+	}
+}
+
+module.exports = MouseOverGroup;
+
+
+},{"./PixiUtil.js":37,"events":4}],35:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -5650,7 +5989,7 @@ class NineSlice extends PIXI.Container {
 }
 
 module.exports = NineSlice;
-},{}],34:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 const ContentScaler=require("./ContentScaler");
 const TWEEN = require('@tweenjs/tween.js');
 
@@ -5703,7 +6042,7 @@ class PixiApp extends PIXI.Container {
 }
 
 module.exports=PixiApp;
-},{"./ContentScaler":29,"@tweenjs/tween.js":1}],35:[function(require,module,exports){
+},{"./ContentScaler":30,"@tweenjs/tween.js":1}],37:[function(require,module,exports){
 class PixiUtil {
 	static findTopParent(o) {
 		while (o.parent)
@@ -5714,7 +6053,7 @@ class PixiUtil {
 }
 
 module.exports=PixiUtil;
-},{}],36:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -5744,11 +6083,11 @@ class Slider extends PIXI.Container {
 
 		this.knob.buttonMode = true;
 		this.knob.interactive = true;
-		this.knob.mousedown = this.onKnobMouseDown.bind(this);
+		this.knob.on("mousedown",this.onKnobMouseDown);
 
 		this.background.buttonMode = true;
 		this.background.interactive = true;
-		this.background.mousedown = this.onBackgroundMouseDown.bind(this);
+		this.background.on("mousedown",this.onBackgroundMouseDown);
 	}
 
 	/**
@@ -5845,7 +6184,7 @@ class Slider extends PIXI.Container {
 
 module.exports = Slider;
 
-},{"./PixiUtil.js":35,"@tweenjs/tween.js":1}],37:[function(require,module,exports){
+},{"./PixiUtil.js":37,"@tweenjs/tween.js":1}],39:[function(require,module,exports){
 const EventEmitter=require("events");
 
 class Timeout extends EventEmitter {

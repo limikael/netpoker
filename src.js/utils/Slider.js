@@ -27,11 +27,11 @@ class Slider extends PIXI.Container {
 
 		this.knob.buttonMode = true;
 		this.knob.interactive = true;
-		this.knob.mousedown = this.onKnobMouseDown.bind(this);
+		this.knob.on("mousedown",this.onKnobMouseDown);
 
 		this.background.buttonMode = true;
 		this.background.interactive = true;
-		this.background.mousedown = this.onBackgroundMouseDown.bind(this);
+		this.background.on("mousedown",this.onBackgroundMouseDown);
 	}
 
 	/**

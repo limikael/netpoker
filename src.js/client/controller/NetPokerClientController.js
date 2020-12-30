@@ -25,7 +25,7 @@ class NetPokerClientController {
 		this.netPokerClientView.getDialogView().on("buttonClick", this.onButtonClick);
 		this.netPokerClientView.on("seatClick", this.onSeatClick);
 
-		//this.netPokerClientView.chatView.addEventListener("chat", this.onViewChat, this);
+		this.netPokerClientView.getChatView().on("chat", this.onChat, this);
 		//this.netPokerClientView.settingsView.addEventListener(SettingsView.BUY_CHIPS_CLICK, this.onBuyChipsButtonClick, this);
 		//this.netPokerClientView.settingsView.addEventListener(SettingsView.CHECKBOX_CHANGE, this.onCheckboxChange, this);
 
@@ -90,13 +90,11 @@ class NetPokerClientController {
 	 * On send chat message.
 	 * @method onViewChat
 	 */
-	/*NetPokerClientController.prototype.onViewChat = function(e) {
-		var message = new ChatMessage();
-		message.user = "";
-		message.text = e.text;
-
-		this.protoConnection.send(message);
-	}*/
+	onChat = function(text) {
+		this.connection.send("chat",{
+			text: text
+		});
+	}
 
 	/**
 	 * On buy chips button click.

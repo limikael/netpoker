@@ -3,11 +3,11 @@
  * @module client
  */
 
-/*var ChatView = require("./ChatView");
-var SettingsView = require("../view/SettingsView");
+/*var SettingsView = require("../view/SettingsView");
 var TableInfoView = require("../view/TableInfoView");
 var PresetButtonsView = require("../view/PresetButtonsView");
 var TableButtonsView = require("./TableButtonsView");*/
+const ChatView = require("./ChatView");
 const DealerButtonView = require("./DealerButtonView");
 const DialogView = require("./DialogView");
 const ButtonsView = require("./ButtonsView");
@@ -44,8 +44,8 @@ class NetPokerClientView extends PIXI.Container {
 		this.timerView = new TimerView(this.client);
 		this.tableContainer.addChild(this.timerView);
 
-		/*this.chatView = new ChatView(this.client);
-		this.addChild(this.chatView);*/
+		this.chatView = new ChatView(this.client);
+		this.addChild(this.chatView);
 
 		this.buttonsView = new ButtonsView(this.client);
 		this.addChild(this.buttonsView);
@@ -195,6 +195,13 @@ class NetPokerClientView extends PIXI.Container {
 			this.communityCards.push(cardView);
 			this.tableContainer.addChild(cardView);
 		}
+	}
+
+	/**
+	 * Get chat view.
+	 */
+	getChatView() {
+	 	return this.chatView;
 	}
 
 	/**
