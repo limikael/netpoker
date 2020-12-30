@@ -147,7 +147,7 @@ class SeatView extends Button {
 	 * @method foldCards
 	 */
 	foldCards() {
-		this.pocketCards[0].addEventListener("animationDone", this.onFoldComplete, this);
+		this.pocketCards[0].on("animationDone", this.onFoldComplete, this);
 		for (var i = 0; i < this.pocketCards.length; i++) {
 			this.pocketCards[i].fold();
 		}
@@ -158,8 +158,8 @@ class SeatView extends Button {
 	 * @method onFoldComplete
 	 */
 	onFoldComplete() {
-		this.pocketCards[0].removeEventListener("animationDone", this.onFoldComplete, this);
-		this.dispatchEvent("animationDone");
+		this.pocketCards[0].on("animationDone", this.onFoldComplete, this);
+		this.emit("animationDone");
 	}
 
 	/**

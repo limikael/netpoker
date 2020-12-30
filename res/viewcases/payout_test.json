@@ -14,5 +14,6 @@
 {"type":"betsToPot"}
 {"type":"pot", "values": [3]}
 {"type":"delay", "delay": 2000}
+{"type":"pot", "values": []}
 {"type":"payOut", "values":[1,0,0,0,0,0,0,0,0,0]}
 {"type":"stateComplete"}

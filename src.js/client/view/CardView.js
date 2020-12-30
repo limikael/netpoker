@@ -137,8 +137,8 @@ class CardView extends PIXI.Container {
 		this.t0 = new TWEEN.Tween(this.position)
 			.to(o, 500)
 			.easing(TWEEN.Easing.Quadratic.Out)
-			.onUpdate(this.onFoldUpdate.bind(this))
-			.onComplete(this.onFoldComplete.bind(this))
+			.onUpdate(this.onFoldUpdate)
+			.onComplete(this.onFoldComplete)
 			.start();
 	}
 
@@ -146,16 +146,17 @@ class CardView extends PIXI.Container {
 	 * Fold animation update.
 	 * @method onFoldUpdate
 	 */
-	onFoldUpdate(progress) {
-		this.maskGraphics.scale.y = 1 - progress;
+	onFoldUpdate=(o)=>{
+		let diff=o.y-this.targetPosition.y;
+		this.maskGraphics.height=80-diff;
 	}
 
 	/**
 	 * Fold animation complete.
 	 * @method onFoldComplete
 	 */
-	onFoldComplete() {
-		this.dispatchEvent("animationDone");
+	onFoldComplete=()=>{
+		this.emit("animationDone");
 	}
 }
 

@@ -2776,7 +2776,7 @@ class TableController {
 		this.eventQueue.on("action", this.onActionMessage);
 		this.eventQueue.on("foldCards", this.onFoldCardsMessage);
 		this.eventQueue.on("delay", this.onDelayMessage);
-		this.eventQueue.on("cleat", this.onClearMessage);
+		this.eventQueue.on("clear", this.onClearMessage);
 		this.eventQueue.on("payOut", this.onPayOutMessage);
 		this.eventQueue.on("fadeTable", this.onFadeTableMessage);
 	}
@@ -2927,7 +2927,7 @@ class TableController {
 	onFoldCardsMessage=(m)=>{
 		this.view.seatViews[m.seatIndex].foldCards();
 
-		this.messageSequencer.waitFor(this.view.seatViews[m.seatIndex], "animationDone");
+		this.eventQueue.waitFor(this.view.seatViews[m.seatIndex], "animationDone");
 	};
 
 	/**
@@ -3422,8 +3422,8 @@ class CardView extends PIXI.Container {
 		this.t0 = new TWEEN.Tween(this.position)
 			.to(o, 500)
 			.easing(TWEEN.Easing.Quadratic.Out)
-			.onUpdate(this.onFoldUpdate.bind(this))
-			.onComplete(this.onFoldComplete.bind(this))
+			.onUpdate(this.onFoldUpdate)
+			.onComplete(this.onFoldComplete)
 			.start();
 	}
 
@@ -3431,16 +3431,17 @@ class CardView extends PIXI.Container {
 	 * Fold animation update.
 	 * @method onFoldUpdate
 	 */
-	onFoldUpdate(progress) {
-		this.maskGraphics.scale.y = 1 - progress;
+	onFoldUpdate=(o)=>{
+		let diff=o.y-this.targetPosition.y;
+		this.maskGraphics.height=80-diff;
 	}
 
 	/**
 	 * Fold animation complete.
 	 * @method onFoldComplete
 	 */
-	onFoldComplete() {
-		this.dispatchEvent("animationDone");
+	onFoldComplete=()=>{
+		this.emit("animationDone");
 	}
 }
 
@@ -4910,7 +4911,7 @@ class SeatView extends Button {
 	 * @method foldCards
 	 */
 	foldCards() {
-		this.pocketCards[0].addEventListener("animationDone", this.onFoldComplete, this);
+		this.pocketCards[0].on("animationDone", this.onFoldComplete, this);
 		for (var i = 0; i < this.pocketCards.length; i++) {
 			this.pocketCards[i].fold();
 		}
@@ -4921,8 +4922,8 @@ class SeatView extends Button {
 	 * @method onFoldComplete
 	 */
 	onFoldComplete() {
-		this.pocketCards[0].removeEventListener("animationDone", this.onFoldComplete, this);
-		this.dispatchEvent("animationDone");
+		this.pocketCards[0].on("animationDone", this.onFoldComplete, this);
+		this.emit("animationDone");
 	}
 
 	/**

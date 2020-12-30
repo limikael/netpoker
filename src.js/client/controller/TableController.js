@@ -26,7 +26,7 @@ class TableController {
 		this.eventQueue.on("action", this.onActionMessage);
 		this.eventQueue.on("foldCards", this.onFoldCardsMessage);
 		this.eventQueue.on("delay", this.onDelayMessage);
-		this.eventQueue.on("cleat", this.onClearMessage);
+		this.eventQueue.on("clear", this.onClearMessage);
 		this.eventQueue.on("payOut", this.onPayOutMessage);
 		this.eventQueue.on("fadeTable", this.onFadeTableMessage);
 	}
@@ -177,7 +177,7 @@ class TableController {
 	onFoldCardsMessage=(m)=>{
 		this.view.seatViews[m.seatIndex].foldCards();
 
-		this.messageSequencer.waitFor(this.view.seatViews[m.seatIndex], "animationDone");
+		this.eventQueue.waitFor(this.view.seatViews[m.seatIndex], "animationDone");
 	};
 
 	/**
