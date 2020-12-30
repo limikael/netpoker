@@ -84,6 +84,11 @@ class Slider extends PIXI.Container {
 	 * @method onStageMouseMove
 	 */
 	onStageMouseMove=(e)=>{
+		if (!e.data.buttons) {
+			this.onStageMouseUp();
+			return;
+		}
+
 		let x=this.toLocal(e.data.global).x;
 		this.knob.x = this.downPos + (x - this.downX);
 

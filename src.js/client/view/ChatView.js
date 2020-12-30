@@ -86,7 +86,7 @@ class ChatView extends PIXI.Container {
 
 		this.slider = new Slider(slideBack, slideKnob);
 		this.slider.rotation = Math.PI * 0.5;
-		this.slider.position.x = 326;
+		this.slider.position.x = 328;
 		this.slider.position.y = 552;
 		this.slider.setValue(1);
 		this.slider.visible = false;
@@ -95,9 +95,7 @@ class ChatView extends PIXI.Container {
 
 
 		this.mouseOverGroup = new MouseOverGroup();
-		this.mouseOverGroup.addDisplayObject(this.chatText);
 		this.mouseOverGroup.addDisplayObject(this.slider);
-		this.mouseOverGroup.addDisplayObject(this.chatMask);
 		this.mouseOverGroup.addDisplayObject(chatPlate);
 		this.mouseOverGroup.on("mouseover", this.onChatFieldMouseOver, this);
 		this.mouseOverGroup.on("mouseout", this.onChatFieldMouseOut, this);

@@ -34,7 +34,7 @@ class MouseOverGroup extends EventEmitter {
 	 * Mouse over object.
 	 * @method onObjectMouseOver
 	 */
-	onObjectMouseOver=(interaction_object)=>{
+	onObjectMouseOver=(e)=>{
 		if(this.currentlyOver)
 			return;
 
@@ -63,10 +63,10 @@ class MouseOverGroup extends EventEmitter {
 	 * @method hitTest
 	 */
 	hitTest(object, globalPoint) {
-		if((globalPoint.x > object.getBounds().x ) && 
-				(globalPoint.x < (object.getBounds().x + object.getBounds().width)) &&
-				(globalPoint.y > object.getBounds().y) && 
-				(globalPoint.y < (object.getBounds().y + object.getBounds().height))) {
+		if((globalPoint.x >= object.getBounds().x ) && 
+				(globalPoint.x <= (object.getBounds().x + object.getBounds().width)) &&
+				(globalPoint.y >= object.getBounds().y) && 
+				(globalPoint.y <= (object.getBounds().y + object.getBounds().height))) {
 			return true;
 		}
 		return false;
@@ -110,6 +110,13 @@ class MouseOverGroup extends EventEmitter {
 			}
 		}
 	}
+
+	/**
+	 * Stage mouse move.
+	 */
+	/*onStageMouseMove=(e)=>{
+
+	}*/
 }
 
 module.exports = MouseOverGroup;
