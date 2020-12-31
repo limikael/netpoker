@@ -5,8 +5,8 @@
 
 /*var SettingsView = require("../view/SettingsView");
 var TableInfoView = require("../view/TableInfoView");
-var PresetButtonsView = require("../view/PresetButtonsView");
 var TableButtonsView = require("./TableButtonsView");*/
+const PresetButtonsView = require("../view/PresetButtonsView");
 const ChatView = require("./ChatView");
 const DealerButtonView = require("./DealerButtonView");
 const DialogView = require("./DialogView");
@@ -66,10 +66,10 @@ class NetPokerClientView extends PIXI.Container {
 		this.dialogView = new DialogView(this.client);
 		this.addChild(this.dialogView);
 
-		/*this.presetButtonsView = new PresetButtonsView(this.client);
+		this.presetButtonsView = new PresetButtonsView(this.client);
 		this.addChild(this.presetButtonsView);
 
-		this.tableButtonsView = new TableButtonsView(this.client);
+		/*this.tableButtonsView = new TableButtonsView(this.client);
 		this.addChild(this.tableButtonsView);*/
 
 		this.setupChips();

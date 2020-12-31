@@ -17,3 +17,5 @@ In order to hack on this, clone the repository, then run:
 
 And then go to http://localhost:2222
 ...
+
+https://blog.cryptographyengineering.com/2012/04/02/poker-is-hard-especially-for/

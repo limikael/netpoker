@@ -29,7 +29,7 @@ class NetPokerClientController {
 		//this.netPokerClientView.settingsView.addEventListener(SettingsView.BUY_CHIPS_CLICK, this.onBuyChipsButtonClick, this);
 		//this.netPokerClientView.settingsView.addEventListener(SettingsView.CHECKBOX_CHANGE, this.onCheckboxChange, this);
 
-		//this.netPokerClientView.getPresetButtonsView().addEventListener(PresetButtonsView.CHANGE, this.onPresetButtonsChange, this);
+		this.netPokerClientView.getPresetButtonsView().on("change", this.onPresetButtonsChange);
 		//this.netPokerClientView.getTableButtonsView().on(TableButtonsView.TABLE_CLICK, this.onTableButtonClick, this);*/
 	}
 
@@ -110,18 +110,18 @@ class NetPokerClientController {
 	 * PresetButtons change message.
 	 * @method onPresetButtonsChange
 	 */
-	/*NetPokerClientController.prototype.onPresetButtonsChange = function() {
-		var presetButtonsView = this.netPokerClientView.getPresetButtonsView();
-		var message = new PresetButtonClickMessage();
+	onPresetButtonsChange=()=> {
+		let presetButtonsView = this.netPokerClientView.getPresetButtonsView();
+		let params={};
+		let c = presetButtonsView.getCurrent();
 
-		var c = presetButtonsView.getCurrent();
 		if (c != null) {
-			message.button = c.id;
-			message.value = c.value;
+			params.button = c.id;
+			params.value = c.value;
 		}
 
-		this.protoConnection.send(message);
-	}*/
+		this.connection.send("presetButtonClick",params);
+	}
 
 	/**
 	 * Checkbox change.

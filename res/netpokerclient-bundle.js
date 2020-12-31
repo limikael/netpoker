@@ -2285,7 +2285,7 @@ class NetPokerClient extends PixiApp {
 
 module.exports=NetPokerClient;
 
-},{"../../utils/MessageConnection":33,"../../utils/PixiApp":36,"../controller/NetPokerClientController":11,"../view/NetPokerClientView":23,"./Resources":7,"./translations":9}],7:[function(require,module,exports){
+},{"../../utils/MessageConnection":36,"../../utils/PixiApp":39,"../controller/NetPokerClientController":11,"../view/NetPokerClientView":23,"./Resources":7,"./translations":9}],7:[function(require,module,exports){
 const THEME=require("./theme.js");
 
 class Resources {
@@ -2635,7 +2635,7 @@ class NetPokerClientController {
 		//this.netPokerClientView.settingsView.addEventListener(SettingsView.BUY_CHIPS_CLICK, this.onBuyChipsButtonClick, this);
 		//this.netPokerClientView.settingsView.addEventListener(SettingsView.CHECKBOX_CHANGE, this.onCheckboxChange, this);
 
-		//this.netPokerClientView.getPresetButtonsView().addEventListener(PresetButtonsView.CHANGE, this.onPresetButtonsChange, this);
+		this.netPokerClientView.getPresetButtonsView().on("change", this.onPresetButtonsChange);
 		//this.netPokerClientView.getTableButtonsView().on(TableButtonsView.TABLE_CLICK, this.onTableButtonClick, this);*/
 	}
 
@@ -2716,18 +2716,18 @@ class NetPokerClientController {
 	 * PresetButtons change message.
 	 * @method onPresetButtonsChange
 	 */
-	/*NetPokerClientController.prototype.onPresetButtonsChange = function() {
-		var presetButtonsView = this.netPokerClientView.getPresetButtonsView();
-		var message = new PresetButtonClickMessage();
+	onPresetButtonsChange=()=> {
+		let presetButtonsView = this.netPokerClientView.getPresetButtonsView();
+		let params={};
+		let c = presetButtonsView.getCurrent();
 
-		var c = presetButtonsView.getCurrent();
 		if (c != null) {
-			message.button = c.id;
-			message.value = c.value;
+			params.button = c.id;
+			params.value = c.value;
 		}
 
-		this.protoConnection.send(message);
-	}*/
+		this.connection.send("presetButtonClick",params);
+	}
 
 	/**
 	 * Checkbox change.
@@ -2747,7 +2747,7 @@ class NetPokerClientController {
 }
 
 module.exports = NetPokerClientController;
-},{"../../utils/EventQueue":31,"./InterfaceController":10,"./TableController":12}],12:[function(require,module,exports){
+},{"../../utils/EventQueue":34,"./InterfaceController":10,"./TableController":12}],12:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3000,7 +3000,7 @@ class TableController {
 }
 
 module.exports = TableController;
-},{"../../data/CardData":27,"../../utils/Timeout":39}],13:[function(require,module,exports){
+},{"../../data/CardData":29,"../../utils/Timeout":42}],13:[function(require,module,exports){
 const NetPokerClient=require("./app/NetPokerClient");
 const ArrayUtil=require("../utils/ArrayUtil");
 
@@ -3015,7 +3015,7 @@ const ArrayUtil=require("../utils/ArrayUtil");
 	}
 })(jQuery);
 
-},{"../utils/ArrayUtil":28,"./app/NetPokerClient":6}],14:[function(require,module,exports){
+},{"../utils/ArrayUtil":30,"./app/NetPokerClient":6}],14:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3104,7 +3104,7 @@ class BigButton extends Button {
 }
 
 module.exports = BigButton;
-},{"../../utils/Button":29}],15:[function(require,module,exports){
+},{"../../utils/Button":31}],15:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3236,7 +3236,7 @@ class ButtonsView extends PIXI.Container {
 }
 
 module.exports = ButtonsView;
-},{"../../utils/Button":29,"../../utils/NineSlice":35,"../../utils/Slider":38,"./BigButton":14}],16:[function(require,module,exports){
+},{"../../utils/Button":31,"../../utils/NineSlice":38,"../../utils/Slider":41,"./BigButton":14}],16:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3660,7 +3660,7 @@ class ChatView extends PIXI.Container {
 }
 
 module.exports = ChatView;
-},{"../../utils/MouseOverGroup":34,"../../utils/NineSlice":35,"../../utils/Slider":38,"pixi-text-input":2}],19:[function(require,module,exports){
+},{"../../utils/MouseOverGroup":37,"../../utils/NineSlice":38,"../../utils/Slider":41,"pixi-text-input":2}],19:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -4115,7 +4115,7 @@ class DialogButton extends Button {
 }
 
 module.exports = DialogButton;
-},{"../../utils/Button":29}],22:[function(require,module,exports){
+},{"../../utils/Button":31}],22:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -4257,7 +4257,7 @@ class DialogView extends PIXI.Container {
 }
 
 module.exports = DialogView;
-},{"../../utils/NineSlice":35,"./DialogButton":21,"pixi-text-input":2}],23:[function(require,module,exports){
+},{"../../utils/NineSlice":38,"./DialogButton":21,"pixi-text-input":2}],23:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -4265,8 +4265,8 @@ module.exports = DialogView;
 
 /*var SettingsView = require("../view/SettingsView");
 var TableInfoView = require("../view/TableInfoView");
-var PresetButtonsView = require("../view/PresetButtonsView");
 var TableButtonsView = require("./TableButtonsView");*/
+const PresetButtonsView = require("../view/PresetButtonsView");
 const ChatView = require("./ChatView");
 const DealerButtonView = require("./DealerButtonView");
 const DialogView = require("./DialogView");
@@ -4326,10 +4326,10 @@ class NetPokerClientView extends PIXI.Container {
 		this.dialogView = new DialogView(this.client);
 		this.addChild(this.dialogView);
 
-		/*this.presetButtonsView = new PresetButtonsView(this.client);
+		this.presetButtonsView = new PresetButtonsView(this.client);
 		this.addChild(this.presetButtonsView);
 
-		this.tableButtonsView = new TableButtonsView(this.client);
+		/*this.tableButtonsView = new TableButtonsView(this.client);
 		this.addChild(this.tableButtonsView);*/
 
 		this.setupChips();
@@ -4679,7 +4679,7 @@ class NetPokerClientView extends PIXI.Container {
 
 module.exports = NetPokerClientView;
 
-},{"../../utils/Gradient":32,"./ButtonsView":15,"./CardView":17,"./ChatView":18,"./ChipsView":19,"./DealerButtonView":20,"./DialogView":22,"./PotView":24,"./SeatView":25,"./TimerView":26,"@tweenjs/tween.js":1}],24:[function(require,module,exports){
+},{"../../utils/Gradient":35,"../view/PresetButtonsView":26,"./ButtonsView":15,"./CardView":17,"./ChatView":18,"./ChipsView":19,"./DealerButtonView":20,"./DialogView":22,"./PotView":24,"./SeatView":27,"./TimerView":28,"@tweenjs/tween.js":1}],24:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -4762,6 +4762,229 @@ class PotView extends PIXI.Container {
 
 module.exports = PotView;
 },{"./ChipsView":19,"@tweenjs/tween.js":1}],25:[function(require,module,exports){
+/**
+ * Client.
+ * @module client
+ */
+
+const TWEEN = require('@tweenjs/tween.js');
+const Checkbox = require("../../utils/Checkbox");
+
+/**
+ * A pot view
+ * @class PresetButton
+ */
+class PresetButton extends PIXI.Container {
+	constructor(client,index) {
+		super();
+
+		this.client=client;
+		this.resources=client.getResources();
+		this.index=index;
+
+		this.id = null;
+		this.visible = false;
+		this.value = 0;
+
+		var b = new PIXI.Sprite(this.resources.getTexture("checkboxBackground"));
+		var t = new PIXI.Sprite(this.resources.getTexture("checkboxTick"));
+		t.x = 1;
+
+		this.checkbox = new Checkbox(b,t);
+		this.checkbox.on("change", this.onCheckboxChange);
+		this.addChild(this.checkbox);
+
+		var styleObject = {
+			fontFamily: "Arial",
+			fontSize: 12,
+			fontWeight: "bold", 
+			wordWrap: true,
+			wordWrapWidth: 250,
+			fill: "white"
+		};
+
+		this.labelField = new PIXI.Text("", styleObject);
+		this.labelField.position.x = 25;
+
+		this.addChild(this.labelField);
+	}
+
+	/**
+	 * Preset button change.
+	 * @method onPresetButtonChange
+	 */
+	onCheckboxChange=()=>{
+		this.emit("change",this.index);
+	}
+
+	/**
+	 * Set label.
+	 * @method setLabel
+	 */
+	setLabel(label) {
+		this.labelField.text=label;
+		return label;
+	}
+
+	/**
+	 * Show.
+	 * @method show
+	 */
+	show(id, value) {
+		this.id = id;
+		this.value = value;
+
+		if(this.value > 0)
+			this.setLabel(this.client.translate(id)+" ("+this.value+")");
+
+		else
+			this.setLabel(this.client.translate(id));
+
+		this.visible = true;
+	}
+
+	/**
+	 * Hide.
+	 * @method hide
+	 */
+	hide() {
+		this.id = null;
+		this.visible = false;
+		this.value = 0;
+		this.setChecked(false);
+	}
+
+	/**
+	 * Get checked.
+	 * @method getChecked
+	 */
+	getChecked() {
+		return this.checkbox.getChecked();
+	}
+
+	/**
+	 * Set checked.
+	 * @method setChecked
+	 */
+	setChecked(b) {
+		this.checkbox.setChecked(b);
+
+		return this.checkbox.getChecked();
+	}
+
+	/**
+	 * Get value.
+	 * @method getValue
+	 */
+	getValue() {
+		return this.value;
+	}
+}
+
+module.exports = PresetButton;
+},{"../../utils/Checkbox":32,"@tweenjs/tween.js":1}],26:[function(require,module,exports){
+/**
+ * Client.
+ * @module client
+ */
+
+const TWEEN = require('@tweenjs/tween.js');
+var PresetButton = require("./PresetButton");
+
+/**
+ * A pot view
+ * @class PresetButtonsView
+ */
+class PresetButtonsView extends PIXI.Container {
+	constructor(client) {
+		super();
+
+		this.client=client;
+		this.resources=client.getResources();
+		this.buttons = new Array();
+		var origin = this.resources.getPoint("bigButtonPosition");
+
+		for (var i = 0; i < 6; i++) {
+			var p = new PresetButton(this.client,i);
+			p.on("change", this.onPresetButtonChange);
+			p.x = origin.x + 30 + 140 * (i % 2);
+			p.y = origin.y + 35 * Math.floor(i / 2);
+			this.addChild(p);
+			this.buttons.push(p);
+		}
+
+		this.hide();
+	}
+
+	/**
+	 * Preset button change.
+	 * @method onPresetButtonChange
+	 */
+	onPresetButtonChange=(index)=>{
+		for (let i = 0; i < this.buttons.length; i++)
+			if (i!=index)
+				this.buttons[i].setChecked(false);
+
+		this.emit("change");
+	}
+
+	/**
+	 * Hide.
+	 * @method hide
+	 */
+	hide() {
+		for (var i = 0; i < this.buttons.length; i++) {
+			this.buttons[i].hide();
+		}
+	}
+
+	/**
+	 * Show.
+	 * @method show
+	 */
+	show() {
+		this.visible = true;
+	}
+
+	/**
+	 * Get buttons.
+	 * @method getButtons
+	 */
+	getButtons() {
+		return this.buttons;
+	}
+
+	/**
+	 * Get current preset button.
+	 * @method getCurrent
+	 */
+	getCurrent() {
+		for (var i = 0; i < this.buttons.length; i++) {
+			if (this.buttons[i].getChecked() == true) {
+				return this.buttons[i];
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Set current preset button.
+	 * @method setCurrent
+	 */
+	setCurrent=function(id) {
+		for (var i = 0; i < this.buttons.length; i++) {
+			var b = this.buttons[i];
+			if ((id != null) && (b.id == id)) {
+				b.setChecked(true);
+			} else {
+				b.setChecked(false);
+			}
+		}
+	}
+}
+
+module.exports = PresetButtonsView;
+},{"./PresetButton":25,"@tweenjs/tween.js":1}],27:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -4984,7 +5207,7 @@ class SeatView extends Button {
 }
 
 module.exports = SeatView;
-},{"../../utils/Button":29,"@tweenjs/tween.js":1}],26:[function(require,module,exports){
+},{"../../utils/Button":31,"@tweenjs/tween.js":1}],28:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -5137,7 +5360,7 @@ class TimerView extends PIXI.Container {
 }
 
 module.exports = TimerView;
-},{"@tweenjs/tween.js":1}],27:[function(require,module,exports){
+},{"@tweenjs/tween.js":1}],29:[function(require,module,exports){
 /**
  * Protocol.
  * @module proto
@@ -5336,7 +5559,7 @@ class CardData {
 }
 
 module.exports = CardData;
-},{}],28:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 class ArrayUtil {
 
 	/**
@@ -5411,7 +5634,7 @@ class ArrayUtil {
 }
 
 module.exports = ArrayUtil;
-},{}],29:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -5510,7 +5733,64 @@ class Button extends PIXI.Container {
 }
 
 module.exports = Button;
-},{}],30:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
+/**
+ * Utilities.
+ * @module utils
+ */
+
+var Button = require("./Button");
+
+/**
+ * Checkbox.
+ * @class Checkbox
+ */
+class Checkbox extends PIXI.Container {
+	constructor(background, tick) {
+		super();
+
+		this.button = new Button(background);
+		this.addChild(this.button);
+
+		this.check = tick;
+		this.addChild(this.check);
+
+		this.button.on("click", this.onButtonClick);
+
+		this.setChecked(false);
+	}
+
+	/**
+	 * Button click.
+	 * @method onButtonClick
+	 * @private
+	 */
+	onButtonClick=()=>{
+		this.check.visible = !this.check.visible;
+
+		this.emit("change");
+	}
+
+	/**
+	 * Setter.
+	 * @method setChecked
+	 */
+	setChecked(value) {
+		this.check.visible = value;
+		return value;
+	}
+
+	/**
+	 * Getter.
+	 * @method getChecked
+	 */
+	getChecked() {
+		return this.check.visible;
+	}
+}
+
+module.exports = Checkbox;
+},{"./Button":31}],33:[function(require,module,exports){
 class ContentScaler extends PIXI.Container {
 	constructor(content) {
 		super();
@@ -5572,7 +5852,7 @@ class ContentScaler extends PIXI.Container {
 }
 
 module.exports=ContentScaler;
-},{}],31:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 const EventEmitter=require("events");
 
 class EventQueue extends EventEmitter {
@@ -5624,7 +5904,7 @@ class EventQueue extends EventEmitter {
 }
 
 module.exports=EventQueue;
-},{"events":4}],32:[function(require,module,exports){
+},{"events":4}],35:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -5686,7 +5966,7 @@ class Gradient {
 }
 
 module.exports = Gradient;
-},{}],33:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 let WebSocket;
 
 if (window.WebSocket)
@@ -5748,7 +6028,7 @@ class MessageConnection extends EventEmitter {
 }
 
 module.exports=MessageConnection;
-},{"events":4,"ws":5}],34:[function(require,module,exports){
+},{"events":4,"ws":5}],37:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -5873,7 +6153,7 @@ class MouseOverGroup extends EventEmitter {
 module.exports = MouseOverGroup;
 
 
-},{"./PixiUtil.js":37,"events":4}],35:[function(require,module,exports){
+},{"./PixiUtil.js":40,"events":4}],38:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -5995,7 +6275,7 @@ class NineSlice extends PIXI.Container {
 }
 
 module.exports = NineSlice;
-},{}],36:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 const ContentScaler=require("./ContentScaler");
 const TWEEN = require('@tweenjs/tween.js');
 
@@ -6048,7 +6328,7 @@ class PixiApp extends PIXI.Container {
 }
 
 module.exports=PixiApp;
-},{"./ContentScaler":30,"@tweenjs/tween.js":1}],37:[function(require,module,exports){
+},{"./ContentScaler":33,"@tweenjs/tween.js":1}],40:[function(require,module,exports){
 class PixiUtil {
 	static findTopParent(o) {
 		while (o.parent)
@@ -6059,7 +6339,7 @@ class PixiUtil {
 }
 
 module.exports=PixiUtil;
-},{}],38:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -6195,7 +6475,7 @@ class Slider extends PIXI.Container {
 
 module.exports = Slider;
 
-},{"./PixiUtil.js":37,"@tweenjs/tween.js":1}],39:[function(require,module,exports){
+},{"./PixiUtil.js":40,"@tweenjs/tween.js":1}],42:[function(require,module,exports){
 const EventEmitter=require("events");
 
 class Timeout extends EventEmitter {

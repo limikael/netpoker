@@ -3,11 +3,8 @@
  * @module client
  */
 
-var PIXI = require("pixi.js");
-var TWEEN = require("tween.js");
-var EventDispatcher = require("yaed");
+const TWEEN = require('@tweenjs/tween.js');
 var PresetButton = require("./PresetButton");
-var inherits = require("inherits");
 
 /**
  * A pot view

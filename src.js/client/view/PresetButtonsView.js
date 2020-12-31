@@ -3,108 +3,97 @@
  * @module client
  */
 
-var PIXI = require("pixi.js");
-var TWEEN = require("tween.js");
-var EventDispatcher = require("yaed");
+const TWEEN = require('@tweenjs/tween.js');
 var PresetButton = require("./PresetButton");
-var inherits = require("inherits");
 
 /**
  * A pot view
  * @class PresetButtonsView
  */
-function PresetButtonsView(viewConfig, resources) {
-	PIXI.DisplayObjectContainer.call(this);
+class PresetButtonsView extends PIXI.Container {
+	constructor(client) {
+		super();
 
-	this.resources = resources;
+		this.client=client;
+		this.resources=client.getResources();
+		this.buttons = new Array();
+		var origin = this.resources.getPoint("bigButtonPosition");
 
-	this.buttons = new Array();
-	var origin = this.resources.getPoint("bigButtonPosition");
+		for (var i = 0; i < 6; i++) {
+			var p = new PresetButton(this.client,i);
+			p.on("change", this.onPresetButtonChange);
+			p.x = origin.x + 30 + 140 * (i % 2);
+			p.y = origin.y + 35 * Math.floor(i / 2);
+			this.addChild(p);
+			this.buttons.push(p);
+		}
 
-	for (var i = 0; i < 6; i++) {
-		var p = new PresetButton(this.resources);
-		p.addEventListener(PresetButton.CHANGE, this.onPresetButtonChange, this);
-		p.x = origin.x + 30 + 140 * (i % 2);
-		p.y = origin.y + 35 * Math.floor(i / 2);
-		this.addChild(p);
-		this.buttons.push(p);
+		this.hide();
 	}
 
-	this.hide();
-}
+	/**
+	 * Preset button change.
+	 * @method onPresetButtonChange
+	 */
+	onPresetButtonChange=(index)=>{
+		for (let i = 0; i < this.buttons.length; i++)
+			if (i!=index)
+				this.buttons[i].setChecked(false);
 
-inherits(PresetButtonsView, PIXI.DisplayObjectContainer);
-EventDispatcher.init(PresetButtonsView);
+		this.emit("change");
+	}
 
-PresetButtonsView.CHANGE = "change";
-
-/**
- * Preset button change.
- * @method onPresetButtonChange
- */
-PresetButtonsView.prototype.onPresetButtonChange = function(ev) {
-
-	for (var i = 0; i < this.buttons.length; i++) {
-		var b = this.buttons[i];
-		if (b != ev.target) {
-			b.setChecked(false);
+	/**
+	 * Hide.
+	 * @method hide
+	 */
+	hide() {
+		for (var i = 0; i < this.buttons.length; i++) {
+			this.buttons[i].hide();
 		}
 	}
 
-	this.dispatchEvent(PresetButtonsView.CHANGE);
-}
-
-/**
- * Hide.
- * @method hide
- */
-PresetButtonsView.prototype.hide = function() {
-	for (var i = 0; i < this.buttons.length; i++) {
-		this.buttons[i].hide();
+	/**
+	 * Show.
+	 * @method show
+	 */
+	show() {
+		this.visible = true;
 	}
-}
 
-/**
- * Show.
- * @method show
- */
-PresetButtonsView.prototype.show = function() {
-	this.visible = true;
+	/**
+	 * Get buttons.
+	 * @method getButtons
+	 */
+	getButtons() {
+		return this.buttons;
+	}
 
-}
-
-/**
- * Get buttons.
- * @method getButtons
- */
-PresetButtonsView.prototype.getButtons = function() {
-	return this.buttons;
-}
-
-/**
- * Get current preset button.
- * @method getCurrent
- */
-PresetButtonsView.prototype.getCurrent = function() {
-	for (var i = 0; i < this.buttons.length; i++) {
-		if (this.buttons[i].getChecked() == true) {
-			return this.buttons[i];
+	/**
+	 * Get current preset button.
+	 * @method getCurrent
+	 */
+	getCurrent() {
+		for (var i = 0; i < this.buttons.length; i++) {
+			if (this.buttons[i].getChecked() == true) {
+				return this.buttons[i];
+			}
 		}
+		return null;
 	}
-	return null;
-}
 
-/**
- * Get current preset button.
- * @method setCurrent
- */
-PresetButtonsView.prototype.setCurrent = function(id) {
-	for (var i = 0; i < this.buttons.length; i++) {
-		var b = this.buttons[i];
-		if ((id != null) && (b.id == id)) {
-			b.setChecked(true);
-		} else {
-			b.setChecked(false);
+	/**
+	 * Set current preset button.
+	 * @method setCurrent
+	 */
+	setCurrent=function(id) {
+		for (var i = 0; i < this.buttons.length; i++) {
+			var b = this.buttons[i];
+			if ((id != null) && (b.id == id)) {
+				b.setChecked(true);
+			} else {
+				b.setChecked(false);
+			}
 		}
 	}
 }

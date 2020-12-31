@@ -3,122 +3,118 @@
  * @module client
  */
 
-var PIXI = require("pixi.js");
-var TWEEN = require("tween.js");
-var EventDispatcher = require("yaed");
-var Checkbox = require("../../utils/Checkbox");
-var ButtonData = require("../../proto/data/ButtonData");
-var inherits = require("inherits");
+const TWEEN = require('@tweenjs/tween.js');
+const Checkbox = require("../../utils/Checkbox");
 
 /**
  * A pot view
  * @class PresetButton
  */
-function PresetButton(resources) {
-	PIXI.DisplayObjectContainer.call(this);
-	
-	this.resources = resources;
+class PresetButton extends PIXI.Container {
+	constructor(client,index) {
+		super();
 
-	this.id = null;
-	this.visible = false;
-	this.value = 0;
+		this.client=client;
+		this.resources=client.getResources();
+		this.index=index;
 
-	var b = new PIXI.Sprite(this.resources.getTexture("checkboxBackground"));
-	var t = new PIXI.Sprite(this.resources.getTexture("checkboxTick"));
-	t.x = 1;
+		this.id = null;
+		this.visible = false;
+		this.value = 0;
 
-	this.checkbox = new Checkbox(b,t);
-	this.checkbox.addEventListener("change", this.onCheckboxChange, this);
-	this.addChild(this.checkbox);
+		var b = new PIXI.Sprite(this.resources.getTexture("checkboxBackground"));
+		var t = new PIXI.Sprite(this.resources.getTexture("checkboxTick"));
+		t.x = 1;
 
-	var styleObject = {
-		font: "bold 12px Arial",
-		wordWrap: true,
-		wordWrapWidth: 250,
-		fill: "white"
-	};
+		this.checkbox = new Checkbox(b,t);
+		this.checkbox.on("change", this.onCheckboxChange);
+		this.addChild(this.checkbox);
 
-	this.labelField = new PIXI.Text("", styleObject);
-	this.labelField.position.x = 25;
+		var styleObject = {
+			fontFamily: "Arial",
+			fontSize: 12,
+			fontWeight: "bold", 
+			wordWrap: true,
+			wordWrapWidth: 250,
+			fill: "white"
+		};
 
-	this.addChild(this.labelField);
-}
+		this.labelField = new PIXI.Text("", styleObject);
+		this.labelField.position.x = 25;
 
-inherits(PresetButton, PIXI.DisplayObjectContainer);
-EventDispatcher.init(PresetButton);
+		this.addChild(this.labelField);
+	}
 
+	/**
+	 * Preset button change.
+	 * @method onPresetButtonChange
+	 */
+	onCheckboxChange=()=>{
+		this.emit("change",this.index);
+	}
 
-PresetButton.CHANGE = "change";
+	/**
+	 * Set label.
+	 * @method setLabel
+	 */
+	setLabel(label) {
+		this.labelField.text=label;
+		return label;
+	}
 
-/**
- * Preset button change.
- * @method onPresetButtonChange
- */
-PresetButton.prototype.onCheckboxChange = function() {
-	this.dispatchEvent(PresetButton.CHANGE);
-}
+	/**
+	 * Show.
+	 * @method show
+	 */
+	show(id, value) {
+		this.id = id;
+		this.value = value;
 
-/**
- * Set label.
- * @method setLabel
- */
-PresetButton.prototype.setLabel = function(label) {
-	this.labelField.setText(label);
-	return label;
-}
+		if(this.value > 0)
+			this.setLabel(this.client.translate(id)+" ("+this.value+")");
 
-/**
- * Show.
- * @method show
- */
-PresetButton.prototype.show = function(id, value) {
-	this.id = id;
-	this.value = value;
+		else
+			this.setLabel(this.client.translate(id));
 
-	if(this.value > 0)
-		this.setLabel(ButtonData.getButtonStringForId(id)+" ("+this.value+")");
+		this.visible = true;
+	}
 
-	else
-		this.setLabel(ButtonData.getButtonStringForId(id));
+	/**
+	 * Hide.
+	 * @method hide
+	 */
+	hide() {
+		this.id = null;
+		this.visible = false;
+		this.value = 0;
+		this.setChecked(false);
+	}
 
-	this.visible = true;
-}
+	/**
+	 * Get checked.
+	 * @method getChecked
+	 */
+	getChecked() {
+		return this.checkbox.getChecked();
+	}
 
-/**
- * Hide.
- * @method hide
- */
-PresetButton.prototype.hide = function() {
-	this.id = null;
-	this.visible = false;
-	this.value = 0;
-	this.setChecked(false);
-}
+	/**
+	 * Set checked.
+	 * @method setChecked
+	 */
+	setChecked(b) {
+		this.checkbox.setChecked(b);
 
-/**
- * Get checked.
- * @method getChecked
- */
-PresetButton.prototype.getChecked = function() {
-	return this.checkbox.getChecked();
-}
+		return this.checkbox.getChecked();
+	}
 
-/**
- * Set checked.
- * @method setChecked
- */
-PresetButton.prototype.setChecked = function(b) {
-	this.checkbox.setChecked(b);
-
-	return this.checkbox.getChecked();
-}
-
-/**
- * Get value.
- * @method getValue
- */
-PresetButton.prototype.getValue = function() {
-	return this.value;
+	/**
+	 * Get value.
+	 * @method getValue
+	 */
+	getValue() {
+		return this.value;
+	}
 }
 
 module.exports = PresetButton;
