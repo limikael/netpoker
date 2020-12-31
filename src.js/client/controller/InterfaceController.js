@@ -52,13 +52,11 @@ class InterfaceController {
 			if (i > m.buttons.length) {
 				buttons[i].hide();
 			} else {
-				var data = m.buttons[i];
-
-				if (data == null) {
+				if (!m.buttons[i]) {
 					buttons[i].hide();
 				} else {
 					havePresetButton = true;
-					buttons[i].show(data.button, data.value);
+					buttons[i].show(m.buttons[i], m.values[i]);
 				}
 			}
 		}

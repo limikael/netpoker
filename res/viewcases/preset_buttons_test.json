@@ -1,5 +1,5 @@
-{"type":"presetButtons", "buttons": [{"button":"checkFold", "value": -1}, {"button":"raiseAny", "value": 5}, null, {"button":"callAny", "value": 2}]}
+{"type":"presetButtons", "buttons": ["checkFold","raiseAny",null,"callAny"], "values": [-1,5,null,2]}
 {"type":"stateComplete"}
 {"type":"delay", "delay": 1000}
 {"type":"chat", "text": "sending new"}
-{"type":"presetButtons", "buttons": [{"button":"checkFold", "value": -1}, {"button":"raiseAny", "value": 5}, null, {"button":"callAny", "value": 3}]}
+//{"type":"presetButtons", "buttons": [{"button":"checkFold", "value": -1}, {"button":"raiseAny", "value": 5}, null, {"button":"callAny", "value": 3}]}
