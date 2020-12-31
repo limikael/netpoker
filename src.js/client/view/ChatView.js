@@ -5,7 +5,7 @@
 
 const NineSlice = require("../../utils/NineSlice");
 const Slider = require("../../utils/Slider");
-const TextInput = require("pixi-text-input");
+const TextInput = require("../../utils/TextInput");
 const MouseOverGroup = require("../../utils/MouseOverGroup");
 
 /**
@@ -58,7 +58,7 @@ class ChatView extends PIXI.Container {
 		this.container.addChild(this.chatText);
 		this.chatText.mask = this.chatMask;
 
-		this.inputField=new PIXI.TextInput({
+		this.inputField=new TextInput({
 			input: {
 				fontFamily: 'Arial',
 				fontSize: "14px",

@@ -5,7 +5,7 @@
 
 const NineSlice = require("../../utils/NineSlice");
 const DialogButton = require("./DialogButton");
-const TextInput = require("pixi-text-input");
+const TextInput = require("../../utils/TextInput");
 
 /**
  * Dialog view.
@@ -58,7 +58,7 @@ class DialogView extends PIXI.Container {
 			this.buttons.push(b);
 		}
 
-		this.inputField=new PIXI.TextInput({
+		this.inputField=new TextInput({
 			input: {
 				fontFamily: 'Arial',
 				fontSize: "18px",
