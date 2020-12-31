@@ -4,8 +4,8 @@
  */
 
 const NineSlice = require("../../utils/NineSlice");
-const DialogButton = require("./DialogButton");
 const TextInput = require("../../utils/TextInput");
+const TextButton = require("../../utils/TextButton");
 
 /**
  * Dialog view.
@@ -50,7 +50,16 @@ class DialogView extends PIXI.Container {
 		this.buttons = [];
 
 		for (var i = 0; i < 2; i++) {
-			var b = new DialogButton(client);
+			//var b = new DialogButton(client);
+
+			var b=new TextButton({
+				hEdge: 25,
+				texture: this.resources.getTexture("dialogButton"),
+				fontFamily: "Arial",
+				fontSize: 14,
+				fontWeight: "normal",
+				fill: "#ffffff"
+			});
 
 			b.position.x = i * 90;
 			b.on("click", this.onButtonClick, this);
@@ -94,17 +103,20 @@ class DialogView extends PIXI.Container {
 		this.visible = true;
 		this.buttonIds = buttonIds;
 
+		let pos=0;
 		for (let i = 0; i < this.buttons.length; i++) {
 			if (i < buttonIds.length) {
 				var button = this.buttons[i];
 				button.setText(this.client.translate(buttonIds[i]));
 				button.visible = true;
+				button.position.x=pos;
+				pos+=button.width+5;
 			} else {
 				this.buttons[i].visible = false;
 			}
 		}
 
-		this.buttonsHolder.x = 480 - buttonIds.length * 90 / 2;
+		this.buttonsHolder.x = 480 - this.buttonsHolder.width / 2;
 		this.textField.text=text;
 
 		if (defaultValue) {

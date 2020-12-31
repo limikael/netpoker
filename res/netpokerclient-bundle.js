@@ -2308,7 +2308,7 @@ class TableController {
 }
 
 module.exports = TableController;
-},{"../../data/CardData":29,"../../utils/Timeout":44}],12:[function(require,module,exports){
+},{"../../data/CardData":29,"../../utils/Timeout":45}],12:[function(require,module,exports){
 const NetPokerClient=require("./app/NetPokerClient");
 const ArrayUtil=require("../utils/ArrayUtil");
 
@@ -2968,7 +2968,7 @@ class ChatView extends PIXI.Container {
 }
 
 module.exports = ChatView;
-},{"../../utils/MouseOverGroup":38,"../../utils/NineSlice":39,"../../utils/Slider":42,"../../utils/TextInput":43}],18:[function(require,module,exports){
+},{"../../utils/MouseOverGroup":38,"../../utils/NineSlice":39,"../../utils/Slider":42,"../../utils/TextInput":44}],18:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3430,8 +3430,8 @@ module.exports = DialogButton;
  */
 
 const NineSlice = require("../../utils/NineSlice");
-const DialogButton = require("./DialogButton");
 const TextInput = require("../../utils/TextInput");
+const TextButton = require("../../utils/TextButton");
 
 /**
  * Dialog view.
@@ -3476,7 +3476,16 @@ class DialogView extends PIXI.Container {
 		this.buttons = [];
 
 		for (var i = 0; i < 2; i++) {
-			var b = new DialogButton(client);
+			//var b = new DialogButton(client);
+
+			var b=new TextButton({
+				hEdge: 25,
+				texture: this.resources.getTexture("dialogButton"),
+				fontFamily: "Arial",
+				fontSize: 14,
+				fontWeight: "normal",
+				fill: "#ffffff"
+			});
 
 			b.position.x = i * 90;
 			b.on("click", this.onButtonClick, this);
@@ -3520,17 +3529,20 @@ class DialogView extends PIXI.Container {
 		this.visible = true;
 		this.buttonIds = buttonIds;
 
+		let pos=0;
 		for (let i = 0; i < this.buttons.length; i++) {
 			if (i < buttonIds.length) {
 				var button = this.buttons[i];
 				button.setText(this.client.translate(buttonIds[i]));
 				button.visible = true;
+				button.position.x=pos;
+				pos+=button.width+5;
 			} else {
 				this.buttons[i].visible = false;
 			}
 		}
 
-		this.buttonsHolder.x = 480 - buttonIds.length * 90 / 2;
+		this.buttonsHolder.x = 480 - this.buttonsHolder.width / 2;
 		this.textField.text=text;
 
 		if (defaultValue) {
@@ -3565,7 +3577,7 @@ class DialogView extends PIXI.Container {
 }
 
 module.exports = DialogView;
-},{"../../utils/NineSlice":39,"../../utils/TextInput":43,"./DialogButton":20}],22:[function(require,module,exports){
+},{"../../utils/NineSlice":39,"../../utils/TextButton":43,"../../utils/TextInput":44}],22:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -6104,6 +6116,51 @@ class Slider extends PIXI.Container {
 module.exports = Slider;
 
 },{"./PixiUtil.js":41,"@tweenjs/tween.js":1}],43:[function(require,module,exports){
+/**
+ * Client.
+ * @module client
+ */
+
+var Button = require("./Button");
+var NineSlice = require("./NineSlice");
+
+/**
+ * Dialog button.
+ * @class DialogButton
+ */
+class TextButton extends Button {
+	constructor(style) {
+		super();
+
+		this.style=style;
+
+		this.buttonTexture=style.texture;
+		this.background=new NineSlice(this.buttonTexture,style.hEdge,10);
+		this.addChild(this.background);
+
+		this.textField = new PIXI.Text("[test]", style);
+		this.textField.position.x=this.style.hEdge;
+		this.textField.position.y=Math.floor(this.buttonTexture.height/2-this.style.fontSize/2);
+		this.addChild(this.textField);
+
+		this.setText("BTN");
+	}
+
+
+	/**
+	 * Set text for the button.
+	 * @method setText
+	 */
+	setText(text) {
+		this.textField.text=text;
+//		this.textField.x = this.buttonTexture.width / 2 - this.textField.width / 2;
+
+		this.background.setLocalSize(this.textField.width+2*this.style.hEdge,this.buttonTexture.height);
+	}
+}
+
+module.exports = TextButton;
+},{"./Button":31,"./NineSlice":39}],44:[function(require,module,exports){
 // From: https://www.npmjs.com/package/pixi-text-input
 
 class TextInput extends PIXI.Container{
@@ -6781,7 +6838,7 @@ function DefaultBoxGenerator(styles){
 }
 
 module.exports=TextInput;
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 const EventEmitter=require("events");
 
 class Timeout extends EventEmitter {
