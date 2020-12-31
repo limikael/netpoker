@@ -51,25 +51,12 @@ class MouseOverGroup extends EventEmitter {
 			return;
 
 		for(var i = 0; i < this.objects.length; i++)
-			if(this.hitTest(this.objects[i],e.data.global))
+			//if(this.hitTest(this.objects[i],e.data.global))
+			if (PixiUtil.globalHitTest(this.objects[i],e.data.global))
 				return;
 
 		this.currentlyOver = false;
 		this.emit("mouseout");
-	}
-
-	/**
-	 * Hit test.
-	 * @method hitTest
-	 */
-	hitTest(object, globalPoint) {
-		if((globalPoint.x >= object.getBounds().x ) && 
-				(globalPoint.x <= (object.getBounds().x + object.getBounds().width)) &&
-				(globalPoint.y >= object.getBounds().y) && 
-				(globalPoint.y <= (object.getBounds().y + object.getBounds().height))) {
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -101,7 +88,8 @@ class MouseOverGroup extends EventEmitter {
 			var over = false;
 
 			for(var i = 0; i < this.objects.length; i++)
-				if(this.hitTest(this.objects[i],e.data.global))
+				if (PixiUtil.globalHitTest(this.objects[i],e.data.global))
+//				if(this.hitTest(this.objects[i],e.data.global))
 					over = true;
 
 			if(!over) {

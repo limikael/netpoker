@@ -3,8 +3,8 @@
  * @module client
  */
 
-var DialogButton = require("./DialogButton");
 var CountDownText = require("../../utils/CountDownText");
+var TextButton = require("../../utils/TextButton");
 
 /**
  * Show table info.
@@ -68,14 +68,23 @@ class TableInfoView extends PIXI.Container {
 		this.handInfoText.position.x = 10; //960 - this.handInfoText.width;
 		this.addChild(this.handInfoText);
 
-		this.joinButton = new DialogButton(this.client);
+		let dialogButtonStyle={
+			hEdge: 25,
+			texture: this.resources.getTexture("dialogButton"),
+			fontFamily: "Arial",
+			fontSize: 14,
+			fontWeight: "normal",
+			fill: "#ffffff"
+		}
+	
+		this.joinButton = new TextButton(dialogButtonStyle);
 		this.joinButton.position.x = 355;
 		this.joinButton.setText("JOIN");
 		this.joinButton.visible = false;
 		this.joinButton.on("click", this.onButtonClick, this);
 		this.addChild(this.joinButton);
 
-		this.leaveButton = new DialogButton(this.client);
+		this.leaveButton = new TextButton(dialogButtonStyle);
 		this.leaveButton.position.x = 355;
 		this.leaveButton.setText("LEAVE");
 		this.leaveButton.visible = false;

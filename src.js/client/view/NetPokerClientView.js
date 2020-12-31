@@ -4,7 +4,7 @@
  */
 
 //var TableButtonsView = require("./TableButtonsView");
-//const SettingsView = require("../view/SettingsView");
+const SettingsView = require("../view/SettingsView");
 const TableInfoView = require("../view/TableInfoView");
 const PresetButtonsView = require("../view/PresetButtonsView");
 const ChatView = require("./ChatView");
@@ -60,8 +60,8 @@ class NetPokerClientView extends PIXI.Container {
 		this.potView.position = this.resources.getPoint("potPosition");
 		this.tableContainer.addChild(this.potView);
 
-		/*this.settingsView = new SettingsView(this.client);
-		this.addChild(this.settingsView);*/
+		this.settingsView = new SettingsView(this.client);
+		this.addChild(this.settingsView);
 
 		this.dialogView = new DialogView(this.client);
 		this.addChild(this.dialogView);

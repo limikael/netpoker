@@ -25,9 +25,9 @@ class NetPokerClientController {
 		this.netPokerClientView.getDialogView().on("buttonClick", this.onButtonClick);
 		this.netPokerClientView.on("seatClick", this.onSeatClick);
 
-		this.netPokerClientView.getChatView().on("chat", this.onChat, this);
+		this.netPokerClientView.getChatView().on("chat", this.onChat);
 		//this.netPokerClientView.settingsView.addEventListener(SettingsView.BUY_CHIPS_CLICK, this.onBuyChipsButtonClick, this);
-		//this.netPokerClientView.settingsView.addEventListener(SettingsView.CHECKBOX_CHANGE, this.onCheckboxChange, this);
+		this.netPokerClientView.getSettingsView().on("checkboxChange", this.onCheckboxChange);
 
 		this.netPokerClientView.getPresetButtonsView().on("change", this.onPresetButtonsChange);
 		//this.netPokerClientView.getTableButtonsView().on(TableButtonsView.TABLE_CLICK, this.onTableButtonClick, this);*/
@@ -127,9 +127,12 @@ class NetPokerClientController {
 	 * Checkbox change.
 	 * @method onCheckboxChange
 	 */
-	/*NetPokerClientController.prototype.onCheckboxChange = function(ev) {
-		this.protoConnection.send(new CheckboxMessage(ev.checkboxId, ev.checked));
-	}*/
+	onCheckboxChange=(id, checked)=> {
+		this.connection.send("checkbox",{
+			id: id,
+			checked: checked
+		});
+	}
 
 	/**
 	 * Table button click.

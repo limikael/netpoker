@@ -3,74 +3,72 @@
  * @module client
  */
 
-var PIXI = require("pixi.js");
-var TWEEN = require("tween.js");
-var Button = require("../../utils/Button");
-var NineSlice = require("../../utils/NineSlice");
-var EventDispatcher = require("yaed");
-var Checkbox = require("../../utils/Checkbox");
-var inherits = require("inherits");
+const TWEEN = require('@tweenjs/tween.js');
+const Button = require("../../utils/Button");
+const NineSlice = require("../../utils/NineSlice");
+const Checkbox = require("../../utils/Checkbox");
 
 /**
  * Checkboxes view
  * @class SettingsCheckbox
  */
-function SettingsCheckbox(resources, id, string) {
- 	PIXI.DisplayObjectContainer.call(this);
+class SettingsCheckbox extends PIXI.Container {
+	constructor(client, id, string) {
+		super();
 
- 	this.resources = resources;
- 	this.id = id;
+		this.resources = client.getResources();
+		this.id = id;
 
- 	var y = 0;
+		var y = 0;
 
- 	var styleObject = {
- 		width: 200,
- 		height: 25,
- 		font: "bold 13px Arial",
- 		color: "white"
- 	};
- 	this.label = new PIXI.Text(string, styleObject);
- 	this.label.position.x = 25;
- 	this.label.position.y = y + 1;
- 	this.addChild(this.label);
+		var styleObject = {
+			width: 200,
+			height: 25,
+			fontFamily: "Arial",
+			fontSize: 13,
+			fontWeight: "bold",
+			fill: "white"
+		};
+		this.label = new PIXI.Text(string, styleObject);
+		this.label.position.x = 25;
+		this.label.position.y = y + 1;
+		this.addChild(this.label);
 
- 	var background = new PIXI.Sprite(this.resources.getTexture("checkboxBackground"));
- 	var tick = new PIXI.Sprite(this.resources.getTexture("checkboxTick"));
- 	tick.x = 1;
+		var background = new PIXI.Sprite(this.resources.getTexture("checkboxBackground"));
+		var tick = new PIXI.Sprite(this.resources.getTexture("checkboxTick"));
+		tick.x = 1;
 
- 	this.checkbox = new Checkbox(background, tick);
- 	this.checkbox.position.y = y;
- 	this.addChild(this.checkbox);
+		this.checkbox = new Checkbox(background, tick);
+		this.checkbox.position.y = y;
+		this.addChild(this.checkbox);
 
- 	this.checkbox.addEventListener("change", this.onCheckboxChange, this);
-}
+		this.checkbox.on("change", this.onCheckboxChange, this);
+	}
 
-inherits(SettingsCheckbox, PIXI.DisplayObjectContainer);
-EventDispatcher.init(SettingsCheckbox);
+	/**
+	 * Checkbox change.
+	 * @method onCheckboxChange
+	 */
+	onCheckboxChange=()=>{
+		this.emit("change", this);
+	}
 
-/**
- * Checkbox change.
- * @method onCheckboxChange
- */
-SettingsCheckbox.prototype.onCheckboxChange = function(interaction_object) {
-	this.dispatchEvent("change", this);
-}
+	/**
+	 * Getter.
+	 * @method getChecked
+	 */
+	getChecked() {
+		return this.checkbox.getChecked();
+	}
 
-/**
- * Getter.
- * @method getChecked
- */
-SettingsCheckbox.prototype.getChecked = function() {
-	return this.checkbox.getChecked();
-}
-
-/**
- * Setter.
- * @method setChecked
- */
-SettingsCheckbox.prototype.setChecked = function(checked) {
-	this.checkbox.setChecked(checked);
-	return checked;
+	/**
+	 * Setter.
+	 * @method setChecked
+	 */
+	setChecked(checked) {
+		this.checkbox.setChecked(checked);
+		return checked;
+	}
 }
 
 module.exports = SettingsCheckbox;
