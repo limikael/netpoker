@@ -3,9 +3,9 @@
  * @module client
  */
 
-/*var SettingsView = require("../view/SettingsView");
-var TableInfoView = require("../view/TableInfoView");
-var TableButtonsView = require("./TableButtonsView");*/
+//var TableButtonsView = require("./TableButtonsView");
+//const SettingsView = require("../view/SettingsView");
+const TableInfoView = require("../view/TableInfoView");
 const PresetButtonsView = require("../view/PresetButtonsView");
 const ChatView = require("./ChatView");
 const DealerButtonView = require("./DealerButtonView");
@@ -53,8 +53,8 @@ class NetPokerClientView extends PIXI.Container {
 		this.dealerButtonView = new DealerButtonView(this.client);
 		this.tableContainer.addChild(this.dealerButtonView);
 
-		/*this.tableInfoView = new TableInfoView(this.client);
-		this.addChild(this.tableInfoView);*/
+		this.tableInfoView = new TableInfoView(this.client);
+		this.addChild(this.tableInfoView);
 
 		this.potView = new PotView(this.client);
 		this.potView.position = this.resources.getPoint("potPosition");
@@ -377,10 +377,10 @@ class NetPokerClientView extends PIXI.Container {
 	clearTableContents() {
 		this.dealerButtonView.hide();
 
-		for (i = 0; i < this.communityCards.length; i++)
+		for (let i = 0; i < this.communityCards.length; i++)
 			this.communityCards[i].hide();
 
-		for (i = 0; i < this.seatViews.length; i++)
+		for (let i = 0; i < this.seatViews.length; i++)
 			this.seatViews[i].clear();
 
 		this.timerView.hide();
@@ -392,9 +392,7 @@ class NetPokerClientView extends PIXI.Container {
 	 * @method clear
 	 */
 	clear() {
-		console.log("implement clear!!!");
-
-		/*this.clearTableContents();
+		this.clearTableContents();
 
 		this.presetButtonsView.hide();
 
@@ -404,8 +402,8 @@ class NetPokerClientView extends PIXI.Container {
 		this.buttonsView.clear();
 
 		this.tableInfoView.clear();
-		this.settingsView.clear();
-		this.tableButtonsView.clear();
+		//this.settingsView.clear();
+		//this.tableButtonsView.clear();
 
 		if (this.fadeTableTween) {
 			this.fadeTableTween.stop();
@@ -413,7 +411,7 @@ class NetPokerClientView extends PIXI.Container {
 		}
 
 		this.tableContainer.alpha = 1;
-		this.tableContainer.x = 0;*/
+		this.tableContainer.x = 0;
 	}
 }
 

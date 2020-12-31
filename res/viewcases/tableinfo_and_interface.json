@@ -1,6 +1,6 @@
 {"type":"tableInfo", "text": "Welcome!\n\nPlease click on an empty\nseat to join the game!"}
 {"type":"handInfo", "text": "Current Hand: #123123123\nPrevious Hand: #123123123\n\nNext: %t", "countdown":100}
-{"type":"interfaceState", "visibleButtons": ["sitoutNext","autoPostBlinds"]}
+//{"type":"interfaceState", "visibleButtons": ["sitoutNext","autoPostBlinds"]}
 {"type":"checkbox", "id": "autoPostBlinds", "checked": true}
 {"type":"delay", "delay": 1000}
 {"type":"checkbox", "id": "sitoutNext", "checked": true}

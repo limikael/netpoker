@@ -3,218 +3,219 @@
  * @module client
  */
 
-var PIXI = require("pixi.js");
-var EventDispatcher = require("yaed");
 var DialogButton = require("./DialogButton");
-var inherits = require("inherits");
-var ButtonData = require("../../proto/data/ButtonData");
-var ObjectUtil = require("../../utils/ObjectUtil");
 var CountDownText = require("../../utils/CountDownText");
 
 /**
  * Show table info.
  * @class TableInfoView
  */
-function TableInfoView(viewConfig, resources) {
-	PIXI.DisplayObjectContainer.call(this);
+class TableInfoView extends PIXI.Container {
+	constructor(client) {
+		super();
 
-	this.viewConfig = viewConfig;
-	this.resources = resources;
+		this.client=client;
+		this.resources=this.client.getResources();
 
-	var style = {
-		font: "bold 24px Times New Roman",
-		fill: "#ffffff",
-		dropShadow: true,
-		dropShadowColor: "#000000",
-		dropShadowDistance: 2,
-		stroke: "#000000",
-		strokeThickness: 2,
-		wordWrap: true,
-		wordWrapWidth: 300
-	};
+		var style = {
+			fontFamily: "Times New Roman",
+			fontSize: 24,
+			fontWeight: "bold",
+			fill: "#ffffff",
+			dropShadow: true,
+			dropShadowColor: "#000000",
+			dropShadowDistance: 2,
+			stroke: "#000000",
+			strokeThickness: 2,
+			wordWrap: true,
+			wordWrapWidth: 300
+		};
 
-	this.tableInfoText = new PIXI.Text("<TableInfoText>", style);
-	this.tableInfoText.position.x = 355;
-	this.tableInfoText.position.y = 540;
-	this.addChild(this.tableInfoText);
+		this.tableInfoText = new PIXI.Text("<TableInfoText>", style);
+		this.tableInfoText.position.x = 355;
+		this.tableInfoText.position.y = 540;
+		this.addChild(this.tableInfoText);
 
-	var style = {
-		font: "bold 24px Times New Roman",
-		fill: "#ffffff",
-		align: "center"
-	};
+		var style = {
+			fontFamily: "Times New Roman",
+			fontSize: 24,
+			fontWeight: "bold",
+			fill: "#ffffff",
+			align: "center"
+		};
 
-	this.preTournamentInfoText = new CountDownText("<PreTournamentInfoText>", style);
-	this.preTournamentInfoText.position.y = 360;
-	//this.preTournamentInfoText.position.y = 280;
-	this.preTournamentInfoText.position.x = Math.round(960 - 300) / 2;
-	this.preTournamentInfoText.alpha = .25;
-	this.addChild(this.preTournamentInfoText);
+		this.preTournamentInfoText = new CountDownText("<PreTournamentInfoText>", style);
+		this.preTournamentInfoText.position.y = 360;
+		//this.preTournamentInfoText.position.y = 280;
+		this.preTournamentInfoText.position.x = Math.round(960 - 300) / 2;
+		this.preTournamentInfoText.alpha = .25;
+		this.addChild(this.preTournamentInfoText);
 
-	var style = {
-		font: "bold 12px Arial",
-		fill: "#ffffff",
-		dropShadow: true,
-		dropShadowColor: "#000000",
-		dropShadowDistance: 1,
-		stroke: "#000000",
-		strokeThickness: 1,
-	};
+		var style = {
+			fontFamily: "Times New Roman",
+			fontSize: 12,
+			fontWeight: "bold",
+			fill: "#ffffff",
+			dropShadow: true,
+			dropShadowColor: "#000000",
+			dropShadowDistance: 1,
+			stroke: "#000000",
+			strokeThickness: 1,
+		};
 
-	this.handInfoText = new CountDownText("<HandInfoText>", style);
-	this.handInfoText.position.y = 10;
-	this.handInfoText.position.x = 10; //960 - this.handInfoText.width;
-	this.addChild(this.handInfoText);
+		this.handInfoText = new CountDownText("<HandInfoText>", style);
+		this.handInfoText.position.y = 10;
+		this.handInfoText.position.x = 10; //960 - this.handInfoText.width;
+		this.addChild(this.handInfoText);
 
-	this.joinButton = new DialogButton(this.resources);
-	this.joinButton.position.x = 355;
-	this.joinButton.setText("JOIN");
-	this.joinButton.visible = false;
-	this.joinButton.on("click", this.onButtonClick, this);
-	this.addChild(this.joinButton);
+		this.joinButton = new DialogButton(this.client);
+		this.joinButton.position.x = 355;
+		this.joinButton.setText("JOIN");
+		this.joinButton.visible = false;
+		this.joinButton.on("click", this.onButtonClick, this);
+		this.addChild(this.joinButton);
 
-	this.leaveButton = new DialogButton(this.resources);
-	this.leaveButton.position.x = 355;
-	this.leaveButton.setText("LEAVE");
-	this.leaveButton.visible = false;
-	this.leaveButton.on("click", this.onButtonClick, this);
-	this.addChild(this.leaveButton);
+		this.leaveButton = new DialogButton(this.client);
+		this.leaveButton.position.x = 355;
+		this.leaveButton.setText("LEAVE");
+		this.leaveButton.visible = false;
+		this.leaveButton.on("click", this.onButtonClick, this);
+		this.addChild(this.leaveButton);
 
-	var style = {
-		font: "bold 24px Times New Roman",
-		fill: "#ffffff",
-		dropShadow: true,
-		dropShadowColor: "#000000",
-		dropShadowDistance: 2,
-		stroke: "#000000",
-		strokeThickness: 2
-	};
+		var style = {
+			fontFamily: "Times New Roman",
+			fontSize: 24,
+			fontWeight: "bold",
+			fill: "#ffffff",
+			dropShadow: true,
+			dropShadowColor: "#000000",
+			dropShadowDistance: 2,
+			stroke: "#000000",
+			strokeThickness: 2
+		};
 
-	this.tournamentResultLeftField = new PIXI.Text("<left>", style);
-	this.addChild(this.tournamentResultLeftField);
+		this.tournamentResultLeftField = new PIXI.Text("<left>", style);
+		this.addChild(this.tournamentResultLeftField);
 
-	var style2 = ObjectUtil.copy(style);
-	style2.align = 'right';
+		var style2 = {...style};
+		style2.align = 'right';
 
-	this.tournamentResultRightField = new PIXI.Text("<right>", style2);
-	this.addChild(this.tournamentResultRightField);
+		this.tournamentResultRightField = new PIXI.Text("<right>", style2);
+		this.addChild(this.tournamentResultRightField);
 
-	this.tournamentResultLeftField.y = 260;
-	this.tournamentResultRightField.y = 260;
-}
+		this.tournamentResultLeftField.y = 260;
+		this.tournamentResultRightField.y = 260;
+	}
 
-inherits(TableInfoView, PIXI.DisplayObjectContainer);
-EventDispatcher.init(TableInfoView);
+	/**
+	 * Set left and right column.
+	 * @method setTournamentResultText
+	 */
+	setTournamentResultText(left, right) {
+		this.tournamentResultLeftField.text=left;
+		this.tournamentResultRightField.text=right;
 
-TableInfoView.BUTTON_CLICK = "buttonClick";
+		this.tournamentResultLeftField.x = 480 - 180;
+		this.tournamentResultRightField.x = 480 + 180 - this.tournamentResultRightField.width;
 
-/**
- * Set left and right column.
- * @method setTournamentResultText
- */
-TableInfoView.prototype.setTournamentResultText = function(left, right) {
-	this.tournamentResultLeftField.setText(left);
-	this.tournamentResultRightField.setText(right);
+		var h = this.tournamentResultLeftField.height;
 
-	this.tournamentResultLeftField.x = 480 - 180;
-	this.tournamentResultRightField.x = 480 + 180 - this.tournamentResultRightField.width;
+		this.tournamentResultLeftField.y = 300 - h / 2;
+		this.tournamentResultRightField.y = 300 - h / 2;
+	}
 
-	var h = this.tournamentResultLeftField.height;
+	/**
+	 * Set table info text.
+	 * @method setTableInfoText
+	 */
+	setTableInfoText(s) {
+		if (!s)
+			s = "";
 
-	this.tournamentResultLeftField.y = 300 - h / 2;
-	this.tournamentResultRightField.y = 300 - h / 2;
-}
+		this.tableInfoText.text=s;
+		this.joinButton.position.y = this.tableInfoText.position.y + this.tableInfoText.height + 5;
+		this.leaveButton.position.y = this.tableInfoText.position.y + this.tableInfoText.height + 5;
+	}
 
-/**
- * Set table info text.
- * @method setTableInfoText
- */
-TableInfoView.prototype.setTableInfoText = function(s) {
-	if (!s)
-		s = "";
+	/**
+	 * Set pre tournament info text.
+	 * @method setPreTournamentInfoText
+	 */
+	setPreTournamentInfoText(s, countDown) {
+		if (!s)
+			s = "";
 
-	this.tableInfoText.setText(s);
-	this.joinButton.position.y = this.tableInfoText.position.y + this.tableInfoText.height + 5;
-	this.leaveButton.position.y = this.tableInfoText.position.y + this.tableInfoText.height + 5;
-}
+		this.preTournamentInfoText.setText(s);
+		this.preTournamentInfoText.setTimeLeft(countDown);
+		this.preTournamentInfoText.position.x = 960 / 2 - this.preTournamentInfoText.width / 2;
+	}
 
-/**
- * Set pre tournament info text.
- * @method setPreTournamentInfoText
- */
-TableInfoView.prototype.setPreTournamentInfoText = function(s, countDown) {
-	if (!s)
-		s = "";
+	/**
+	 * Join button.
+	 * @method setJoinButtonVisible
+	 */
+	setJoinButtonVisible(value) {
+		this.joinButton.visible = value;
+	}
 
-	this.preTournamentInfoText.setText(s);
-	this.preTournamentInfoText.setTimeLeft(countDown);
-	this.preTournamentInfoText.position.x = 960 / 2 - this.preTournamentInfoText.width / 2;
-}
+	/**
+	 * Join button
+	 * @method setLeaveButtonVisible
+	 */
+	setLeaveButtonVisible(value) {
+		this.leaveButton.visible = value;
+	}
 
-/**
- * Join button.
- * @method setJoinButtonVisible
- */
-TableInfoView.prototype.setJoinButtonVisible = function(value) {
-	this.joinButton.visible = value;
-}
+	/**
+	 * Set hand info text.
+	 * @method setTableInfoText
+	 */
+	setHandInfoText(s, countdown) {
+		if (!s)
+			s = "";
 
-/**
- * Join button
- * @method setLeaveButtonVisible
- */
-TableInfoView.prototype.setLeaveButtonVisible = function(value) {
-	this.leaveButton.visible = value;
-}
+		this.handInfoText.setText(s);
+		this.handInfoText.setTimeLeft(countdown);
+		this.handInfoText.updateTransform();
+	}
 
-/**
- * Set hand info text.
- * @method setTableInfoText
- */
-TableInfoView.prototype.setHandInfoText = function(s, countdown) {
-	if (!s)
-		s = "";
+	/**
+	 * Clear.
+	 * @method clear
+	 */
+	clear() {
+		this.handInfoText.setText("");
+		this.preTournamentInfoText.setText("");
 
-	this.handInfoText.setText(s);
-	this.handInfoText.setTimeLeft(countdown);
-	this.handInfoText.updateTransform();
-}
+		this.tableInfoText.text="";
+		this.tournamentResultLeftField.text="";
+		this.tournamentResultRightField.text="";
+		this.joinButton.visible = false;
+		this.leaveButton.visible = false;
+	}
 
-/**
- * Clear.
- * @method clear
- */
-TableInfoView.prototype.clear = function() {
-	this.tableInfoText.setText("");
-	this.handInfoText.setText("");
-	this.preTournamentInfoText.setText("");
-	this.tournamentResultLeftField.setText("");
-	this.tournamentResultRightField.setText("");
-	this.joinButton.visible = false;
-	this.leaveButton.visible = false;
-}
+	/**
+	 * Button click
+	 * @method onButtonClick
+	 * @private
+	 */
+	onButtonClick(e) {
+		this.joinButton.visible = false;
+		this.leaveButton.visible = false;
 
-/**
- * Button click
- * @method onButtonClick
- * @private
- */
-TableInfoView.prototype.onButtonClick = function(e) {
-	this.joinButton.visible = false;
-	this.leaveButton.visible = false;
+		var ev = {
+			type: TableInfoView.BUTTON_CLICK
+		};
 
-	var ev = {
-		type: TableInfoView.BUTTON_CLICK
-	};
+		if (e.target == this.joinButton)
+			ev.button = ButtonData.JOIN_TOURNAMENT;
 
-	if (e.target == this.joinButton)
-		ev.button = ButtonData.JOIN_TOURNAMENT;
+		if (e.target == this.leaveButton)
+			ev.button = ButtonData.LEAVE_TOURNAMENT;
 
-	if (e.target == this.leaveButton)
-		ev.button = ButtonData.LEAVE_TOURNAMENT;
-
-	console.log("button click");
-	this.trigger(ev);
+		console.log("button click");
+		this.emit(ev);
+	}
 }
 
 module.exports = TableInfoView;

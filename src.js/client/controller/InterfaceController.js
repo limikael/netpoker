@@ -93,9 +93,9 @@ class InterfaceController {
 	onTableInfoMessage=(m)=>{
 		var tableInfoView = this.view.getTableInfoView();
 
-		tableInfoView.setTableInfoText(m.getText());
-		tableInfoView.setJoinButtonVisible(m.getShowJoinButton());
-		tableInfoView.setLeaveButtonVisible(m.getShowLeaveButton());
+		tableInfoView.setTableInfoText(m.text);
+		tableInfoView.setJoinButtonVisible(m.showJoinButton);
+		tableInfoView.setLeaveButtonVisible(m.showLeaveButton);
 	}
 
 	/**
@@ -105,7 +105,7 @@ class InterfaceController {
 	onHandInfoMessage=(m)=>{
 		var tableInfoView = this.view.getTableInfoView();
 
-		tableInfoView.setHandInfoText(m.getText(), m.getCountDown());
+		tableInfoView.setHandInfoText(m.text, m.countdown);
 	}
 
 	/**

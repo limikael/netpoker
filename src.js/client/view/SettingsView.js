@@ -3,11 +3,9 @@
  * @module client
  */
 
-var PIXI = require("pixi.js");
-var TWEEN = require("tween.js");
+var TWEEN = require('@tweenjs/tween.js');
 var Button = require("../../utils/Button");
 var NineSlice = require("../../utils/NineSlice");
-var EventDispatcher = require("yaed");
 var SettingsCheckbox = require("./SettingsCheckbox");
 var RaiseShortcutButton = require("./RaiseShortcutButton");
 var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
