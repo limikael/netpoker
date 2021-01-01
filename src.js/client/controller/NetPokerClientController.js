@@ -90,7 +90,7 @@ class NetPokerClientController {
 	 * On send chat message.
 	 * @method onViewChat
 	 */
-	onChat = function(text) {
+	onChat=(text)=>{
 		this.connection.send("chat",{
 			text: text
 		});

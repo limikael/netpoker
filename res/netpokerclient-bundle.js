@@ -1864,7 +1864,7 @@ class InterfaceController {
 	onInterfaceStateMessage=(m)=>{
 		var settingsView = this.view.getSettingsView();
 
-		settingsView.setVisibleButtons(m.getVisibleButtons());
+		settingsView.setVisibleButtons(m.visibleButtons);
 	}
 
 	/**
@@ -2004,7 +2004,7 @@ class NetPokerClientController {
 	 * On send chat message.
 	 * @method onViewChat
 	 */
-	onChat = function(text) {
+	onChat=(text)=>{
 		this.connection.send("chat",{
 			text: text
 		});
@@ -3939,7 +3939,7 @@ class NetPokerClientView extends PIXI.Container {
 		this.buttonsView.clear();
 
 		this.tableInfoView.clear();
-		//this.settingsView.clear();
+		this.settingsView.clear();
 		//this.tableButtonsView.clear();
 
 		if (this.fadeTableTween) {
@@ -4725,16 +4725,16 @@ class SettingsView extends PIXI.Container {
 	 * @method clear
 	 */
 	clear() {
-		this.buyChipsButton.enabled = true;
+		//this.buyChipsButton.enabled = true;
 		this.setVisibleButtons([]);
 
-		this.setCheckboxChecked(CheckboxMessage.AUTO_POST_BLINDS, false);
-		this.setCheckboxChecked(CheckboxMessage.AUTO_MUCK_LOSING, false);
-		this.setCheckboxChecked(CheckboxMessage.SITOUT_NEXT, false);
+		this.setCheckboxChecked("autoPostBlinds", false);
+		this.setCheckboxChecked("autoMuckLosing", false);
+		this.setCheckboxChecked("sitoutNext", false);
 
 		this.settingsMenu.visible = false;
 		if (this.settingsMenu.visible)
-			this.stage.mousedown = null;
+			PixiUtil.findTopParent(this).off("mousedown",this.onStageMouseDown);
 	}
 
 	/**
@@ -4742,11 +4742,11 @@ class SettingsView extends PIXI.Container {
 	 * @method setVisibleButtons
 	 */
 	setVisibleButtons = function(buttons) {
-		this.buyChipsButton.visible = buttons.indexOf(ButtonData.BUY_CHIPS) != -1;
-		this.settings[CheckboxMessage.AUTO_POST_BLINDS].visible = buttons.indexOf(CheckboxMessage.AUTO_POST_BLINDS) >= 0;
-		this.settings[CheckboxMessage.SITOUT_NEXT].visible = buttons.indexOf(CheckboxMessage.SITOUT_NEXT) >= 0;
+		//this.buyChipsButton.visible = buttons.indexOf(ButtonData.BUY_CHIPS) != -1;
+		this.settings["autoPostBlinds"].visible = buttons.indexOf("autoPostBlinds") >= 0;
+		this.settings["sitoutNext"].visible = buttons.indexOf("sitoutNext") >= 0;
 
-		var yp = 543;
+		/*var yp = 543;
 
 		if (this.buyChipsButton.visible) {
 			this.buyChipsButton.y = yp;
@@ -4763,7 +4763,7 @@ class SettingsView extends PIXI.Container {
 		if (this.settings[CheckboxMessage.SITOUT_NEXT].visible) {
 			this.settings[CheckboxMessage.SITOUT_NEXT].y = yp;
 			yp += 25;
-		}
+		}*/
 	}
 
 	/**
@@ -5984,7 +5984,6 @@ class MouseOverGroup extends EventEmitter {
 			return;
 
 		for(var i = 0; i < this.objects.length; i++)
-			//if(this.hitTest(this.objects[i],e.data.global))
 			if (PixiUtil.globalHitTest(this.objects[i],e.data.global))
 				return;
 
@@ -6022,7 +6021,6 @@ class MouseOverGroup extends EventEmitter {
 
 			for(var i = 0; i < this.objects.length; i++)
 				if (PixiUtil.globalHitTest(this.objects[i],e.data.global))
-//				if(this.hitTest(this.objects[i],e.data.global))
 					over = true;
 
 			if(!over) {

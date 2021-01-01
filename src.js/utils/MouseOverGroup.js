@@ -51,7 +51,6 @@ class MouseOverGroup extends EventEmitter {
 			return;
 
 		for(var i = 0; i < this.objects.length; i++)
-			//if(this.hitTest(this.objects[i],e.data.global))
 			if (PixiUtil.globalHitTest(this.objects[i],e.data.global))
 				return;
 
@@ -89,7 +88,6 @@ class MouseOverGroup extends EventEmitter {
 
 			for(var i = 0; i < this.objects.length; i++)
 				if (PixiUtil.globalHitTest(this.objects[i],e.data.global))
-//				if(this.hitTest(this.objects[i],e.data.global))
 					over = true;
 
 			if(!over) {

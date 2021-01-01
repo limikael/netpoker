@@ -115,7 +115,7 @@ class InterfaceController {
 	onInterfaceStateMessage=(m)=>{
 		var settingsView = this.view.getSettingsView();
 
-		settingsView.setVisibleButtons(m.getVisibleButtons());
+		settingsView.setVisibleButtons(m.visibleButtons);
 	}
 
 	/**

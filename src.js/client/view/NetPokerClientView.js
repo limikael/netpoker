@@ -402,7 +402,7 @@ class NetPokerClientView extends PIXI.Container {
 		this.buttonsView.clear();
 
 		this.tableInfoView.clear();
-		//this.settingsView.clear();
+		this.settingsView.clear();
 		//this.tableButtonsView.clear();
 
 		if (this.fadeTableTween) {
