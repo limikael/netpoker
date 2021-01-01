@@ -162,7 +162,7 @@ class InterfaceController {
 	onTableButtonsMessage=(m)=>{
 		var tableButtonsView = this.view.getTableButtonsView();
 
-		tableButtonsView.showButtons(m.getEnabled(), m.getCurrentIndex());
+		tableButtonsView.showButtons(m.enabled, m.currentIndex);
 	}
 }
 

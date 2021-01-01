@@ -3,7 +3,7 @@
  * @module client
  */
 
-//var TableButtonsView = require("./TableButtonsView");
+const TableButtonsView = require("./TableButtonsView");
 const SettingsView = require("../view/SettingsView");
 const TableInfoView = require("../view/TableInfoView");
 const PresetButtonsView = require("../view/PresetButtonsView");
@@ -70,8 +70,8 @@ class NetPokerClientView extends PIXI.Container {
 		this.presetButtonsView = new PresetButtonsView(this.client);
 		this.addChild(this.presetButtonsView);
 
-		/*this.tableButtonsView = new TableButtonsView(this.client);
-		this.addChild(this.tableButtonsView);*/
+		this.tableButtonsView = new TableButtonsView(this.client);
+		this.addChild(this.tableButtonsView);
 
 		this.setupChips();
 
@@ -337,8 +337,8 @@ class NetPokerClientView extends PIXI.Container {
 		this.fadeTableTween = new TWEEN.Tween(this.tableContainer);
 		this.fadeTableTween.easing(TWEEN.Easing.Quadratic.InOut);
 		this.fadeTableTween.onComplete(completeFunction);
-//		this.fadeTableTween.to(target, 250);
-		this.fadeTableTween.to(target, 5000);
+		this.fadeTableTween.to(target, 250);
+//		this.fadeTableTween.to(target, 5000);
 		this.fadeTableTween.start();
 		TWEEN.add(this.fadeTableTween);
 	}
@@ -410,7 +410,7 @@ class NetPokerClientView extends PIXI.Container {
 
 		this.tableInfoView.clear();
 		this.settingsView.clear();
-		//this.tableButtonsView.clear();
+		this.tableButtonsView.clear();
 
 		if (this.fadeTableTween) {
 			this.fadeTableTween.stop();

@@ -18,7 +18,7 @@
 {"animate":false,"firstIndex":0,"cards":[-1,-1],"seatIndex":4,"type":"pocketCards"}
 {"values":[2],"type":"pot"}
 {"animate":false,"firstIndex":0,"cards":[],"type":"communityCards"}
-//{"currentIndex":0,"playerIndex":-1,"enabled":[true,true],"infoLink":"","type":"tableButtons"}
+{"currentIndex":0,"playerIndex":-1,"enabled":[true,true],"infoLink":"","type":"tableButtons"}
 {"type":"stateComplete"}
 {"text":"","showJoinButton":false,"showLeaveButton":false,"infoLink":null,"infoLinkText":null,"type":"tableInfo"}
 {"type":"stateComplete"}
@@ -54,7 +54,7 @@
 {"animate":false,"firstIndex":0,"cards":[-1,-1],"seatIndex":4,"type":"pocketCards"}
 {"values":[4,5],"type":"pot"}
 {"animate":false,"firstIndex":0,"cards":[],"type":"communityCards"}
-//{"currentIndex":1,"playerIndex":-1,"enabled":[true,true],"infoLink":"","type":"tableButtons"}
+{"currentIndex":1,"playerIndex":-1,"enabled":[true,true],"infoLink":"","type":"tableButtons"}
 {"type":"stateComplete"}
 
 {"visible":true,"direction":"left","type":"fadeTable"}

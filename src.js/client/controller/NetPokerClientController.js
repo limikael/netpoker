@@ -31,7 +31,7 @@ class NetPokerClientController {
 		this.netPokerClientView.getSettingsView().on("checkboxChange", this.onCheckboxChange);
 
 		this.netPokerClientView.getPresetButtonsView().on("change", this.onPresetButtonsChange);
-		//this.netPokerClientView.getTableButtonsView().on(TableButtonsView.TABLE_CLICK, this.onTableButtonClick, this);*/
+		this.netPokerClientView.getTableButtonsView().on("tableClick", this.onTableButtonClick);
 
 		this.netPokerClientView.clear();
 		this.netPokerClientView.getLoadingScreen().show("CONNECTING");
@@ -133,7 +133,7 @@ class NetPokerClientController {
 	 * Checkbox change.
 	 * @method onCheckboxChange
 	 */
-	onCheckboxChange=(id, checked)=> {
+	onCheckboxChange=(id, checked)=>{
 		this.connection.send("checkbox",{
 			id: id,
 			checked: checked
@@ -144,9 +144,11 @@ class NetPokerClientController {
 	 * Table button click.
 	 * @method onTableButtonClick
 	 */
-	/*NetPokerClientController.prototype.onTableButtonClick = function(index) {
-		this.protoConnection.send(new TableButtonClickMessage(index));
-	}*/
+	onTableButtonClick=(index)=>{
+		this.connection.send("tableButtonClick",{
+			index: index
+		});
+	}
 }
 
 module.exports = NetPokerClientController;
