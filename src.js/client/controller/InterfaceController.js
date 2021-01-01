@@ -23,6 +23,11 @@ class InterfaceController {
 		this.eventQueue.on("tableButtons",this.onTableButtonsMessage);
 		this.eventQueue.on("tournamentResult",this.onTournamentResultMessage);
 		this.eventQueue.on("presetButtons",this.onPresetButtonsMessage);
+		this.eventQueue.on("stateComplete",this.onStateComplete);
+	}
+
+	onStateComplete=()=>{
+		this.view.getLoadingScreen().hide();
 	}
 
 	/**

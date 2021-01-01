@@ -3,6 +3,7 @@ const NetPokerClientView=require("../view/NetPokerClientView");
 const NetPokerClientController=require("../controller/NetPokerClientController");
 const MessageConnection=require("../../utils/MessageConnection");
 const PixiApp=require("../../utils/PixiApp");
+const PromiseUtil=require("../../utils/PromiseUtil");
 const TRANSLATIONS=require("./translations");
 
 class NetPokerClient extends PixiApp {
@@ -28,12 +29,36 @@ class NetPokerClient extends PixiApp {
 		this.addChild(this.clientView);
 		this.clientController=new NetPokerClientController(this.clientView);
 
+		// Connect!
 		this.connect();
 	}
 
 	async connect() {
-		this.connection=await MessageConnection.connect(this.params.serverUrl);
+		try {
+			console.log("connecting...");
+			this.connection=await MessageConnection.connect(this.params.serverUrl);
+			this.connection.on("close",this.waitAndReconnect);
+			this.clientController.setConnection(this.connection);
+		}
+
+		catch(e) {
+			this.connection=null;
+			this.waitAndReconnect();
+		}
+	}
+
+	waitAndReconnect=async ()=> {
+		console.log("on connection close");
+		if (this.connection) {
+			console.log(this.connection);
+			this.connection.removeListener("close",this.waitAndReconnect);
+		}
+
+		this.connection=null;
 		this.clientController.setConnection(this.connection);
+
+		await PromiseUtil.delay(5000);
+		await this.connect();
 	}
 
 	getResources() {

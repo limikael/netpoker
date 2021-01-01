@@ -6,7 +6,8 @@ class PixiApp extends PIXI.Container {
 		super();
 
 		this.app=new PIXI.Application({
-			antialias: true
+			antialias: true,
+			backgroundColor: 0xd8d8d8
 		});
 		this.app.renderer.autoDensity=true;
 		this.app.view.style.position="absolute";

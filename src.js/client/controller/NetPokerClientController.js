@@ -6,6 +6,7 @@
 const TableController = require("./TableController");
 const InterfaceController = require("./InterfaceController");
 const EventQueue=require("../../utils/EventQueue");
+const TWEEN = require('@tweenjs/tween.js');
 
 /**
  * Main controller
@@ -31,6 +32,9 @@ class NetPokerClientController {
 
 		this.netPokerClientView.getPresetButtonsView().on("change", this.onPresetButtonsChange);
 		//this.netPokerClientView.getTableButtonsView().on(TableButtonsView.TABLE_CLICK, this.onTableButtonClick, this);*/
+
+		this.netPokerClientView.clear();
+		this.netPokerClientView.getLoadingScreen().show("CONNECTING");
 	}
 
 	/**
@@ -42,9 +46,11 @@ class NetPokerClientController {
 			return;
 
 		if (this.connection)
-			this.connection.off("message",this.onConnectionMessage);
+			this.connection.removeListener("message",this.onConnectionMessage);
 
+		TWEEN.removeAll();
 		this.netPokerClientView.clear();
+		this.netPokerClientView.getLoadingScreen().show("CONNECTING");
 		this.eventQueue.clear();
 		this.connection=connection;
 

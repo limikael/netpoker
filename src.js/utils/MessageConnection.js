@@ -14,11 +14,22 @@ class MessageConnection extends EventEmitter {
 
 		this.webSocket=webSocket;
 		this.webSocket.addEventListener("message",this.onMessage);
+		this.webSocket.addEventListener("error",this.onClose);
+		this.webSocket.addEventListener("close",this.onClose);
 	}
 
 	send(type, message) {
 		message.type=type;
 		this.webSocket.send(JSON.stringify(message));
+	}
+
+	onClose=()=>{
+		console.log("message connection close");
+		this.webSocket.removeEventListener("message",this.onMessage);
+		this.webSocket.removeEventListener("error",this.onClose);
+		this.webSocket.removeEventListener("close",this.onClose);
+		this.webSocket=null;
+		this.emit("close");
 	}
 
 	onMessage=(event)=>{

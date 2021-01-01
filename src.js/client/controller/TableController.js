@@ -36,7 +36,7 @@ class TableController {
 	 * @method onFadeTableMessage
 	 */
 	onFadeTableMessage=(m)=>{
-		this.view.fadeTable(m.getVisible(), m.getDirection());
+		this.view.fadeTable(m.visible, m.direction);
 		this.eventQueue.waitFor(this.view, "fadeTableComplete");
 	}
 

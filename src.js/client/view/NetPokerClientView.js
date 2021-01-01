@@ -18,6 +18,7 @@ const CardView = require("./CardView");
 const SeatView = require("./SeatView");
 const TWEEN = require('@tweenjs/tween.js');
 const Gradient = require("../../utils/Gradient");
+const LoadingScreen=require("./LoadingScreen");
 
 /**
  * Net poker client view.
@@ -73,6 +74,9 @@ class NetPokerClientView extends PIXI.Container {
 		this.addChild(this.tableButtonsView);*/
 
 		this.setupChips();
+
+		this.loadingScreen=new LoadingScreen(this.client);
+		this.addChild(this.loadingScreen);
 
 		this.fadeTableTween = null;
 	}
@@ -277,6 +281,13 @@ class NetPokerClientView extends PIXI.Container {
 	}
 
 	/**
+	 * Get loading screen.
+	 */
+	getLoadingScreen() {
+		return this.loadingScreen;
+	}
+
+	/**
 	 * Fade table.
 	 * @method fadeTable
 	 */
@@ -293,11 +304,11 @@ class NetPokerClientView extends PIXI.Container {
 		var dirMultiplier = 0;
 
 		switch (direction) {
-			case FadeTableMessage.LEFT:
+			case "left":
 				dirMultiplier = -1;
 				break;
 
-			case FadeTableMessage.RIGHT:
+			case "right":
 				dirMultiplier = 1;
 				break;
 
@@ -314,24 +325,20 @@ class NetPokerClientView extends PIXI.Container {
 			this.tableContainer.x = -100 * dirMultiplier;
 			target.alpha = 1;
 			target.x = 0;
-			completeFunction = this.onFadeInComplete.bind(this);
+			completeFunction = this.onFadeInComplete;
 		} else {
 			this.tableContainer.alpha = 1;
 			this.tableContainer.x = 0;
 			target.alpha = 0;
 			target.x = 100 * dirMultiplier;
-			completeFunction = this.onFadeOutComplete.bind(this);
+			completeFunction = this.onFadeOutComplete;
 		}
-
-		var original = {
-			x: this.tableContainer.x,
-			alpha: this.tableContainer.alpha
-		};
 
 		this.fadeTableTween = new TWEEN.Tween(this.tableContainer);
 		this.fadeTableTween.easing(TWEEN.Easing.Quadratic.InOut);
 		this.fadeTableTween.onComplete(completeFunction);
-		this.fadeTableTween.to(target, this.viewConfig.scaleAnimationTime(250));
+//		this.fadeTableTween.to(target, 250);
+		this.fadeTableTween.to(target, 5000);
 		this.fadeTableTween.start();
 		TWEEN.add(this.fadeTableTween);
 	}
@@ -350,7 +357,7 @@ class NetPokerClientView extends PIXI.Container {
 		this.fadeTableTween = null;
 		this.clearTableContents();
 
-		this.trigger(NetPokerClientView.FADE_TABLE_COMPLETE);
+		this.emit("fadeTableComplete");
 	}
 
 	/**
@@ -366,7 +373,7 @@ class NetPokerClientView extends PIXI.Container {
 		this.fadeTableTween.stop();
 		this.fadeTableTween = null;
 
-		this.trigger(NetPokerClientView.FADE_TABLE_COMPLETE);
+		this.emit("fadeTableComplete");
 	}
 
 	/**
