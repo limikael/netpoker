@@ -1580,7 +1580,6 @@ class NetPokerClient extends PixiApp {
 
 	async connect() {
 		try {
-			console.log("connecting...");
 			this.connection=await MessageConnection.connect(this.params.serverUrl);
 			this.connection.on("close",this.waitAndReconnect);
 			this.clientController.setConnection(this.connection);
@@ -1593,9 +1592,7 @@ class NetPokerClient extends PixiApp {
 	}
 
 	waitAndReconnect=async ()=> {
-		console.log("on connection close");
 		if (this.connection) {
-			console.log(this.connection);
 			this.connection.removeListener("close",this.waitAndReconnect);
 		}
 
@@ -6057,7 +6054,7 @@ module.exports = Gradient;
 },{}],40:[function(require,module,exports){
 let WebSocket;
 
-if (window.WebSocket)
+if (typeof window !== 'undefined' && window.WebSocket)
 	WebSocket=window.WebSocket
 
 else
@@ -6081,7 +6078,6 @@ class MessageConnection extends EventEmitter {
 	}
 
 	onClose=()=>{
-		console.log("message connection close");
 		this.webSocket.removeEventListener("message",this.onMessage);
 		this.webSocket.removeEventListener("error",this.onClose);
 		this.webSocket.removeEventListener("close",this.onClose);
@@ -6114,12 +6110,12 @@ class MessageConnection extends EventEmitter {
 		return new Promise((resolve, reject)=>{
 			let webSocket=new WebSocket(url);
 			webSocket.onopen=()=>{
-				console.log("connected...");
+				//console.log("connected...");
 				resolve(new MessageConnection(webSocket));
 			}
 
 			webSocket.onerror=(err)=>{
-				console.log("connection failed...");
+				//console.log("connection failed...");
 				reject(err);
 			}
 		});

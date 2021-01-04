@@ -1,6 +1,6 @@
 let WebSocket;
 
-if (window.WebSocket)
+if (typeof window !== 'undefined' && window.WebSocket)
 	WebSocket=window.WebSocket
 
 else
@@ -24,7 +24,6 @@ class MessageConnection extends EventEmitter {
 	}
 
 	onClose=()=>{
-		console.log("message connection close");
 		this.webSocket.removeEventListener("message",this.onMessage);
 		this.webSocket.removeEventListener("error",this.onClose);
 		this.webSocket.removeEventListener("close",this.onClose);
@@ -57,12 +56,12 @@ class MessageConnection extends EventEmitter {
 		return new Promise((resolve, reject)=>{
 			let webSocket=new WebSocket(url);
 			webSocket.onopen=()=>{
-				console.log("connected...");
+				//console.log("connected...");
 				resolve(new MessageConnection(webSocket));
 			}
 
 			webSocket.onerror=(err)=>{
-				console.log("connection failed...");
+				//console.log("connection failed...");
 				reject(err);
 			}
 		});

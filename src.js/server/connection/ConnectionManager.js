@@ -1,4 +1,5 @@
 const WebSocket=require("ws");
+const UserConnection=require("./UserConnection");
 const EventEmiter=require("events");
 const querystring=require("querystring");
 const url=require("url");
@@ -35,14 +36,11 @@ class ConnectionManager extends EventEmiter {
 		}
 
 		else {
-			console.log("strange connection...");
-			ws.close();
+			let userConnection=new UserConnection(this.server,ws,params);
+			await userConnection.initialize();
+			this.emit("connection",userConnection);
 		}
 
-/*		let userConnection=new UserConnection(ws,req);
-
-		await userConnection.initialize();
-		this.emit("connection",userConnection);*/
 	}
 }
 

@@ -2,6 +2,7 @@ const ConnectionManager=require("../connection/ConnectionManager");
 const ServerApi=require("./ServerApi");
 const ApiProxy=require("../../utils/ApiProxy");
 const MockWebServer=require("../mock/MockWebServer");
+const MockBackend=require("../mock/MockBackend");
 const http=require("http");
 
 class NetPokerServer {
@@ -11,12 +12,16 @@ class NetPokerServer {
 	}
 
 	onUserConnection=(userConnection)=>{
-		console.log("user connection!!")
+		console.log("user connection: "+userConnection.getUser().getName());
 	}
 
 	getSettingsError() {
 		if (!this.options.port)
 			return "Need port!!!";
+	}
+
+	getBackend() {
+		return this.backend;
 	}
 
 	async run() {
@@ -28,6 +33,7 @@ class NetPokerServer {
 			console.log("Running in mocked mode!");
 			this.mockWebServer=new MockWebServer(this);
 			callHandler=this.mockWebServer.handleCall;
+			this.backend=new MockBackend(this);
 		}
 
 		this.httpServer=http.createServer(callHandler);

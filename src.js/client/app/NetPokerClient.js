@@ -35,7 +35,6 @@ class NetPokerClient extends PixiApp {
 
 	async connect() {
 		try {
-			console.log("connecting...");
 			this.connection=await MessageConnection.connect(this.params.serverUrl);
 			this.connection.on("close",this.waitAndReconnect);
 			this.clientController.setConnection(this.connection);
@@ -48,9 +47,7 @@ class NetPokerClient extends PixiApp {
 	}
 
 	waitAndReconnect=async ()=> {
-		console.log("on connection close");
 		if (this.connection) {
-			console.log(this.connection);
 			this.connection.removeListener("close",this.waitAndReconnect);
 		}
 
