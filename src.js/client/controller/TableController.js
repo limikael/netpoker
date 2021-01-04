@@ -196,23 +196,23 @@ class TableController {
 	 * @method onClear
 	 */
 	onClearMessage=(m)=>{
-		var components = m.getComponents();
+		var components = m.components;
 
 		for (var i = 0; i < components.length; i++) {
 			switch (components[i]) {
-				case ClearMessage.POT:
+				case "pot":
 					{
 						this.view.potView.setValues([]);
 						break;
 					}
-				case ClearMessage.BETS:
+				case "bets":
 					{
 						for (var s = 0; s < this.view.seatViews.length; s++) {
 							this.view.seatViews[s].betChips.setValue(0);
 						}
 						break;
 					}
-				case ClearMessage.CARDS:
+				case "cards":
 					{
 						for (var s = 0; s < this.view.seatViews.length; s++) {
 							for (var c = 0; c < this.view.seatViews[s].pocketCards.length; c++) {
@@ -225,7 +225,7 @@ class TableController {
 						}
 						break;
 					}
-				case ClearMessage.CHAT:
+				case "chat":
 					{
 						this.view.chatView.clear();
 						break;
