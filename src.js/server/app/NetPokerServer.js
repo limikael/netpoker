@@ -1,4 +1,5 @@
 const ConnectionManager=require("../connection/ConnectionManager");
+const CashGameManager=require("../cashgame/CashGameManager");
 const ServerApi=require("./ServerApi");
 const ApiProxy=require("../../utils/ApiProxy");
 const MockWebServer=require("../mock/MockWebServer");
@@ -35,6 +36,9 @@ class NetPokerServer {
 			callHandler=this.mockWebServer.handleCall;
 			this.backend=new MockBackend(this);
 		}
+
+		this.cashGameManager=new CashGameManager(this);
+		await this.cashGameManager.initialize();
 
 		this.httpServer=http.createServer(callHandler);
 		this.httpServer.listen(this.options.port);
