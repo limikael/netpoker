@@ -1620,7 +1620,7 @@ class NetPokerClient extends PixiApp {
 
 module.exports=NetPokerClient;
 
-},{"../../utils/MessageConnection":41,"../../utils/PixiApp":44,"../../utils/PromiseUtil":46,"../controller/NetPokerClientController":10,"../view/NetPokerClientView":22,"./Resources":6,"./translations":8}],6:[function(require,module,exports){
+},{"../../utils/MessageConnection":40,"../../utils/PixiApp":43,"../../utils/PromiseUtil":45,"../controller/NetPokerClientController":10,"../view/NetPokerClientView":22,"./Resources":6,"./translations":8}],6:[function(require,module,exports){
 const THEME=require("./theme.js");
 
 class Resources {
@@ -1650,10 +1650,14 @@ class Resources {
 	}
 
 	async load() {
-		await new Promise((resolve,reject)=>{
-			PIXI.Loader.shared.add(this.spriteSheetUrl);
-			PIXI.Loader.shared.load(resolve);
-		});
+		if (!window.loadingPromise) {
+			window.loadingPromise=new Promise((resolve,reject)=>{
+				PIXI.Loader.shared.add(this.spriteSheetUrl);
+				PIXI.Loader.shared.load(resolve);
+			});
+		}
+
+		await window.loadingPromise;
 
 		this.sheet=PIXI.Loader.shared.resources[this.spriteSheetUrl];
 	}
@@ -2096,7 +2100,7 @@ class NetPokerClientController {
 }
 
 module.exports = NetPokerClientController;
-},{"../../utils/EventQueue":39,"./InterfaceController":9,"./TableController":11,"@tweenjs/tween.js":1}],11:[function(require,module,exports){
+},{"../../utils/EventQueue":38,"./InterfaceController":9,"./TableController":11,"@tweenjs/tween.js":1}],11:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -2349,22 +2353,24 @@ class TableController {
 }
 
 module.exports = TableController;
-},{"../../data/CardData":33,"../../utils/Timeout":50}],12:[function(require,module,exports){
+},{"../../data/CardData":33,"../../utils/Timeout":49}],12:[function(require,module,exports){
 const NetPokerClient=require("./app/NetPokerClient");
-const ArrayUtil=require("../utils/ArrayUtil");
 
-(function($) {
-	$.fn.netpoker=function(params) {
-		$(this).each(function() {
-			let paramsCopy={...params};
-			paramsCopy.element=$(this)[0];
-			let netPokerClient=new NetPokerClient(paramsCopy);
-			netPokerClient.run();
-		});
-	}
-})(jQuery);
+if (window.jQuery) {
+	(function($) {
+		$.fn.netpoker=function(params) {
+			$(this).each(function() {
+				let paramsCopy={...params};
+				paramsCopy.element=$(this)[0];
+				let netPokerClient=new NetPokerClient(paramsCopy);
+				netPokerClient.run();
+			});
+		}
+	})(jQuery);
+}
 
-},{"../utils/ArrayUtil":34,"./app/NetPokerClient":5}],13:[function(require,module,exports){
+window.NetPokerClient=NetPokerClient;
+},{"./app/NetPokerClient":5}],13:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -2453,7 +2459,7 @@ class BigButton extends Button {
 }
 
 module.exports = BigButton;
-},{"../../utils/Button":35}],14:[function(require,module,exports){
+},{"../../utils/Button":34}],14:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -2585,7 +2591,7 @@ class ButtonsView extends PIXI.Container {
 }
 
 module.exports = ButtonsView;
-},{"../../utils/Button":35,"../../utils/NineSlice":43,"../../utils/Slider":47,"./BigButton":13}],15:[function(require,module,exports){
+},{"../../utils/Button":34,"../../utils/NineSlice":42,"../../utils/Slider":46,"./BigButton":13}],15:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3009,7 +3015,7 @@ class ChatView extends PIXI.Container {
 }
 
 module.exports = ChatView;
-},{"../../utils/MouseOverGroup":42,"../../utils/NineSlice":43,"../../utils/Slider":47,"../../utils/TextInput":49}],18:[function(require,module,exports){
+},{"../../utils/MouseOverGroup":41,"../../utils/NineSlice":42,"../../utils/Slider":46,"../../utils/TextInput":48}],18:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3572,7 +3578,7 @@ class DialogView extends PIXI.Container {
 }
 
 module.exports = DialogView;
-},{"../../utils/NineSlice":43,"../../utils/TextButton":48,"../../utils/TextInput":49}],21:[function(require,module,exports){
+},{"../../utils/NineSlice":42,"../../utils/TextButton":47,"../../utils/TextInput":48}],21:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -3632,7 +3638,7 @@ class LoadingScreen extends PIXI.Container {
 }
 
 module.exports = LoadingScreen;
-},{"../../utils/Gradient":40}],22:[function(require,module,exports){
+},{"../../utils/Gradient":39}],22:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -4059,7 +4065,7 @@ class NetPokerClientView extends PIXI.Container {
 
 module.exports = NetPokerClientView;
 
-},{"../../utils/Gradient":40,"../view/PresetButtonsView":25,"../view/SettingsView":29,"../view/TableInfoView":31,"./ButtonsView":14,"./CardView":16,"./ChatView":17,"./ChipsView":18,"./DealerButtonView":19,"./DialogView":20,"./LoadingScreen":21,"./PotView":23,"./SeatView":26,"./TableButtonsView":30,"./TimerView":32,"@tweenjs/tween.js":1}],23:[function(require,module,exports){
+},{"../../utils/Gradient":39,"../view/PresetButtonsView":25,"../view/SettingsView":29,"../view/TableInfoView":31,"./ButtonsView":14,"./CardView":16,"./ChatView":17,"./ChipsView":18,"./DealerButtonView":19,"./DialogView":20,"./LoadingScreen":21,"./PotView":23,"./SeatView":26,"./TableButtonsView":30,"./TimerView":32,"@tweenjs/tween.js":1}],23:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -4262,7 +4268,7 @@ class PresetButton extends PIXI.Container {
 }
 
 module.exports = PresetButton;
-},{"../../utils/Checkbox":36,"@tweenjs/tween.js":1}],25:[function(require,module,exports){
+},{"../../utils/Checkbox":35,"@tweenjs/tween.js":1}],25:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -4587,7 +4593,7 @@ class SeatView extends Button {
 }
 
 module.exports = SeatView;
-},{"../../utils/Button":35,"@tweenjs/tween.js":1}],27:[function(require,module,exports){
+},{"../../utils/Button":34,"@tweenjs/tween.js":1}],27:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -4660,7 +4666,7 @@ class SelectTableButton extends Button {
 
 module.exports = SelectTableButton;
 
-},{"../../utils/Button":35}],28:[function(require,module,exports){
+},{"../../utils/Button":34}],28:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -4735,7 +4741,7 @@ class SettingsCheckbox extends PIXI.Container {
 }
 
 module.exports = SettingsCheckbox;
-},{"../../utils/Button":35,"../../utils/Checkbox":36,"../../utils/NineSlice":43,"@tweenjs/tween.js":1}],29:[function(require,module,exports){
+},{"../../utils/Button":34,"../../utils/Checkbox":35,"../../utils/NineSlice":42,"@tweenjs/tween.js":1}],29:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -4956,7 +4962,7 @@ class SettingsView extends PIXI.Container {
 }
 
 module.exports = SettingsView;
-},{"../../utils/Button":35,"../../utils/NineSlice":43,"../../utils/PixiUtil":45,"./SettingsCheckbox":28,"@tweenjs/tween.js":1}],30:[function(require,module,exports){
+},{"../../utils/Button":34,"../../utils/NineSlice":42,"../../utils/PixiUtil":44,"./SettingsCheckbox":28,"@tweenjs/tween.js":1}],30:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -5033,7 +5039,7 @@ class TableButtonsView extends PIXI.Container {
 }
 
 module.exports = TableButtonsView;
-},{"../../utils/Button":35,"./SelectTableButton":27}],31:[function(require,module,exports){
+},{"../../utils/Button":34,"./SelectTableButton":27}],31:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -5264,7 +5270,7 @@ class TableInfoView extends PIXI.Container {
 }
 
 module.exports = TableInfoView;
-},{"../../utils/CountDownText":38,"../../utils/TextButton":48}],32:[function(require,module,exports){
+},{"../../utils/CountDownText":37,"../../utils/TextButton":47}],32:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -5617,81 +5623,6 @@ class CardData {
 
 module.exports = CardData;
 },{}],34:[function(require,module,exports){
-class ArrayUtil {
-
-	/**
-	 * Remove an element.
-	 * @method remove
-	 * @static
-	 */
-	static remove(array, element) {
-		var index = array.indexOf(element);
-
-		if (index >= 0)
-			array.splice(index, 1);
-	}
-
-	/**
-	 * Shuffles the "arr" Array (in place) according to a randomly chosen permutation
-	 * This is the classic Fisher-Yates style shuffle.
-	 * @method
-	 * @static
-	 */
-	static shuffle(arr) {
-		var n = arr.length;
-		while (n > 0) {
-			var k = Math.floor(Math.random() * n);
-			n--;
-			var temp = arr[n];
-			arr[n] = arr[k];
-			arr[k] = temp;
-		}
-
-		return arr;
-	}
-
-	/**
-	 * Check if every value in both arrays equal.
-	 * It doesn't do deep comparision in case the conatined elements are arrays.
-	 * Not tested since I didn't actually need it.
-	 * @method equals
-	 * @static
-	 */
-	static equals(a, b) {
-		if (a.length != b.length)
-			return false;
-
-		for (var i = 0; i < a.length; i++)
-			if (a[i] != b[i])
-				return false;
-
-		return true;
-	}
-
-	/**
-	 * Comparision function for numeric sort.
-	 * @method compareNumbers
-	 */
-	static compareNumbers(a, b) {
-		return a - b;
-	}
-
-	/**
-	 * Shallow copy.
-	 * @method copy
-	 */
-	static copy(array) {
-		var copy = [];
-
-		for (var i = 0; i < array.length; i++)
-			copy.push(array[i]);
-
-		return copy;
-	}
-}
-
-module.exports = ArrayUtil;
-},{}],35:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -5790,7 +5721,7 @@ class Button extends PIXI.Container {
 }
 
 module.exports = Button;
-},{}],36:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -5847,7 +5778,7 @@ class Checkbox extends PIXI.Container {
 }
 
 module.exports = Checkbox;
-},{"./Button":35}],37:[function(require,module,exports){
+},{"./Button":34}],36:[function(require,module,exports){
 class ContentScaler extends PIXI.Container {
 	constructor(content) {
 		super();
@@ -5909,7 +5840,7 @@ class ContentScaler extends PIXI.Container {
 }
 
 module.exports=ContentScaler;
-},{}],38:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -6009,7 +5940,7 @@ class CountDownText extends PIXI.Text {
 }
 
 module.exports = CountDownText;
-},{}],39:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 const EventEmitter=require("events");
 
 class EventQueue extends EventEmitter {
@@ -6061,7 +5992,7 @@ class EventQueue extends EventEmitter {
 }
 
 module.exports=EventQueue;
-},{"events":3}],40:[function(require,module,exports){
+},{"events":3}],39:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -6123,7 +6054,7 @@ class Gradient {
 }
 
 module.exports = Gradient;
-},{}],41:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 let WebSocket;
 
 if (window.WebSocket)
@@ -6196,7 +6127,7 @@ class MessageConnection extends EventEmitter {
 }
 
 module.exports=MessageConnection;
-},{"events":3,"ws":4}],42:[function(require,module,exports){
+},{"events":3,"ws":4}],41:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -6307,7 +6238,7 @@ class MouseOverGroup extends EventEmitter {
 module.exports = MouseOverGroup;
 
 
-},{"./PixiUtil.js":45,"events":3}],43:[function(require,module,exports){
+},{"./PixiUtil.js":44,"events":3}],42:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -6429,7 +6360,7 @@ class NineSlice extends PIXI.Container {
 }
 
 module.exports = NineSlice;
-},{}],44:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 const ContentScaler=require("./ContentScaler");
 const TWEEN = require('@tweenjs/tween.js');
 
@@ -6483,7 +6414,7 @@ class PixiApp extends PIXI.Container {
 }
 
 module.exports=PixiApp;
-},{"./ContentScaler":37,"@tweenjs/tween.js":1}],45:[function(require,module,exports){
+},{"./ContentScaler":36,"@tweenjs/tween.js":1}],44:[function(require,module,exports){
 class PixiUtil {
 	static findTopParent(o) {
 		while (o.parent)
@@ -6504,7 +6435,7 @@ class PixiUtil {
 }
 
 module.exports=PixiUtil;
-},{}],46:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 class PromiseUtil {
 	static delay(millis) {
 		return new Promise((resolve,reject)=>{
@@ -6514,7 +6445,7 @@ class PromiseUtil {
 }
 
 module.exports=PromiseUtil;
-},{}],47:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 /**
  * Utilities.
  * @module utils
@@ -6650,7 +6581,7 @@ class Slider extends PIXI.Container {
 
 module.exports = Slider;
 
-},{"./PixiUtil.js":45,"@tweenjs/tween.js":1}],48:[function(require,module,exports){
+},{"./PixiUtil.js":44,"@tweenjs/tween.js":1}],47:[function(require,module,exports){
 /**
  * Client.
  * @module client
@@ -6695,7 +6626,7 @@ class TextButton extends Button {
 }
 
 module.exports = TextButton;
-},{"./Button":35,"./NineSlice":43}],49:[function(require,module,exports){
+},{"./Button":34,"./NineSlice":42}],48:[function(require,module,exports){
 // From: https://www.npmjs.com/package/pixi-text-input
 
 class TextInput extends PIXI.Container{
@@ -7373,7 +7304,7 @@ function DefaultBoxGenerator(styles){
 }
 
 module.exports=TextInput;
-},{}],50:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 const EventEmitter=require("events");
 
 class Timeout extends EventEmitter {

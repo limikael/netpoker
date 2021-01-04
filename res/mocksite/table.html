@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<title>Testing</title>
+		<script src="pixi.min.js"></script>
+		<script src="netpokerclient-bundle.js"></script>
+		<script>
+			function run() {
+				let params={};
+
+				let socketProtocol="ws:";
+				if (window.location.protocol=="https:")
+					socketProtocol="wss:";
+
+				params.serverUrl=
+					socketProtocol+"//"+window.location.host+"/"+window.location.search;
+
+				params.resourceBaseUrl=
+					window.location.protocol+"//"+window.location.host+"/";
+
+				params.element=document.getElementById("netpokerclient");
+
+				let netPokerClient=new NetPokerClient(params);
+				netPokerClient.run();
+			}
+		</script>
+	</head>
+	<body onload="run();">
+		<div id="netpokerclient" style="position: relative; width: 100%; height: 100%;"></div>
+	</body>
+</html>

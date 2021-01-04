@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<title>Testing</title>
+		<script src="pixi.min.js"></script>
+		<script src="netpokerclient-bundle.js"></script>
+		<script>
+			function run() {
+				let ids=["user1","user2","user3","user4"];
+
+				let socketProtocol="ws:";
+				if (window.location.protocol=="https:")
+					socketProtocol="wss:";
+
+				let resourceBaseUrl=
+					window.location.protocol+"//"+window.location.host+"/";
+
+				for (var i=0; i<ids.length; i++) {
+					let serverUrl=
+						socketProtocol+"//"+window.location.host+"/"+
+						window.location.search+"&token="+ids[i];
+
+					console.log(serverUrl);
+
+					let params={
+						element: document.getElementById(ids[i]),
+						serverUrl: serverUrl,
+						resourceBaseUrl: resourceBaseUrl
+					};
+
+					let netPokerClient = new NetPokerClient(params);
+					netPokerClient.run();
+				}
+			}
+		</script>
+	</head>
+	<body height="100%" onload="run();">
+		<table width="100%" height="100%">
+			<tr>
+				<td width="50%" height="50%" id="user1" style="position: relative"></td>
+				<td width="50%" height="50%" id="user2" style="position: relative"></td>
+			</tr>
+			<tr>
+				<td width="50%" height="50%" id="user3" style="position: relative"></td>
+				<td width="50%" height="50%" id="user4" style="position: relative"></td>
+			</tr>
+		</table>
+	</body>
+</html>

@@ -3,9 +3,9 @@
   "version": "0.0.7",
   "scripts": {
     "test": "jasmine",
-    "bundle": "browserify -o res/netpokerclient-bundle.js src.js/client/netpokerclient.js",
-    "watch": "watchify -v -o res/netpokerclient-bundle.js src.js/client/netpokerclient.js",
-    "spritesheet": "spritesheet-js --padding=1 -n netpokerclient-spritesheet -p res res/netpokerclient-sprites/*.png"
+    "bundle": "browserify -o res/bundle/netpokerclient-bundle.js src.js/client/netpokerclient.js",
+    "watch": "watchify -v -o res/bundle/netpokerclient-bundle.js src.js/client/netpokerclient.js",
+    "spritesheet": "spritesheet-js --padding=1 -n netpokerclient-spritesheet -p res/bundle res/netpokerclient-sprites/*.png"
   },
   "bin": {
     "netpokerserver": "./src.js/server/netpokerserver.js"

@@ -15,6 +15,7 @@ class ConnectionManager extends EventEmiter {
 
 	onWsConnection=async(ws, req)=>{
 		let params={...querystring.parse(url.parse(req.url).query)};
+		console.log("Connection: "+JSON.stringify(params));
 
 		if (params.viewcase) {
 			console.log("Serving viewcase: "+params.viewcase);

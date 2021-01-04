@@ -34,18 +34,18 @@ class TableController extends Singleton {
 
 	public function renderTable($params=array()) {
 		wp_enqueue_script("pixi",
-			NETPOKER_URL."/res/pixi.min.js",
+			NETPOKER_URL."/res/bundle/pixi.min.js",
 			array(),"5.3.6",true);
 
 		wp_enqueue_script("netpokerclient-bundle",
-			NETPOKER_URL."/res/netpokerclient-bundle.js",
+			NETPOKER_URL."/res/bundle/netpokerclient-bundle.js",
 			array("jquery","pixi"),"1.0.0",true);
 
 		wp_enqueue_script("netpoker",
-			NETPOKER_URL."/res/netpoker.js",
+			NETPOKER_URL."/res/bundle/netpoker.js",
 			array("netpokerclient-bundle"),"1.0.0",true);
 
-		$config["resourceBaseUrl"]=NETPOKER_URL."/res/";
+		$config["resourceBaseUrl"]=NETPOKER_URL."/res/bundle/";
 
 		$url=get_option("netpoker_serverurl");
 		$url=str_replace("http://", "ws://", $url);

@@ -27,10 +27,14 @@ class Resources {
 	}
 
 	async load() {
-		await new Promise((resolve,reject)=>{
-			PIXI.Loader.shared.add(this.spriteSheetUrl);
-			PIXI.Loader.shared.load(resolve);
-		});
+		if (!window.loadingPromise) {
+			window.loadingPromise=new Promise((resolve,reject)=>{
+				PIXI.Loader.shared.add(this.spriteSheetUrl);
+				PIXI.Loader.shared.load(resolve);
+			});
+		}
+
+		await window.loadingPromise;
 
 		this.sheet=PIXI.Loader.shared.resources[this.spriteSheetUrl];
 	}
