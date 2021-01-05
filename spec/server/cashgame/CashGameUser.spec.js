@@ -7,7 +7,7 @@ describe("CashGameUser", function() {
 	var mockUser;
 
 	beforeEach(function() {
-		mockTableSeat = new EventDispatcher();
+		mockTableSeat = new EventEmitter();
 		mockUser = {};
 	});
 
@@ -16,6 +16,6 @@ describe("CashGameUser", function() {
 
 		cashGameUser.cleanupAndNotifyDone();
 
-		expect(mockTableSeat.listenerMap).toEqual({});
+		expect(mockTableSeat.eventNames().length).toBe(0);
 	});
 });

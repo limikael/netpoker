@@ -306,7 +306,7 @@ class BaseTable extends EventEmitter {
 	 * Get services.
 	 * @method getServices
 	 */
-	getServices() {
+	getServer() {
 		throw new Error("abstract");
 	}
 

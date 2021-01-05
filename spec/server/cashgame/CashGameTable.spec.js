@@ -7,7 +7,7 @@ describe("CashGameTable", function() {
 	var config;
 
 	beforeEach(function() {
-		mockServices = {};
+		mockServer = {};
 
 		config = {
 			id: 123,
@@ -21,11 +21,11 @@ describe("CashGameTable", function() {
 	});
 
 	it("can be created", function() {
-		var t = new CashGameTable(mockServices, config);
+		var t = new CashGameTable(mockServer, config);
 	});
 
-	/*it("can validate a config", function() {
-		var t = new CashGameTable(mockServices, config);
+	it("can validate a config", function() {
+		var t = new CashGameTable(mockServer, config);
 
 		var newConfig = {
 			minSitInAmount: "10",
@@ -82,15 +82,15 @@ describe("CashGameTable", function() {
 	});
 
 	it("has a parent id that is the same as the id", function() {
-		var t = new CashGameTable(mockServices, config);
+		var t = new CashGameTable(mockServer, config);
 		expect(t.getStartGameParentId()).toBe(123);
-		expect(t.getStartGameFunctionName()).toBe("gameStartForCashGame");
+		expect(t.getStartGameFunctionName()).toBe("startCashGame");
 
-		expect(t.getServices()).not.toBe(null);
+		expect(t.getServer()).not.toBe(null);
 	});
 
 	it("has some seats", function() {
-		var t = new CashGameTable(mockServices, config);
+		var t = new CashGameTable(mockServer, config);
 
 		expect(t.getTableSeats().length).toEqual(10);
 
@@ -104,9 +104,9 @@ describe("CashGameTable", function() {
 	});
 
 	it("creates and removes spectators for new connections", function() {
-		var t = new CashGameTable(mockServices, config);
+		var t = new CashGameTable(mockServer, config);
 
-		var mockConnection = new EventDispatcher();
+		var mockConnection = new EventEmitter();
 		mockConnection.send = jasmine.createSpy();
 		mockConnection.close = jasmine.createSpy();
 
@@ -129,7 +129,7 @@ describe("CashGameTable", function() {
 		expect(tableSpectator.listenerMap).toEqual({});
 	});
 
-	it("can get next seated user in sequence", function() {
+	/*it("can get next seated user in sequence", function() {
 		var t = new CashGameTable(mockServices, config);
 
 		var mockTableSeatUser = {};

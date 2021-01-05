@@ -80,7 +80,7 @@ class Game extends EventEmitter {
 	 * @private
 	 */
 	onStartCallError=()=>{
-		console.log("error starting game, setting timeout for "+Game.ERROR_WAIT);
+		//console.log("error starting game, setting timeout for "+Game.ERROR_WAIT);
 		setTimeout(this.onErrorWaitTimer.bind(this), Game.ERROR_WAIT);
 	}
 
@@ -98,7 +98,7 @@ class Game extends EventEmitter {
 	 * @private
 	 */
 	onErrorWaitTimer=()=>{
-		console.log("error wait timer complete..");
+		//console.log("error wait timer complete..");
 		this.emit("finished");
 	}
 
