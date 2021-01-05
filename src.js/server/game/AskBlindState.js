@@ -101,7 +101,7 @@ class AskBlindState extends GameState {
 		this.prompt.addButton(this.getCurrentBlind(), this.getCurrentBlindAmount());
 		this.prompt.setDefaultButton("sitOut");
 		this.prompt.on("complete", this.onPromptComplete, this);
-		this.prompt.useTableSeatSetting("sitoutNext", "sitout");
+		this.prompt.useTableSeatSetting("sitOutNext", "sitout");
 		this.prompt.useTableSeatSetting("autoPostBlinds", this.getCurrentBlind());
 		this.prompt.ask();
 	}

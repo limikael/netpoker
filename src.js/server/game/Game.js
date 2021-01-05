@@ -14,6 +14,8 @@ const EventEmitter=require("events");
  * @module server
  */
 class Game extends EventEmitter {
+	static ERROR_WAIT=10000;
+
 	constructor(table) {
 		super();
 
@@ -58,7 +60,7 @@ class Game extends EventEmitter {
 
 		if (this.fixedDeck) {
 			for (var i = 0; i < this.fixedDeck.length; i++)
-				this.deck.push(new CardData.fromString(this.fixedDeck[i]));
+				this.deck.push(CardData.fromString(this.fixedDeck[i]));
 		} else {
 			for (var i = 0; i < 52; i++)
 				this.deck.push(new CardData(i));
@@ -78,8 +80,8 @@ class Game extends EventEmitter {
 	 * @private
 	 */
 	onStartCallError=()=>{
-		console.log("error starting game, setting timeout");
-		setTimeout(this.onErrorWaitTimer.bind(this), 10000);
+		console.log("error starting game, setting timeout for "+Game.ERROR_WAIT);
+		setTimeout(this.onErrorWaitTimer.bind(this), Game.ERROR_WAIT);
 	}
 
 	/**
@@ -97,7 +99,7 @@ class Game extends EventEmitter {
 	 */
 	onErrorWaitTimer=()=>{
 		console.log("error wait timer complete..");
-		this.trigger(Game.FINISHED);
+		this.emit("finished");
 	}
 
 	/**
@@ -168,7 +170,7 @@ class Game extends EventEmitter {
 	 */
 	onFinishCallComplete=()=>{
 		//console.log("*********** finish call complete...");
-		this.trigger(Game.FINISHED);
+		this.emit("finished");
 	}
 
 	/**
@@ -178,7 +180,7 @@ class Game extends EventEmitter {
 	 */
 	onFinishCallError=()=>{
 		console.log("********* WARNING: finish game call failed");
-		this.trigger(Game.FINISHED);
+		this.emit("finished");
 	}
 
 	/**

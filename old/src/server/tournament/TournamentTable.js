@@ -23,20 +23,18 @@ var PlaySpectator = require("./PlaySpectator");
  * @extends BaseTable
  */
 function TournamentTable(playState, tableIndex) {
+	super(TournamentTableSeat);
+
 	this.playState = playState;
 	this.tableIndex = tableIndex;
 	this.tournament = playState.getTournament();
 	this.active = true;
 
 	var activeSeatIndices = TableUtil.getActiveSeatIndices(this.tournament.getSeatsPerTable());
-	this.tableSeats = [];
 
-	for (var i = 0; i < 10; i++) {
-		var ts = new TournamentTableSeat(this, i, activeSeatIndices.indexOf(i) >= 0);
-		this.tableSeats.push(ts);
-	}
+	for (var i = 0; i < 10; i++)
+		this.tableSeats[i].setActive(activeSeatIndices.indexOf(i) >= 0);
 
-	BaseTable.call(this);
 	this.playSpectators = [];
 }
 

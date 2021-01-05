@@ -16,6 +16,8 @@ var Game = require("../game/Game");
  * @extends BaseTable
  */
 function CashGameTable(services, config) {
+	super(CashGameTableSeat);
+
 	this.validateConfig(config);
 
 	this.name = config.name;
@@ -27,8 +29,6 @@ function CashGameTable(services, config) {
 	this.rakePercent = config.rakePercent;
 
 	this.setupSeats(config.numseats);
-
-	BaseTable.call(this);
 
 	this.tableSpectators = [];
 	this.services = services;
@@ -169,16 +169,15 @@ CashGameTable.prototype.isFull = function() {
  */
 CashGameTable.prototype.setupSeats = function(numseats) {
 	var activeSeatIndices = TableUtil.getActiveSeatIndices(numseats);
-	this.tableSeats = [];
 
 	for (var i = 0; i < 10; i++) {
-		var ts = new CashGameTableSeat(this, i, activeSeatIndices.indexOf(i) >= 0);
+		var ts = this.tableSeats[i];
 
 		ts.on(ProtoConnection.CLOSE, this.onTableSeatClose, this);
 		ts.on(CashGameTableSeat.READY, this.onTableSeatReady, this);
 		ts.on(CashGameTableSeat.IDLE, this.onTableSeatIdle, this);
 
-		this.tableSeats.push(ts);
+		ts.setActive(activeSeatIndices.indexOf(i) >= 0);
 	}
 }
 

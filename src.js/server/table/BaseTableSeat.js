@@ -36,12 +36,12 @@ var inherits = require("inherits");
  * @class BaseTableSeat
  * @extends EventDispatcher
  */
-function BaseTableSeat(table, seatIndex, active) {
+function BaseTableSeat(table, seatIndex) {
 	EventDispatcher.call(this);
 
 	this.table = table;
 	this.seatIndex = seatIndex;
-	this.active = active;
+	this.active = false;
 
 	this.protoConnection = null;
 }
@@ -53,6 +53,10 @@ inherits(BaseTableSeat, EventDispatcher);
  * @event BaseTableSeat.SETTINGS_CHANGED
  */
 BaseTableSeat.SETTINGS_CHANGED = "settingsChanged";
+
+BaseTableSeat.prototype.setActive = function(active) {
+	this.active=active;
+}
 
 /**
  * Is tihs seat active?

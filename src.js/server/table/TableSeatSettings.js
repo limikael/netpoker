@@ -3,79 +3,79 @@
  * @module server
  */
 
-var CheckboxMessage = require("../../proto/messages/CheckboxMessage");
-
 /**
  * Table seat settings.
  * @class TableSeatSettings
  */
-function TableSeatSettings() {
-	this.settings = {};
+class TableSeatSettings {
+	static AVAILABLE_SETTINGS=[
+		"autoPostBlinds",
+		"autoMuckLosing",
+		"sitOutNext"
+	];
 
-	this.settings[CheckboxMessage.AUTO_POST_BLINDS] = false;
-	this.settings[CheckboxMessage.AUTO_MUCK_LOSING] = true;
-	this.settings[CheckboxMessage.SITOUT_NEXT] = false;
+	constructor() {
+		this.settings = {};
 
-	this.alwaysPayBlinds = false;
-}
+		this.settings["autoPostBlinds"] = false;
+		this.settings["autoMuckLosing"] = true;
+		this.settings["sitOutNext"] = false;
 
-TableSeatSettings.AVAILALBE_SETTINGS = [
-	CheckboxMessage.AUTO_POST_BLINDS,
-	CheckboxMessage.AUTO_MUCK_LOSING,
-	CheckboxMessage.SITOUT_NEXT
-];
+		this.alwaysPayBlinds = false;
+	}
 
-/**
- * Set always pay blinds mode.
- * @method setAlwaysPayBlinds
- */
-TableSeatSettings.prototype.setAlwaysPayBlinds = function(value) {
-	this.alwaysPayBlinds = value;
-}
+	/**
+	 * Set always pay blinds mode.
+	 * @method setAlwaysPayBlinds
+	 */
+	setAlwaysPayBlinds(value) {
+		this.alwaysPayBlinds = value;
+	}
 
-/**
- * Get setting.
- * @method get
- */
-TableSeatSettings.prototype.get = function(id) {
-	if (!id)
-		throw new Error("setting not available");
+	/**
+	 * Get setting.
+	 * @method get
+	 */
+	get(id) {
+		if (!id)
+			throw new Error("setting not available");
 
-	if (!TableSeatSettings.isSettingIdValid(id))
-		throw new Error("setting not available");
+		if (!TableSeatSettings.isSettingIdValid(id))
+			throw new Error("setting not available");
 
-	if (id == CheckboxMessage.AUTO_POST_BLINDS && this.alwaysPayBlinds)
+		if (id == "autoPostBlinds" && this.alwaysPayBlinds)
+			return true;
+
+		return this.settings[id];
+	}
+
+	/**
+	 * Set setting.
+	 * @method set
+	 */
+	set(id, value) {
+		if (!id)
+			throw new Error("setting not available");
+
+		if (!TableSeatSettings.isSettingIdValid(id))
+			throw new Error("setting not available");
+
+		if (id == "autoPostBlinds" && this.alwaysPayBlinds)
+			throw new Error("Can't change that setting...");
+
+		this.settings[id] = value;
+	}
+
+	/**
+	 * Is this a valid setting id?
+	 * @method isSettingIdValid
+	 */
+	static isSettingIdValid(id) {
+		if (TableSeatSettings.AVAILABLE_SETTINGS.indexOf(id) < 0)
+			return false;
+
 		return true;
-
-	return this.settings[id];
-}
-
-/**
- * Set setting.
- * @method set
- */
-TableSeatSettings.prototype.set = function(id, value) {
-	if (!id)
-		throw new Error("setting not available");
-
-	if (!TableSeatSettings.isSettingIdValid(id))
-		throw new Error("setting not available");
-
-	if (id == CheckboxMessage.AUTO_POST_BLINDS && this.alwaysPayBlinds)
-		throw new Error("Can't change that setting...");
-
-	this.settings[id] = value;
-}
-
-/**
- * Is this a valid setting id?
- * @method isSettingIdValid
- */
-TableSeatSettings.isSettingIdValid = function(id) {
-	if (TableSeatSettings.AVAILALBE_SETTINGS.indexOf(id) < 0)
-		return false;
-
-	return true;
+	}
 }
 
 module.exports = TableSeatSettings;

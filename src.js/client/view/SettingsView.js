@@ -63,7 +63,7 @@ class SettingsView extends PIXI.Container {
 
 		this.createMenuSetting("autoMuckLosing", "Muck losing hands", 65);
 		this.createSetting("autoPostBlinds", "Auto post blinds", 0);
-		this.createSetting("sitoutNext", "Sit out next hand", 25);
+		this.createSetting("sitOutNext", "Sit out next hand", 25);
 
 		this.settingsMenu.visible = false;
 
@@ -170,7 +170,7 @@ class SettingsView extends PIXI.Container {
 
 		this.setCheckboxChecked("autoPostBlinds", false);
 		this.setCheckboxChecked("autoMuckLosing", false);
-		this.setCheckboxChecked("sitoutNext", false);
+		this.setCheckboxChecked("sitOutNext", false);
 
 		this.settingsMenu.visible = false;
 		if (this.settingsMenu.visible)
@@ -184,7 +184,7 @@ class SettingsView extends PIXI.Container {
 	setVisibleButtons = function(buttons) {
 		//this.buyChipsButton.visible = buttons.indexOf(ButtonData.BUY_CHIPS) != -1;
 		this.settings["autoPostBlinds"].visible = buttons.indexOf("autoPostBlinds") >= 0;
-		this.settings["sitoutNext"].visible = buttons.indexOf("sitoutNext") >= 0;
+		this.settings["sitOutNext"].visible = buttons.indexOf("sitOutNext") >= 0;
 
 		/*var yp = 543;
 

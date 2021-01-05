@@ -81,7 +81,7 @@ describe("Game", function() {
 		jasmine.clock().uninstall();
 	});
 
-	/*it("can detect errors on start game call", function(done) {
+	it("can detect errors on start game call", async ()=>{
 		mockBackend.call = function(functionName, params) {
 			return new Promise((resolve,reject)=>{
 				reject();
@@ -90,32 +90,21 @@ describe("Game", function() {
 
 		spyOn(mockBackend, "call").and.callThrough();
 
-		var finishSpy = jasmine.createSpy();
+		var finishSpy = jasmine.createSpy("finish");
 		var g = new Game(mockTable);
-		g.on(Game.FINISHED, finishSpy);
+		g.on("finished", finishSpy);
 
-		AsyncSequence.run(
-			function(next) {
-				g.start();
-				TickLoopRunner.runTicks().then(next);
-			},
+		g.start();
+		await TickLoopRunner.runTicks();
 
-			function(next) {
-				expect(mockBackend.call).toHaveBeenCalledWith("hello", jasmine.any(Object));
-				expect(finishSpy).not.toHaveBeenCalled();
-				TickLoopRunner.runTicks().then(next);
-			},
+		expect(mockBackend.call).toHaveBeenCalledWith("hello", jasmine.any(Object));
+		expect(finishSpy).not.toHaveBeenCalled();
+		await TickLoopRunner.runTicks();
 
-			function(next) {
-				expect(finishSpy).not.toHaveBeenCalled();
-				jasmine.clock().tick(Game.ERROR_WAIT + 1000);
-				expect(finishSpy).toHaveBeenCalled();
-
-				//jasmine.clock().uninstall();
-				next();
-			}
-		).then(done);
-	});*/
+		expect(finishSpy).not.toHaveBeenCalled();
+		jasmine.clock().tick(Game.ERROR_WAIT + 1000);
+		expect(finishSpy).toHaveBeenCalled();
+	});
 
 	it("can start", async ()=>{
 		mockBackend.call=(functionName, params)=>{
@@ -151,10 +140,12 @@ describe("Game", function() {
 		g.close();
 	});
 
-	/*it("can use a fixed deck", function(done) {
+	it("can use a fixed deck", async ()=> {
 		mockBackend.call = function(functionName, params) {
-			return Thenable.resolved({
-				gameId: 789
+			return new Promise((resolve, reject)=>{
+				resolve({
+					gameId: 789
+				})
 			});
 		}
 
@@ -163,12 +154,11 @@ describe("Game", function() {
 		g.useFixedDeck(["2c", "3d", "4c", "5d"]);
 		g.start();
 
-		TickLoopRunner.runTicks().then(function() {
-			expect(g.getNextCard().toString()).toBe("2C");
-			expect(g.getNextCard().toString()).toBe("3D");
-			g.close();
-			done();
-		});
+		await TickLoopRunner.runTicks();
+
+		expect(g.getNextCard().toString()).toBe("2C");
+		expect(g.getNextCard().toString()).toBe("3D");
+		g.close();
 	});
 
 	it("can get a seat index", function() {
@@ -213,5 +203,5 @@ describe("Game", function() {
 		console.log("pots:" + g.getPots());
 
 		expect(g.getPots()).toEqual([24, 4]);
-	});*/
+	});
 });
