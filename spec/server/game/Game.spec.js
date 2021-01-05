@@ -199,8 +199,8 @@ describe("Game", function() {
 		g.getGameSeatForSeatIndex(2).betToPot();
 		g.getGameSeatForSeatIndex(3).betToPot();
 
-		console.log("unfolded pot contribs:" + g.getUnfoldedPotContribs());
-		console.log("pots:" + g.getPots());
+		//console.log("unfolded pot contribs:" + g.getUnfoldedPotContribs());
+		//console.log("pots:" + g.getPots());
 
 		expect(g.getPots()).toEqual([24, 4]);
 	});

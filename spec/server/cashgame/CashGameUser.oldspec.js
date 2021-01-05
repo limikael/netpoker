@@ -1,6 +1,6 @@
-var User = require("../../../../src/server/user/User");
-var EventDispatcher = require("yaed");
-var CashGameUser = require("../../../../src/server/cashgame/CashGameUser");
+const User = require("../../../src.js/server/connection/User");
+const EventEmitter=require("events");
+const CashGameUser = require("../../../src.js/server/cashgame/CashGameUser");
 
 describe("CashGameUser", function() {
 	var mockTableSeat;
