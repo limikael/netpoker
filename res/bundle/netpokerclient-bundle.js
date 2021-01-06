@@ -6415,12 +6415,14 @@ class PixiApp extends PIXI.Container {
 		if (!this.element)
 			return;
 
-		this.contentScaler.setScreenSize(
+		//console.log(this.element.clientWidth+" x "+this.element.clientHeight);
+
+		this.app.renderer.resize(
 			this.element.clientWidth,
 			this.element.clientHeight
 		);
 
-		this.app.renderer.resize(
+		this.contentScaler.setScreenSize(
 			this.element.clientWidth,
 			this.element.clientHeight
 		);
