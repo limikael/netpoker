@@ -133,6 +133,18 @@ class MockBackend {
 		}
 	}
 
+	joinCashGame(params) {
+		return {
+			ok: 1,
+		}
+	}
+
+	leaveCashGame(params) {
+		return {
+			ok: 1,
+		}
+	}
+
 	async call(method, params) {
 		if (!this[method])
 			throw new Error("unknown backend call: "+method);

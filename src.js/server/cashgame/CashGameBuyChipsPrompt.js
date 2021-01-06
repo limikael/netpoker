@@ -146,7 +146,7 @@ class CashGameBuyChipsPrompt extends EventEmitter {
 			};
 
 			this.tableSeat.getServer().getBackend()
-				.call("sitIn", params)
+				.call("joinCashGame", params)
 				.then(
 					this.onSitInCallComplete.bind(this),
 					this.onSitInCallError.bind(this)

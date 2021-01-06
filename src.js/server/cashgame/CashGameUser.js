@@ -53,8 +53,10 @@ class CashGameUser extends EventEmitter {
 		this.buyChipsPrompt.on("cancel", this.onBuyChipsPromptCancel);
 
 		this.tableSeat.getTable().send("seatInfo",this.tableSeat.getSeatInfoMessage());
+		this.tableSeat.send("tableInfo",this.getTableInfoMessage());
 
 		this.buyChipsPrompt.ask();
+
 	}
 
 	/**
@@ -148,8 +150,8 @@ class CashGameUser extends EventEmitter {
 			amount: this.chips
 		};
 
-		var backend = this.tableSeat.getTable().getServices().getBackend();
-		backend.call(Backend.SIT_OUT, params).then(
+		var backend = this.tableSeat.getTable().getServer().getBackend();
+		backend.call("leaveCashGame", params).then(
 			this.onSitoutCallComplete.bind(this),
 			this.onSitoutCallError.bind(this)
 		);
@@ -231,16 +233,20 @@ class CashGameUser extends EventEmitter {
 	 * @method getTableInfoMessage
 	 */
 	getTableInfoMessage() {
-		if (!this.tableSeat.isInGame())
-			return new TableInfoMessage();
+		if (!this.tableSeat.isInGame() || this.buyChipsPrompt)
+			return {};
 
 		if (!this.tableSeat.getTable().getCurrentGame())
-			return new TableInfoMessage("Please wait for another player to join the table.");
+			return {
+				text: "Please wait for another player to join the table."
+			};
 
 		var currentGame = this.tableSeat.getTable().getCurrentGame();
 
 		if (!currentGame.isTableSeatInGame(this.tableSeat) && currentGame.isJoinComplete())
-			return new TableInfoMessage("Please wait for the next hand.");
+			return {
+				text: "Please wait for the next hand."
+			};
 
 		return new TableInfoMessage();
 	}
