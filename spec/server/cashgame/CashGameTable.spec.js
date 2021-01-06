@@ -114,12 +114,14 @@ describe("CashGameTable", function() {
 		mockConnection.removeEventListener = mockConnection.off;
 
 		var connection = new MessageConnection(mockConnection);
-		var user = new User({
-			id: 123,
-			name: "hello"
-		});
+		connection.getUser=function() {
+			return new User({
+				id: 123,
+				name: "hello"
+			});
+		};
 
-		t.notifyNewConnection(connection, user);
+		t.notifyNewConnection(connection);
 		expect(mockConnection.send).toHaveBeenCalled();
 		expect(t.tableSpectators.length).toBe(1);
 
@@ -216,12 +218,14 @@ describe("CashGameTable", function() {
 		newMockConnection.removeEventListener = newMockConnection.off;
 
 		var newConnection = new MessageConnection(newMockConnection);
-		var newUser = new User({
-			id: 123,
-			name: "hello"
-		});
+		newConnection.getUser=function() {
+			return new User({
+				id: 123,
+				name: "hello"
+			});
+		};
 
-		t.notifyNewConnection(newConnection, newUser);
+		t.notifyNewConnection(newConnection);
 
 		expect(t.getTableSeatBySeatIndex(3).getConnection()).toBe(newConnection);
 		expect(t.tableSpectators.length).toBe(1);
