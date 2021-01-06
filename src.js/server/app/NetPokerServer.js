@@ -1,5 +1,5 @@
 const ConnectionManager=require("../connection/ConnectionManager");
-//const CashGameManager=require("../cashgame/CashGameManager");
+const CashGameManager=require("../cashgame/CashGameManager");
 const ServerApi=require("./ServerApi");
 const ApiProxy=require("../../utils/ApiProxy");
 const MockWebServer=require("../mock/MockWebServer");
@@ -14,6 +14,17 @@ class NetPokerServer {
 
 	onUserConnection=(userConnection)=>{
 		console.log("user connection: "+userConnection.getUser().getName());
+
+		let p=userConnection.getParams();
+		if (p.tableId) {
+			let table=this.cashGameManager.getTableById(p.tableId);
+			if (!table) {
+				console.log("table not found, refusing user conection");
+				userConnection.close();
+			}
+
+			table.notifyNewConnection(userConnection);
+		}
 	}
 
 	getSettingsError() {
@@ -37,8 +48,8 @@ class NetPokerServer {
 			this.backend=new MockBackend(this);
 		}
 
-		//this.cashGameManager=new CashGameManager(this);
-		//await this.cashGameManager.initialize();
+		this.cashGameManager=new CashGameManager(this);
+		await this.cashGameManager.initialize();
 
 		this.httpServer=http.createServer(callHandler);
 		this.httpServer.listen(this.options.port);

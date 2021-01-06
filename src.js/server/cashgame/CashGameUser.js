@@ -49,10 +49,10 @@ class CashGameUser extends EventEmitter {
 			throw "Buying";
 
 		this.buyChipsPrompt = new CashGameBuyChipsPrompt(this.tableSeat);
-		this.buyChipsPrompt.on(CashGameBuyChipsPrompt.COMPLETE, this.onBuyChipsPromptComplete, this);
-		this.buyChipsPrompt.on(CashGameBuyChipsPrompt.CANCEL, this.onBuyChipsPromptCancel, this);
+		this.buyChipsPrompt.on("complete", this.onBuyChipsPromptComplete);
+		this.buyChipsPrompt.on("cancel", this.onBuyChipsPromptCancel);
 
-		this.tableSeat.getTable().send(this.tableSeat.getSeatInfoMessage());
+		this.tableSeat.getTable().send("seatInfo",this.tableSeat.getSeatInfoMessage());
 
 		this.buyChipsPrompt.ask();
 	}
@@ -62,8 +62,8 @@ class CashGameUser extends EventEmitter {
 	 * @method onBuyChipsPromptComplete
 	 */
 	onBuyChipsPromptComplete=()=>{
-		this.buyChipsPrompt.off(CashGameBuyChipsPrompt.COMPLETE, this.onBuyChipsPromptComplete, this);
-		this.buyChipsPrompt.off(CashGameBuyChipsPrompt.CANCEL, this.onBuyChipsPromptCancel, this);
+		this.buyChipsPrompt.off("complete", this.onBuyChipsPromptComplete);
+		this.buyChipsPrompt.off("cancel", this.onBuyChipsPromptCancel);
 
 		this.sitInCompleted = true;
 		this.chips = this.buyChipsPrompt.getChips();
@@ -74,12 +74,11 @@ class CashGameUser extends EventEmitter {
 		if (this.leaving) {
 			this.leave();
 		} else {
-			this.tableSeat.table.send(this.tableSeat.getSeatInfoMessage());
-
-			this.trigger(CashGameUser.READY);
+			this.tableSeat.getTable().send("seatInfo",this.tableSeat.getSeatInfoMessage());
+			this.emit("ready");
 		}
 
-		this.tableSeat.send(this.getTableInfoMessage());
+		this.tableSeat.send("tableInfo",this.getTableInfoMessage());
 	}
 
 	/**
@@ -297,7 +296,7 @@ class CashGameUser extends EventEmitter {
 
 		this.sittingout = false;
 		this.tableSeat.getTable().send(this.tableSeat.getSeatInfoMessage());
-		this.tableSeat.send(this.getTableInfoMessage());
+		this.tableSeat.send("tableInfo",this.getTableInfoMessage());
 
 		this.settings.set(CheckboxMessage.SITOUT_NEXT, false);
 		this.tableSeat.send(new CheckboxMessage(CheckboxMessage.SITOUT_NEXT, false));

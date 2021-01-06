@@ -168,8 +168,8 @@ class CashGameManager extends EventEmitter {
 	 */
 	closeAndRemoveTable(table) {
 		table.close();
-		table.off(CashGameTable.IDLE, this.onTableIdle, this);
-		table.off(CashGameTable.NUM_PLAYERS_CHANGE, this.onTableNumPlayersChange, this);
+		table.off("idle", this.onTableIdle);
+		table.off("numPlayersChange", this.onTableNumPlayersChange);
 		ArrayUtil.remove(this.tables, table);
 	}
 
@@ -200,7 +200,7 @@ class CashGameManager extends EventEmitter {
 			numPlayers: cashGameTable.getNumInGame()
 		};
 
-		this.services.getBackend().call("nutifyCashGameNumPlayers", p);
+		this.server.getBackend().call("notifyCashGameNumPlayers", p);
 	}
 
 	/**

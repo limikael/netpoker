@@ -160,9 +160,9 @@ class CashGameTable extends BaseTable {
 		for (var i = 0; i < 10; i++) {
 			var ts = this.tableSeats[i];
 
-			ts.on("close", this.onTableSeatClose, this);
-			ts.on("ready", this.onTableSeatReady, this);
-			ts.on("idle", this.onTableSeatIdle, this);
+			ts.on("close", this.onTableSeatClose);
+			ts.on("ready", this.onTableSeatReady);
+			ts.on("idle", this.onTableSeatIdle);
 
 			ts.setActive(activeSeatIndices.indexOf(i) >= 0);
 		}
@@ -241,8 +241,9 @@ class CashGameTable extends BaseTable {
 	 * New connection.
 	 * @method notifyNewConnection
 	 */
-	notifyNewConnection(connection, user) {
+	notifyNewConnection(connection) {
 		var alreadySeated = false;
+		let user=connection.getUser();
 
 		if (user) {
 			for (var t = 0; t < this.tableSeats.length; t++) {
@@ -451,18 +452,14 @@ class CashGameTable extends BaseTable {
 	sendTableInfoMessages() {
 		console.log("******* sending table info messages");
 
-		var i;
-
-		for (i = 0; i < this.tableSpectators.length; i++) {
+		for (let i = 0; i < this.tableSpectators.length; i++) {
 			var tableSpectator = this.tableSpectators[i];
-
-			tableSpectator.send(tableSpectator.getTableInfoMessage());
+			tableSpectator.send("tableInfo",tableSpectator.getTableInfoMessage());
 		}
 
-		for (i = 0; i < this.tableSeats.length; i++) {
+		for (let i = 0; i < this.tableSeats.length; i++) {
 			var tableSeat = this.tableSeats[i];
-
-			tableSeat.send(tableSeat.getTableInfoMessage());
+			tableSeat.send("tableInfo",tableSeat.getTableInfoMessage());
 		}
 	}
 

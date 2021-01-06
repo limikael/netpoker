@@ -205,7 +205,7 @@ class BaseTableSeat extends EventEmitter {
 	getSeatInfoMessage() {
 		var m = {};
 
-		m.setIndex=this.getSeatIndex();
+		m.seatIndex=this.getSeatIndex();
 		m.active=this.isActive();
 
 		if (this.getUser()) {

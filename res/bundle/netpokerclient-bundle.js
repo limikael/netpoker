@@ -1813,6 +1813,13 @@ class InterfaceController {
 		var buttonsView = this.view.getButtonsView();
 
 		buttonsView.clear();
+
+		if (!m.buttons)
+			m.buttons=[];
+
+		if (!m.values)
+			m.values=[];
+
 		buttonsView.showButtons(m.buttons,m.values);
 
 		if (m.hasOwnProperty("sliderIndex"))
@@ -1894,6 +1901,9 @@ class InterfaceController {
 	 */
 	onInterfaceStateMessage=(m)=>{
 		var settingsView = this.view.getSettingsView();
+
+		if (!m.visibleButtons)
+			m.visibleButtons=[];
 
 		settingsView.setVisibleButtons(m.visibleButtons);
 	}
@@ -2145,6 +2155,8 @@ class TableController {
 	 * @method onSeatInfoMessage
 	 */
 	onSeatInfoMessage=(m)=>{
+		//console.log(m);
+
 		var seatView = this.view.getSeatViewByIndex(m.seatIndex);
 
 		seatView.setName(m.name);
@@ -2296,23 +2308,23 @@ class TableController {
 	 * @method onClear
 	 */
 	onClearMessage=(m)=>{
-		var components = m.getComponents();
+		var components = m.components;
 
 		for (var i = 0; i < components.length; i++) {
 			switch (components[i]) {
-				case ClearMessage.POT:
+				case "pot":
 					{
 						this.view.potView.setValues([]);
 						break;
 					}
-				case ClearMessage.BETS:
+				case "bets":
 					{
 						for (var s = 0; s < this.view.seatViews.length; s++) {
 							this.view.seatViews[s].betChips.setValue(0);
 						}
 						break;
 					}
-				case ClearMessage.CARDS:
+				case "cards":
 					{
 						for (var s = 0; s < this.view.seatViews.length; s++) {
 							for (var c = 0; c < this.view.seatViews[s].pocketCards.length; c++) {
@@ -2325,7 +2337,7 @@ class TableController {
 						}
 						break;
 					}
-				case ClearMessage.CHAT:
+				case "chat":
 					{
 						this.view.chatView.clear();
 						break;
@@ -4804,7 +4816,7 @@ class SettingsView extends PIXI.Container {
 
 		this.createMenuSetting("autoMuckLosing", "Muck losing hands", 65);
 		this.createSetting("autoPostBlinds", "Auto post blinds", 0);
-		this.createSetting("sitoutNext", "Sit out next hand", 25);
+		this.createSetting("sitOutNext", "Sit out next hand", 25);
 
 		this.settingsMenu.visible = false;
 
@@ -4911,7 +4923,7 @@ class SettingsView extends PIXI.Container {
 
 		this.setCheckboxChecked("autoPostBlinds", false);
 		this.setCheckboxChecked("autoMuckLosing", false);
-		this.setCheckboxChecked("sitoutNext", false);
+		this.setCheckboxChecked("sitOutNext", false);
 
 		this.settingsMenu.visible = false;
 		if (this.settingsMenu.visible)
@@ -4925,7 +4937,7 @@ class SettingsView extends PIXI.Container {
 	setVisibleButtons = function(buttons) {
 		//this.buyChipsButton.visible = buttons.indexOf(ButtonData.BUY_CHIPS) != -1;
 		this.settings["autoPostBlinds"].visible = buttons.indexOf("autoPostBlinds") >= 0;
-		this.settings["sitoutNext"].visible = buttons.indexOf("sitoutNext") >= 0;
+		this.settings["sitOutNext"].visible = buttons.indexOf("sitOutNext") >= 0;
 
 		/*var yp = 543;
 
@@ -6073,6 +6085,12 @@ class MessageConnection extends EventEmitter {
 	}
 
 	send(type, message) {
+		if (typeof type!="string")
+			throw new Error("Message type should be a string");
+
+		if (!message)
+			message={};
+
 		message.type=type;
 		this.webSocket.send(JSON.stringify(message));
 	}

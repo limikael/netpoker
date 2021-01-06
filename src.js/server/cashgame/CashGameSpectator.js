@@ -47,7 +47,7 @@ class CashGameSpectator extends EventEmitter{
 		if (!this.user)
 			return;
 
-		var tableSeat = this.table.getTableSeatBySeatIndex(m.getSeatIndex());
+		var tableSeat = this.table.getTableSeatBySeatIndex(m.seatIndex);
 
 		if (!tableSeat || !tableSeat.isAvailable())
 			return;
@@ -55,7 +55,7 @@ class CashGameSpectator extends EventEmitter{
 		if (this.table.isUserSeated(this.user))
 			return;
 
-		tableSeat.reserve(this.user, this.connection);
+		tableSeat.reserve(this.connection);
 
 		console.log("seat click!!!");
 

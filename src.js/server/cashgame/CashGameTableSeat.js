@@ -3,8 +3,9 @@
  * @module server
  */
 
-var BaseTableSeat = require("../table/BaseTableSeat");
-var CashGameUser = require("./CashGameUser");
+const BaseTableSeat=require("../table/BaseTableSeat");
+const CashGameUser=require("./CashGameUser");
+const TableSeatSettings=require("../table/TableSeatSettings");
 
 /**
  * A table seat. This class represents a seat in a cash game.
@@ -79,22 +80,30 @@ class CashGameTableSeat extends BaseTableSeat {
 	 * @param {User} user The user that reserves the seat.
 	 * @param {ProtoConnection} protoConnection The connection to the user.
 	 */
-	reserve = function(user, connection) {
+	reserve(connection) {
 		if (!this.active)
 			throw "This seat is not active";
 
 		if (this.tableSeatUser)
 			throw "Someone is sitting here";
 
-		this.setProtoConnection(protoConnection);
-		this.tableSeatUser = new CashGameUser(this, user);
-		this.tableSeatUser.on(CashGameUser.READY, this.onTableSeatUserReady, this);
-		this.tableSeatUser.on(CashGameUser.DONE, this.onTableSeatUserDone, this);
+		this.setConnection(connection);
+		this.tableSeatUser = new CashGameUser(this, connection.getUser());
+		this.tableSeatUser.on("ready", this.onTableSeatUserReady);
+		this.tableSeatUser.on("done", this.onTableSeatUserDone);
 		this.tableSeatUser.sitIn();
 
-		this.send(new CheckboxMessage(CheckboxMessage.AUTO_POST_BLINDS, this.getSetting(CheckboxMessage.AUTO_POST_BLINDS)));
-		this.send(new CheckboxMessage(CheckboxMessage.AUTO_MUCK_LOSING, this.getSetting(CheckboxMessage.AUTO_MUCK_LOSING)));
-		this.send(new CheckboxMessage(CheckboxMessage.SITOUT_NEXT, this.getSetting(CheckboxMessage.SITOUT_NEXT)));
+		this.send("checkbox",{
+			id: "autoPostBlinds"
+		})
+
+		let settings=this.getSettings();
+		for (let id of TableSeatSettings.AVAILABLE_SETTINGS) {
+			this.send("checkbox",{
+				id: id,
+				checked: this.getSetting(id)
+			});
+		}
 	}
 
 	/**
@@ -132,23 +141,23 @@ class CashGameTableSeat extends BaseTableSeat {
 	onTableSeatUserDone=()=>{
 		console.log("*********** table seat user done!");
 
-		var protoConnection = this.getProtoConnection();
-		var user = this.tableSeatUser.getUser();
+		let connection = this.getConnection();
+		let user = this.tableSeatUser.getUser();
 
-		this.tableSeatUser.off(CashGameUser.READY, this.onTableSeatUserReady, this);
-		this.tableSeatUser.off(CashGameUser.DONE, this.onTableSeatUserDone, this);
+		this.tableSeatUser.off("ready", this.onTableSeatUserReady);
+		this.tableSeatUser.off("done", this.onTableSeatUserDone);
 		this.tableSeatUser = null;
 
-		this.table.send(this.getSeatInfoMessage());
+		this.table.send("seatInfo",this.getSeatInfoMessage());
 
-		this.setProtoConnection(null);
+		this.setConnection(null);
 
-		if (protoConnection) {
-			this.table.notifyNewConnection(protoConnection, user);
+		if (connection) {
+			this.table.notifyNewConnection(connection);
 		}
 
 		this.table.sendTableInfoMessages();
-		this.trigger(CashGameTableSeat.IDLE);
+		this.emit("idle");
 	}
 
 	/**
@@ -157,7 +166,7 @@ class CashGameTableSeat extends BaseTableSeat {
 	 * @private
 	 */
 	onTableSeatUserReady=()=>{
-		this.trigger(CashGameTableSeat.READY);
+		this.emit("ready");
 	}
 
 	/**
@@ -204,13 +213,13 @@ class CashGameTableSeat extends BaseTableSeat {
 	 * @return {SeatInfoMessage}
 	 */
 	getSeatInfoMessage() {
-		var m = BaseTableSeat.prototype.getSeatInfoMessage.call(this);
+		var m = super.getSeatInfoMessage();
 
 		if (this.tableSeatUser && this.tableSeatUser.isReserved())
-			m.setChips("RESERVED");
+			m.chips="RESERVED";
 
 		if (this.tableSeatUser && this.isSitout())
-			m.setChips("SIT OUT");
+			m.chips="SIT OUT";
 
 		return m;
 	}
@@ -254,7 +263,7 @@ class CashGameTableSeat extends BaseTableSeat {
 	 */
 	getTableInfoMessage() {
 		if (!this.tableSeatUser)
-			return new TableInfoMessage();
+			return {};
 
 		return this.tableSeatUser.getTableInfoMessage();
 	}

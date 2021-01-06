@@ -45,6 +45,8 @@ class TableController {
 	 * @method onSeatInfoMessage
 	 */
 	onSeatInfoMessage=(m)=>{
+		//console.log(m);
+
 		var seatView = this.view.getSeatViewByIndex(m.seatIndex);
 
 		seatView.setName(m.name);

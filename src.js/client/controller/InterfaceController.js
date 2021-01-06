@@ -38,6 +38,13 @@ class InterfaceController {
 		var buttonsView = this.view.getButtonsView();
 
 		buttonsView.clear();
+
+		if (!m.buttons)
+			m.buttons=[];
+
+		if (!m.values)
+			m.values=[];
+
 		buttonsView.showButtons(m.buttons,m.values);
 
 		if (m.hasOwnProperty("sliderIndex"))
@@ -119,6 +126,9 @@ class InterfaceController {
 	 */
 	onInterfaceStateMessage=(m)=>{
 		var settingsView = this.view.getSettingsView();
+
+		if (!m.visibleButtons)
+			m.visibleButtons=[];
 
 		settingsView.setVisibleButtons(m.visibleButtons);
 	}
