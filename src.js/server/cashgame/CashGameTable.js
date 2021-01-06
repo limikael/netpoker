@@ -185,7 +185,7 @@ class CashGameTable extends BaseTable {
 	 * @method onTableSeatReady
 	 */
 	onTableSeatReady=()=>{
-		this.emit("numPlayersChange");
+		this.emit("numPlayersChange",this);
 
 		if (!this.currentGame && this.getNumInGame() >= 2 && !this.stopped)
 			this.startGame();
@@ -231,10 +231,10 @@ class CashGameTable extends BaseTable {
 			if (this.reconfigureData)
 				this.performReconfigure();
 
-			this.emit("idle");
+			this.emit("idle",this);
 		}
 
-		this.emit("numPlayersChange");
+		this.emit("numPlayersChange",this);
 	}
 
 	/**
@@ -527,7 +527,7 @@ class CashGameTable extends BaseTable {
 		this.stopped = true;
 
 		if (!this.currentGame)
-			for (i = 0; i < this.tableSeats.length; i++)
+			for (let i = 0; i < this.tableSeats.length; i++)
 				this.tableSeats[i].leaveTable();
 	}
 
