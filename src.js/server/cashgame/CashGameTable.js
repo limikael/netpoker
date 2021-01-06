@@ -249,23 +249,23 @@ class CashGameTable extends BaseTable {
 				var tableSeat = this.tableSeats[t];
 
 				if (tableSeat.getUser() && tableSeat.getUser().getId() == user.getId()) {
-					if (tableSeat.getProtoConnection()) {
-						console.log("**** re seating...");
+					if (tableSeat.getConnection()) {
+						//console.log("**** re seating...");
 
-						var ts = new CashGameSpectator(this, tableSeat.getProtoConnection(), user);
-						ts.on(CashGameSpectator.DONE, this.onTableSpectatorDone, this);
+						var ts = new CashGameSpectator(this, tableSeat.getConnection(), user);
+						ts.on("done", this.onTableSpectatorDone, this);
 						this.tableSpectators.push(ts);
 					}
 
-					tableSeat.setProtoConnection(protoConnection);
+					tableSeat.setConnection(connection);
 					alreadySeated = true;
 				}
 			}
 		}
 
 		if (!alreadySeated) {
-			var ts = new CashGameSpectator(this, protoConnection, user);
-			ts.on(CashGameSpectator.DONE, this.onTableSpectatorDone, this);
+			var ts = new CashGameSpectator(this, connection, user);
+			ts.on("done", this.onTableSpectatorDone, this);
 			this.tableSpectators.push(ts);
 		}
 
@@ -287,18 +287,19 @@ class CashGameTable extends BaseTable {
 	 */
 	sendState(connection) {
 		for (let i = 0; i < this.tableSeats.length; i++)
-			connection.send(this.tableSeats[i].getSeatInfoMessage());
+			connection.send("seatInfo",this.tableSeats[i].getSeatInfoMessage());
 
-		var b = new DealerButtonMessage(this.dealerButtonIndex);
-		protoConnection.send(b);
+		connection.send("dealerButton",{
+			seatIndex: this.dealerButtonIndex
+		});
 
 		/*for (var i = 0; i < this.chatLines.length; i++)
 			protoConnection.send(new ChatMessage(this.chatLines[i].user, this.chatLines[i].text));*/
 
-		protoConnection.send(this.getHandInfoMessage());
+		connection.send("handInfo",this.getHandInfoMessage());
 
 		if (this.currentGame != null)
-			this.currentGame.sendState(protoConnection);
+			this.currentGame.sendState(connection);
 
 		connection.send("stateComplete");
 	}
@@ -316,8 +317,8 @@ class CashGameTable extends BaseTable {
 	 * @method isUserSeated
 	 */
 	isUserSeated(user) {
-		for (i = 0; i < this.tableSeats.length; i++) {
-			var tableSeat = this.tableSeats[i];
+		for (let i = 0; i < this.tableSeats.length; i++) {
+			let tableSeat = this.tableSeats[i];
 			if (tableSeat.getUser() && tableSeat.getUser().getId() == user.getId())
 				return true;
 		}
@@ -592,7 +593,9 @@ class CashGameTable extends BaseTable {
 		if (this.previousHandId)
 			s += "Previous Hand: #" + this.previousHandId;
 
-		return new HandInfoMessage(s);
+		return {
+			text: s
+		};
 	}
 
 	/**

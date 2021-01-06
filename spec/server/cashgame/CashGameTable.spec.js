@@ -1,9 +1,10 @@
-var CashGameTable = require("../../../src.js/server/cashgame/CashGameTable");
-var User = require("../../../src.js/server/connection/User");
-var EventEmitter = require("events");
+const CashGameTable = require("../../../src.js/server/cashgame/CashGameTable");
+const User = require("../../../src.js/server/connection/User");
+const EventEmitter = require("events");
+const MessageConnection=require("../../../src.js/utils/MessageConnection");
 
 describe("CashGameTable", function() {
-	var mockServices;
+	var mockServer;
 	var config;
 
 	beforeEach(function() {
@@ -43,7 +44,7 @@ describe("CashGameTable", function() {
 	});
 
 	it("can be reconfigured", function() {
-		var t = new CashGameTable(mockServices, config);
+		var t = new CashGameTable(mockServer, config);
 
 		expect(t.tableSeats[1].isActive()).toBe(false);
 
@@ -64,7 +65,7 @@ describe("CashGameTable", function() {
 	});
 
 	it("skips reconfig if it is the same", function() {
-		var t = new CashGameTable(mockServices, config);
+		var t = new CashGameTable(mockServer, config);
 
 		spyOn(t, "performReconfigure").and.callThrough();
 
@@ -109,28 +110,30 @@ describe("CashGameTable", function() {
 		var mockConnection = new EventEmitter();
 		mockConnection.send = jasmine.createSpy();
 		mockConnection.close = jasmine.createSpy();
+		mockConnection.addEventListener = mockConnection.on;
+		mockConnection.removeEventListener = mockConnection.off;
 
-		var protoConnection = new ProtoConnection(mockConnection);
+		var connection = new MessageConnection(mockConnection);
 		var user = new User({
 			id: 123,
 			name: "hello"
 		});
 
-		t.notifyNewConnection(protoConnection, user);
+		t.notifyNewConnection(connection, user);
 		expect(mockConnection.send).toHaveBeenCalled();
 		expect(t.tableSpectators.length).toBe(1);
 
 		var tableSpectator = t.tableSpectators[0];
 		expect(tableSpectator.listenerMap).not.toEqual({});
 
-		mockConnection.trigger(ProtoConnection.CLOSE);
+		mockConnection.emit("close");
 		expect(t.tableSpectators.length).toBe(0);
-		expect(mockConnection.listenerMap).toEqual({});
-		expect(tableSpectator.listenerMap).toEqual({});
+		expect(mockConnection.eventNames().length).toEqual(0);
+		expect(tableSpectator.eventNames().length).toEqual(0);
 	});
 
-	/*it("can get next seated user in sequence", function() {
-		var t = new CashGameTable(mockServices, config);
+	it("can get next seated user in sequence", function() {
+		var t = new CashGameTable(mockServer, config);
 
 		var mockTableSeatUser = {};
 		mockTableSeatUser.isInGame = function() {
@@ -163,12 +166,15 @@ describe("CashGameTable", function() {
 	});
 
 	it("reestablishes user connections", function() {
-		var t = new CashGameTable(mockServices, config);
+		var t = new CashGameTable(mockServer, config);
 
-		var oldMockConnection = new EventDispatcher();
+		var oldMockConnection = new EventEmitter();
 		oldMockConnection.send = jasmine.createSpy();
+		oldMockConnection.close = jasmine.createSpy();
+		oldMockConnection.addEventListener = oldMockConnection.on;
+		oldMockConnection.removeEventListener = oldMockConnection.off;
 
-		var oldProtoConnection = new ProtoConnection(oldMockConnection);
+		var oldConnection = new MessageConnection(oldMockConnection);
 		var oldUser = new User({
 			id: 123,
 			name: "hello"
@@ -191,35 +197,39 @@ describe("CashGameTable", function() {
 			return false;
 		}
 		mockTableSeatUser.getTableInfoMessage = function() {
-			return new TableInfoMessage("hello world");
+			return new {
+				text: "hello world"
+			};
 		}
 		mockTableSeatUser.getSettings = function() {
 			return null;
 		}
 
 		t.getTableSeatBySeatIndex(3).tableSeatUser = mockTableSeatUser;
-		t.getTableSeatBySeatIndex(3).setProtoConnection(oldProtoConnection);
+		t.getTableSeatBySeatIndex(3).setConnection(oldConnection);
 
 		// Now, connect again with an equal user.
-		var newMockConnection = new EventDispatcher();
+		var newMockConnection = new EventEmitter();
 		newMockConnection.send = jasmine.createSpy();
+		newMockConnection.close = jasmine.createSpy();
+		newMockConnection.addEventListener = newMockConnection.on;
+		newMockConnection.removeEventListener = newMockConnection.off;
 
-		var newProtoConnection = new ProtoConnection(newMockConnection);
+		var newConnection = new MessageConnection(newMockConnection);
 		var newUser = new User({
 			id: 123,
 			name: "hello"
 		});
 
-		t.notifyNewConnection(newProtoConnection, newUser);
+		t.notifyNewConnection(newConnection, newUser);
 
-
-		expect(t.getTableSeatBySeatIndex(3).getProtoConnection()).toBe(newProtoConnection);
+		expect(t.getTableSeatBySeatIndex(3).getConnection()).toBe(newConnection);
 		expect(t.tableSpectators.length).toBe(1);
-		expect(t.tableSpectators[0].getProtoConnection()).toBe(oldProtoConnection);
+		expect(t.tableSpectators[0].getConnection()).toBe(oldConnection);
 	});
 
 	it("can create a hand info message", function() {
-		var t = new CashGameTable(mockServices, config);
+		var t = new CashGameTable(mockServer, config);
 
 		var mockGame = {};
 		mockGame.getId = function() {
@@ -229,13 +239,11 @@ describe("CashGameTable", function() {
 		t.currentGame = mockGame;
 
 		var handInfoMessage = t.getHandInfoMessage();
-		expect(handInfoMessage).toEqual(jasmine.any(HandInfoMessage));
-		expect(handInfoMessage.getText()).toBe("Current Hand: #123\n");
+		expect(handInfoMessage.text).toBe("Current Hand: #123\n");
 
 		t.previousHandId = 999;
 
 		handInfoMessage = t.getHandInfoMessage();
-		expect(handInfoMessage).toEqual(jasmine.any(HandInfoMessage));
-		expect(handInfoMessage.getText()).toBe("Current Hand: #123\nPrevious Hand: #999");
-	});*/
+		expect(handInfoMessage.text).toBe("Current Hand: #123\nPrevious Hand: #999");
+	});
 })

@@ -19,6 +19,12 @@ class MessageConnection extends EventEmitter {
 	}
 
 	send(type, message) {
+		if (typeof type!="string")
+			throw new Error("Message type should be a string");
+
+		if (!message)
+			message={};
+
 		message.type=type;
 		this.webSocket.send(JSON.stringify(message));
 	}

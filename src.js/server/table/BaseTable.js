@@ -207,7 +207,10 @@ class BaseTable extends EventEmitter {
 	advanceDealer() {
 		this.dealerButtonIndex = this.getNextSeatIndexInGame(this.dealerButtonIndex);
 
-		this.send(new DealerButtonMessage(this.dealerButtonIndex, true));
+		this.send("dealerButton",{
+			seatIndex: this.dealerButtonIndex,
+			animate: true
+		});
 	}
 
 	/**

@@ -31,7 +31,11 @@ class CashGameSpectator extends EventEmitter{
 	 * @method onConnectionClose
 	 */
 	onConnectionClose=()=>{
-		console.log("table spectator connection close");
+		//console.log("table spectator connection close");
+		this.connection.off("close",this.onConnectionClose);
+		this.connection.off("seatClick", this.onSeatClick);
+		this.connection.off("chat", this.onChat);
+
 		this.emit("done",this);
 	}
 
