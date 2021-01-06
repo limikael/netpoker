@@ -58,6 +58,10 @@ class NetPokerServer {
 
 		console.log("Server listening to "+this.options.port);
 	}
+
+	close() {
+		this.httpServer.close();
+	}
 }
 
 module.exports=NetPokerServer;

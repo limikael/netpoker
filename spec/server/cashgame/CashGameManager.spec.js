@@ -1,6 +1,6 @@
 var CashGameManager = require("../../../src.js/server/cashgame/CashGameManager");
 var CashGameTable = require("../../../src.js/server/cashgame/CashGameTable");
-var TickLoopRunner = require("../../support/TickLoopRunner");
+var TickLoopRunner = require("../../support/src/utils/TickLoopRunner");
 
 describe("CashGameManager", function() {
 	var mockBackend, mockServer;

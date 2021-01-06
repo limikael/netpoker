@@ -1,6 +1,6 @@
 var Game = require("../../../src.js/server/game/Game");
 var GameSeat = require("../../../src.js/server/game/GameSeat");
-var TickLoopRunner = require("../../support/TickLoopRunner");
+var TickLoopRunner = require("../../support/src/utils/TickLoopRunner");
 var EventEmitter = require("events");
 
 describe("Game", function() {

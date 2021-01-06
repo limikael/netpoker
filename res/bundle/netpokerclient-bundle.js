@@ -6130,7 +6130,6 @@ class MessageConnection extends EventEmitter {
 		return new Promise((resolve, reject)=>{
 			let webSocket=new WebSocket(url);
 			webSocket.onopen=()=>{
-				//console.log("connected...");
 				resolve(new MessageConnection(webSocket));
 			}
 

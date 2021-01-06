@@ -1,7 +1,7 @@
 const CashGameBuyChipsPrompt = require("../../../src.js/server/cashgame/CashGameBuyChipsPrompt");
 const User = require("../../../src.js/server/connection/User");
 const EventEmitter=require("events");
-const TickLoopRunner=require("../../support/TickLoopRunner");
+const TickLoopRunner=require("../../support/src/utils/TickLoopRunner");
 
 describe("CashGameBuyChipsPrompt", function() {
 	var user;

@@ -1,3 +1,6 @@
+const TickLoopRunner=require("../../../spec/support/src/utils/TickLoopRunner");
+const PromiseUtil=require("../../utils/PromiseUtil");
+
 class MockBackend {
 	getUserInfoByToken(params) {
 		switch (params.token) {
@@ -149,7 +152,9 @@ class MockBackend {
 		if (!this[method])
 			throw new Error("unknown backend call: "+method);
 
-		console.log("Mock backend call: "+method);
+		//console.log("Mock backend call ticking..: "+method);
+
+		await PromiseUtil.delay(10);
 
 		return this[method](params);
 	}
