@@ -174,6 +174,9 @@ class BaseTableSeat extends EventEmitter {
 	 * @param {Object} message The message to send.
 	 */
 	send(message, params) {
+		//console.log(message);
+		//console.log(params);
+
 		if (this.connection)
 			this.connection.send(message, params);
 	}

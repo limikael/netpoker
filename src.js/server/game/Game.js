@@ -39,11 +39,13 @@ class Game extends EventEmitter {
 		};
 
 		var startFunction = this.table.getStartGameFunctionName();
-		var backend = this.table.getServices().getBackend();
+		var backend = this.table.getServer().getBackend();
+
+		console.log("START GAME, f="+startFunction);
 
 		backend.call(startFunction, params).then(
-			this.onStartCallComplete.bind(this),
-			this.onStartCallError.bind(this)
+			this.onStartCallComplete,
+			this.onStartCallError
 		);
 	}
 
@@ -53,6 +55,8 @@ class Game extends EventEmitter {
 	 * @private
 	 */
 	onStartCallComplete=(result)=>{
+		console.log("start call complet");
+
 		this.id = result.gameId;
 
 		this.table.advanceDealer();
@@ -69,7 +73,7 @@ class Game extends EventEmitter {
 		}
 
 		//console.log("table: " + this.table);
-		this.send(this.table.getHandInfoMessage());
+		this.send("handInfo",this.table.getHandInfoMessage());
 
 		this.setGameState(new AskBlindState());
 	}
@@ -79,8 +83,9 @@ class Game extends EventEmitter {
 	 * @method onStartCallError
 	 * @private
 	 */
-	onStartCallError=()=>{
-		//console.log("error starting game, setting timeout for "+Game.ERROR_WAIT);
+	onStartCallError=(e)=>{
+		console.log("start call error");
+		console.log(e);
 		setTimeout(this.onErrorWaitTimer.bind(this), Game.ERROR_WAIT);
 	}
 

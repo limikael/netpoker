@@ -5961,6 +5961,8 @@ class EventQueue extends EventEmitter {
 	}
 
 	enqueue(...event) {
+		console.log(event[0]+": "+JSON.stringify(event[1]));
+
 		if (this.waitingForObject) {
 			this.queue.push(event);
 		}

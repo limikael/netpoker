@@ -129,8 +129,9 @@ class GameSeatPrompt extends EventEmitter {
 		this.gameSeat.getTableSeat().on("buttonClick", this.onButtonClickMessage);
 		this.gameSeat.getTableSeat().on("settingsChanged", this.onTableSeatSettingsChanged);
 		this.timeoutId=setTimeout(this.onTimeout, this.responseTime * 1000);
+
 		this.gameSeat.send("buttons",this.getButtonsMessage());
-		this.gameSeat.getGame().send(this.getCurrentTimerMessage());
+		this.gameSeat.getGame().send("timer",this.getCurrentTimerMessage());
 	}
 
 	/**
@@ -245,7 +246,6 @@ class GameSeatPrompt extends EventEmitter {
 			"sliderIndex": this.sliderIndex,
 			"sliderMax": this.sliderMax
 		};
-		this.buttonsMessage;
 	}
 
 	/**

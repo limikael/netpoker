@@ -194,8 +194,8 @@ class GameSeat {
 	 * Send a message to the game seat.
 	 * @method send
 	 */
-	send(m) {
-		this.tableSeat.send(m);
+	send(message, params) {
+		this.tableSeat.send(message, params);
 	}
 
 	/**

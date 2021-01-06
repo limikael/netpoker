@@ -70,7 +70,7 @@ class MockBackend {
 		};
 	}
 
-	gameStartForCashGame(params) {
+	startCashGame(params) {
 		return {
 			gameId: 987
 		};

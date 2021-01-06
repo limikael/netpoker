@@ -248,7 +248,7 @@ class CashGameUser extends EventEmitter {
 				text: "Please wait for the next hand."
 			};
 
-		return new TableInfoMessage();
+		return {};
 	}
 
 	/**

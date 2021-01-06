@@ -114,7 +114,7 @@ class CashGameTable extends BaseTable {
 		for (var i = 0; i < this.tableSpectators.length; i++) {
 			var tableSpectator = this.tableSpectators[i];
 
-			this.sendState(tableSpectator.getProtoConnection());
+			this.sendState(tableSpectator.getConnection());
 			tableSpectator.send(tableSpectator.getTableInfoMessage());
 		}
 	}
@@ -394,7 +394,7 @@ class CashGameTable extends BaseTable {
 		if (this.currentGame.getId())
 			this.previousHandId = this.currentGame.getId();
 
-		this.currentGame.off(Game.FINISHED, this.onCurrentGameFinished, this);
+		this.currentGame.off("finished", this.onCurrentGameFinished);
 		this.currentGame = null;
 
 		for (var t = 0; t < this.tableSeats.length; t++) {
@@ -403,18 +403,18 @@ class CashGameTable extends BaseTable {
 			// actualize rebuys here!
 
 			if (tableSeat.isInGame()) {
-				if (!tableSeat.getProtoConnection())
+				if (!tableSeat.getConnection())
 					tableSeat.leaveTable();
 
 				else if (!tableSeat.getChips())
 					tableSeat.leaveTable();
 
-				else if (tableSeat.getSetting(CheckboxMessage.SITOUT_NEXT))
+				else if (tableSeat.getSetting("sitOutNext"))
 					tableSeat.sitout();
 			}
 		}
 
-		this.send(this.getHandInfoMessage());
+		this.send("handInfo",this.getHandInfoMessage());
 
 		if (this.stopped || this.reconfigureData) {
 			for (var t = 0; t < this.tableSeats.length; t++) {

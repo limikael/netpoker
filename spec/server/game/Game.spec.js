@@ -9,8 +9,8 @@ describe("Game", function() {
 	beforeEach(function() {
 		mockBackend = {};
 
-		mockServices = {};
-		mockServices.getBackend = function() {
+		mockServer = {};
+		mockServer.getBackend = function() {
 			return mockBackend;
 		}
 
@@ -50,8 +50,8 @@ describe("Game", function() {
 			return "hello";
 		};
 
-		mockTable.getServices = function() {
-			return mockServices;
+		mockTable.getServer = function() {
+			return mockServer;
 		};
 
 		mockTable.advanceDealer = function() {};
