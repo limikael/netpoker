@@ -215,17 +215,19 @@ class CashGameUser extends EventEmitter {
 	 * @method sitout
 	 */
 	sitout() {
-		var b = new ButtonsMessage();
-		b.addButton(new ButtonData(ButtonData.LEAVE));
-		b.addButton(new ButtonData(ButtonData.IM_BACK));
-		this.tableSeat.send(b);
+		this.tableSeat.send("buttons",{
+			buttons: ["leave","imBack"]
+		});
 
 		this.sittingout = true;
-		this.settings.set(CheckboxMessage.SITOUT_NEXT, true);
-		this.tableSeat.send(new CheckboxMessage(CheckboxMessage.SITOUT_NEXT, true));
-		this.tableSeat.send(this.getTableInfoMessage());
+		this.settings.set("sitOutNext", true);
+		this.tableSeat.send("checkbox",{
+			id: "sitOutNext",
+			checked: false
+		});
+		this.tableSeat.send("tableInfo",this.getTableInfoMessage());
 
-		this.tableSeat.getTable().send(this.tableSeat.getSeatInfoMessage());
+		this.tableSeat.getTable().send("seatInfo",this.tableSeat.getSeatInfoMessage());
 	}
 
 	/**

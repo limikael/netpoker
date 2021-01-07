@@ -95,14 +95,14 @@ class RoundState extends GameState {
 
 		this.prompt = new GameSeatPrompt(gameSeat);
 
-		this.prompt.addButton(ButtonData.FOLD);
+		this.prompt.addButton("fold");
 
 		if (this.canCheck(gameSeat)) {
-			this.prompt.setDefaultButton(ButtonData.CHECK);
-			this.prompt.addButton(ButtonData.CHECK);
+			this.prompt.setDefaultButton("check");
+			this.prompt.addButton("check");
 		} else {
-			this.prompt.setDefaultButton(ButtonData.FOLD);
-			this.prompt.addButton(ButtonData.CALL, this.getCostToCall(gameSeat));
+			this.prompt.setDefaultButton("fold");
+			this.prompt.addButton("call", this.getCostToCall(gameSeat));
 		}
 
 		if (this.canRaise(gameSeat)) {
@@ -110,19 +110,18 @@ class RoundState extends GameState {
 			var maxRaise = this.getMaxRaiseTo(gameSeat);
 
 			if (this.getHighestBet() == 0)
-				this.prompt.addButton(ButtonData.BET, minRaise);
+				this.prompt.addButton("bet", minRaise);
 			else
-				this.prompt.addButton(ButtonData.RAISE, minRaise);
+				this.prompt.addButton("raise", minRaise);
 
 			if (minRaise != maxRaise) {
 				this.prompt.setSliderValues(this.prompt.getLastButtonIndex(), maxRaise);
 			}
-
 		}
 
 		this.updateAndSendPresets();
 
-		this.prompt.on(GameSeatPrompt.COMPLETE, this.onPromptComplete, this);
+		this.prompt.on("complete", this.onPromptComplete, this);
 		this.prompt.ask();
 	}
 
@@ -141,17 +140,17 @@ class RoundState extends GameState {
 
 			if (!gameSeat.isFolded()) {
 				if (this.spokenAtCurrentBet.indexOf(gameSeat) < 0) {
-					gameSeat.enablePreset(ButtonData.FOLD);
-					gameSeat.enablePreset(ButtonData.CALL_ANY);
+					gameSeat.enablePreset("fold");
+					gameSeat.enablePreset("callAny");
 
 					if (this.canCheck(gameSeat)) {
-						gameSeat.enablePreset(ButtonData.CHECK);
-						gameSeat.enablePreset(ButtonData.CHECK_FOLD);
+						gameSeat.enablePreset("check");
+						gameSeat.enablePreset("checkFold");
 					} else {
-						if (oldPreset == ButtonData.CHECK_FOLD)
-							gameSeat.setCurrentPreset(ButtonData.FOLD);
+						if (oldPreset == "checkFold")
+							gameSeat.setCurrentPreset("fold");
 
-						gameSeat.enablePreset(ButtonData.CALL, this.getCostToCall(gameSeat))
+						gameSeat.enablePreset("call", this.getCostToCall(gameSeat))
 					}
 				}
 			}
@@ -160,7 +159,7 @@ class RoundState extends GameState {
 				gameSeat.setCurrentPreset(oldPreset, oldPresetValue);
 
 			if (gameSeat == this.game.getGameSeats()[this.gameSeatIndexToSpeak])
-				gameSeat.send(new PresetButtonsMessage());
+				gameSeat.send("presetButtons");
 
 			else
 				gameSeat.sendPresets();
@@ -193,11 +192,17 @@ class RoundState extends GameState {
 			if (value > this.getMaxRaiseTo(gameSeat))
 				value = this.getMaxRaiseTo(gameSeat);
 
-			if (prompt.getButton() == ButtonData.RAISE)
-				this.game.send(new ActionMessage(gameSeat.getSeatIndex(), ActionMessage.RAISE));
+			if (prompt.getButton() == "raise")
+				this.game.send("raise",{
+					seatIndex: gameSeat.getSeatIndex(),
+					action: "raise"
+				});
 
 			else
-				this.game.send(new ActionMessage(gameSeat.getSeatIndex(), ActionMessage.BET));
+				this.game.send("bet",{
+					seatIndex: gameSeat.getSeatIndex(),
+					action: "bet"
+				});
 
 			gameSeat.makeBet(value - gameSeat.getBet());
 			this.raiseTimes++;
@@ -207,10 +212,16 @@ class RoundState extends GameState {
 			this.spokenAtCurrentBet.push(gameSeat);
 
 			if (this.canCheck(gameSeat))
-				this.game.send(new ActionMessage(gameSeat.getSeatIndex(), ActionMessage.CHECK));
+				this.game.send("action",{
+					seatIndex: gameSeat.getSeatIndex(),
+					action: "check"
+				});
 
 			else
-				this.game.send(new ActionMessage(gameSeat.getSeatIndex(), ActionMessage.CALL));
+				this.game.send("action",{
+					seatIndex: gameSeat.getSeatIndex(),
+					action: "call"
+				});
 
 			gameSeat.makeBet(this.getCostToCall(gameSeat));
 			this.askDone();
@@ -301,18 +312,20 @@ class RoundState extends GameState {
 				gameSeat.addPocketCard(card);
 
 				// Send hidden
-				var m = new PocketCardsMessage(gameSeat.getSeatIndex());
-				m.setAnimate(true);
-				m.setFirstIndex(i);
-				m.addCard(new CardData(CardData.HIDDEN));
-				this.game.sendExceptSeat(m, gameSeat);
+				this.game.sendExceptSeat(gameSeat,"pocketCards",{
+					seatIndex: gameSeat.getSeatIndex(),
+					firstIndex: i,
+					animate: true,
+					cards: [CardData.HIDDEN]
+				});
 
 				// Send shown.
-				m = new PocketCardsMessage(gameSeat.getSeatIndex());
-				m.setAnimate(true);
-				m.setFirstIndex(i);
-				m.addCard(card);
-				gameSeat.send(m, gameSeat);
+				gameSeat.send("pocketCards", {
+					seatIndex: gameSeat.getSeatIndex(),
+					firstIndex: i,
+					animate: true,
+					cards: [card.getValue()]
+				});
 			}
 		}
 	}
@@ -333,16 +346,16 @@ class RoundState extends GameState {
 		}
 
 		for (var i = 0; i < numCards; i++) {
+			let index=this.game.getCommunityCards().length;
+
 			var c = this.game.getNextCard();
-
-			var m = new CommunityCardsMessage();
-			m.setAnimate(true);
-			m.setFirstIndex(this.game.getCommunityCards().length);
-			m.addCard(c);
-
 			this.game.getCommunityCards().push(c);
 
-			this.game.send(m);
+			this.game.send("communityCards",{
+				animate: true,
+				firstIndex: index,
+				cards: [c.getValue()]
+			});
 		}
 	}
 
@@ -352,7 +365,7 @@ class RoundState extends GameState {
 	 * @private
 	 */
 	hasDealtPocketCards() {
-		dealt = false;
+		let dealt = false;
 
 		for (var i = 0; i < this.game.getGameSeats().length; i++) {
 			var gameSeat = this.game.getGameSeats()[i];
@@ -503,8 +516,10 @@ class RoundState extends GameState {
 			gameSeat.betToPot();
 		}
 
-		this.game.send(new BetsToPotMessage());
-		this.game.send(new PotMessage(this.game.getPots()));
+		this.game.send("betsToPot");
+		this.game.send("pot",{
+			values: this.game.getPots()
+		});
 	}
 
 

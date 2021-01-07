@@ -19,7 +19,7 @@ describe("BotConnection", function() {
 
 	it("can connect to a server", async()=> {
 		let b=new BotConnection();
-		await b.connect("ws://localhost:9999/?token=user1&tableId=123");
+		b.connect("ws://localhost:9999/?token=user1&tableId=123");
 		await b.waitForMessage("stateComplete");
 	});
 

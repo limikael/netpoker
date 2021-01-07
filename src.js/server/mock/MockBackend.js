@@ -154,7 +154,8 @@ class MockBackend {
 
 		//console.log("Mock backend call ticking..: "+method);
 
-		await PromiseUtil.delay(10);
+		//await PromiseUtil.delay(10);
+		//await TickLoopRunner.runTicks();
 
 		return this[method](params);
 	}

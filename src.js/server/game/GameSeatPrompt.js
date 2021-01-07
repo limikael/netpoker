@@ -89,9 +89,9 @@ class GameSeatPrompt extends EventEmitter {
 	 * Get last button index.
 	 * @method getLastButtonIndex
 	 */
-	/*getLastButtonIndex() {
+	getLastButtonIndex() {
 		return this.buttons.length - 1;
-	}*/
+	}
 
 	/**
 	 * Set slider button index and min and max values.

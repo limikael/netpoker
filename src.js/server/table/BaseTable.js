@@ -185,15 +185,17 @@ class BaseTable extends EventEmitter {
 	 * Raw chat string.
 	 * @method rawChat
 	 */
-	rawChat(user, string) {
-		var message = new ChatMessage(user, string);
-		this.send(message);
+	rawChat(user, message) {
+		this.send("chat",{
+			user: user,
+			text: message
+		});
 
 		//console.log("user = " + user + ", string = " + string);
 
 		this.chatLines.push({
 			user: user,
-			text: string
+			text: message
 		});
 
 		while (this.chatLines.length > 10)
@@ -206,6 +208,7 @@ class BaseTable extends EventEmitter {
 	 */
 	advanceDealer() {
 		this.dealerButtonIndex = this.getNextSeatIndexInGame(this.dealerButtonIndex);
+		//console.log("********** advanceDealer, i="+this.dealerButtonIndex);
 
 		this.send("dealerButton",{
 			seatIndex: this.dealerButtonIndex,
@@ -241,7 +244,7 @@ class BaseTable extends EventEmitter {
 	 * Send except seat.
 	 * @method sendExceptSeat
 	 */
-	sendExceptSeat(m, tableSeat) {
+	sendExceptSeat(tableSeat, m, p) {
 		throw new Error("abstract");
 	}
 

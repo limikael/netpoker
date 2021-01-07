@@ -118,7 +118,7 @@ class AskBlindState extends GameState {
 		this.prompt.off("complete", this.onPromptComplete, this);
 		this.prompt = null;
 
-		if (button == ButtonData.POST_BB || button == ButtonData.POST_SB) {
+		if (button == "postBB" || button == "postSB") {
 			if (!gameSeat.getTableSeat().getChips())
 				throw new Error("the user doesn't have any money!");
 
@@ -180,6 +180,8 @@ class AskBlindState extends GameState {
 					return null;
 			}
 		}
+
+		//console.log("it is not heads up: "+this.headsUp);
 
 		switch (this.haveBlinds) {
 			case 0:

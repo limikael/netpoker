@@ -13,10 +13,9 @@ class BotSitInStrategy extends BotStrategy {
 	}
 
 	async run() {
-		if (this.bot.getLastMessageOfType("stateComplete"))
-			throw new Error("already seen state complete");
+		if (!this.bot.getLastMessageOfType("stateComplete"))
+			await this.bot.waitForMessage("stateComplete");
 
-		await this.bot.waitForMessage("stateComplete");
 		this.bot.send("seatClick",{
 			seatIndex: this.seatIndex
 		});

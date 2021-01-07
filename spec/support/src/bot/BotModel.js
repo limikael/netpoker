@@ -6,7 +6,7 @@ function BotModel() {
 	for (var i = 0; i < 10; i++)
 		this.seatModels.push(new BotSeatModel(i));
 
-	this.buttons = null;
+	this.buttons = [];
 	this.communityCards = [];
 	this.dealerButtonPosition = -1;
 	this.pots = [];
@@ -19,8 +19,8 @@ BotModel.prototype.getSeatModelBySeatIndex = function(i) {
 }
 
 BotModel.prototype.setButtons = function(buttons) {
-	if (buttons instanceof Array && !buttons.length)
-		buttons = [];
+	if (!buttons)
+		buttons=[];
 
 	this.buttons = buttons;
 }

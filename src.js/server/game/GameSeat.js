@@ -161,17 +161,21 @@ class GameSeat {
 	 * @method sendPresets
 	 */
 	sendPresets() {
-		var m = new PresetButtonsMessage();
+		let m={
+			current: this.currentPreset,
+			buttons: new Array(6),
+			values: new Array(6)
+		};
 
 		for (var p = 0; p < this.presets.length; p++) {
 			var preset = this.presets[p];
-			if (preset.isEnabled())
-				m.setButtonDataAt(preset.getButtonIndex(), preset.getButtonData());
+			if (preset.isEnabled()) {
+				m.buttons[preset.getButtonIndex()]=preset.getButtonId();
+				m.values[preset.getButtonIndex()]=preset.getValue();
+			}
 		}
 
-		m.current = this.currentPreset;
-
-		this.send(m);
+		this.send("presetButtons",m);
 	}
 
 	/**
@@ -331,11 +335,15 @@ class GameSeat {
 	show() {
 		this.showing = true;
 
-		var p = new PocketCardsMessage(this.getSeatIndex());
-		for (var i = 0; i < this.pocketCards.length; i++)
-			p.addCard(this.pocketCards[i]);
+		var p = {
+			seatIndex: this.getSeatIndex(),
+			cards: []
+		};
 
-		this.game.send(p);
+		for (var i = 0; i < this.pocketCards.length; i++)
+			p.cards.push(this.pocketCards[i]);
+
+		this.game.send("pocketCards",p);
 
 		if (this.game.getCommunityCards().length == 5)
 			this.game.getTable().chat(null,

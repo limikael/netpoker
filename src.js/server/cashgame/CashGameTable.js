@@ -501,11 +501,11 @@ class CashGameTable extends BaseTable {
 		var i;
 
 		for (i = 0; i < this.tableSpectators.length; i++)
-			this.tableSpectators[i].send(message);
+			this.tableSpectators[i].send(message,params);
 
 		for (i = 0; i < this.tableSeats.length; i++)
 			if (this.tableSeats[i] != except)
-				this.tableSeats[i].send(message);
+				this.tableSeats[i].send(message,params);
 	}
 
 	/**

@@ -30,28 +30,28 @@ class BotController {
 	}
 
 	onPocketCardsMessage=(m)=> {
-		var seatModel = this.model.getSeatModelBySeatIndex(m.getSeatIndex());
+		var seatModel = this.model.getSeatModelBySeatIndex(m.seatIndex);
 		var seatCards = seatModel.getCards();
 
-		for (var i = 0; i < m.getCards().length; i++) {
-			var cardData = m.getCards()[i];
-			var cardIndex = m.getFirstIndex() + i;
+		for (var i = 0; i < m.cards.length; i++) {
+			var cardData = m.cards[i];
+			var cardIndex = m.firstIndex + i;
 
 			seatCards[cardIndex] = cardData;
 		}
 	}
 
 	onBetMessage=(m)=> {
-		var seatModel = this.model.getSeatModelBySeatIndex(m.getSeatIndex());
+		var seatModel = this.model.getSeatModelBySeatIndex(m.seatIndex);
 
-		seatModel.setBet(m.getValue());
+		seatModel.setBet(m.value);
 	}
 
 	onCommunityCardsMessage=(m)=> {
-		for (var i = 0; i < m.getCards().length; i++) {
-			var c = m.getCards()[i];
+		for (var i = 0; i < m.cards.length; i++) {
+			var c = m.cards[i];
 
-			this.model.getCommunityCards()[m.getFirstIndex() + i] = c;
+			this.model.getCommunityCards()[m.firstIndex + i] = c;
 		}
 	}
 
@@ -62,15 +62,17 @@ class BotController {
 	}
 
 	onDealerButtonMessage=(m)=> {
+		console.log("*********delaer button message in bot");
+		console.log(m);
 		this.model.setDealerButtonPosition(m.seatIndex);
 	}
 
 	onPotMessage=(m)=> {
-		this.model.setPots(m.getValues());
+		this.model.setPots(m.values);
 	}
 
 	onBetsToPotMessage=(m)=> {
-		for (i = 0; i < this.model.seatModels.length; i++) {
+		for (let i = 0; i < this.model.seatModels.length; i++) {
 			var seatModel = this.model.seatModels[i];
 			seatModel.setBet(0);
 		}
