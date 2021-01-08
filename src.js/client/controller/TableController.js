@@ -152,7 +152,7 @@ class TableController {
 	 * @method onTimer
 	 */
 	onTimerMessage=(m)=>{
-		if (m.seatIndex < 0)
+		if (!m.hasOwnProperty("seatIndex") || m.seatIndex < 0)
 			this.view.timerView.hide();
 
 		else {

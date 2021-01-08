@@ -1580,7 +1580,9 @@ class NetPokerClient extends PixiApp {
 
 	async connect() {
 		try {
-			this.connection=await MessageConnection.connect(this.params.serverUrl);
+			let ws=new WebSocket(this.params.serverUrl);
+			this.connection=new MessageConnection(ws);
+			await this.connection.waitForConnection();
 			this.connection.on("close",this.waitAndReconnect);
 			this.clientController.setConnection(this.connection);
 		}
@@ -1822,7 +1824,7 @@ class InterfaceController {
 
 		buttonsView.showButtons(m.buttons,m.values);
 
-		if (m.hasOwnProperty("sliderIndex"))
+		if (m.hasOwnProperty("sliderIndex") && m.sliderIndex>=0)
 			buttonsView.showSlider(m.sliderIndex,m.sliderMax);
 	}
 
@@ -1834,6 +1836,12 @@ class InterfaceController {
 		var presetButtonsView = this.view.getPresetButtonsView();
 		var buttons = presetButtonsView.getButtons();
 		var havePresetButton = false;
+
+		if (!m.buttons)
+			m.buttons=[];
+
+		if (!m.values)
+			m.values=[];
 
 		for (var i = 0; i < buttons.length; i++) {
 			if (i > m.buttons.length) {
@@ -2262,7 +2270,7 @@ class TableController {
 	 * @method onTimer
 	 */
 	onTimerMessage=(m)=>{
-		if (m.seatIndex < 0)
+		if (!m.hasOwnProperty("seatIndex") || m.seatIndex < 0)
 			this.view.timerView.hide();
 
 		else {
@@ -6126,7 +6134,42 @@ class MessageConnection extends EventEmitter {
 		this.emit("message",data);
 	}
 
-	static connect(url) {
+	waitForConnection() {
+		if (this.webSocket.readyState==1)
+			return Promise.resolve();
+
+		else if (this.webSocket.readyState==2 ||
+				this.webSocket.readyState==3)
+			return Promise.reject("web socket failed");
+
+		else if (this.webSocket.readyState==0) {
+			return new Promise((resolve, reject)=>{
+				this.webSocket.onopen=()=>{
+					this.webSocket.onopen=null;
+					this.webSocket.onerror=null;
+					resolve();
+				}
+
+				this.webSocket.onerror=(err)=>{
+					this.webSocket.onopen=null;
+					this.webSocket.onerror=null;
+					reject(err);
+				}
+			});
+		}
+
+		else
+			throw new Error("unknown ready state");
+	}
+
+	close() {
+		this.webSocket.removeEventListener("message",this.onMessage);
+		this.webSocket.removeEventListener("error",this.onClose);
+		this.webSocket.removeEventListener("close",this.onClose);
+		this.webSocket.close();
+	}
+
+	/*static connect(url) {
 		return new Promise((resolve, reject)=>{
 			let webSocket=new WebSocket(url);
 			webSocket.onopen=()=>{
@@ -6138,7 +6181,7 @@ class MessageConnection extends EventEmitter {
 				reject(err);
 			}
 		});
-	}
+	}*/
 }
 
 module.exports=MessageConnection;

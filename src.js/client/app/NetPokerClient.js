@@ -35,7 +35,9 @@ class NetPokerClient extends PixiApp {
 
 	async connect() {
 		try {
-			this.connection=await MessageConnection.connect(this.params.serverUrl);
+			let ws=new WebSocket(this.params.serverUrl);
+			this.connection=new MessageConnection(ws);
+			await this.connection.waitForConnection();
 			this.connection.on("close",this.waitAndReconnect);
 			this.clientController.setConnection(this.connection);
 		}

@@ -27,7 +27,7 @@ class ConnectionManager extends EventEmiter {
 			let viewcaseLines=viewcaseText.split("\n");
 
 			for (let line of viewcaseLines)
-				if (line.trim())
+				if (line.trim() && line.trim()[0]!="/")
 					ws.send(line.trim());
 
 			ws.on("message",(message)=>{

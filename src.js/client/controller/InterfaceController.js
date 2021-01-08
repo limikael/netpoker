@@ -47,7 +47,7 @@ class InterfaceController {
 
 		buttonsView.showButtons(m.buttons,m.values);
 
-		if (m.hasOwnProperty("sliderIndex"))
+		if (m.hasOwnProperty("sliderIndex") && m.sliderIndex>=0)
 			buttonsView.showSlider(m.sliderIndex,m.sliderMax);
 	}
 
@@ -59,6 +59,12 @@ class InterfaceController {
 		var presetButtonsView = this.view.getPresetButtonsView();
 		var buttons = presetButtonsView.getButtons();
 		var havePresetButton = false;
+
+		if (!m.buttons)
+			m.buttons=[];
+
+		if (!m.values)
+			m.values=[];
 
 		for (var i = 0; i < buttons.length; i++) {
 			if (i > m.buttons.length) {

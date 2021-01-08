@@ -2,6 +2,14 @@
 <html>
 	<head>
 		<title>Testing</title>
+		<script>
+			function launchViewcase() {
+				let viewcase=document.getElementById("viewcaseSelect").value;
+				console.log("running viewcase: "+viewcase);
+
+				window.open("table.html?viewcase="+viewcase);
+			}
+		</script>
 	</head>
 	<body>
 		<h1>Let's get this mothafucka tested!</h1>
@@ -45,9 +53,11 @@
 
 		<h2>Client visual test cases</h2>
 		<i>These tests is for visual unit testing of the client. Go ahead and try if you want. :)</i>
-
-		<ul>
-			{caseListContent}
-		</ul>
+		<br/><br/>
+		<select id="viewcaseSelect" onchange="launchViewcase('test');">
+			<option>Select test case</option>
+			{viewcaseOptions}
+		</select>
+		<br/><br/>
 	</body>
 </html>
