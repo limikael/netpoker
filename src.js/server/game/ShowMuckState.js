@@ -65,14 +65,14 @@ class ShowMuckState extends GameState {
 			//console.log("gameseat: " + gameSeat);
 
 			this.prompt = new GameSeatPrompt(gameSeat);
-			this.prompt.addButton(ButtonData.MUCK);
-			this.prompt.addButton(ButtonData.SHOW);
-			this.prompt.setDefaultButton(ButtonData.MUCK);
+			this.prompt.addButton("muck");
+			this.prompt.addButton("show");
+			this.prompt.setDefaultButton("muck");
 
-			this.prompt.on(GameSeatPrompt.COMPLETE, this.onPromptComplete, this);
+			this.prompt.on("complete", this.onPromptComplete);
 
 			if (this.game.getCommunityCards().length == 5)
-				this.prompt.useTableSeatSetting(CheckboxMessage.AUTO_MUCK_LOSING, ButtonData.MUCK);
+				this.prompt.useTableSeatSetting("autoMuckLosing","muck");
 
 			this.prompt.ask();
 		}
@@ -83,15 +83,15 @@ class ShowMuckState extends GameState {
 	 * @method onPromptComplete
 	 * @private
 	 */
-	onPromptComplete() {
+	onPromptComplete=()=>{
 		var prompt = this.prompt;
 
-		this.prompt.off(GameSeatPrompt.COMPLETE, this.onPromptComplete, this);
+		this.prompt.off("complete",this.onPromptComplete);
 		this.prompt = null;
 
 		var gameSeat = this.game.getGameSeats()[this.gameSeatIndexToSpeak];
 
-		if (prompt.getButton() == ButtonData.SHOW) {
+		if (prompt.getButton() == "show") {
 			gameSeat.show();
 		} else {
 			gameSeat.muck();
@@ -164,7 +164,7 @@ class ShowMuckState extends GameState {
 		if (bets)
 			throw new Error("The are bets left when paying out!!!");
 
-		var payOutMessage = new PayOutMessage();
+		let payOutValues=new Array(10);
 		var winning = [];
 		var limits = this.game.getUnfoldedPotContribs();
 
@@ -189,7 +189,7 @@ class ShowMuckState extends GameState {
 				if (winning.indexOf(gameSeat) < 0)
 					winning.push(gameSeat);
 
-				payOutMessage.setValueAt(gameSeat.getSeatIndex(), payOutMinusRake);
+				payOutValues[gameSeat.getSeatIndex()]=payOutMinusRake;
 				gameSeat.getTableSeat().addChips(payOutMinusRake);
 			}
 
@@ -205,13 +205,17 @@ class ShowMuckState extends GameState {
 
 		this.game.setRake(totalRake);
 
-		this.game.send(new DelayMessage(1000));
-		this.game.send(new PotMessage());
-		this.game.send(payOutMessage);
+		this.game.send("delay",{
+			delay: 1000
+		});
+		this.game.send("pot");
+		this.game.send("payOut",{
+			values: payOutValues
+		});
 
 		for (var g = 0; g < winning.length; g++) {
 			var gameSeat = winning[g];
-			this.game.send(gameSeat.getTableSeat().getSeatInfoMessage());
+			this.game.send("seatInfo",gameSeat.getTableSeat().getSeatInfoMessage());
 		}
 
 		this.game.setGameState(new FinishedState());

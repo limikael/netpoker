@@ -56,7 +56,7 @@ class BotController {
 	}
 
 	onFoldCardsMessage=(m)=> {
-		var seatModel = this.model.getSeatModelBySeatIndex(m.getSeatIndex());
+		var seatModel = this.model.getSeatModelBySeatIndex(m.seatIndex);
 
 		seatModel.clearCards();
 	}

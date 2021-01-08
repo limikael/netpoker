@@ -357,8 +357,13 @@ class GameSeat {
 	 */
 	muck() {
 		this.mucked = true;
-		this.game.send(new ActionMessage(this.getSeatIndex(), ActionMessage.MUCK));
-		this.game.send(new FoldCardsMessage(this.getSeatIndex()));
+		this.game.send("action",{
+			seatIndex: this.getSeatIndex(),
+			action: "muck"
+		});
+		this.game.send("foldCards",{
+			seatIndex: this.getSeatIndex()
+		});
 	}
 
 	/**

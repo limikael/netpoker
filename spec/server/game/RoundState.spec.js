@@ -81,7 +81,7 @@ describe("RoundState", function() {
 	});
 
 	it("can handle all in", async()=>{
-/*		let table = server.cashGameManager.getTableById(123);
+		let table = server.cashGameManager.getTableById(123);
 		let bot1, bot2;
 
 		bot1=new BotConnection();
@@ -117,18 +117,9 @@ describe("RoundState", function() {
 		await TickLoopRunner.runTicks();
 		await bot1.waitForMessage("pot");
 		let potMessages=bot1.getMessagesOfType("pot");
-		expect(potMessages.length).toBe(1);*/
-//		expect(potMessages[0].values.length).toBe(1);
+		expect(potMessages.length).toBe(2);
+		expect(potMessages[0].values.length).toBe(1);
 
-/*			function(next) {
-				var potMessages=bot1.getMessagesOfType(PotMessage);
-				console.log(potMessages);
-
-				expect(potMessages[0].values.length).toBe(1);
-
-				expect(table.getCurrentGame().getGameState()).toEqual(jasmine.any(FinishedState));
-				next();
-			}
-		).then(done);*/
+		expect(table.getCurrentGame().getGameState()).toBeInstanceOf(FinishedState);
 	});
 });
