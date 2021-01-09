@@ -144,6 +144,9 @@ class TableController {
 	 * @method onPot
 	 */
 	onPotMessage=(m)=>{
+		if (!m.values)
+			m.values=[];
+
 		this.view.potView.setValues(m.values);
 	};
 

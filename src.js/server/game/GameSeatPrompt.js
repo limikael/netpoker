@@ -205,7 +205,7 @@ class GameSeatPrompt extends EventEmitter {
 			return;
 		}
 
-		this.gameSeat.send("buttonsMessage");
+		this.gameSeat.send("buttons");
 		this.gameSeat.getTableSeat().off("buttonClick", this.onButtonClickMessage);
 		this.gameSeat.getTableSeat().off("settingsChanged", this.onTableSeatSettingsChanged);
 

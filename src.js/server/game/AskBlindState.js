@@ -134,6 +134,7 @@ class AskBlindState extends GameState {
 			this.game.addGameSeat(gameSeat);
 		} else {
 			gameSeat.getTableSeat().sitout();
+			gameSeat.finalize();
 		}
 
 		this.askDone();

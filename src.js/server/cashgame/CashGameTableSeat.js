@@ -107,29 +107,32 @@ class CashGameTableSeat extends BaseTableSeat {
 	}
 
 	/**
-	 * Set proto connection.
-	 * @method setProtoConnection
+	 * Set connection.
+	 * @method setConnection
 	 */
 	setConnection(connection) {
+		console.log("**** CASH GAME TABLE SEAT SET CONNECTION")
+
 		super.setConnection(connection);
 
 		if (this.connection) {
 			if (this.tableSeatUser) {
 				if (this.tableSeatUser.isSitout()) {
-					var bm = new ButtonsMessage();
-					bm.addButton(new ButtonData(ButtonData.LEAVE));
-					bm.addButton(new ButtonData(ButtonData.IM_BACK));
-					this.send(bm);
+					this.send("buttons",{
+						buttons: ["leave","imBack"]
+					});
 				}
 			}
 
-			this.send(this.getTableInfoMessage());
+			this.send("tableInfo",this.getTableInfoMessage());
 
-			var m = new InterfaceStateMessage();
-			m.addVisibleButton(CheckboxMessage.AUTO_MUCK_LOSING);
-			m.addVisibleButton(CheckboxMessage.SITOUT_NEXT);
-			m.addVisibleButton(CheckboxMessage.AUTO_POST_BLINDS);
-			this.send(m);
+			this.send("interfaceState",{
+				visibleButtons: [
+					"autoMuckLosing",
+					"sitOutNext",
+					"autoPostBlinds"
+				]
+			});
 		}
 	}
 

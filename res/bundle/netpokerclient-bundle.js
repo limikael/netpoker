@@ -2262,6 +2262,9 @@ class TableController {
 	 * @method onPot
 	 */
 	onPotMessage=(m)=>{
+		if (!m.values)
+			m.values=[];
+
 		this.view.potView.setValues(m.values);
 	};
 
@@ -5969,7 +5972,7 @@ class EventQueue extends EventEmitter {
 	}
 
 	enqueue(...event) {
-		console.log(event[0]+": "+JSON.stringify(event[1]));
+		//console.log(event[0]+": "+JSON.stringify(event[1]));
 
 		if (this.waitingForObject) {
 			this.queue.push(event);

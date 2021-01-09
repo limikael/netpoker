@@ -3,3 +3,4 @@ doc
 .grunt
 doc.zip
 serverconfig.json
+.nyc_output

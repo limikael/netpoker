@@ -1,6 +1,12 @@
 var GameSeatPreset = require("../../../src.js/server/game/GameSeatPreset");
 
 describe("GameSeatPreset", function() {
+	it("needs a button id",()=>{
+		expect(()=>{
+			new GameSeatPreset();
+		}).toThrow();
+	});
+
 	it("can manage a preset", function() {
 		var gameSeatPreset = new GameSeatPreset("fold", 1);
 

@@ -151,6 +151,9 @@ class Game extends EventEmitter {
 	notifyFinished() {
 		//console.log("game finished: " + this.id);
 
+		for (let gameSeat of this.gameSeats)
+			gameSeat.finalize();
+
 		var params = {
 			gameId: this.id,
 			state: this.table.getLogState(),
@@ -160,9 +163,9 @@ class Game extends EventEmitter {
 
 		this.gameState = null;
 
-		var backend = this.table.getServices().getBackend();
+		var backend = this.table.getServer().getBackend();
 
-		backend.call(Backend.FINISH_GAME, params).then(
+		backend.call("finishGame", params).then(
 			this.onFinishCallComplete.bind(this),
 			this.onFinishCallError.bind(this)
 		);
@@ -299,28 +302,39 @@ class Game extends EventEmitter {
 			});
 
 			if (gameSeat.hasCards()) {
-				var m = new PocketCardsMessage(gameSeat.getSeatIndex());
-
+				let m={
+					"seatIndex": gameSeat.getSeatIndex(),
+					"firstIndex": 0,
+					cards: []
+				};
 				for (var c = 0; c < gameSeat.getPocketCards().length; c++) {
 					var cardData = gameSeat.getPocketCards()[c];
 
-					if (gameSeat.getProtoConnection() == protoConnection || gameSeat.isShowing())
-						m.addCard(cardData);
+					if (gameSeat.getConnection() == connection || gameSeat.isShowing())
+						m.cards.push(cardData.getValue());
 
 					else
-						m.addCard(new CardData(CardData.HIDDEN));
+						m.cards.push(CardData.HIDDEN);
 				}
 
-				//console.log("sending pocket cards: " + JSON.stringify(m.serialize()));
-
-				connection.send(m);
+				connection.send("pocketCards",m);
 			}
 		}
 
 		if (this.getTotalPot())
-			protoConnection.send(new PotMessage(this.getPots()));
+			connection.send("pot",{
+				values: this.getPots()
+			});
 
-		protoConnection.send(new CommunityCardsMessage(this.communityCards));
+		let m={
+			firstIndex: 0,
+			cards: []
+		}
+
+		for (let card of this.communityCards)
+			m.cards.push(card.getValue());
+
+		connection.send("communityCards",m);
 	}
 
 	/**

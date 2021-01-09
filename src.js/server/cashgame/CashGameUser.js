@@ -262,10 +262,10 @@ class CashGameUser extends EventEmitter {
 		if (this.leaving)
 			return;
 
-		if (this.sittingout && m.getButton() == ButtonData.IM_BACK)
+		if (this.sittingout && m.button == "imBack")
 			this.sitBackIn();
 
-		if (this.sittingout && m.getButton() == ButtonData.LEAVE)
+		if (this.sittingout && m.button == "leave")
 			this.leave();
 	}
 
@@ -280,11 +280,11 @@ class CashGameUser extends EventEmitter {
 			return;
 
 		if (this.sittingout &&
-			!this.settings.get(CheckboxMessage.SITOUT_NEXT)) {
+			!this.settings.get("sitOutNext")) {
 			this.sitBackIn();
-			this.tableSeat.send(new ButtonsMessage());
+			this.tableSeat.send("buttons");
 		} else if (!this.sittingout &&
-			this.settings.get(CheckboxMessage.SITOUT_NEXT) &&
+			this.settings.get("sitOutNext") &&
 			!this.tableSeat.getTable().getCurrentGame()) {
 			this.sitout();
 		}
@@ -303,13 +303,16 @@ class CashGameUser extends EventEmitter {
 			throw new Error("not sitting out");
 
 		this.sittingout = false;
-		this.tableSeat.getTable().send(this.tableSeat.getSeatInfoMessage());
+		this.tableSeat.getTable().send("seatInfo",this.tableSeat.getSeatInfoMessage());
 		this.tableSeat.send("tableInfo",this.getTableInfoMessage());
 
-		this.settings.set(CheckboxMessage.SITOUT_NEXT, false);
-		this.tableSeat.send(new CheckboxMessage(CheckboxMessage.SITOUT_NEXT, false));
+		this.settings.set("sitOutNext", false);
+		this.tableSeat.send("checkbox",{
+			id: "sitOutNext",
+			checked: false
+		});
 
-		this.trigger(CashGameUser.READY);
+		this.emit("ready");
 	}
 
 	/**

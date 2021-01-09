@@ -29,6 +29,7 @@
   "devDependencies": {
     "browserify": "^17.0.0",
     "jasmine": "^3.6.3",
+    "nyc": "^15.1.0",
     "spritesheet-js": "^1.2.6"
   }
 }

@@ -66,7 +66,9 @@ class BaseTableSeat extends EventEmitter {
 	 * @param {ProtoConnection} protoConnection
 	 * @protected
 	 */
-	setConnection = function(connection) {
+	setConnection(connection) {
+		console.log("**** BASE TABLE SEAT SET CONNECTION")
+
 		if (this.connection) {
 			this.connection.off("close", this.onConnectionClose);
 			this.connection.off("buttonClick", this.onButtonClickMessage);

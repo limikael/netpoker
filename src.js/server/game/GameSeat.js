@@ -30,6 +30,12 @@ class GameSeat {
 		this.currentPresetValue = null;
 
 		this.createPresets();
+
+		this.tableSeat.on("presetButtonClick", this.onPresetButtonClick);
+	}
+
+	finalize() {
+		this.tableSeat.off("presetButtonClick", this.onPresetButtonClick);
 	}
 
 	/**
@@ -101,8 +107,6 @@ class GameSeat {
 	 * @method disableAllPresets
 	 */
 	disableAllPresets() {
-		this.tableSeat.off("presetButtonClick", this.onPresetButtonClick, this);
-
 		for (var p = 0; p < this.presets.length; p++)
 			this.presets[p].setEnabled(false);
 
@@ -130,8 +134,6 @@ class GameSeat {
 	 * @method enablePreset
 	 */
 	enablePreset(buttonId, value) {
-		this.tableSeat.on("presetButtonClick", this.onPresetButtonClick);
-
 		if (!value)
 			value = 0;
 
@@ -324,8 +326,14 @@ class GameSeat {
 	fold() {
 		this.folded = true;
 
-		this.game.send(new ActionMessage(this.getSeatIndex(), ActionMessage.FOLD));
-		this.game.send(new FoldCardsMessage(this.getSeatIndex()));
+		this.game.send("action",{
+			action: "fold",
+			seatIndex: this.getSeatIndex()
+		});
+
+		this.game.send("foldCards",{
+			seatIndex: this.getSeatIndex()
+		});
 	}
 
 	/**
@@ -337,11 +345,12 @@ class GameSeat {
 
 		var p = {
 			seatIndex: this.getSeatIndex(),
+			firstIndex: 0,
 			cards: []
 		};
 
 		for (var i = 0; i < this.pocketCards.length; i++)
-			p.cards.push(this.pocketCards[i]);
+			p.cards.push(this.pocketCards[i].getValue());
 
 		this.game.send("pocketCards",p);
 
