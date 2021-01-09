@@ -100,7 +100,7 @@ class TableController {
 	onDealerButtonMessage=(m)=>{
 		var dealerButtonView = this.view.getDealerButtonView();
 
-		if (m.seatIndex < 0) {
+		if (!m.hasOwnProperty("seatIndex") || m.seatIndex<0) {
 			dealerButtonView.hide();
 		} else {
 			if (m.animate)

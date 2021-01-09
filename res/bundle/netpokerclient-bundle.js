@@ -1921,8 +1921,6 @@ class InterfaceController {
 	 * @method onCheckboxMessage
 	 */
 	onCheckboxMessage=(m)=>{
-		console.log("checkbox...");
-
 		var settingsView = this.view.getSettingsView();
 
 		settingsView.setCheckboxChecked(m.id, m.checked);
@@ -2218,7 +2216,7 @@ class TableController {
 	onDealerButtonMessage=(m)=>{
 		var dealerButtonView = this.view.getDealerButtonView();
 
-		if (m.seatIndex < 0) {
+		if (!m.hasOwnProperty("seatIndex") || m.seatIndex<0) {
 			dealerButtonView.hide();
 		} else {
 			if (m.animate)
@@ -6449,10 +6447,15 @@ class PixiApp extends PIXI.Container {
 
 	attach(element) {
 		this.app.ticker.add(this.onAppTicker);
+		setInterval(this.onInterval,1000);
 
 		this.element=element;
 		this.element.appendChild(this.app.view);
 		this.onWindowResize();
+	}
+
+	onInterval=()=>{
+		TWEEN.update(performance.now());
 	}
 
 	onAppTicker=(delta)=>{

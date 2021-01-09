@@ -144,8 +144,6 @@ class InterfaceController {
 	 * @method onCheckboxMessage
 	 */
 	onCheckboxMessage=(m)=>{
-		console.log("checkbox...");
-
 		var settingsView = this.view.getSettingsView();
 
 		settingsView.setCheckboxChecked(m.id, m.checked);

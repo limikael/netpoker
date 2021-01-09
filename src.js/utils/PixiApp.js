@@ -23,10 +23,15 @@ class PixiApp extends PIXI.Container {
 
 	attach(element) {
 		this.app.ticker.add(this.onAppTicker);
+		setInterval(this.onInterval,1000);
 
 		this.element=element;
 		this.element.appendChild(this.app.view);
 		this.onWindowResize();
+	}
+
+	onInterval=()=>{
+		TWEEN.update(performance.now());
 	}
 
 	onAppTicker=(delta)=>{

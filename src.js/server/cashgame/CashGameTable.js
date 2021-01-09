@@ -431,7 +431,7 @@ class CashGameTable extends BaseTable {
 
 		else {
 			this.dealerButtonIndex = -1;
-			this.send(new DealerButtonMessage(this.dealerButtonIndex));
+			this.send("dealerButton");
 
 			this.sendTableInfoMessages();
 		}
