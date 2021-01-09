@@ -90,7 +90,7 @@ class BaseTableSeat extends EventEmitter {
 				for (let setting of TableSeatSettings.AVAILABLE_SETTINGS) {
 					this.send("checkbox",{
 						id: setting,
-						value: this.getSetting(setting)
+						checked: this.getSetting(setting)
 					});
 				}
 			}

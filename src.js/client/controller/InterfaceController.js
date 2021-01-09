@@ -18,7 +18,7 @@ class InterfaceController {
 		this.eventQueue.on("tableInfo",this.onTableInfoMessage);
 		this.eventQueue.on("handInfo",this.onHandInfoMessage);
 		this.eventQueue.on("interfaceState",this.onInterfaceStateMessage);
-		this.eventQueue.on("chekbox",this.onCheckboxMessage);
+		this.eventQueue.on("checkbox",this.onCheckboxMessage);
 		this.eventQueue.on("preTournamentInfo",this.onPreTournamentInfoMessage);
 		this.eventQueue.on("tableButtons",this.onTableButtonsMessage);
 		this.eventQueue.on("tournamentResult",this.onTournamentResultMessage);
@@ -144,11 +144,11 @@ class InterfaceController {
 	 * @method onCheckboxMessage
 	 */
 	onCheckboxMessage=(m)=>{
-		console.log(m);
+		console.log("checkbox...");
 
 		var settingsView = this.view.getSettingsView();
 
-		settingsView.setCheckboxChecked(m.getId(), m.getChecked());
+		settingsView.setCheckboxChecked(m.id, m.checked);
 	}
 
 	/**

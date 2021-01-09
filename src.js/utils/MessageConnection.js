@@ -75,8 +75,10 @@ class MessageConnection extends EventEmitter {
 				}
 
 				this.webSocket.onerror=(err)=>{
-					this.webSocket.onopen=null;
-					this.webSocket.onerror=null;
+					if (this.webSocket) {
+						this.webSocket.onopen=null;
+						this.webSocket.onerror=null;
+					}
 					reject(err);
 				}
 			});
