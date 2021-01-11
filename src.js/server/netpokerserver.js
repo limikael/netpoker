@@ -7,12 +7,14 @@ const fs=require("fs");
 function usage() {
 	console.log("Usage: netpokerserver <options>");
 	console.log("");
-	console.log("Port is required.");
+	console.log("Minimum required options to start are port and one of backend or mock.");
 	console.log("");
 	console.log("Options:");
 	console.log("");
 	console.log("  --port <port>         Port where to listen.");
 	console.log("  --config <filename>   Load config from file.");
+	console.log("  --backend <url>       Backend url.")
+	console.log("  --mock                Use mocked backend.");
 	console.log("");
 
 	process.exit(1);

@@ -5,6 +5,7 @@ const ApiProxy=require("../../utils/ApiProxy");
 const MockWebServer=require("../mock/MockWebServer");
 const MockBackend=require("../mock/MockBackend");
 const http=require("http");
+const Backend=require("./Backend");
 
 class NetPokerServer {
 	constructor(options) {
@@ -30,6 +31,9 @@ class NetPokerServer {
 	getSettingsError() {
 		if (!this.options.port)
 			return "Need port!!!";
+
+		if (!this.options.backend && !this.options.mock)
+			return "Need backend or mock!";
 	}
 
 	getBackend() {
@@ -47,6 +51,12 @@ class NetPokerServer {
 			callHandler=this.mockWebServer.handleCall;
 			this.backend=new MockBackend(this);
 		}
+
+		else if (!this.options.backend) {
+			throw new Error("Need backend!");
+		}
+
+		this.backend=new Backend(this.options.backend);
 
 		this.cashGameManager=new CashGameManager(this);
 		await this.cashGameManager.initialize();

@@ -6,15 +6,26 @@ require_once __DIR__."/../utils/Singleton.php";
 require_once __DIR__."/../controller/CashGameController.php";
 require_once __DIR__."/../controller/TableController.php";
 require_once __DIR__."/../controller/SettingsController.php";
+require_once __DIR__."/../controller/BackendController.php";
 
 class NetPokerPlugin extends Singleton {
 	protected function __construct() {
 		CashGameController::instance();
 		TableController::instance();
+		BackendController::instance();
 
 		if (is_admin()) {
 			SettingsController::instance();
 		}
+
+		add_filter("cmb2_meta_box_url",array($this,"cmb2_meta_box_url"));
+	}
+
+	public function cmb2_meta_box_url($url) {
+		if (strpos($url,"netpoker"))
+			$url=NETPOKER_URL."/ext/CMB2/";
+
+		return $url;
 	}
 
 	public function activate() {

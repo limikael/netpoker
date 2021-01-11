@@ -29,7 +29,7 @@ class CashGameTable extends BaseTable {
 		this.maxSitInAmount = config.maxSitInAmount;
 		this.rakePercent = config.rakePercent;
 
-		this.setupSeats(config.numseats);
+		this.setupSeats(config.numSeats);
 
 		this.tableSpectators = [];
 		this.server = server;
@@ -55,7 +55,7 @@ class CashGameTable extends BaseTable {
 
 		var expected = [
 			"minSitInAmount", "maxSitInAmount", "stake",
-			"numseats", "id", "currency", "name"
+			"numSeats", "id", "currency", "name"
 		];
 
 		for (var i = 0; i < expected.length; i++)
@@ -65,7 +65,7 @@ class CashGameTable extends BaseTable {
 		if (!config.rakePercent)
 			config.rakePercent = 0;
 
-		if (!config.numseats ||
+		if (!config.numSeats ||
 			!config.id ||
 			!config.currency ||
 			!config.name ||
@@ -78,7 +78,7 @@ class CashGameTable extends BaseTable {
 		config.minSitInAmount = parseFloat(config.minSitInAmount);
 		config.maxSitInAmount = parseFloat(config.maxSitInAmount);
 		config.rakePercent = parseFloat(config.rakePercent);
-		config.numseats = parseInt(config.numseats);
+		config.numSeats = parseInt(config.numSeats);
 	}
 
 	/**
@@ -106,7 +106,7 @@ class CashGameTable extends BaseTable {
 		this.maxSitInAmount = config.maxSitInAmount;
 		this.rakePercent = config.rakePercent;
 
-		var activeSeatIndices = TableUtil.getActiveSeatIndices(config.numseats);
+		var activeSeatIndices = TableUtil.getActiveSeatIndices(config.numSeats);
 
 		for (var i = 0; i < this.tableSeats.length; i++)
 			this.tableSeats[i].setActive(activeSeatIndices.indexOf(i) >= 0);
@@ -154,8 +154,8 @@ class CashGameTable extends BaseTable {
 	 * @method setupSeats
 	 * @private
 	 */
-	setupSeats(numseats) {
-		var activeSeatIndices = TableUtil.getActiveSeatIndices(numseats);
+	setupSeats(numSeats) {
+		var activeSeatIndices = TableUtil.getActiveSeatIndices(numSeats);
 
 		for (var i = 0; i < 10; i++) {
 			var ts = this.tableSeats[i];
@@ -207,7 +207,7 @@ class CashGameTable extends BaseTable {
 			this.minSitInAmount == config.minSitInAmount &&
 			this.maxSitInAmount == config.maxSitInAmount &&
 			this.rakePercent == config.rakePercent &&
-			this.getNumSeats() == config.numseats)
+			this.getNumSeats() == config.numSeats)
 			return;
 
 		this.reconfigureData = config;

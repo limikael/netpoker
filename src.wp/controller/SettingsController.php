@@ -43,7 +43,10 @@ class SettingsController extends Singleton {
 	 * Create the settings page.
 	 */
 	public function create_settings_page() {
+		$vars=array();
+		$vars["backendUrl"]=admin_url('admin-ajax.php?action=netpoker');
+
 		$template=new Template(__DIR__."/../tpl/settings.tpl.php");
-		$template->display();
+		$template->display($vars);
 	}
 }

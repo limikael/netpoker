@@ -20,8 +20,7 @@ defined( 'ABSPATH' ) || exit;
 define('NETPOKER_URL',plugin_dir_url(__FILE__));
 define('NETPOKER_PATH',plugin_dir_path(__FILE__));
 
-//require_once(__DIR__."/ext/CMB2/init.php");
-//require_once(__DIR__."/ext/cmb2-tabs/plugin.php");
+require_once(__DIR__."/ext/CMB2/init.php");
 require_once(__DIR__."/src.wp/plugin/NetPokerPlugin.php");
 
 // Handle plugin activation.
