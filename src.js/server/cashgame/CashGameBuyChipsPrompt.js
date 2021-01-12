@@ -82,11 +82,10 @@ class CashGameBuyChipsPrompt extends EventEmitter {
 	 * @method onGetBalanceCallError
 	 */
 	onGetBalanceCallError=(e)=>{
-		var d = new ShowDialogMessage();
-
-		d.setText("Unable to fetch balance\n\n" + e);
-		d.addButton(ButtonData.OK);
-		this.tableSeat.send(d);
+		this.tableSeat.send("showDialog",{
+			text: "Unable to fetch balance\n\n" + e,
+			buttons: ["ok"]
+		});
 
 		this.emit("cancel");
 	}

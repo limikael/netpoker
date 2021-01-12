@@ -17,10 +17,11 @@ class BackendController extends Singleton {
 	public function getCashGameTableList() {
 		$tables=array();
 
-		foreach (CashGame::getAllActive() as $cashGame) {
+		foreach (CashGame::findAllActive() as $cashGame) {
 			$tables[]=array(
 				"id"=>$cashGame->getId(),
 				"name"=>$cashGame->getName(),
+				"numSeats"=>$cashGame->getMeta("numSeats"),
 				"currency"=>$cashGame->getMeta("currency"),
 				"stake"=>$cashGame->getMeta("stake"),
 				"minSitInAmount"=>$cashGame->getMeta("minSitInAmount"),
@@ -29,24 +30,47 @@ class BackendController extends Singleton {
 			);
 		}
 
-		/*foreach (Cashgame::findAll() as $cashgame) {
-			$tables[]=array(
-				"id"=>$cashgame->id,
-				"numseats"=>$cashgame->numseats,
-				"currency"=>$cashgame->currency,
-				"name"=>$cashgame->title,
-				"minSitInAmount"=>$cashgame->minSitInAmount,
-				"maxSitInAmount"=>$cashgame->maxSitInAmount,
-				"stake"=>$cashgame->stake,
-				"rakePercent"=>$cashgame->rakePercent
-			);
-		}*/
-
 		return array(
 			"tables"=>$tables
 		);
 	}
 
+	/**
+	 * Num players change.
+	 */
+	public function notifyCashGameNumPlayers($p) {
+		$cashGame=Cashgame::findOneById($p["tableId"]);
+		if (!$cashGame)
+			throw new Exception("Can't find game.");
+
+		$cashGame->setMeta("numPlayers",$p["numPlayers"]);
+	}
+
+	/**
+	 * Get user info by token
+	 */
+	public function getUserInfoByToken($p) {
+		if (session_id())
+			session_commit();
+
+		session_id($p["token"]);
+		session_start();
+
+		$user=get_user_by("id",$_SESSION["netpoker_user_id"]);
+
+		if (!$user)
+			return;
+
+		return array(
+			"id"=>$user->ID,
+			"name"=>$user->display_name
+		);
+	}
+
+
+	/**
+	 * Handle call.
+	 */
 	public function dispatch() {
 		$method=basename($_REQUEST["method"]);
 

@@ -26,6 +26,10 @@ class NetPokerServer {
 
 			table.notifyNewConnection(userConnection);
 		}
+
+		else {
+			console.log("No tableId in connection");
+		}
 	}
 
 	getSettingsError() {

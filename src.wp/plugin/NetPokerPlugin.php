@@ -19,6 +19,17 @@ class NetPokerPlugin extends Singleton {
 		}
 
 		add_filter("cmb2_meta_box_url",array($this,"cmb2_meta_box_url"));
+		add_action("init",array($this,"init"));
+	}
+
+	public function init() {
+		if (!session_id())
+			session_start();
+
+		$user=wp_get_current_user();
+		if ($user) {
+			$_SESSION["netpoker_user_id"]=$user->ID;
+		}
 	}
 
 	public function cmb2_meta_box_url($url) {

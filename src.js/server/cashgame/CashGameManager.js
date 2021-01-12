@@ -31,6 +31,8 @@ class CashGameManager extends EventEmitter {
 	}
 
 	processTableList(tableDatas) {
+		console.log("Processing table list, length="+tableDatas.length);
+
 		var i;
 		this.currentRequestedIds = [];
 
@@ -41,10 +43,10 @@ class CashGameManager extends EventEmitter {
 			var table = this.getTableById(tableData.id);
 
 			if (table) {
-				//console.log("reconfiguring table: " + tableData.id);
+				console.log("reconfiguring table: " + tableData.id);
 				table.reconfigure(tableData);
 			} else {
-				//console.log("starting table: " + tableData.id);
+				console.log("starting table: " + tableData.id);
 
 				var table = new CashGameTable(this.server, tableData);
 				table.on("idle", this.onTableIdle);
