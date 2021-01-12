@@ -4,6 +4,7 @@ namespace netpoker;
 
 require_once __DIR__."/../utils/Singleton.php";
 require_once __DIR__."/../model/CashGame.php";
+require_once __DIR__."/../model/Account.php";
 
 class BackendController extends Singleton {
 	protected function __construct() {
@@ -67,6 +68,77 @@ class BackendController extends Singleton {
 		);
 	}
 
+	/**
+	 * Get user balance.
+	 */
+	public function getUserBalance($p) {
+		$account=Account::getUserPlyAccount($p["userId"]);
+
+		return array(
+			"balance"=>$account->getBalance()
+		);
+	}
+
+	/**
+	 * Join cashgame.
+	 */
+	public function joinCashGame($p) {
+		$cashGame=Cashgame::findOneById($p["tableId"]);			
+		if (!$cashGame)
+			throw new Exception("Can't find game.");
+
+		$cashGameAccount=$cashGame->getAccount();
+
+		$user=get_user_by("id",$p["userId"]);
+		if (!$user)
+			throw new Exception("Unknown user.");
+
+		$userAccount=new Account($cashGameAccount->getCurrency(),"user",$user->ID);
+
+		Account::transact($userAccount,$cashGameAccount,$p["amount"],"Sit in");
+	}
+
+	/**
+	 * Leave cashgame.
+	 */
+	public function leaveCashGame($p) {
+		$cashGame=Cashgame::findOneById($p["tableId"]);			
+		if (!$cashGame)
+			throw new Exception("Can't find game.");
+
+		$cashGameAccount=$cashGame->getAccount();
+
+		$user=get_user_by("id",$p["userId"]);
+		if (!$user)
+			throw new Exception("Unknown user.");
+
+		$userAccount=new Account($cashGameAccount->getCurrency(),"user",$user->ID);
+
+		Account::transact($cashGameAccount,$userAccount,$p["amount"],"Leave");
+	}
+
+	/**
+	 * Start cash game.
+	 */
+	public function startCashGame($p) {
+		$game=new Game();
+		$game->post_id=$p["parentId"];
+		$game->stamp=current_time("mysql",TRUE);
+		$game->save();
+
+		return array(
+			"gameId"=>$game->id
+		);
+	}
+
+	/**
+	 * Finish game.
+	 */
+	public function finishGame($p) {
+		$game=Game::findOne($p["gameId"]);
+		$game->state=$p["state"];
+		$game->save();
+	}
 
 	/**
 	 * Handle call.

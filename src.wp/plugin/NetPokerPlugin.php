@@ -7,12 +7,15 @@ require_once __DIR__."/../controller/CashGameController.php";
 require_once __DIR__."/../controller/TableController.php";
 require_once __DIR__."/../controller/SettingsController.php";
 require_once __DIR__."/../controller/BackendController.php";
+require_once __DIR__."/../controller/UserController.php";
+require_once __DIR__."/../model/Game.php";
 
 class NetPokerPlugin extends Singleton {
 	protected function __construct() {
 		CashGameController::instance();
 		TableController::instance();
 		BackendController::instance();
+		UserController::instance();
 
 		if (is_admin()) {
 			SettingsController::instance();
@@ -40,9 +43,11 @@ class NetPokerPlugin extends Singleton {
 	}
 
 	public function activate() {
+		Game::install();
 	}
 
 	public function uninstall() {
+		Game::uninstall();
 	}
 
 	/*public function cmb2_meta_box_url($url) {
@@ -71,5 +76,12 @@ class NetPokerPlugin extends Singleton {
 		}
 
 		return json_decode($res,TRUE);
+	}
+
+	public function getBalance($currency, $entityType, $entityId) {
+		if ($currency!="ply" || $entityType!="user")
+			throw new \Exception("only user accounts supported");
+
+		get_user_meta($entityId,"netpoker_ply_balance");
 	}
 }

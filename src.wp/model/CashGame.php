@@ -55,4 +55,8 @@ class CashGame {
 
 		return $res;
 	}
+
+	public function getAccount() {
+		return new Account($this->getMeta("currency"),"cashgame",$this->getId());
+	}
 }

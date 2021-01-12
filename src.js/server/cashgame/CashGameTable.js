@@ -254,7 +254,7 @@ class CashGameTable extends BaseTable {
 						//console.log("**** re seating...");
 
 						var ts = new CashGameSpectator(this, tableSeat.getConnection(), user);
-						ts.on("done", this.onTableSpectatorDone, this);
+						ts.on("done", this.onTableSpectatorDone);
 						this.tableSpectators.push(ts);
 					}
 
@@ -266,7 +266,7 @@ class CashGameTable extends BaseTable {
 
 		if (!alreadySeated) {
 			var ts = new CashGameSpectator(this, connection, user);
-			ts.on("done", this.onTableSpectatorDone, this);
+			ts.on("done", this.onTableSpectatorDone);
 			this.tableSpectators.push(ts);
 		}
 

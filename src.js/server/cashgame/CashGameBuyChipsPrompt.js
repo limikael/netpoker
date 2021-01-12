@@ -141,7 +141,7 @@ class CashGameBuyChipsPrompt extends EventEmitter {
 			var params = {
 				userId: this.tableSeat.getUser().getId(),
 				tableId: this.tableSeat.getTable().getId(),
-				amount: this.chip
+				amount: this.chips
 			};
 
 			this.tableSeat.getServer().getBackend()
