@@ -45,7 +45,7 @@ class MockBackend {
 		return {
 			"tables": [{
 				id: 123,
-				numseats: 10,
+				numSeats: 10,
 				currency: "PLY",
 				name: "Test Table",
 				minSitInAmount: 10,

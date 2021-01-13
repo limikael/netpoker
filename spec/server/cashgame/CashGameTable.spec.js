@@ -12,7 +12,7 @@ describe("CashGameTable", function() {
 
 		config = {
 			id: 123,
-			numseats: 4,
+			numSeats: 4,
 			currency: "PLY",
 			name: "Test Table",
 			minSitInAmount: 10,
@@ -32,7 +32,7 @@ describe("CashGameTable", function() {
 			minSitInAmount: "10",
 			maxSitInAmount: 100,
 			stake: 2,
-			numseats: 4,
+			numSeats: 4,
 			id: 1,
 			currency: "PLY",
 			name: "hello"
@@ -52,7 +52,7 @@ describe("CashGameTable", function() {
 
 		t.reconfigure({
 			id: 123,
-			numseats: 6,
+			numSeats: 6,
 			currency: "PLY",
 			name: "Test Table",
 			minSitInAmount: 10,
@@ -71,7 +71,7 @@ describe("CashGameTable", function() {
 
 		t.reconfigure({
 			id: 123,
-			numseats: 4,
+			numSeats: 4,
 			currency: "PLY",
 			name: "Test Table",
 			minSitInAmount: 10,
@@ -199,7 +199,7 @@ describe("CashGameTable", function() {
 			return false;
 		}
 		mockTableSeatUser.getTableInfoMessage = function() {
-			return new {
+			return {
 				text: "hello world"
 			};
 		}

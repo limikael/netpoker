@@ -56,11 +56,11 @@ class NetPokerServer {
 			this.backend=new MockBackend(this);
 		}
 
-		else if (!this.options.backend) {
-			throw new Error("Need backend!");
-		}
+		else if (this.options.backend)
+			this.backend=new Backend(this.options.backend);
 
-		this.backend=new Backend(this.options.backend);
+		else
+			throw new Error("Need backend!");
 
 		this.cashGameManager=new CashGameManager(this);
 		await this.cashGameManager.initialize();

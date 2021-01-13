@@ -32,7 +32,7 @@ describe("CashGameManager", function() {
 		backendCallData = {
 			"tables": [{
 				id: 123,
-				numseats: 10,
+				numSeats: 10,
 				currency: "PLY",
 				name: "Test Table",
 				minSitInAmount: 10,
@@ -40,7 +40,7 @@ describe("CashGameManager", function() {
 				stake: 2
 			}, {
 				id: 124,
-				numseats: 4,
+				numSeats: 4,
 				currency: "PLY",
 				name: "Test Table",
 				minSitInAmount: 10,
@@ -61,7 +61,7 @@ describe("CashGameManager", function() {
 		backendCallData = {
 			"tables": [{
 				"id": "table_123",
-				numseats: 10,
+				numSeats: 10,
 				currency: "PLY",
 				name: "Test Table",
 				minSitInAmount: 10,
@@ -81,7 +81,7 @@ describe("CashGameManager", function() {
 	function createTableData(tableId) {
 		return {
 			"id": tableId,
-			numseats: 10,
+			numSeats: 10,
 			currency: "PLY",
 			name: "Test Table",
 			minSitInAmount: 10,
