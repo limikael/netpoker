@@ -111,8 +111,6 @@ class CashGameTableSeat extends BaseTableSeat {
 	 * @method setConnection
 	 */
 	setConnection(connection) {
-		console.log("**** CASH GAME TABLE SEAT SET CONNECTION")
-
 		super.setConnection(connection);
 
 		if (this.connection) {

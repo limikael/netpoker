@@ -20,7 +20,8 @@ class UserConnection extends EventEmitter {
 			token: this.params.token
 		});
 
-		this.user=new User(res);
+		if (res.id && res.name)
+			this.user=new User(res);
 	}
 
 	getUser() {

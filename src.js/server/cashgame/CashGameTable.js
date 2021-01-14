@@ -450,8 +450,6 @@ class CashGameTable extends BaseTable {
 	 * @method sendTableInfoMessages
 	 */
 	sendTableInfoMessages() {
-		console.log("******* sending table info messages");
-
 		for (let i = 0; i < this.tableSpectators.length; i++) {
 			var tableSpectator = this.tableSpectators[i];
 			tableSpectator.send("tableInfo",tableSpectator.getTableInfoMessage());

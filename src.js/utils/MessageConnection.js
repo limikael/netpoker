@@ -12,6 +12,9 @@ class MessageConnection extends EventEmitter {
 	constructor(webSocket) {
 		super();
 
+		if (!webSocket)
+			throw new Error("No websocket for message connection!");
+
 		this.webSocket=webSocket;
 		this.webSocket.addEventListener("message",this.onMessage);
 		this.webSocket.addEventListener("error",this.onClose);
@@ -21,6 +24,9 @@ class MessageConnection extends EventEmitter {
 	send(type, message) {
 		if (typeof type!="string")
 			throw new Error("Message type should be a string");
+
+		if (!this.webSocket)
+			throw new Error("Trying to send, but the MessageConnection is closed!");
 
 		if (!message)
 			message={};
@@ -93,6 +99,7 @@ class MessageConnection extends EventEmitter {
 		this.webSocket.removeEventListener("error",this.onClose);
 		this.webSocket.removeEventListener("close",this.onClose);
 		this.webSocket.close();
+		this.webSocket=null;
 	}
 
 	/*static connect(url) {

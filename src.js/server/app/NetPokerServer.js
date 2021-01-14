@@ -14,7 +14,7 @@ class NetPokerServer {
 	}
 
 	onUserConnection=(userConnection)=>{
-		console.log("user connection: "+userConnection.getUser().getName());
+		//console.log("user connection: "+userConnection.getUser().getName());
 
 		let p=userConnection.getParams();
 		if (p.tableId) {
